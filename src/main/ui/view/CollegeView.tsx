@@ -63,12 +63,12 @@ const koPanes = [
         >
           <div className="college-cont-title ai">
             <div className="belt sub">
-              <div className="label">AI College</div>
+              <div className="label">AI</div>
               <div className="strong">
                 AI 아싸(Outsider)에서 AI 핵인싸(Insider)로!
               </div>
               <div className="normal">
-                AI College는 SK 구성원 누구나 알아야 할 기본 지식을 바탕으로,
+                AI는 SK 구성원 누구나 알아야 할 기본 지식을 바탕으로,
                 <br />
                 각 산업과 직무에서 AI를 활용하는 실무역량을 배양하고 AI기술
                 전문가로
@@ -100,7 +100,7 @@ const koPanes = [
         >
           <div className="college-cont-title dt">
             <div className="belt sub">
-              <div className="label">DT College</div>
+              <div className="label">DT</div>
               <div className="strong">'그룹의 Deep Change는 우리 손으로!’</div>
               <div className="normal">
                 Digital Skill을 장착하고 고객과 업을 이해하여,
@@ -108,7 +108,7 @@ const koPanes = [
                 SK Deep Change를 맨 앞에서 이끌어 나가실 구성원들을 위한
                 과정들이,
                 <br />
-                여기 DT College에 마련되어 있습니다.
+                여기 DT Category에 마련되어 있습니다.
               </div>
               <div className="panopto sub">
                 <Image src={`${PUBLIC_URL}/images/all/Dt-banner.png`} alt="" />
@@ -135,7 +135,7 @@ const koPanes = [
         >
           <div className="college-cont-title happiness">
             <div className="belt">
-              <div className="label">행복 College</div>
+              <div className="label">행복</div>
               <div className="strong">SK 구성원 전체의 행복을 키워갑니다.</div>
               <div className="normal">
                 행복에 대한 기본 개념과 SK경영철학의 이해를 기반으로 직장을
@@ -181,7 +181,7 @@ const koPanes = [
             <div className="belt">
               <div className="map">
                 <Image
-                  src={`${PUBLIC_URL}/images/all/happy_con_03.png`}
+                  src={`${PUBLIC_URL}/images/all/happy_con_03.png`} //교체필요
                   alt=""
                 />
               </div>
@@ -201,7 +201,7 @@ const koPanes = [
         >
           <div className="college-cont-title sv">
             <div className="belt sub">
-              <div className="label">SV College</div>
+              <div className="label">SV</div>
               <div className="strong">
                 내일[Tomorrow+My Work]을 위한 SV, <br />
                 기업과 사회의 지속가능성을 위한 필수 역량을 키우는 곳!
@@ -260,7 +260,7 @@ const koPanes = [
         >
           <div className="college-cont-title design">
             <div className="belt sub">
-              <div className="label">혁신디자인 College</div>
+              <div className="label">혁신디자인</div>
               <div className="strong">고객을 이해하고 혁신을 디자인하라!</div>
               <div className="normal">
                 고객에서 출발하는 Biz. Idea를 발굴하고, 통합적 사고로 고객의{' '}
@@ -957,7 +957,7 @@ const koPanes = [
         >
           <div className="college-cont-title global">
             <div className="belt sub">
-              <div className="label">Global College</div>
+              <div className="label">Global</div>
               <div className="strong">Globalization을 위한 새로운 시작</div>
               <div className="normal">
                 글로벌 비즈니스의 판을 읽는 'Global Perspective'를 키우고 환경이
@@ -1573,7 +1573,7 @@ const koPanes = [
         >
           <div className="college-cont-title leadership">
             <div className="belt sub">
-              <div className="label">Leadership College</div>
+              <div className="label">Leadership</div>
               <div className="strong">Deep Change Leader로 성장!</div>
               <div className="normal">
                 개인별 리더십 진단과 맞춤형 역량 개발 가이드를 지원하고
@@ -1981,14 +1981,14 @@ const koPanes = [
         >
           <div className="college-cont-title management">
             <div className="belt sub">
-              <div className="label">Management College</div>
+              <div className="label">Management</div>
               <div className="strong">
                 Deep Change를 위해 내가 하는 일은 어떻게 바뀌어야 할까요?
                 <br />
                 어떻게 성장할 수 있을까요?
               </div>
               <div className="normal">
-                Management College는 Deep Change를 위한 Biz. 실행 역량 제고를
+                Management Category는 Deep Change를 위한 Biz. 실행 역량 제고를
                 위해 6개 Function Group, 1개 Competency 영역의 직무 역량 학습을
                 제공합니다. Function Group별 지식/전문성 뿐 아니라 여러
                 Function간 결합을 통한 융합/통합 역량 확보도 계획하고 있습니다.
@@ -2026,7 +2026,7 @@ const koPanes = [
         >
           <div className="college-cont-title semicond">
             <div className="belt sub">
-              <div className="label">미래 반도체 College</div>
+              <div className="label">미래 반도체</div>
               <div className="strong">반도체, 미래를 보는 눈을 뜨다.</div>
               <div className="normal">
                 SK 구성원 누구에게나 도움이 될 반도체 소양을 높여줄 뿐 아니라{' '}
@@ -2902,7 +2902,7 @@ const koPanes = [
     ),
   },
   {
-    menuItem: 'Environment',
+    menuItem: 'Green',
     render: () => (
       <Tab.Pane>
         <div
@@ -2911,9 +2911,9 @@ const koPanes = [
         >
           <div className="college-cont-title energy">
             <div className="belt sub">
-              <div className="label">Environment College</div>
+              <div className="label">Green</div>
               <div className="strong">
-                에너지솔루션 College에서 진화한 “Environment College”
+                에너지솔루션 Category에서 진화한 “Green Category”
               </div>
               <div className="normal">
                 환경 사업이 만드는 새로운 세상, 환경의 중요성에 대한 인식을
@@ -2950,7 +2950,7 @@ const koPanes = [
           </div>
           <div className="college-cont-map energe">
             <div className="belt">
-              <div className="label energy">Environment College Curriculum</div>
+              <div className="label energy">Green Category Curriculum</div>
               <div className="map">
                 <Image
                   src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/envir-con-02.png"
@@ -2974,7 +2974,7 @@ const koPanes = [
         >
           <div className="college-cont-title bmd">
             <div className="belt sub">
-              <div className="label">BM Design &#38; Storytelling College</div>
+              <div className="label">BM Design &#38; Storytelling</div>
               <div className="strong">Ideate and Accelerate Deep Change!</div>
               <div className="normal">
                 BM Design 전문가 양성 및 Biz Financial Story Design/ Telling
@@ -3328,7 +3328,7 @@ const koPanes = [
                   alt=""
                 />
               </div>
-              <div className="label">SK아카데미 College</div>
+              <div className="label">SK아카데미</div>
               <div className="strong">
                 “나무를 키우듯, 인재를 키워온 SK인재육성의 산실”
               </div>
@@ -3387,7 +3387,7 @@ const koPanes = [
               </ul>
               <div className="label chip7">역량 School</div>
               <div className="strong">
-                mySUNI의 Management College와 연계, 그룹 공통 직무 및 Biz.
+                mySUNI의 Management Category와 연계, 그룹 공통 직무 및 Biz.
                 전문역량 강화
               </div>
               <ul className="tag-wrap">
@@ -3425,12 +3425,12 @@ const EnPanes = [
         >
           <div className="college-cont-title ai">
             <div className="belt sub">
-              <div className="label">AI College</div>
+              <div className="label">AI</div>
               <div className="strong">
                 From an AI outsider to an AI insider!
               </div>
               <div className="normal">
-                AI College provides opportunities to cultivate practical AI
+                AI Category provides opportunities to cultivate practical AI
                 capacity to be used
                 <br />
                 every industry and job, and grow into an AI technology expert
@@ -3466,12 +3466,12 @@ const EnPanes = [
         >
           <div className="college-cont-title dt">
             <div className="belt sub">
-              <div className="label">DT College</div>
+              <div className="label">DT</div>
               <div className="strong">
                 &quot;The group's deep change comes from our hands!&quot;
               </div>
               <div className="normal">
-                DT College offers courses for members who will lead the
+                DT Category offers courses for members who will lead the
                 forefront of SK Deep Change by equipping themselves with digital
                 skills and understanding the customers and the business.
               </div>
@@ -3501,12 +3501,12 @@ const EnPanes = [
           >
             <div className="college-cont-title happiness">
               <div className="belt">
-                <div className="label">Happiness College</div>
+                <div className="label">Happiness</div>
                 <div className="strong">
                   For the happiness of all SK members!
                 </div>
                 <div className="normal">
-                  Happiness College aims to contribute substantially to the
+                  Happiness Category aims to contribute substantially to the
                   pursuit of happiness of
                   <br />
                   all SK members by cultivating and putting into practice the
@@ -3542,7 +3542,8 @@ const EnPanes = [
               <div className="belt">
                 <div className="map">
                   <img
-                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/happy_con_02_ENG.png"
+                    src={`${PUBLIC_URL}/images/all/happy_con_02_ENG.png`}
+                    //src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/happy_con_02_ENG.png"
                     alt="행복 Badge"
                     className="ui image"
                   />
@@ -3553,7 +3554,8 @@ const EnPanes = [
               <div className="belt">
                 <div className="map">
                   <img
-                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/happy_con_03_ENG.png"
+                    //src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/happy_con_03_ENG.png"
+                    src={`${PUBLIC_URL}/images/all/happy_con_03_ENG.png`}
                     alt="행복 컬리지 커리큘럼"
                     className="ui image"
                   />
@@ -3575,7 +3577,7 @@ const EnPanes = [
         >
           <div className="college-cont-title sv">
             <div className="belt sub">
-              <div className="label">SV College</div>
+              <div className="label">SV</div>
               <div className="strong">
                 SV for Tomorrow[Tomorrow+My Work],
                 <br /> this is the Place where You become Competent in Achieving
@@ -3648,7 +3650,7 @@ const EnPanes = [
         >
           <div className="college-cont-title design">
             <div className="belt sub">
-              <div className="label">Innovation & Design College</div>
+              <div className="label">Innovation & Design</div>
               <div className="strong">
                 Understand the Customers and Innovate Design!
               </div>
@@ -4281,10 +4283,10 @@ const EnPanes = [
         >
           <div className="college-cont-title global">
             <div className="belt sub">
-              <div className="label">Global College</div>
+              <div className="label">Global</div>
               <div className="strong">A New Start for Globalization</div>
               <div className="normal">
-                Global College aims to foster "Global Managers" who can develop
+                Global Category aims to foster "Global Managers" who can develop
                 a "Global Pers-
                 <br />
                 pective" that can read the trends of global business and produce
@@ -4864,10 +4866,10 @@ const EnPanes = [
         >
           <div className="college-cont-title leadership">
             <div className="belt sub">
-              <div className="label">Leadership College</div>
+              <div className="label">Leadership</div>
               <div className="strong">Grow into a Deep Change leader!</div>
               <div className="normal">
-                Leadership College helps all members grow into Deep Change
+                Leadership Category helps all members grow into Deep Change
                 leaders who can
                 <br />
                 self-grow, promote change in others, and innovate the company
@@ -5175,14 +5177,14 @@ const EnPanes = [
         >
           <div className="college-cont-title management">
             <div className="belt sub">
-              <div className="label">Management College</div>
+              <div className="label">Management</div>
               <div className="strong">
                 How Should I Change My Work for Deep Change?
                 <br />
                 How Can I Improve Myself?
               </div>
               <div className="normal">
-                Management College conducts business to achieve Deep Change. It
+                Management Category conducts business to achieve Deep Change. It
                 offers professional
                 <br />
                 lessons in 6 function groups and one competency area to
@@ -5227,7 +5229,7 @@ const EnPanes = [
         >
           <div className="college-cont-title semicond">
             <div className="belt sub">
-              <div className="label">Future Semiconductor College</div>
+              <div className="label">Future Semiconductor</div>
               <div className="strong">
                 Semiconductors, opening eyes that see the future.
               </div>
@@ -6130,7 +6132,7 @@ const EnPanes = [
     ),
   },
   {
-    menuItem: 'Environment',
+    menuItem: 'Green',
     render: () => (
       <Tab.Pane>
         <div
@@ -6139,10 +6141,10 @@ const EnPanes = [
         >
           <div className="college-cont-title energy">
             <div className="belt sub">
-              <div className="label">Environment College</div>
+              <div className="label">Green</div>
               <div className="strong">
-                The “Environment College,” the evolved version of Energy
-                Solution College
+                The “Green Category”, the evolved version of Energy
+                Solution Category
               </div>
               <div className="normal">
                 The aim is to raise awareness of the importance of the
@@ -6160,7 +6162,6 @@ const EnPanes = [
                 We challenge ourselves to the success of environmental
                 businesses - Green Start!
               </div>
-
               <div className="panopto sub">
                 <Image
                   src={`${PUBLIC_URL}/images/all/envir-player.png`}
@@ -6171,36 +6172,19 @@ const EnPanes = [
             </div>
           </div>
           <div className="college-cont-map energy">
-            <div className="belt fu">
-              <div className="text-left-box">
-                <p className="p_link">
-                  {/* Click each badge and course to go to the corresponding page. */}
-                </p>
-              </div>
-              <div className="text-right-box">
-                <a href="#none" className="item-button">
-                  <Image
-                    style={{ display: 'inline' }}
-                    src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
-                    alt=""
-                  />
-                  Go to Courses
-                </a>
-              </div>
-              <div className="belt">
-                <div className="map">
-                  <Image
-                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/envir-con-01-eng.png"
-                    alt=""
-                    style={{ display: 'inline-block' }}
-                  />
-                </div>
+            <div className="belt">
+              <div className="map">
+                <Image
+                  src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/envir-con-01-eng.png"
+                  alt=""
+                  style={{ display: 'inline-block' }}
+                />
               </div>
             </div>
           </div>
           <div className="college-cont-map energe">
             <div className="belt">
-              <div className="label energy">Environment College Curriculum</div>
+              <div className="label energy">Green Category Curriculum</div>
               <div className="map">
                 <Image
                   src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/envir-con-02-eng.png"
@@ -6224,7 +6208,7 @@ const EnPanes = [
         >
           <div className="college-cont-title bmd">
             <div className="belt sub">
-              <div className="label">BM Design &#38; Storytelling College</div>
+              <div className="label">BM Design &#38; Storytelling</div>
               <div className="strong">Ideate and Accelerate Deep Change!</div>
               <div className="normal">
                 We are committed to actively support the cause of raising BM
@@ -6541,7 +6525,7 @@ const EnPanes = [
                   alt=""
                 />
               </div>
-              <div className="label">SK Academy College</div>
+              <div className="label">SK Academy</div>
               <div className="strong">
                 “The cradle of SK talent nurturing that has raised talented{' '}
                 <br />
@@ -6609,7 +6593,7 @@ const EnPanes = [
               <div className="label chip7">Capacity School</div>
               <div className="strong">
                 Strengthening business specialty capacity in common job duties
-                of the group in connection with the mySUNI Management College
+                of the group in connection with the mySUNI Management Category
               </div>
               <ul className="tag-wrap">
                 <li># Strategy Intermediate/Advanced</li>
@@ -6646,13 +6630,13 @@ const ZhPanes = [
         >
           <div className="college-cont-title ai">
             <div className="belt sub">
-              <div className="label">AI College</div>
+              <div className="label">AI</div>
               <div className="strong">
                 从AI局外人（Outsider）到AI达人（Insider)!
               </div>
               <div className="normal">
                 AI
-                College以所有SK成员都要了解的基础知识为基础，培养成员们在各产业和职务
+                Category以所有SK成员都要了解的基础知识为基础，培养成员们在各产业和职务
                 <br />
                 能够灵活应用AI的实操力量，提供可以成长为AI技术专家的机会。
               </div>
@@ -6681,12 +6665,12 @@ const ZhPanes = [
         >
           <div className="college-cont-title dt">
             <div className="belt sub">
-              <div className="label">DT College</div>
+              <div className="label">DT</div>
               <div className="strong">“小组的Deep Change在我们手中!”</div>
               <div className="normal">
                 掌握Digital Skill，了解客户和行业，为引领SK Deep Change的成员在
                 <br />
-                DT College开设的课程。
+                DT Category开设的课程。
               </div>
               <div className="panopto sub">
                 <Image
@@ -6717,7 +6701,7 @@ const ZhPanes = [
           >
             <div className="college-cont-title happiness">
               <div className="belt">
-                <div className="label">幸福 College</div>
+                <div className="label">幸福</div>
                 <div className="strong">为了SK全体成员的幸福!</div>
                 <div className="normal">
                   基于对幸福的基本概念和SK经营哲学的理解，培养和实践包括工作在内的全部人
@@ -6748,7 +6732,8 @@ const ZhPanes = [
               <div className="belt">
                 <div className="map">
                   <img
-                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/happy_con_02_CHN.png"
+                    src={`${PUBLIC_URL}/images/all/happy_con_02_CHN.png`}
+                    //src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/happy_con_02_CHN.png"
                     alt="행복 Badge"
                     className="ui image"
                   />
@@ -6759,7 +6744,8 @@ const ZhPanes = [
               <div className="belt">
                 <div className="map">
                   <img
-                    src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/happy_con_03_CHN.png"
+                    src={`${PUBLIC_URL}/images/all/happy_con_03_CHN.png`}
+                    //src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/happy_con_03_CHN.png"
                     alt="행복 컬리지 커리큘럼"
                     className="ui image"
                   />
@@ -6781,7 +6767,7 @@ const ZhPanes = [
         >
           <div className="college-cont-title sv">
             <div className="belt sub">
-              <div className="label">SV College</div>
+              <div className="label">SV</div>
               <div className="strong">
                 为了明天的[Tomorrow+My
                 Work]SV，为实现企业与社会的可持续发展，培养必备能力的地方！
@@ -6852,7 +6838,7 @@ const ZhPanes = [
         >
           <div className="college-cont-title design">
             <div className="belt sub">
-              <div className="label">创新设计 College</div>
+              <div className="label">创新设计</div>
               <div className="strong">理解客户，设计创新！</div>
               <div className="normal">
                 挖掘从客户角度出发的Biz.Idea，以综合思维解决客户问题，不断创新工作方式所
@@ -7498,7 +7484,7 @@ const ZhPanes = [
         >
           <div className="college-cont-title global">
             <div className="belt sub">
-              <div className="label">Global College</div>
+              <div className="label">Global</div>
               <div className="strong">基于Globalization的新开始</div>
               <div className="normal">
                 目标是培养能够解读全球商业格局的“Global Perspective”
@@ -8040,7 +8026,7 @@ const ZhPanes = [
         >
           <div className="college-cont-title leadership">
             <div className="belt sub">
-              <div className="label">Leadership College</div>
+              <div className="label">Leadership</div>
               <div className="strong">成长为Deep Change Leader！</div>
               <div className="normal">
                 支持个人领导能力诊断和定制型力量开发指南，提供最新内容和有效的学习环境，
@@ -8340,14 +8326,14 @@ const ZhPanes = [
         >
           <div className="college-cont-title management">
             <div className="belt sub">
-              <div className="label">Management College</div>
+              <div className="label">Management</div>
               <div className="strong">
                 为实现Deep Change，如何改变工作方式呢？
                 <br />
                 如何才能成长呢？
               </div>
               <div className="normal">
-                Management College为实现Deep
+                Management Category为实现Deep
                 Change，提高Biz.执行能力，涵盖6个Function
                 Group，1个Competency领域的职务能力学习内容。除了各个Function
                 Group的知识/专业性，还结合各Function，企划融合/整合能力培养课程。
@@ -8385,7 +8371,7 @@ const ZhPanes = [
         >
           <div className="college-cont-title semicond">
             <div className="belt sub">
-              <div className="label">未来半导体College</div>
+              <div className="label">未来半导体</div>
               <div className="strong">半导体，开始展望未来。</div>
               <div className="normal">
                 不仅能提高SK所有成员的半导体水平，还能了解半导体产业的本质， 并
@@ -9133,7 +9119,7 @@ const ZhPanes = [
     ),
   },
   {
-    menuItem: 'Environment',
+    menuItem: 'Green',
     render: () => (
       <Tab.Pane>
         <div
@@ -9142,9 +9128,9 @@ const ZhPanes = [
         >
           <div className="college-cont-title energy">
             <div className="belt sub">
-              <div className="label">Environment College</div>
+              <div className="label">Green</div>
               <div className="strong">
-                从能源解决方案College进化的 “Environment College”
+                从能源解决方案Category进化的 “Green Category”
               </div>
               <div className="normal">
                 环境事业创造的全新世界，提高环境重要性的认知，学习碳中和、氢气、资源循
@@ -9164,24 +9150,6 @@ const ZhPanes = [
             </div>
           </div>
           <div className="college-cont-map energy">
-            <div className="belt fu">
-              <div className="text-left-box">
-                <p className="p_link">
-                  {/* 点击各Badge与课程，即可进入到相应页面。 */}
-                </p>
-              </div>
-              <div className="text-right-box">
-                <a href="#none" className="item-button">
-                  <Image
-                    src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-course-book.png"
-                    alt=""
-                    className="ui image"
-                    style={{ display: 'inline-block' }}
-                  />
-                  直接进入课程
-                </a>
-              </div>
-            </div>
             <div className="belt">
               <div className="map">
                 <Image
@@ -9194,7 +9162,7 @@ const ZhPanes = [
           </div>
           <div className="college-cont-map energe">
             <div className="belt">
-              <div className="label energy">Environment College Curriculum</div>
+              <div className="label energy">Green Category Curriculum</div>
               <div className="map">
                 <Image
                   src="https://image.mysuni.sk.com/suni-asset/public/introduction/images//envir-con-02-chn.png"
@@ -9218,7 +9186,7 @@ const ZhPanes = [
         >
           <div className="college-cont-title bmd">
             <div className="belt sub">
-              <div className="label">BM Design &#38; Storytelling College</div>
+              <div className="label">BM Design &#38; Storytelling</div>
               <div className="strong">Ideate and Accelerate Deep Change!</div>
               <div className="normal">
                 积极进行BM Design专家培养及Biz Financial Story
@@ -9527,7 +9495,7 @@ const ZhPanes = [
                   alt=""
                 />
               </div>
-              <div className="label">SK学院 College</div>
+              <div className="label">SK学院</div>
               <div className="strong">
                 “如培育树木般培养人才、SK人才培养的摇篮”
               </div>
@@ -9588,7 +9556,7 @@ const ZhPanes = [
               <div className="label chip7">力量 School</div>
               <div className="strong">
                 与mySUNI的Management
-                College相关联，强化集团通用职务和Biz.强化专业力量
+                Category相关联，强化集团通用职务和Biz.强化专业力量
               </div>
               <ul className="tag-wrap">
                 <li># 战略 Intermediate/Advanced</li>

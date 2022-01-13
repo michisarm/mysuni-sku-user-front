@@ -26,8 +26,8 @@ const LectureWebpageView: React.FC<LectureWebpage & Props> =
       <>
         {urlType === 'embedded' && (
           <div
-            className="iframe-area s990"
-            style={{ height: height || 630, maxWidth: 'initial' }}
+            className="embedded iframe-area s990"
+            style={{ height: height || 630 }}
           >
             <iframe src={url} allowFullScreen />
           </div>

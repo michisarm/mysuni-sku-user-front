@@ -89,7 +89,7 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
       },
       {
         collegeId: 'CLG0001c',
-        name: getPolyglotText('Environment', 'home-사이트맵-중카10'),
+        name: getPolyglotText('Green', 'home-사이트맵-중카10'),
         path: lectureRoutePaths.collegeLectures('CLG0001c'),
       },
       {
@@ -203,7 +203,7 @@ class SiteMapModalContainerV2 extends Component<Props, State> {
           path: mainRoutePaths.introductionMySuni(),
         },
         {
-          name: getPolyglotText('College 소개', 'home-사이트맵-중카31'),
+          name: getPolyglotText('Category 소개', 'home-사이트맵-중카31'),
           path: mainRoutePaths.introductionCollege(),
         },
         {
