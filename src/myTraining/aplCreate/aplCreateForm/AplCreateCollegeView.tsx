@@ -30,7 +30,7 @@ function AplCreateCollgeView({
       <label className="necessary">
         <PolyglotText
           id="개학등록-uisf-코스채널"
-          defaultString="College / Channel"
+          defaultString="Category / Channel"
         />
       </label>
       <Ref innerRef={collegeRef}>
