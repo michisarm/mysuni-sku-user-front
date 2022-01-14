@@ -107,7 +107,7 @@ class CategoryLecturesHeaderView extends Component<Props> {
             title={`${parsePolyglotString(
               college.name,
               getDefaultLang(college.langSupports)
-            )} College`}
+            )}`}
             subtitle={parsePolyglotString(
               college.description,
               getDefaultLang(college.langSupports)
@@ -124,7 +124,7 @@ class CategoryLecturesHeaderView extends Component<Props> {
             >
               <span>
                 <PolyglotText
-                  defaultString="College 전체 커리큘럼 보기"
+                  defaultString="커리큘럼 보기"
                   id="cicl-mall-clcm"
                 />
               </span>

@@ -400,7 +400,7 @@ class CollegeLecturesContainerInner extends ReactComponent<
                 name={`${parsePolyglotString(
                   college.name,
                   getDefaultLang(college.langSupports)
-                )} College`}
+                )} Category`}
                 count={totalCnt}
               />
               <CardSorting

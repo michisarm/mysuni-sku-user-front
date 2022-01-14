@@ -50,10 +50,8 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
   const { pathname } = useLocation();
   const [addNote, setAddNote] = useState<LectureNoteItem>({
     cardId: '',
-    cardName: '',
     channelId: '',
     collegeId: '',
-    cubeName: '',
     id: '',
     patronKey: {},
     cubeId: '',
@@ -71,7 +69,7 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
   let popupWindow: any;
 
   useEffect(() => {
-    requestLectureNote(urlParams.cardId, cubeId);
+    requestLectureNote(cubeId);
     return () => {
       setLectureNoteTab(false);
       setLectureNoteWriteState(false);
@@ -102,6 +100,7 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
       popupWindow = window.open(
         encodeURI(
           `/suni-main/lecture/card/${cardId}/cube/${cubeId}/cubeType/${cubeType}/learningTime/${learningTime}/view/new`
+          // `/lecture/card/${cardId}/cube/${cubeId}/cubeType/${cubeType}/learningTime/${learningTime}/view/new`
         ),
         'notePopup',
         'width=350px, height=800, scrollbars=1'
@@ -124,7 +123,7 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
                 cubeId = splitUrl[index + 1];
               }
             });
-            requestLectureNote(cardId, cubeId);
+            requestLectureNote(cubeId);
           });
         }
       }, 1000);
@@ -175,14 +174,12 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
         };
         requestLectureNoteDelete(params).then(() => {
           //리스트 조회
-          requestLectureNote(urlParams.cardId, cubeId);
+          requestLectureNote(cubeId);
           //작성중인 화면 초기화
           setAddNote({
             cardId: '',
-            cardName: '',
             channelId: '',
             collegeId: '',
-            cubeName: '',
             id: '',
             patronKey: {},
             cubeId: '',
@@ -202,11 +199,9 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
   }, []);
 
   const onSave = useCallback(() => {
-    let playTime = '';
+    let playSecond = 0;
     if (cubeType === 'Audio' || cubeType === 'Video') {
-      playTime = convertTime(addNote.playTime);
-    } else {
-      playTime = '00:00:00';
+      playSecond = Math.floor(Number(addNote.playTime));
     }
 
     if (addNote.content === '') {
@@ -225,25 +220,25 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
       if (result && result.card) {
         const param = {
           cardId: urlParams.cardId,
+          cardName: result.card.name,
           cubeId,
+          cubeName: cube?.name,
           cubeType,
           content: addNote.content,
           folderId:
             noteItem!.results.length === 0
-              ? '0000'
+              ? null
               : noteItem!.results[0].note.folderId,
-          playTime,
+          playSecond,
         };
         requestLectureNoteAdd(param).then(() => {
           //리스트 조회
-          requestLectureNote(urlParams.cardId, cubeId);
+          requestLectureNote(cubeId);
           //작성중인 화면 초기화
           setAddNote({
             cardId: '',
-            cardName: '',
             channelId: '',
             collegeId: '',
-            cubeName: '',
             id: '',
             patronKey: {},
             cubeId: '',
@@ -265,49 +260,28 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
   const onEdit = useCallback(
     (id: string) => {
       let content = '';
-      let playTime = '';
-      let param: any = {};
+      let playSecond = 0;
 
       if (cubeType === 'Audio' || cubeType === 'Video') {
-        noteItem?.results.map((item: any) => {
+        noteItem?.results.map((item) => {
           if (item.note.id === id) {
             content = item.note.content;
-            if (typeof item.note.playTime === 'number') {
-              playTime =
-                item.note.playTime === 0
-                  ? '00:00:00'
-                  : `${
-                      Math.floor((Number(item.note.playTime) / 60) % 60) < 10
-                        ? '0'
-                        : ''
-                    }${Math.floor(Number(item.note.playTime) / 60).toFixed()}:${
-                      Math.floor(Number(item.note.playTime) % 60) < 10
-                        ? '0'
-                        : ''
-                    }${Math.floor(Number(item.note.playTime) % 60)}`;
-            } else if (item.note.playTime.indexOf('Note ') !== -1) {
-              playTime = '00:00:00';
-            } else {
-              playTime = item.note.playTime;
-            }
+            playSecond = Math.floor(Number(item.note.playTime));
+            // console.log(item.note.playTime);
           }
         });
-
-        param = {
-          content,
-          playTime,
-        };
       } else {
         noteItem?.results.map((item: any) => {
           if (item.note.id === id) {
             content = item.note.content;
           }
         });
-        param = {
-          content,
-          playTime: '00:00:00',
-        };
       }
+
+      const param = {
+        content,
+        playSecond,
+      };
 
       if (param.content === '') {
         reactAlert({
@@ -321,14 +295,12 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
       }
       requestLectureNoteModify(id, param).then(() => {
         //리스트 조회
-        requestLectureNote(urlParams.cardId, cubeId);
+        requestLectureNote(cubeId);
         //작성중인 화면 초기화
         setAddNote({
           cardId: '',
-          cardName: '',
           channelId: '',
           collegeId: '',
-          cubeName: '',
           id: '',
           patronKey: {},
           cubeId: '',
@@ -395,13 +367,6 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
     return time;
   }, []);
 
-  const convertTime = useCallback((playTime) => {
-    const hour = timeToString(Math.floor(Number(playTime) / 3600));
-    const min = timeToString(Math.floor(Number(playTime % 3600) / 60));
-    const sec = timeToString(Math.floor(Number(playTime) % 60));
-    return hour + ':' + min + ':' + sec;
-  }, []);
-
   return (
     <>
       {loadingState?.isLoading ? (
@@ -430,94 +395,95 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
             style={{ display: 'none' }}
             onClick={handleSeekTo}
           />
-          {noteItem && (
-            <>
-              {pathname.indexOf('new') === -1 && (
-                <>
-                  <div className="learning_note_area">
-                    <div className="cube_title">
-                      <strong>{name}</strong>
-                      <div className="cube_info">
-                        <span>{cubeType}</span>
-                        <span>{timeToHourMinuteFormat(learningTime)}</span>
-                        {/* {
+          <>
+            {pathname.indexOf('new') === -1 && (
+              <>
+                <div className="learning_note_area">
+                  <div className="cube_title">
+                    <strong>{name}</strong>
+                    <div className="cube_info">
+                      <span>{cubeType}</span>
+                      <span>{timeToHourMinuteFormat(learningTime)}</span>
+                      {/* {
                           noteItem.results.length !== 0 && (
                             <span>노트 작성됨</span>
                           )
                         } */}
-                      </div>
                     </div>
-                    {lectureNotePopupState && (
-                      <div className="note_notice">
-                        <Icon className="i_note">
-                          <Image
-                            src={`${process.env.PUBLIC_URL}/images/all/icon-comment-nonenote-80-px.svg`}
-                          />
-                        </Icon>
-                        <p
-                          className="txt"
-                          dangerouslySetInnerHTML={{
-                            __html: getPolyglotText(
-                              `새 창에서 Note를 작성 중입니다.<span>새 창에서 작성 중인 Note를 닫아야<br />해당 학습과정의 Note를 작성하실 수 있습니다.</span>`,
-                              'note-popup-중복창'
-                            ),
-                          }}
+                  </div>
+                  {lectureNotePopupState && (
+                    <div className="note_notice">
+                      <Icon className="i_note">
+                        <Image
+                          src={`${process.env.PUBLIC_URL}/images/all/icon-comment-nonenote-80-px.svg`}
                         />
-                      </div>
-                    )}
-                    {!lectureNotePopupState && (
-                      <>
-                        <div className="note_header">
-                          <div className="note_inner">
-                            <strong className="title">
-                              <PolyglotText
-                                defaultString="작성한 노트"
-                                id="note-popup-작성노트"
-                              />
-                            </strong>
-                            <span
-                              className="count"
-                              dangerouslySetInnerHTML={{
-                                __html: getPolyglotText(
-                                  `{totalCount}개`,
-                                  'note-popup-개',
-                                  {
-                                    totalCount:
-                                      (noteItem?.totalCount).toString(),
-                                  }
-                                ),
-                              }}
+                      </Icon>
+                      <p
+                        className="txt"
+                        dangerouslySetInnerHTML={{
+                          __html: getPolyglotText(
+                            `새 창에서 Note를 작성 중입니다.<span>새 창에서 작성 중인 Note를 닫아야<br />해당 학습과정의 Note를 작성하실 수 있습니다.</span>`,
+                            'note-popup-중복창'
+                          ),
+                        }}
+                      />
+                    </div>
+                  )}
+                  {!lectureNotePopupState && (
+                    <>
+                      <div className="note_header">
+                        <div className="note_inner">
+                          <strong className="title">
+                            <PolyglotText
+                              defaultString="작성한 노트"
+                              id="note-popup-작성노트"
                             />
-
-                            {!isMobile && (
-                              <Button
-                                id="handlePopup"
-                                className="btn_new"
-                                onClick={openEditWindow}
-                              >
-                                <Image
-                                  src={`${process.env.PUBLIC_URL}/images/all/btn-new-write.svg`}
-                                  alt="노트팝업"
-                                />
-                              </Button>
-                            )}
-                          </div>
-                        </div>
-                        <div
-                          className={
-                            editorVisibleFlag ? 'note_body ing' : 'note_body'
-                          }
-                        >
-                          <LectureNoteAdd
-                            addNote={addNote}
-                            editorVisibleFlag={editorVisibleFlag}
-                            cubeType={cubeType}
-                            noteType="default"
-                            onChange={onChange}
-                            onSave={onSave}
-                            onChangeTime={onChangeTime}
-                            handleEditorVisibleFlag={handleEditorVisibleFlag}
+                          </strong>
+                          <span
+                            className="count"
+                            dangerouslySetInnerHTML={{
+                              __html: getPolyglotText(
+                                `{totalCount}개`,
+                                'note-popup-개',
+                                {
+                                  totalCount: (
+                                    noteItem?.totalCount || 0
+                                  ).toString(),
+                                }
+                              ),
+                            }}
                           />
+
+                          {!isMobile && (
+                            <Button
+                              id="handlePopup"
+                              className="btn_new"
+                              onClick={openEditWindow}
+                            >
+                              <Image
+                                src={`${process.env.PUBLIC_URL}/images/all/btn-new-write.svg`}
+                                alt="노트팝업"
+                              />
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                      <div
+                        className={
+                          editorVisibleFlag ? 'note_body ing' : 'note_body'
+                        }
+                      >
+                        <LectureNoteAdd
+                          addNote={addNote}
+                          editorVisibleFlag={editorVisibleFlag}
+                          cubeType={cubeType}
+                          noteType="default"
+                          onChange={onChange}
+                          onSave={onSave}
+                          onChangeTime={onChangeTime}
+                          handleEditorVisibleFlag={handleEditorVisibleFlag}
+                        />
+                        {noteItem && (
                           <LectureNoteList
                             addNote={addNote}
                             noteItem={noteItem}
@@ -528,19 +494,19 @@ const LectureNoteContainer: React.FC<LectureNoteContainerProps> = ({
                             onSave={onEdit}
                             onDelete={onDelete}
                           />
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </>
-              )}
-              {noteItem && pathname.indexOf('new') !== -1 && (
-                <>
-                  <LectureNotePopupContainer />
-                </>
-              )}
-            </>
-          )}
+                        )}
+                      </div>
+                    </>
+                  )}
+                </div>
+              </>
+            )}
+            {noteItem && pathname.indexOf('new') !== -1 && (
+              <>
+                <LectureNotePopupContainer />
+              </>
+            )}
+          </>
         </>
       )}
     </>

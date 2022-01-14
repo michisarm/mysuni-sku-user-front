@@ -1,29 +1,25 @@
-import { getNote } from "../../store/NoteStore";
-import { registerNote, modifyNote, modifyFolderId } from "../../api/noteApi";
-import NoteCdo from "../../model/NoteCdo";
-import NoteUdo from "../../model/NoteUdo";
+import { registerNote, modifyNote, modifyFolderId } from '../../api/noteApi';
+import NoteCdo from '../../model/NoteCdo';
+import NoteUdo from '../../model/NoteUdo';
 
 export async function saveNote(
   noteCdo?: NoteCdo,
   id?: string,
-  noteUdo?: NoteUdo,
+  noteUdo?: NoteUdo
 ): Promise<any> {
   if (noteCdo !== undefined) {
     return registerNote(noteCdo);
   } else if (id !== undefined && noteUdo !== undefined) {
-    return modifyNote(
-      id,
-      noteUdo
-    );
+    return modifyNote(id, noteUdo);
   }
 }
 
-export async function saveFolder(
-  cardId: String, cubeId: String, folderId: String
+export async function changeFolderInNote(
+  noteId: string,
+  folderId: string
 ): Promise<any> {
-  return modifyFolderId(cardId, cubeId, folderId);
+  return modifyFolderId(noteId, folderId);
 }
-
 
 // export async function saveCommunityHome(
 //   communityId: string,
