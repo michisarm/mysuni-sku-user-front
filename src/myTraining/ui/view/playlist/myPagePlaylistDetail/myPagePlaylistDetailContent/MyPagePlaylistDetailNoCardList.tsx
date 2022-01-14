@@ -1,3 +1,5 @@
+import { onOpenPlaylistAddCardPopUp } from 'playlist/playlistAddCardPopUp/playlistAddCardPopUp.events';
+import { PlaylistAddCardPopUpView } from 'playlist/playlistAddCardPopUp/PlaylistAddCardPopUpView';
 import React from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
@@ -40,13 +42,17 @@ function MyPagePlaylistDetailNoCardList() {
               ),
             }}
           />
-          <Button className="btn-playlist big">
+          <Button
+            className="btn-playlist big"
+            onClick={onOpenPlaylistAddCardPopUp}
+          >
             <Icon className="create16" />
             <PolyglotText
               id="mypage-playlist-학카추가하기"
               defaultString="학습카드 추가하기"
             />
           </Button>
+          <PlaylistAddCardPopUpView />
         </div>
       </div>
     </div>
