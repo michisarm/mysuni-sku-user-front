@@ -24,8 +24,8 @@ function getPageList(
     return generatorNumberArray(startNumber, selectedNumber);
   }
 
-  const startNumber = Math.floor(selectedNumber / pageLimit) * pageLimit;
-  const endNumber = Math.floor(selectedNumber / pageLimit) * pageLimit;
+  const startNumber = Math.floor(selectedNumber / pageLimit) * pageLimit || 1;
+  const endNumber = Math.ceil(selectedNumber / pageLimit) * pageLimit;
 
   return generatorNumberArray(startNumber, endNumber);
 }

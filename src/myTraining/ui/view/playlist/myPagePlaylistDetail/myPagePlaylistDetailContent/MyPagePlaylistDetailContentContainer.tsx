@@ -5,6 +5,8 @@ import MyPagePlaylistDetailNoCardList from './MyPagePlaylistDetailNoCardList';
 import MyPagePlaylistDetailCardList from '../myPagePlaylistDetailCardList/MyPagePlaylistDetailCardList';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import MyPagePlaylistDetailCommentView from './MyPagePlaylistDetailCommentView';
+import { onOpenRecommendMemberPopUp } from 'playlist/recommendMemberPopUp/recommendMemberPopUp.events';
+import { PlaylistType } from 'playlist/data/models/PlaylistType';
 
 function MyPagePlaylistDetailContentContainer() {
   const [activatedTab, setActivatedTab] = useState<string>('overview');
@@ -16,9 +18,22 @@ function MyPagePlaylistDetailContentContainer() {
     setActivatedTab('comment');
   }, []);
   const playlistDetail = useMyPagePlaylistDetail();
+  const [playlistType, setPlaylistType] = useState<PlaylistType>('');
+
+  const onOpenRecommenedMemberPopUp = useCallback(() => {
+    setPlaylistType('Recommended');
+    onOpenRecommendMemberPopUp();
+  }, []);
+
+  const onOpenMadeByOthersPopUp = useCallback(() => {
+    setPlaylistType('MadeByOthers');
+    onOpenRecommendMemberPopUp();
+  }, []);
+
   if (playlistDetail === undefined) {
     return null;
   }
+
   const { sharedUserCount, recommendedUserCount, cardIds, type } =
     playlistDetail;
 
@@ -40,8 +55,11 @@ function MyPagePlaylistDetailContentContainer() {
           Comments
         </Menu.Item>
         <div className="playlist-view-right">
-          <Label as="button" className="onlytext">
-            {' '}
+          <Label
+            as="button"
+            className="onlytext"
+            onClick={onOpenRecommenedMemberPopUp}
+          >
             <Icon className="list-recommended" />
             <span
               dangerouslySetInnerHTML={{
@@ -55,8 +73,11 @@ function MyPagePlaylistDetailContentContainer() {
               }}
             />
           </Label>
-          <Label as="button" className="onlytext">
-            {' '}
+          <Label
+            as="button"
+            className="onlytext"
+            onClick={onOpenMadeByOthersPopUp}
+          >
             <Icon className="list-like" />
             <span
               dangerouslySetInnerHTML={{

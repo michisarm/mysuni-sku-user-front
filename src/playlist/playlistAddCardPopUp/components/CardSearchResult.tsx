@@ -1,6 +1,6 @@
 import React from 'react';
 import { Checkbox, Table } from 'semantic-ui-react';
-import { onChangeOffset, onCheckedCard } from '../playlistAddCardPopUp.events';
+import { onCheckedCard } from '../playlistAddCardPopUp.events';
 import {
   useCheckedCardIds,
   usePlaylistCards,

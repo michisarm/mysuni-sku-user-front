@@ -1,13 +1,9 @@
 import { isEmpty, find } from 'lodash';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
-import {
-  getSelectedCollegeId,
-  getPlaylistColleges,
-  Colleges,
-} from '../playlistAddCardPopUp.stores';
+import { getPlaylistColleges } from '../playlistAddCardPopUp.stores';
 
-export function getChannelOption(colleges: Colleges[]) {
-  const checkedCollege = getSelectedCollegeId();
+export function getChannelOption(collegeId: string) {
+  const colleges = getPlaylistColleges();
   const channelOption = [
     {
       key: '',
@@ -16,19 +12,19 @@ export function getChannelOption(colleges: Colleges[]) {
     },
   ];
 
-  if (isEmpty(colleges)) {
+  if (isEmpty(collegeId)) {
     return channelOption;
   }
 
-  const findCheckedCollege = find(colleges, { id: checkedCollege });
+  const findCheckedCollege = find(colleges, { id: collegeId });
 
   if (findCheckedCollege !== undefined) {
-    findCheckedCollege.channels.map((college) => {
-      return {
+    findCheckedCollege.channels.forEach((college) => {
+      channelOption.push({
         key: college.id,
         value: college.id,
         text: parsePolyglotString(college.name),
-      };
+      });
     });
   }
 

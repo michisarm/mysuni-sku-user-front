@@ -8,20 +8,26 @@ import {
   onSelectChannel,
   onSelectCollege,
 } from '../playlistAddCardPopUp.events';
-import { useRequestLectureCardRdo } from '../playlistAddCardPopUp.request';
 import {
   usePlaylistColleges,
   useSearchWord,
+  useSelectedChannelId,
+  useSelectedCollegeId,
 } from '../playlistAddCardPopUp.stores';
 
 export function CardSearch() {
   const colleges = usePlaylistColleges();
+  const selectedCollegeId = useSelectedCollegeId();
+  const selectedChannelId = useSelectedChannelId();
   const searchWord = useSearchWord();
   const [isFocus, setIsFocus] = useState(false);
 
   const collegeOption = useMemo(() => getCollegeOption(colleges), [colleges]);
 
-  const channelOption = useMemo(() => getChannelOption(colleges), [colleges]);
+  const channelOption = useMemo(
+    () => getChannelOption(selectedCollegeId),
+    [selectedCollegeId]
+  );
 
   const onFocus = useCallback(() => {
     setIsFocus(true);
@@ -42,7 +48,8 @@ export function CardSearch() {
                 <Select
                   placeholder="전체"
                   options={collegeOption}
-                  onClick={onSelectCollege}
+                  value={selectedCollegeId}
+                  onChange={onSelectCollege}
                 />
               </div>
             </Table.Cell>
@@ -52,7 +59,8 @@ export function CardSearch() {
                 <Select
                   placeholder="전체"
                   options={channelOption}
-                  onClick={onSelectChannel}
+                  value={selectedChannelId}
+                  onChange={onSelectChannel}
                 />
               </div>
             </Table.Cell>
