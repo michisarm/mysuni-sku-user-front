@@ -11,6 +11,7 @@ import {
   setPlaylistColleges,
   collegesToPlaylistColleges,
   setPlaylistAddCardPopUpOffset,
+  getPlaylistAddCardPopUpOffset,
 } from './playlistAddCardPopUp.stores';
 
 export async function requestAddCardsToPlaylist(
@@ -36,21 +37,15 @@ export async function requestColleges() {
 
 export async function requestLectureCardRdo() {
   const lectureCardRdo = getLectureCardRdo();
+  const playlistAddCardPopUpOffset = getPlaylistAddCardPopUpOffset();
 
   const cardRdo = await findByRdo(lectureCardRdo);
 
   if (cardRdo !== undefined) {
     setPlaylistCards(cardRdoToPlaylistAddCard(cardRdo.results));
     setPlaylistAddCardPopUpOffset({
-      offset: lectureCardRdo.offset || 1,
+      ...playlistAddCardPopUpOffset,
       totalCount: cardRdo.totalCount,
     });
   }
-}
-
-export function useRequestLectureCardRdo() {
-  useEffect(() => {
-    requestLectureCardRdo();
-    requestColleges();
-  }, []);
 }

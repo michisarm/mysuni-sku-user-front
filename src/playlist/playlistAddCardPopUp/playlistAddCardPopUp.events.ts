@@ -1,8 +1,11 @@
 import { reactAlert } from '@nara.platform/accent';
 import { isEmpty } from 'lodash';
+import requestMyPagePlaylistDetail from 'myTraining/ui/view/playlist/myPagePlaylistDetail/MyPagePlaylistDetail.request';
+import { getMyPagePlaylistDetail } from 'myTraining/ui/view/playlist/myPagePlaylistDetail/MyPagePlaylistDetail.services';
 import { CheckboxProps, DropdownProps } from 'semantic-ui-react';
 import {
   requestAddCardsToPlaylist,
+  requestColleges,
   requestLectureCardRdo,
 } from './playlistAddCardPopUp.request';
 import {
@@ -19,6 +22,7 @@ import {
 export function onOpenPlaylistAddCardPopUp() {
   requestLectureCardRdo();
   setIsOpenPlaylistAddCardPopUp(true);
+  requestColleges();
 }
 
 export function onClosePlaylistAddCardPopUp() {
@@ -27,17 +31,22 @@ export function onClosePlaylistAddCardPopUp() {
     offset: 1,
     totalCount: 0,
   });
+  setCheckedCardIds([]);
+  setSearchWord('');
+  setSelectedCollegeId('');
+  setSelectedChannelId('');
 }
 
 // college 선택
-export function onSelectCollege(_: React.KeyboardEvent, data: DropdownProps) {
+export function onSelectCollege(_: React.SyntheticEvent, data: DropdownProps) {
   const collegeId = data.value as string;
 
   setSelectedCollegeId(collegeId);
+  setSelectedChannelId('');
 }
 
 // channel 선택
-export function onSelectChannel(_: React.KeyboardEvent, data: DropdownProps) {
+export function onSelectChannel(_: React.SyntheticEvent, data: DropdownProps) {
   const channelId = data.value as string;
 
   setSelectedChannelId(channelId);
@@ -64,13 +73,40 @@ export function onChangeOffset(
   e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
 ) {
   const playlistAddCardPopUpOffset = getPlaylistAddCardPopUpOffset();
+  const { offset, totalCount } = playlistAddCardPopUpOffset;
+
+  if (offset === Number(e.currentTarget.text)) {
+    return;
+  }
 
   setPlaylistAddCardPopUpOffset({
     offset: Number(e.currentTarget.text),
-    totalCount: playlistAddCardPopUpOffset.totalCount,
+    totalCount,
   });
 
   requestLectureCardRdo();
+}
+
+// offset + 1
+export function onChangeNextOffset() {
+  const playlistAddCardPopUpOffset = getPlaylistAddCardPopUpOffset();
+  const { offset, totalCount } = playlistAddCardPopUpOffset;
+
+  setPlaylistAddCardPopUpOffset({
+    offset: offset + 1,
+    totalCount,
+  });
+}
+
+// offset - 1
+export function onChangePrevOffset() {
+  const playlistAddCardPopUpOffset = getPlaylistAddCardPopUpOffset();
+  const { offset, totalCount } = playlistAddCardPopUpOffset;
+
+  setPlaylistAddCardPopUpOffset({
+    offset: offset - 1,
+    totalCount,
+  });
 }
 
 // 검색어
@@ -86,7 +122,11 @@ export function onSearchCard() {
 // 학습카드 추가하기
 export function onAddCardToPlaylist() {
   const cardIds = getCheckedCardIds();
-  const playlistIds = [''];
+  const playlistIds = getMyPagePlaylistDetail()?.playlistId || '';
+
+  if (playlistIds === '') {
+    return;
+  }
 
   if (isEmpty(cardIds)) {
     reactAlert({
@@ -96,5 +136,7 @@ export function onAddCardToPlaylist() {
     return;
   }
 
-  requestAddCardsToPlaylist(cardIds, playlistIds);
+  requestAddCardsToPlaylist(cardIds, [playlistIds]).then(() =>
+    requestMyPagePlaylistDetail(playlistIds)
+  );
 }
