@@ -19,7 +19,7 @@ const emptyAlert = (e: any) => {
 
 const panes = [
   {
-    menuItem: 'Management College 소개',
+    menuItem: 'Management Category 소개',
     key: 'tab0',
     render: () => (
       <Tab.Pane attached={false}>
@@ -88,7 +88,7 @@ const panes = [
         <div className="college-cont-map sub pbtom">
           <div className="belt">
             <div className="label sub">
-              Management College Badge 체계
+              Management Category Badge 체계
               <span>(21년 2월 기준으로 추후 지속 확대 예정)</span>
             </div>
 
@@ -1722,6 +1722,7 @@ const panes = [
       </Tab.Pane>
     ),
   },
+  /* 2022-01 Competency tab 삭제
   {
     menuItem: 'Competency',
     key: 'tab7',
@@ -1936,12 +1937,12 @@ const panes = [
         </div>
       </Tab.Pane>
     ),
-  },
+  }, */
 ];
 
 const panesZh = [
   {
-    menuItem: 'Management College介绍',
+    menuItem: 'Management Category介绍',
     key: 'tab0',
     render: () => (
       <Tab.Pane attached={false}>
@@ -1986,15 +1987,16 @@ const panesZh = [
         <div className="college-cont-map sub wrap01">
           <div className="belt">
             <Image
-              src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-01-ing-02-chn.png"
-              alt=""
+              //src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/mg-01-ing-02-chn.png"
+              src={`${PUBLIC_URL}/images/all/mg-01-ing-02-chn.png`}
+              alt="Management Category体系图"
             />
           </div>
         </div>
         <div className="college-cont-map sub pbtom">
           <div className="belt">
             <div className="label sub">
-              Management College Badge体系
+              Management Category Badge体系
               <span>（截止21年2月，未来计划不断扩张）</span>
             </div>
 
@@ -3541,6 +3543,7 @@ const panesZh = [
       </Tab.Pane>
     ),
   },
+  /* 2022-01 Competency 삭제
   {
     menuItem: 'Competency',
     key: 'tab7',
@@ -3577,7 +3580,7 @@ const panesZh = [
               </li>
             </ul>
             <p className="p_link">
-              {/* 点击各Badge与课程，即可进入到相应页面。 */}
+              {/* 点击各Badge与课程，即可进入到相应页面。 
             </p>
           </div>
         </div>
@@ -3740,12 +3743,12 @@ const panesZh = [
         </div>
       </Tab.Pane>
     ),
-  },
+  }, */
 ];
 
 const panesEn = [
   {
-    menuItem: 'Introduction of \n Management College',
+    menuItem: 'Introduction of \n Management Category',
     key: 'tab0',
     render: () => (
       <Tab.Pane attached={false}>
@@ -3800,8 +3803,9 @@ const panesEn = [
         <div className="college-cont-map sub wrap01">
           <div className="belt">
             <img
-              src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/in-02-01-c-08-main-eng.png"
-              alt="Management College 체계도"
+              //src="https://image.mysuni.sk.com/suni-asset/public/introduction/images/in-02-01-c-08-main-eng.png"
+              src={`${PUBLIC_URL}/images/all/in-02-01-c-08-main-eng.png`}
+              alt="Management Category 체계도"
               className="ui image"
             />
           </div>
@@ -3809,7 +3813,7 @@ const panesEn = [
         <div className="college-cont-map sub pbtom">
           <div className="belt">
             <div className="label sub">
-              Management College Badge System
+              Management Category Badge System
               <span>
                 (Scheduled to continuously expand, as of February 2021)
               </span>
@@ -5671,6 +5675,7 @@ const panesEn = [
       </Tab.Pane>
     ),
   },
+  /* 2022-01 Competency 삭제
   {
     menuItem: 'Competency',
     key: 'tab7',
@@ -5709,7 +5714,7 @@ const panesEn = [
               </li>
             </ul>
             <p className="p_link">
-              {/* Click each badge and course to go to the corresponding page. */}
+               Click each badge and course to go to the corresponding page. 
             </p>
           </div>
         </div>
@@ -5901,7 +5906,7 @@ const panesEn = [
         </div>
       </Tab.Pane>
     ),
-  },
+  }, */
 ];
 
 const CollegeInnerTabView = () => {

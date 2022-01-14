@@ -101,7 +101,7 @@ function FooterContainer() {
                 <a className="item" href="/suni-main/introduction/College">
                   <span>
                     <PolyglotText
-                      defaultString="College"
+                      defaultString="Category"
                       id="home-ftr-college"
                     />
                   </span>

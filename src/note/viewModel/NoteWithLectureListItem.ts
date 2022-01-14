@@ -15,14 +15,10 @@ export function getNoteWithLectureListItem(
     noteWithLectureList: {
       results: noteWithLectureList.results.map((m, i) => {
         let count = 0;
-        if (m.note.playTime === 'Note') {
-          m.note.playTime = `Note ${
-            noteWithLectureList.results.filter(
-              (f) => f.note.playTime === 'Note'
-            ).length - count
-          }`;
-          count++;
-        }
+        // if (m.note.playTime === 'Note') {
+        //   m.note.playTime = `Note ${noteWithLectureList.results.filter(f => f.note.playTime === 'Note').length - count}`;
+        //   count++;
+        // }
         return m;
       }),
       totalCount: noteWithLectureList.totalCount,

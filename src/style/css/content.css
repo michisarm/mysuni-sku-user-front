@@ -1,5 +1,10 @@
 /* header mySUNI 아이콘 변경 */
-i.icon.sk-university::before{width: 90px; height: 38px; background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/header-logo.svg") no-repeat 0 0/ 100% 100% !important;}
+i.icon.sk-university::before {
+  width: 90px;
+  height: 38px;
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/header-logo.svg')
+    no-repeat 0 0/ 100% 100% !important;
+}
 
 /* Recommend */
 .recommend-detail
@@ -503,6 +508,15 @@ a.button.ui.btn-badge-go {
 .introduction .providers {
   background: #f6f6f6;
 }
+#root section.content .tab-menu-inner.sub .ui.attached.tabular.menu {
+  display: table;
+}
+#root section.content .tab-menu-inner.sub .ui.attached.tabular.menu .item {
+  display: table-cell;
+}
+#root section.content.introduction .college-cont-map.pbtom {
+  padding-bottom: 120px;
+}
 
 /* My Learning */
 .filter-table .title {
@@ -953,6 +967,9 @@ i.icon.icon_emoji_8 {
 }
 .essential-wrap {
   box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2);
+}
+.essential-wrap .essential-card p img {
+  max-width: 100%;
 }
 
 /* 마이러닝 > 학습이수시간 팝업 */
@@ -1622,7 +1639,8 @@ ul.ui.list.my-task-bar {
 }
 .content.main-sty2 .main_personal.season2 {
   background: #fff
-    url('https://image.mysuni.sk.com/suni-asset/public/images/all/newyear_gif.gif') -15px 5px/contain no-repeat;
+    url('https://image.mysuni.sk.com/suni-asset/public/images/all/newyear_gif.gif') -15px
+    5px / contain no-repeat;
 }
 
 /* badge 인증서 css변경 */
@@ -2138,6 +2156,29 @@ i.icon.testHeader02::before {
   vertical-align: top;
 }
 
+/* 22-01-06 조찬기 Swiper Disabled 배경클릭 방지(공통) */
+.swiper-button-prev.swiper-button-disabled,
+.swiper-button-next.swiper-button-disabled {
+  pointer-events: auto !important;
+}
 
 /* 학습카드 오버뷰 코멘트영역 수정(2021.12.23) */
-.ui.segment.full .contents.comment { min-height: 20rem; }
+.ui.segment.full .contents.comment {
+  min-height: 20rem;
+}
+.qna-admin .qna-navi .wait {
+  color: #aaa;
+}
+
+/* Web Page Cube Embed iFrame CSS 오류 수정 (2022.01.08)*/
+.embedded.iframe-area.s990 {
+  max-width: initial;
+}
+
+/* Web Page Cube Embed iFrame CSS 오류 수정 */
+@media (max-width: 1301px) {
+  .content.lms .course-info-detail {
+    padding-left: initial;
+    padding-right: initial;
+  }
+}

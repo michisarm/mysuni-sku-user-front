@@ -64,13 +64,8 @@ function CompletedListPageContainer({
     clearMyLearningCard,
   } = lectureService!;
 
-  const {
-    conditions,
-    filterCount,
-    showResult,
-    setOpenFilter,
-    openFilter,
-  } = filterBoxService!;
+  const { conditions, filterCount, showResult, setOpenFilter, openFilter } =
+    filterBoxService!;
 
   // useRequestFilterCountView();
 
@@ -131,9 +126,8 @@ function CompletedListPageContainer({
   };
 
   const downloadExcel = async () => {
-    const tableViews: CardForUserViewModel[] = await lectureService!.findMyLearningCardForExcel(
-      excelQdo()
-    );
+    const tableViews: CardForUserViewModel[] =
+      await lectureService!.findMyLearningCardForExcel(excelQdo());
     const lastIndex = tableViews.length;
     let xlsxList: MyXlsxList = [];
     const filename = 'Learning_CompletedProgress';

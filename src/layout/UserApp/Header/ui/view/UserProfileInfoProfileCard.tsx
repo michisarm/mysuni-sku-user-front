@@ -109,17 +109,17 @@ function UserProfileinfoProfileCard(props: Props) {
     let result = true;
 
     if (followData) {
-      result = !followData.ids.some((f) => f === props.memberId);
+      result = followData.some((f) => f.followingId === props.memberId);
 
       if (result) {
-        setFollowClassName('following');
-        setIsFollow('Follow');
+        setFollowClassName('unfollowing');
+        setIsFollow('Unfollow');
         if (isFollowFlag === undefined) {
           setIsFollowFlag(false);
         }
       } else {
-        setFollowClassName('unfollowing');
-        setIsFollow('Unfollow');
+        setFollowClassName('following');
+        setIsFollow('Follow');
         if (isFollowFlag === undefined) {
           setIsFollowFlag(true);
         }
@@ -185,16 +185,20 @@ function UserProfileinfoProfileCard(props: Props) {
     if (isFollow === 'Unfollow') {
       unfollowMember(props.memberId!).then(() => {
         getFollow();
-        if (isFollowFlag !== undefined) {
-          isFollowFlag ? setFollowerCount(count - 1) : setFollowerCount(count);
-        }
+        setFollowerCount(count - 1);
+        getProfileInfo(props.memberId);
+        // if (isFollowFlag !== undefined) {
+        //   isFollowFlag ? setFollowerCount(count - 1) : setFollowerCount(count);
+        // }
       });
     } else {
       followMember(props.memberId!).then(() => {
         getFollow();
-        if (isFollowFlag !== undefined) {
-          isFollowFlag ? setFollowerCount(count) : setFollowerCount(count + 1);
-        }
+        setFollowerCount(count + 1);
+        getProfileInfo(props.memberId);
+        // if (isFollowFlag !== undefined) {
+        //   isFollowFlag ? setFollowerCount(count) : setFollowerCount(count + 1);
+        // }
       });
     }
   }
@@ -234,7 +238,7 @@ function UserProfileinfoProfileCard(props: Props) {
                 </span>
                 {isCommunityAuth() && (
                   <div className="foll-info">
-                    <span>{followerCount || profileInfo?.followCount}</span>{' '}
+                    <span>{profileInfo?.followCount}</span>{' '}
                     <PolyglotText
                       id="mypage-유저모달-Followers"
                       defaultString="Followers"

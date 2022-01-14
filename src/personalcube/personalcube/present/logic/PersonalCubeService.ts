@@ -163,18 +163,6 @@ export default class PersonalCubeService {
     //
     this.searchState = cubeState;
   }
-
-  @observable
-  enrolledCount: number = 0;
-
-  async findCountByEnrolledTabCount() {
-    //
-    const result = await this.personalCubeApi.findCubeCount();
-
-    runInAction(
-      () => (this.enrolledCount = (result && result.enrolledCount) || 0)
-    );
-  }
 }
 
 Object.defineProperty(PersonalCubeService, 'instance', {

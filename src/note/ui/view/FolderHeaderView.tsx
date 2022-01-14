@@ -1,16 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import {
   Segment,
-  Accordion,
   Image,
   Menu,
-  Table,
-  Select,
   Button,
-  Label,
   Icon,
-  Form,
-  TextArea,
   Modal,
   Input,
 } from 'semantic-ui-react';
@@ -29,16 +23,13 @@ import {
   reactConfirm,
   OffsetElementList,
 } from '@nara.platform/accent';
-import { requestNoteCount } from '../../service/useNote/requestNote';
 import { setSearchBox } from '../../store/SearchBoxStore';
-import { deleteFolder } from '../../api/noteApi';
 import Note from '../../model/Note';
-import NoteWithLecture from '../../model/NoteWithLecture';
 import { deleteFolderById } from '../../service/useFolder/deleteFolder';
 import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface FolderHeaderViewProps {
-  noteList: OffsetElementList<NoteWithLecture>;
+  noteList: OffsetElementList<Note>;
   folder: Folder | undefined;
   noteCount: number;
   folderNoteCount: number | undefined;
@@ -64,7 +55,6 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
   );
   const [editFolder, setEditFolder] = useState<boolean>(false);
   const [originFolder, setOriginFolder] = useState<Folder | undefined>();
-  // const [folerNoteCount, setFolerNoteCount] = useState<number>(0);
 
   const [activeFolderId, setActiveFolderId] = useState<string>('');
   const [popupText, setPopupText] = useState<string>('');
@@ -340,6 +330,7 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
                     <ul>
                       {' '}
                       {folder.folders.idNames.map((m, index) => {
+                        // console.log(m);
                         return (
                           <li
                             key={index}
@@ -476,9 +467,7 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
                     `총 <strong>{count}개의 학습과정</strong>`,
                     'mypage-folder-학습과정수',
                     {
-                      count: (
-                        noteList.results.length && noteList.results.length
-                      ).toString(),
+                      count: (noteList.totalCount || 0).toString(),
                     }
                   ),
                 }}
@@ -535,7 +524,7 @@ const FolderHeaderView: React.FC<FolderHeaderViewProps> = function FolderHeaderV
               </div>
             </div>
           )}
-          {noteList && noteList.results.length === 0 && (
+          {noteList.results && noteList.results.length === 0 && (
             <div className="note_nodata">
               <Icon>
                 <Image src={`${PUBLIC_URL}/images/all/no-contents-80-px.svg`} />
