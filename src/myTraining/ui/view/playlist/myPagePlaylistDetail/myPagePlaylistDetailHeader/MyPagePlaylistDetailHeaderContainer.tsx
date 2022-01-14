@@ -10,7 +10,6 @@ function MyPagePlaylistDetailHeaderContainer() {
   useRequestPlaylistLike();
   const playlistDetail = useMyPagePlaylistDetail();
   const PlaylistLikeInfo = usePlaylistLikeInfo();
-
   return (
     <div className="playlist-detail-infobox">
       {playlistDetail && PlaylistLikeInfo && (

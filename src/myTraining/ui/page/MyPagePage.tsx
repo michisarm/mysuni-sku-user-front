@@ -281,9 +281,7 @@ function MyPagePage({
         {params.tab === 'Playlist' && params.playlistId === undefined && (
           <MyPagePlaylistPage />
         )}
-        {params.playlistId && params.pageNo === '1' && (
-          <MyPagePlaylistDetailPage />
-        )}
+        {params.playlistId && <MyPagePlaylistDetailPage />}
       </ContentLayout>
     </>
   );

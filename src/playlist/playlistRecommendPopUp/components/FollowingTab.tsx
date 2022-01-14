@@ -63,7 +63,7 @@ export function FollowingTab() {
             <div className="text">
               <strong className="s-word">{searchText}</strong>에 대한 검색결과가
               없어요! <br />
-               Playlist를 추천할 다른 학습자를 검색해주세요.
+              Playlist를 추천할 다른 학습자를 검색해주세요.
             </div>
           </div>
         ) : (

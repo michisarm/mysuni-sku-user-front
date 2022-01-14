@@ -61,7 +61,9 @@ export function RecommendPopUpRightComponent() {
           <div className="no-cont-wrap">
             <Icon className="no-contents80" />
             <span className="blind">콘텐츠 없음</span>
-            <div className="text">{` Playlist를 추천할\n학습자를 선택해주세요.`}</div>
+            <div className="text">
+              {' Playlist를 추천할\n학습자를 선택해주세요.'}
+            </div>
           </div>
         ) : (
           <div className="sh-user-list">

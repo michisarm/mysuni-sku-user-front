@@ -1,6 +1,5 @@
-import { useHistory } from 'react-router-dom';
 import { PlaylistType } from '../../../../../playlist/data/models/PlaylistType';
-import { ButtonProps, DropdownProps } from 'semantic-ui-react';
+import { DropdownProps } from 'semantic-ui-react';
 import {
   getMyPagePlaylist,
   getMyPagePlaylistFilterBox,
@@ -31,35 +30,6 @@ export function playListItemType(playlistType: PlaylistType) {
   }
 }
 
-export async function onMyPagePlaylistMoreViewClick(
-  event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  data: ButtonProps
-) {
-  const filterBox = getMyPagePlaylistFilterBox();
-  if (filterBox === undefined) {
-    return;
-  }
-  const { offset, playlistType } = filterBox;
-
-  const myPagePlaylist = await findMyPlaylists(offset, playlistType);
-  if (myPagePlaylist === undefined) {
-    return;
-  }
-
-  const value = getMyPagePlaylist();
-  if (value === undefined) {
-    return;
-  }
-  setMyPagePlaylist({
-    ...value,
-    results: [...value.results, ...myPagePlaylist.results],
-    totalCount: myPagePlaylist.totalCount,
-    playListIndex: value.playListIndex + myPagePlaylist.results.length,
-  });
-
-  requestMyPagePlaylist();
-}
-
 export function onMyPagePlaylistPageFilter(
   _: React.SyntheticEvent<HTMLElement>,
   data: DropdownProps
@@ -71,4 +41,33 @@ export function onMyPagePlaylistPageFilter(
   });
 
   requestMyPagePlaylist();
+}
+
+export async function onClickPlaylistSeeMore() {
+  const filterBox = getMyPagePlaylistFilterBox();
+  if (filterBox === undefined) {
+    return;
+  }
+  const { offset, playlistType } = filterBox;
+
+  const nextValue = await findMyPlaylists(offset + 9, playlistType);
+  if (nextValue === undefined) {
+    return;
+  }
+
+  const prevValue = getMyPagePlaylist();
+  if (prevValue === undefined) {
+    return;
+  }
+
+  setMyPagePlaylistFilterBox({ ...filterBox, offset: prevValue.offset + 9 });
+
+  setMyPagePlaylist({
+    ...prevValue,
+    results: [...prevValue.results, ...nextValue.results],
+    totalCount: nextValue.totalCount,
+    offset: prevValue.offset + 9,
+  });
+
+  //requestMyPagePlaylist();
 }

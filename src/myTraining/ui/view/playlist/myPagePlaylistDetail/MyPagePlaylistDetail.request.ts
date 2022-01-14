@@ -1,20 +1,21 @@
+import { SkProfileService } from 'profile/stores';
 import { findPlaylistDetail } from 'playlist/data/apis';
 import { setMyPagePlaylistDetail } from './MyPagePlaylistDetail.services';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import requestMyPagePlaylistDetailCardList from './myPagePlaylistDetailCardList/MyPagePlaylistDetailCardList.request';
 
 async function requestMyPagePlaylistDetail(playlistId: string) {
-  console.log('처음?');
   const playlistDetail = await findPlaylistDetail(playlistId);
   if (playlistDetail === undefined) {
     return;
   }
   const { recommendedUserCount, sharedUserCount } = playlistDetail;
-  const { description, title, cardIds, likeFeedbackId } =
+  const { description, title, cardIds, likeFeedbackId, commentFeedbackId } =
     playlistDetail.playlist;
   const { photoImagePath, name, nickname, displayNicknameFirst } =
     playlistDetail.registrant;
-  const { type, registeredTime, recommendation } = playlistDetail.myPlaylist;
+  const { type, registeredTime, recommendation, id } =
+    playlistDetail.myPlaylist;
 
   let registerdDisplayName: string;
   if (displayNicknameFirst) {
@@ -23,9 +24,13 @@ async function requestMyPagePlaylistDetail(playlistId: string) {
     registerdDisplayName = parsePolyglotString(name) || nickname;
   }
 
+  const commentHasPinRole: boolean =
+    playlistDetail.registrant.id === SkProfileService.instance.skProfile.id;
+
   setMyPagePlaylistDetail({
     type,
     playlistId,
+    myPlaylistId: id,
     recommendation,
     playlistTitle: title,
     playlistDescription: description,
@@ -37,8 +42,9 @@ async function requestMyPagePlaylistDetail(playlistId: string) {
     photoImagePath,
     likeFeedbackId,
     cardIds,
+    commentFeedbackId,
+    commentHasPinRole,
   });
-  console.log('불러오냐?');
   requestMyPagePlaylistDetailCardList(cardIds);
 }
 

@@ -8,6 +8,7 @@ import requestMyPagePlaylistDetail from './MyPagePlaylistDetail.request';
 export interface PlaylistDetail {
   type: PlaylistType;
   playlistId: string;
+  myPlaylistId: string;
   playlistTitle: string;
   playlistDescription: string;
   registerdDisplayName: string;
@@ -19,6 +20,8 @@ export interface PlaylistDetail {
   likeFeedbackId: string;
   recommendation: string;
   cardIds: string[];
+  commentFeedbackId: string;
+  commentHasPinRole: boolean;
 }
 
 export const [
@@ -41,7 +44,6 @@ export function useRequestMyPagePlaylistDetail() {
 
   useEffect(() => {
     requestMyPagePlaylistDetail(playlistId);
-
     return setMyPagePlaylistDetail();
   }, []);
 }
@@ -61,3 +63,12 @@ export interface PlaylistCard {
   stepCount: number;
   cardId: string;
 }
+
+export interface PlaylistComment {
+  commentId: string;
+  reviewId: string;
+  commentsCount: number;
+}
+
+export const [setPlaylistComment, onPlaylistComment, getPlaylistComment] =
+  createStore<PlaylistComment>();

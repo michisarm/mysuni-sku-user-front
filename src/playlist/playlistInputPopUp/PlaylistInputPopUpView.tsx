@@ -7,6 +7,7 @@ import {
   Modal,
   ModalActions,
 } from 'semantic-ui-react';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
   onChangePlaylistDescription,
   onChangePlaylistExpose,
@@ -67,16 +68,29 @@ export function PlaylistInputPopUpView(props: PlaylistInputPopUpProps) {
                 <span className="max">30</span>
               </span>
               <input
-                placeholder="Playlist 명을 입력해 주세요. "
+                placeholder={getPolyglotText(
+                  'Playlist 명을 입력해주세요.',
+                  'playlist-popup-타이틀필수입력'
+                )}
                 type="text"
                 onChange={onChangePlaylistTitle}
                 value={title}
               />
-              <span className="validation">최대 30자까지 입력 가능합니다.</span>
+              <span className="validation">
+                <PolyglotText
+                  id="playlist-popup-최대30"
+                  defaultString="최대 30자까지 입력 가능합니다."
+                />
+              </span>
             </div>
           </Form>
           <Form className="create-form">
-            <div className="form-tit">Playlist 소개 글</div>
+            <div className="form-tit">
+              <PolyglotText
+                id="playlist-popup-소개글"
+                defaultString="Playlist 소개 글"
+              />
+            </div>
             <div
               className={`ui right-top-count input ${
                 description.length > 200 ? 'error' : ''
@@ -87,19 +101,28 @@ export function PlaylistInputPopUpView(props: PlaylistInputPopUpProps) {
                 <span className="max">200</span>
               </span>
               <textarea
-                placeholder="소개 글을 입력해 주세요."
+                placeholder={getPolyglotText(
+                  '소개 글을 입력해 주세요.',
+                  'playlist-popup-소개글입력'
+                )}
                 onChange={onChangePlaylistDescription}
                 value={description}
               />
               <span className="validation">
-                최대 200자까지 입력 가능합니다.
+                <PolyglotText
+                  id="playlist-popup-최대200"
+                  defaultString="최대 200자까지 입력 가능합니다."
+                />
               </span>
             </div>
           </Form>
           <div className="cr-check">
             <Checkbox
               className="base"
-              label="Playlist를 프로필카드에 노출합니다."
+              label={getPolyglotText(
+                'Playlist를 프로필카드에 노출합니다.',
+                'playlist-popup-프로필카드노출'
+              )}
               onChange={onChangePlaylistExpose}
               checked={expose}
             />

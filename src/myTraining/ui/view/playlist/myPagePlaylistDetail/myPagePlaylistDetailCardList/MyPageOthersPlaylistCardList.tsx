@@ -8,7 +8,6 @@ import { PlaylistCardTable } from '../MyPagePlaylistDetail.services';
 
 function MyPageOthersPlaylistCardList(props: PlaylistCardTable) {
   const cards = props.playlistCard;
-  console.log('dlrjdla?');
   return (
     <div className="playlist-detail-wrap">
       <Table className="playlist-mylist-list">

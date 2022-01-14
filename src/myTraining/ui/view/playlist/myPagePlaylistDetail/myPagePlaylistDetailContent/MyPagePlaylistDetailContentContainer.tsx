@@ -8,8 +8,17 @@ import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { onOpenRecommendMemberPopUp } from 'playlist/recommendMemberPopUp/recommendMemberPopUp.events';
 import { PlaylistType } from 'playlist/data/models/PlaylistType';
 import { RecommendMemberPopUpView } from 'playlist/recommendMemberPopUp/RecommendMemberPopUpView';
+import MyPagePlaylistDetailCommentView from './MyPagePlaylistDetailCommentView';
 
 function MyPagePlaylistDetailContentContainer() {
+  const [activatedTab, setActivatedTab] = useState<string>('overview');
+  const overviewHashClick = useCallback(() => {
+    setActivatedTab('overview');
+  }, []);
+
+  const commentHashClick = useCallback(() => {
+    setActivatedTab('comment');
+  }, []);
   const playlistDetail = useMyPagePlaylistDetail();
   const [playlistType, setPlaylistType] = useState<PlaylistType>('');
 
@@ -34,16 +43,16 @@ function MyPagePlaylistDetailContentContainer() {
     <div className="playlist-detail-content">
       <Menu className="playlist-view-tab">
         <Menu.Item
-          as={Link}
-          //  onClick={this.handleItemClick}
+          onClick={overviewHashClick}
           to=""
-          className="active"
+          active={activatedTab === 'overview'}
         >
           View All
         </Menu.Item>
         <Menu.Item
-          as={Link} //onClick={this.handleItemClick}
+          onClick={commentHashClick}
           to=""
+          active={activatedTab === 'comment'}
         >
           Comments
         </Menu.Item>
@@ -87,11 +96,12 @@ function MyPagePlaylistDetailContentContainer() {
         </div>
       </Menu>
       <RecommendMemberPopUpView playlistType={playlistType} />
-      {cardIds.length !== 0 ? (
-        <MyPagePlaylistDetailCardList type={type} />
-      ) : (
-        <MyPagePlaylistDetailNoCardList />
-      )}
+      {cardIds.length !== 0
+        ? activatedTab === 'overview' && (
+            <MyPagePlaylistDetailCardList type={type} />
+          )
+        : activatedTab === 'overview' && <MyPagePlaylistDetailNoCardList />}
+      {activatedTab === 'comment' && <MyPagePlaylistDetailCommentView />}
     </div>
   );
 }
