@@ -2156,12 +2156,6 @@ i.icon.testHeader02::before {
   vertical-align: top;
 }
 
-/* 22-01-06 조찬기 Swiper Disabled 배경클릭 방지(공통) */
-.swiper-button-prev.swiper-button-disabled,
-.swiper-button-next.swiper-button-disabled {
-  pointer-events: auto !important;
-}
-
 /* 학습카드 오버뷰 코멘트영역 수정(2021.12.23) */
 .ui.segment.full .contents.comment {
   min-height: 20rem;
@@ -2181,4 +2175,17 @@ i.icon.testHeader02::before {
     padding-left: initial;
     padding-right: initial;
   }
+}
+/* 22-01-06 조찬기 Swiper Disabled 배경클릭 방지(공통) */
+.swiper-button-prev.swiper-button-disabled,
+.swiper-button-next.swiper-button-disabled {
+  pointer-events: auto !important;
+}
+
+/* 학습카드 오버뷰 코멘트영역 수정(2021.12.23) */
+.ui.segment.full .contents.comment {
+  min-height: 20rem;
+}
+.qna-admin .qna-navi .wait {
+  color: #aaa;
 }
