@@ -2694,6 +2694,14 @@ i.icon.add-black16::after {
   top: 5px;
   left: 10px;
 }
+.prf-info .info-top .prf-group {
+  padding-left: 3px;
+}
+.prf-info .info-top span {
+  position: relative;
+  display: inline-block;
+  color: #999;
+}
 .prf-info .prf-email {
   display: inline-block;
   margin-top: 6px;

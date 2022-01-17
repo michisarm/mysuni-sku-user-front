@@ -1,5 +1,6 @@
 import { ButtonProps, CheckboxProps } from 'semantic-ui-react';
 import {
+  requestDepartMentUser,
   requestMysuniUser,
   requestRecommendPlaylist,
 } from './playlistRecommendPopUp.request';
@@ -145,9 +146,5 @@ export function onSearchMySuniUser(searchText: string) {
 
 // 부서 구성원 검색
 export function onSearchDepartmentMember(searchText: string) {
-  if (isEmpty(searchText)) {
-    return false;
-  }
-
-  return true;
+  return requestDepartMentUser(searchText);
 }

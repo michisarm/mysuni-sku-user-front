@@ -52,6 +52,7 @@ export function RecommendMemberPopUpView({
                     <div className="info-top">
                       <strong className="prf-name">{member.name}</strong>
                       <span className="prf-comp">{member.departmentName}</span>
+                      <span className="prf-group">{`/ ${member.companyName}`}</span>
                     </div>
                     <span className="prf-email">{member.email}</span>
                   </div>

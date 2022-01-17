@@ -7,6 +7,7 @@ import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import MyPagePlaylistDetailCommentView from './MyPagePlaylistDetailCommentView';
 import { onOpenRecommendMemberPopUp } from 'playlist/recommendMemberPopUp/recommendMemberPopUp.events';
 import { PlaylistType } from 'playlist/data/models/PlaylistType';
+import { RecommendMemberPopUpView } from 'playlist/recommendMemberPopUp/RecommendMemberPopUpView';
 
 function MyPagePlaylistDetailContentContainer() {
   const [activatedTab, setActivatedTab] = useState<string>('overview');
@@ -93,6 +94,7 @@ function MyPagePlaylistDetailContentContainer() {
           </Label>
         </div>
       </Menu>
+      <RecommendMemberPopUpView playlistType={playlistType} />
       {cardIds.length !== 0
         ? activatedTab === 'overview' && (
             <MyPagePlaylistDetailCardList type={type} />
