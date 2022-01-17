@@ -33,7 +33,7 @@ async function findProfileCardPlaylistByDenizenId(denizenId: string) {
       return {
         cardId: card.card.id,
         cardTitle: parsePolyglotString(card.card.name),
-        count: 5,
+        count: -1,
         leaningTime: card.card.learningTime,
       };
     });

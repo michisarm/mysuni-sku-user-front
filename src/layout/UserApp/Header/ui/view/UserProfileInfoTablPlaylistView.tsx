@@ -41,7 +41,7 @@ function UserProfileInfoTabPlaylistView(props: Props) {
               {`4,288`}
             </Button>
             <Button className="add-black">
-              <Icon aria-hidden="true" className="add-black16'" />
+              <Icon aria-hidden="true" className="add-black16" />
               {`Playlist 담기`}
             </Button>
           </div>
