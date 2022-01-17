@@ -1,6 +1,4 @@
 import { getCookie } from '@nara.platform/accent';
-import MyTrainingService from '../../../../../myTraining/present/logic/MyTrainingService';
-import { SkProfileService } from '../../../../../profile/stores';
 import { ActionTrackParam } from 'tracker/model/ActionTrackModel';
 import { ActionType, Action, Area } from 'tracker/model';
 import { debounceActionTrack } from '../../../../../tracker/present/logic/ActionTrackService';
@@ -9,14 +7,15 @@ import {
   clearFindMyCardRelatedStudentsCache,
   registerStudent,
 } from '../../../api/cardApi';
-import { registerWatchLog } from '../../../api/mWatchlogApi';
 import { getLectureParams } from '../../../store/LectureParamsStore';
 import { PanoptoEmbedPlayerState } from '@sku/skuniv-ui-video-player';
 import { confirmProgress } from '../../useLectureMedia/utility/confirmProgress';
 import { requestLectureState } from '../../useLectureState/utility/requestLectureState';
 import { updateCardLectureStructure } from '../../useLectureStructure/utility/updateCardLectureStructure';
+import { savePlayTime } from '../../../api/panoptoApi';
+import PlayTimeSdo from 'lecture/detail/model/PlayTimeSdo';
 
-export function callRegisterWatchLog(
+export async function callRegisterWatchLog(
   panoptoEmbedPlayerState: PanoptoEmbedPlayerState
 ) {
   const params = getLectureParams();
@@ -34,12 +33,19 @@ export function callRegisterWatchLog(
     watchLogStart > end || end - watchLogStart > 25
       ? end - 10 * playbackRate
       : watchLogStart;
-  registerWatchLog({
-    lectureUsid: cubeId,
-    patronKeyString: SkProfileService.instance.skProfile.id,
+  // registerWatchLog({
+  //   lectureUsid: cubeId,
+  //   patronKeyString: SkProfileService.instance.skProfile.id,
+  //   start,
+  //   end,
+  // });
+  const playTimeSdo: PlayTimeSdo = {
+    cubeId,
+    duration: panoptoEmbedPlayerState.duration || 0,
     start,
     end,
-  });
+  };
+  const duration = await savePlayTime(playTimeSdo);
 }
 
 export async function checkStudent() {
@@ -66,8 +72,11 @@ export async function checkStudent() {
   }
 }
 
-export function callConfirmProgress() {
-  confirmProgress();
+export function callConfirmProgress(
+  state?: PanoptoEmbedPlayerState,
+  syncPlayTime: boolean = false
+) {
+  confirmProgress(syncPlayTime || false);
 }
 
 export function callDebounceActionTrack() {
