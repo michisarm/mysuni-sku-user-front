@@ -3,9 +3,6 @@ import { InstructorWithIdentity } from 'expert/model/InstructorWithIdentity';
 import { AxiosReturn } from 'shared/api/AxiosReturn';
 import { createCacheApi } from 'lecture/detail/api/cacheableApi';
 import { CommunityLectureCard } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
-import { OffsetElementList } from 'shared/model';
-import { CardWithContentsAndRelatedCountRom } from 'lecture/model/CardWithContentsAndRelatedCountRom';
-import { LectureCardRdo } from 'expert/model/LectureCardRdo';
 
 const base_url = '/api/user';
 const BASE_URL = '/api/lecture';
@@ -40,15 +37,4 @@ function paramsSerializer(paramObj: Record<string, any>) {
     }
   }
   return params.toString();
-}
-
-export function findByRdo(cardRdo: LectureCardRdo) {
-  const axios = getAxios();
-  const url = `${BASE_URL}/cards/findByRdo`;
-
-  return axios
-    .get<OffsetElementList<CardWithContentsAndRelatedCountRom>>(url, {
-      params: cardRdo,
-    })
-    .then(AxiosReturn);
 }

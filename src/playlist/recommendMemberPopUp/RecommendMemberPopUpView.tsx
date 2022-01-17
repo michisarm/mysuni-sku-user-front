@@ -9,17 +9,11 @@ import {
   useRecommendMemberPopUp,
 } from './recommendMemberPopUp.store';
 
-interface RecommendMemberPopUpViewProps {
-  playlistType: PlaylistType;
-}
-
-export function RecommendMemberPopUpView({
-  playlistType,
-}: RecommendMemberPopUpViewProps) {
-  useRequestRecommendMemberPopUp(playlistType);
-
+export function RecommendMemberPopUpView(playlistType: PlaylistType) {
   const isOpen = useIsOpenRecommendMemberPopUp();
   const recommendMemberPopUp = useRecommendMemberPopUp();
+
+  useRequestRecommendMemberPopUp(playlistType);
 
   const modalTitle = useMemo(() => {
     switch (playlistType) {
@@ -62,9 +56,7 @@ export function RecommendMemberPopUpView({
         ))}
       </Modal.Content>
       <Modal.Actions>
-        <Button className="w190 pop p" onClick={onCloseRecommendMemberPopUp}>
-          확인
-        </Button>
+        <Button className="w190 pop p">확인</Button>
       </Modal.Actions>
     </Modal>
   );

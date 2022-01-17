@@ -1,9 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import { Button, Icon, Modal, Tab } from 'semantic-ui-react';
 import { ProfileComponent } from './components/ProfileComponent';
 import {
   useCheckedMemberList,
   useIsOpenPlaylistRecommendPopUp,
+  useRecommendation,
 } from './playlistRecommendPopUp.store';
 import { DepartmentMemberTab } from './components/DepartmentMemberTab';
 import { MySuniUserTab } from './components/MySuniUserTab';
@@ -11,7 +12,7 @@ import { FollowingTab } from './components/FollowingTab';
 import {
   onClearCheckedMember,
   onClickAllClearCheckedMember,
-  onRecommendPlaylist,
+  onClickRecommendPlaylist,
   onClosePlaylistRecommendPopUp,
 } from './playlistRecommendPopUp.events';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
@@ -101,18 +102,7 @@ export function RecommendPopUpRightComponent() {
 
 export function PlaylistRecommendPopUpView() {
   const isOpen = useIsOpenPlaylistRecommendPopUp();
-  const [recommendation, setRecommendation] = useState('');
-
-  const onChangeRecommendation = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setRecommendation(e.target.value);
-    },
-    []
-  );
-
-  const onClickRecommend = useCallback(() => {
-    onRecommendPlaylist(recommendation);
-  }, [recommendation]);
+  const recommendation = useRecommendation();
 
   return (
     <Modal open={isOpen} className="base w1000 pl-share">
@@ -157,7 +147,6 @@ export function PlaylistRecommendPopUpView() {
                   'Playlist와 함께 추천할 메시지 내용을 입력해주세요.',
                   'playlist-popup-추천메세지'
                 )}
-                onChange={onChangeRecommendation}
               />
               <span className="validation">
                 <PolyglotText
@@ -170,7 +159,7 @@ export function PlaylistRecommendPopUpView() {
         </div>
       </Modal.Content>
       <Modal.Actions>
-        <Button className="w190 pop p" onClick={onClickRecommend}>
+        <Button className="w190 pop p" onClick={onClickRecommendPlaylist}>
           <PolyglotText defaultString="추천" id="playlist-popup-추천버튼" />
         </Button>
       </Modal.Actions>

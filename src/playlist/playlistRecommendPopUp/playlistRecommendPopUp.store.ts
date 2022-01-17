@@ -1,32 +1,13 @@
 import { createStore } from 'restoa';
 import Profile from 'community/ui/data/community/models/Profile';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
-import { UserIdentities } from 'community/ui/data/community/models/UserIdentities';
 
 export interface MemberList {
   id: string;
   name: string;
   email: string;
   departmentName: string;
-  companyName: string;
   thumbnailImagePath: string;
-}
-
-export function UserIdentitiesToMemberList(
-  sameDepartmentUsers: UserIdentities[]
-): MemberList[] {
-  const departmentMembers = sameDepartmentUsers.map((user) => {
-    return {
-      id: user.denizenId,
-      name: parsePolyglotString(user.name),
-      email: user.email,
-      departmentName: parsePolyglotString(user.departmentName),
-      companyName: parsePolyglotString(user.companyName),
-      thumbnailImagePath: user.photoImagePath,
-    };
-  });
-
-  return departmentMembers;
 }
 
 // following 데이터 memberlist로 변환
@@ -37,7 +18,6 @@ export function followingToMemberList(following: Profile[]): MemberList[] {
       name: parsePolyglotString(member.name),
       email: member.email,
       departmentName: parsePolyglotString(member.departmentName),
-      companyName: parsePolyglotString(member.companyName),
       thumbnailImagePath: member.photoImagePath,
     };
   });
@@ -51,15 +31,12 @@ export const [
   getIsOpenPlaylistRecommendPopUp,
 ] = createStore<boolean>(false);
 
-export const [useMySuniUsers, setMySuniUsers, getMySuniUsers] = createStore<
+export const [useMySuniUser, setMySuniUser, getMySuniUser] = createStore<
   MemberList[]
 >([]);
 
-export const [
-  useDepartmentMembers,
-  setDepartmentMembers,
-  getDepartmentMembers,
-] = createStore<MemberList[]>([]);
+export const [useDepartmentMember, setDepartmentMember, getDepartmentMember] =
+  createStore<MemberList[]>([]);
 
 export const [useFollowingList, setFollowingList, getFollowingList] =
   createStore<MemberList[]>([]);
@@ -69,3 +46,6 @@ export const [
   setCheckedMemberList,
   getCheckedMemberList,
 ] = createStore<MemberList[]>([]);
+
+export const [useRecommendation, setRecommendation, getRecommendation] =
+  createStore<string>('');

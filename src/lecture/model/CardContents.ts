@@ -26,7 +26,7 @@ export interface CardContents {
 
   learningContents: LearningContent[];
   prerequisiteCards: PrerequisiteCard[];
-  registrantName: PolyglotString;
+
   communityId: string;
   openRequests: OpenRequest[];
 

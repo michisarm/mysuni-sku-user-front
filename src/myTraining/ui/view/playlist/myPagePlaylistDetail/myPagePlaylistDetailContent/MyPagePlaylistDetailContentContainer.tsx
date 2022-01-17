@@ -4,9 +4,6 @@ import { useMyPagePlaylistDetail } from '../MyPagePlaylistDetail.services';
 import MyPagePlaylistDetailNoCardList from './MyPagePlaylistDetailNoCardList';
 import MyPagePlaylistDetailCardList from '../myPagePlaylistDetailCardList/MyPagePlaylistDetailCardList';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
-import { onOpenRecommendMemberPopUp } from 'playlist/recommendMemberPopUp/recommendMemberPopUp.events';
-import { PlaylistType } from 'playlist/data/models/PlaylistType';
-import { RecommendMemberPopUpView } from 'playlist/recommendMemberPopUp/RecommendMemberPopUpView';
 import MyPagePlaylistDetailCommentView from './MyPagePlaylistDetailCommentView';
 
 function MyPagePlaylistDetailContentContainer() {
@@ -19,22 +16,9 @@ function MyPagePlaylistDetailContentContainer() {
     setActivatedTab('comment');
   }, []);
   const playlistDetail = useMyPagePlaylistDetail();
-  const [playlistType, setPlaylistType] = useState<PlaylistType>('');
-
-  const onOpenRecommenedMemberPopUp = useCallback(() => {
-    setPlaylistType('Recommended');
-    onOpenRecommendMemberPopUp();
-  }, []);
-
-  const onOpenMadeByOthersPopUp = useCallback(() => {
-    setPlaylistType('MadeByOthers');
-    onOpenRecommendMemberPopUp();
-  }, []);
-
   if (playlistDetail === undefined) {
     return null;
   }
-
   const { sharedUserCount, recommendedUserCount, cardIds, type } =
     playlistDetail;
 
@@ -56,11 +40,8 @@ function MyPagePlaylistDetailContentContainer() {
           Comments
         </Menu.Item>
         <div className="playlist-view-right">
-          <Label
-            as="button"
-            className="onlytext"
-            onClick={onOpenRecommenedMemberPopUp}
-          >
+          <Label as="button" className="onlytext">
+            {' '}
             <Icon className="list-recommended" />
             <span
               dangerouslySetInnerHTML={{
@@ -74,11 +55,8 @@ function MyPagePlaylistDetailContentContainer() {
               }}
             />
           </Label>
-          <Label
-            as="button"
-            className="onlytext"
-            onClick={onOpenMadeByOthersPopUp}
-          >
+          <Label as="button" className="onlytext">
+            {' '}
             <Icon className="list-like" />
             <span
               dangerouslySetInnerHTML={{
@@ -94,7 +72,6 @@ function MyPagePlaylistDetailContentContainer() {
           </Label>
         </div>
       </Menu>
-      <RecommendMemberPopUpView playlistType={playlistType} />
       {cardIds.length !== 0
         ? activatedTab === 'overview' && (
             <MyPagePlaylistDetailCardList type={type} />

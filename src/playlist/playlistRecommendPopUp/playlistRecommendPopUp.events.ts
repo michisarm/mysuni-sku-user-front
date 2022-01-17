@@ -1,20 +1,17 @@
 import { ButtonProps, CheckboxProps } from 'semantic-ui-react';
-import {
-  requestMysuniUser,
-  requestRecommendPlaylist,
-} from './playlistRecommendPopUp.request';
+import { requestRecommendPlaylist } from './playlistRecommendPopUp.request';
 import {
   getCheckedMemberList,
+  getRecommendation,
   getFollowingList,
-  getMySuniUsers,
-  getDepartmentMembers,
+  getMySuniUser,
+  getDepartmentMember,
   setCheckedMemberList,
+  setFollowingList,
   setIsOpenPlaylistRecommendPopUp,
-  setMySuniUsers,
 } from './playlistRecommendPopUp.store';
 import { onAllCheckMember, onCheckMember } from './helper/onCheckMember';
 import { isEmpty } from 'lodash';
-import { getMyPagePlaylistDetail } from 'myTraining/ui/view/playlist/myPagePlaylistDetail/MyPagePlaylistDetail.services';
 
 export function onOpenPlaylistRecommendPopUp() {
   setIsOpenPlaylistRecommendPopUp(true);
@@ -22,27 +19,22 @@ export function onOpenPlaylistRecommendPopUp() {
 
 export function onClosePlaylistRecommendPopUp() {
   setIsOpenPlaylistRecommendPopUp(false);
-  setCheckedMemberList([]);
-  setMySuniUsers([]);
 }
 
 // 플레이리스트 추천하기
-export function onRecommendPlaylist(recommendation: string) {
+export function onClickRecommendPlaylist() {
   const denizenIds = getCheckedMemberList().map((member) => member.id);
-  const playlistId = getMyPagePlaylistDetail()?.playlistId || '';
+  const playlistId = '';
+  const recommendation = getRecommendation();
 
-  if (
-    recommendation.length === 0 ||
-    recommendation.length > 50 ||
-    playlistId === ''
-  ) {
+  if (recommendation.length > 50) {
     return;
   }
 
   requestRecommendPlaylist(denizenIds, playlistId, recommendation);
 }
 
-// (플레이리스트 추천하기 팝업 오른쪽 리스트) 체크된 멤버 선택 해제
+// 체크된 멤버 선택 해제
 export function onClearCheckedMember(_: React.MouseEvent, data: ButtonProps) {
   const memberId = data.id as string;
   const checkedMemberList = getCheckedMemberList();
@@ -56,7 +48,7 @@ export function onClearCheckedMember(_: React.MouseEvent, data: ButtonProps) {
 
 // 팔로우 멤버 체크 선택/해제
 export function onCheckFollowing(_: React.MouseEvent, data: CheckboxProps) {
-  const memberId = data.value as string;
+  const memberId = data.id as string;
   const isChecked = data.checked || false;
   const following = getFollowingList();
 
@@ -76,9 +68,9 @@ export function onAllCheckedFollowing(
 
 // 마이써니 사용자 체크 선택/해제
 export function onCheckMySuniUser(_: React.MouseEvent, data: CheckboxProps) {
-  const memberId = data.value as string;
+  const memberId = data.id as string;
   const isChecked = data.checked || false;
-  const mySuniUser = getMySuniUsers();
+  const mySuniUser = getMySuniUser();
 
   onCheckMember(memberId, mySuniUser, isChecked);
 }
@@ -89,7 +81,7 @@ export function onAllCheckedMySuniMember(
   data: CheckboxProps
 ) {
   const isChecked = data.checked || false;
-  const mySuniUser = getMySuniUsers();
+  const mySuniUser = getMySuniUser();
 
   onAllCheckMember(mySuniUser, isChecked);
 }
@@ -99,9 +91,9 @@ export function onCheckDepartmentMember(
   _: React.MouseEvent,
   data: CheckboxProps
 ) {
-  const memberId = data.value as string;
+  const memberId = data.id as string;
   const isChecked = data.checked || false;
-  const departmentMember = getDepartmentMembers();
+  const departmentMember = getDepartmentMember();
 
   onCheckMember(memberId, departmentMember, isChecked);
 }
@@ -112,7 +104,7 @@ export function onAllCheckDepartmentMember(
   data: CheckboxProps
 ) {
   const isChecked = data.checked || false;
-  const departmentMember = getDepartmentMembers();
+  const departmentMember = getDepartmentMember();
 
   onAllCheckMember(departmentMember, isChecked);
 }
@@ -124,23 +116,27 @@ export function onClickAllClearCheckedMember() {
 
 // 팔로잉 검색
 export function onSearchFollowing(searchText: string) {
-  const followingList = getFollowingList();
+  const memberList = getFollowingList();
 
   if (isEmpty(searchText)) {
-    return undefined;
+    return;
   }
 
-  const filteredFollowingList = followingList.filter(
+  const filteredMemberList = memberList.filter(
     (member) =>
       member.name.includes(searchText) || member.email.includes(searchText)
   );
 
-  return filteredFollowingList;
+  setFollowingList(filteredMemberList);
 }
 
 // mySuni사용자 검색
 export function onSearchMySuniUser(searchText: string) {
-  return requestMysuniUser(searchText);
+  if (isEmpty(searchText)) {
+    return false;
+  }
+
+  return true;
 }
 
 // 부서 구성원 검색
