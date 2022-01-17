@@ -39,7 +39,10 @@ function MyPagePlaylistDetailCardList(props: propsType) {
             {isEdit ? (
               <div className="list-top-left f-left">
                 <Button className="btn-delete-list" onClick={deleteCardContent}>
-                  선택 삭제
+                  <PolyglotText
+                    defaultString="학습카드 삭제"
+                    id="playlist-popup-삭제버튼"
+                  />
                 </Button>
                 <Label
                   as="Button"

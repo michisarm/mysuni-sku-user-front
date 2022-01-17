@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Checkbox, Icon, Modal, ModalActions } from 'semantic-ui-react';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
   onAddLearningCard,
   onClickAddPlaylist,
@@ -26,17 +27,35 @@ function AddPlaylistBottomView(props: AddPlaylistBottomViewProps) {
       <div className="no-cont-wrap">
         <Icon className="no-contents80" />
         <span className="blind">콘텐츠 없음</span>
-        <div className="text">{`생성된 Playlist가 없습니다.\n구성원들과 함께 학습할 Playlist를 만들어보세요!`}</div>
+        <div className="text">
+          <PolyglotText
+            defaultString="생성된 Playlist가 없습니다."
+            id="playlist-popup-NoPlaylist1"
+          />
+          <br />
+          <PolyglotText
+            defaultString="구성원들과 함께 학습할 Playlist를 만들어보세요!"
+            id="playlist-popup-NoPlaylist2"
+          />
+        </div>
       </div>
     );
   }
 
   return (
     <>
-      <div className="add-list-top">
-        <span>나의 Playlist </span>
-        <strong>{myPlaylist.length}개</strong>
-      </div>
+      <div
+        className="add-list-top"
+        dangerouslySetInnerHTML={{
+          __html: getPolyglotText(
+            `<span>나의 Playlist </span>
+            <strong>{count}개</strong>`,
+            'playlist-popup-나의리스트갯수',
+            { count: myPlaylist.length.toString() }
+          ),
+        }}
+      />
+
       <div className="add-list">
         {myPlaylist.map((playlist) => (
           <div className="add-item" id={playlist.playlistId}>
@@ -112,7 +131,10 @@ export function PlaylistAddPopUpView() {
   return (
     <Modal className="base w600 pl-add" open={isOpen}>
       <Modal.Header className="res xfl">
-        Playlist 추가하기
+        <PolyglotText
+          defaultString="Playlist 추가하기"
+          id="playlist-popup-추가하기"
+        />
         <Button className="close24" onClick={onClosePlaylistAddPopUpView}>
           <Icon className="close24" />
         </Button>
@@ -122,7 +144,10 @@ export function PlaylistAddPopUpView() {
           <div className={`add-top ${isShowAddPlaylistInput ? 'show' : ''}`}>
             <Button className="pl-add" onClick={onClickIsShowAddPlaylistInput}>
               <Icon className="listmore16-black" />
-              새로운 Playlist 만들기
+              <PolyglotText
+                defaultString="새로운 Playlist 만들기"
+                id="playlist-popup-새로생성"
+              />
             </Button>
             <div className="pl-search">
               <div
@@ -132,12 +157,18 @@ export function PlaylistAddPopUpView() {
               >
                 <input
                   type="text"
-                  placeholder="Playlist 명을 입력해주세요."
+                  placeholder={getPolyglotText(
+                    'Playlist 명을 입력해주세요.',
+                    'playlist-popup-타이틀필수입력'
+                  )}
                   onChange={onChangePlaylistName}
                   value={playlistName}
                 />
                 <span className="validation">
-                  최대 30자까지 입력 가능합니다.
+                  <PolyglotText
+                    defaultString="최대 30자까지 입력 가능합니다."
+                    id="playlist-popup-최대30"
+                  />
                 </span>
               </div>
               <Button className="bl" onClick={handleAddPlaylistButton}>

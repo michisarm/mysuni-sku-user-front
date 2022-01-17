@@ -1,3 +1,5 @@
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import { modifyPlaylist } from 'playlist/data/apis';
 import { getMyPagePlaylistDetail } from '../MyPagePlaylistDetail.services';
 import requestMyPagePlaylistDetailCardList from './MyPagePlaylistDetailCardList.request';
@@ -49,7 +51,16 @@ export function deleteCardContent() {
   if (checkedCardList === undefined) {
     return;
   }
-
+  if (!checkedCardList.some((c) => c.checked === true)) {
+    reactAlert({
+      title: getPolyglotText('학습카드 삭제하기', 'playlist-popup-삭제하기'),
+      message: getPolyglotText(
+        '삭제할 학습카드를 선택해주세요.',
+        'playlist-popup-카드삭제'
+      ),
+    });
+    return;
+  }
   const nextContents = checkedCardList.filter((card) => card.checked !== true);
 
   setCheckedCardList(nextContents);
@@ -79,14 +90,26 @@ export function sumbitEditCardList() {
   const cardIds = cardList?.map((card) => card.cardId);
 
   if (cardIds !== undefined && playlist?.playlistId !== undefined) {
-    modifyPlaylist(playlist.playlistId, {
-      nameValues: [
-        {
-          name: 'cardIds',
-          value: JSON.stringify(cardIds),
-        },
-      ],
+    reactConfirm({
+      title: getPolyglotText('Playlist 편집하기', 'playlist-popup-편집하기'),
+      message: getPolyglotText(
+        'Playlist를 편집하시겠습니까? <br/> 추천받은 구성원들에게도 편집한 내용이 반영됩니다.',
+        'playlist-popup-편집컨펌'
+      ),
+      onOk: async () => {
+        modifyPlaylist(playlist.playlistId, {
+          nameValues: [
+            {
+              name: 'cardIds',
+              value: JSON.stringify(cardIds),
+            },
+          ],
+        });
+        requestMyPagePlaylistDetailCardList(cardIds);
+      },
+      onCancel: () => {
+        return false;
+      },
     });
-    requestMyPagePlaylistDetailCardList(cardIds);
   }
 }
