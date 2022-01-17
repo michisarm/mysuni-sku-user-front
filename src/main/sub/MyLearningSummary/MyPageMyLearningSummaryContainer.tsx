@@ -141,12 +141,16 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
 
   render() {
     const { selectYear, selectYearOptions, myLearningRdo } = this.state;
-    const { learningGoalHour, stampCount, totalStampCount } = myLearningRdo;
+    const {
+      learningGoalHour,
+      obtainedStampCountForYear,
+      totalStampCount,
+    } = myLearningRdo;
     const { myLearningSummaryService, badgeService } = this.injected;
     const { menuControlAuth } = MenuControlAuthService.instance;
 
     const {
-      allBadgeCount: { issuedCount, totalCount },
+      allBadgeCount: { issuedCount, challengingCount },
     } = badgeService;
 
     const {
@@ -182,11 +186,11 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
                 <div className="gauge-box-wrap">
                   <div className="main-gauge-box">
                     <BadgeLearningSummaryView
-                      challengingCount={totalCount}
+                      challengingCount={issuedCount + challengingCount}
                       issuedCount={issuedCount}
                     />
                     <StampSummaryView
-                      stampCount={stampCount}
+                      obtainedStampCountForYear={obtainedStampCountForYear}
                       totalStampCount={totalStampCount}
                     />
                     <LearningTimeSummaryView

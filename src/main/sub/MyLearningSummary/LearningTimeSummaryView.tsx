@@ -21,8 +21,6 @@ export default function LearningTimeSummaryView({
   totalLearningTime,
   learningGoalHour,
 }: LearningTimeSummaryViewProps) {
-  console.log(totalLearningTime);
-  console.log(learningGoalHour);
   let LearningObjectivesPer = Math.floor(
     (totalLearningTime / (learningGoalHour * 60)) * 100
   );
