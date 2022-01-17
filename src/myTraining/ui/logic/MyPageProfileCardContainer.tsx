@@ -116,44 +116,6 @@ function MyPageHeaderContainer({
             />
             <div className="profile-info-wrapper">
               <div className="profile-info-area">
-                <div className="header-bttn-area">
-                  <div className="name-chng-area">
-                    {/* 실명/닉네임 class 이름 chng-active*/}
-                    <Button
-                      className={`name-chng-bttn ${
-                        showNameFlag ? 'chng-active' : ''
-                      }`}
-                      onClick={() =>
-                        saveFlag &&
-                        !showNameFlag &&
-                        !isExternalInstructor() &&
-                        onClickShowName(false)
-                      }
-                    >
-                      <PolyglotText
-                        defaultString="실명"
-                        id="mypage-프로필카드-실명"
-                      />
-                    </Button>
-                    <Button
-                      className={`name-chng-bttn ${
-                        showNameFlag ? '' : 'chng-active'
-                      }`}
-                      onClick={() =>
-                        saveFlag &&
-                        showNameFlag &&
-                        !isExternalInstructor() &&
-                        onClickShowName(true)
-                      }
-                    >
-                      <PolyglotText
-                        defaultString="닉네임"
-                        id="mypage-프로필카드-닉네임"
-                      />
-                    </Button>
-                  </div>
-                </div>
-
                 <div className="image-area">
                   <ProfileImage
                     id="profileImage"
@@ -168,6 +130,7 @@ function MyPageHeaderContainer({
                     alt="내프로필이미지"
                   />
                 </div>
+
                 <div className="profile-info ">
                   <span className="prof-tit">
                     {showNameFlag
@@ -180,33 +143,18 @@ function MyPageHeaderContainer({
                       <span>{skProfile.followingCount}</span> Following
                       김민준 - 커뮤니티 api 추가 필요
                       */}
-                      <span>{profileInfo?.followerCount || 0}</span>
+                      <span>{profileInfo?.followerCount || 0}</span>{' '}
                       <PolyglotText
                         defaultString="Followers"
                         id="mypage-프로필카드-Followers"
                       />
-                      <span>{profileInfo?.followingCount || 0}</span>
+                      <span>{profileInfo?.followingCount || 0}</span>{' '}
                       <PolyglotText
                         defaultString="Following"
                         id="mypage-프로필카드-Following"
                       />
                     </div>
                   )}
-                </div>
-                <div className="page-bttn-area">
-                  <Button
-                    className={`page-bttn ${
-                      params.tab === 'MyProfile' ? 'active' : ''
-                    }`}
-                    onClick={() =>
-                      clickTabHandler && clickTabHandler('profile')
-                    }
-                  >
-                    <PolyglotText
-                      defaultString="프로필 설정"
-                      id="mypage-프로필카드-프로필설정"
-                    />
-                  </Button>
                 </div>
               </div>
             </div>

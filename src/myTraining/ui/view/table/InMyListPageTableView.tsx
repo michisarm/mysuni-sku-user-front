@@ -2,8 +2,12 @@ import CardForUserViewModel from 'lecture/model/learning/CardForUserViewModel';
 import { InMyLectureTableViewModel } from 'myTraining/model';
 import { LearningTypeName } from 'myTraining/model/LearningType';
 import { inProgressPolyglot } from 'myTraining/ui/model/TableHeaderColumn';
-import React from 'react';
-import { Icon, Table } from 'semantic-ui-react';
+import {
+  setAddLearningCardIds,
+  useAddLearningCardIds,
+} from 'playlist/playlistAddPopUp/playlistAddPopUpView.store';
+import React, { useCallback } from 'react';
+import { Checkbox, CheckboxProps, Icon, Table } from 'semantic-ui-react';
 import {
   convertTimeToDate,
   timeToHourMinutePaddingFormat,
@@ -12,7 +16,7 @@ import { LearningStateName } from 'shared/model';
 import { stateNamePolytglot } from 'shared/model/LearningStateName';
 import { getCollgeName } from 'shared/service/useCollege/useRequestCollege';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
-import { SeeMoreButton } from '../../../../lecture';
+import { LectureService, SeeMoreButton } from '../../../../lecture';
 
 interface props {
   totalCount: number;
@@ -44,25 +48,35 @@ export function InMyListPageTableView({
   seeMoreButtonViewRef,
   isLoading,
 }: props) {
-  //
+  const checkedCardIds = useAddLearningCardIds();
+  const lectureService = LectureService.instance;
+
   return (
     <>
       <div className="mylearning-list-wrap">
-        <Table className="ml-02-03">
+        <Table className="ml-02-02">
           <colgroup>
+            <col width="4%" />
+            <col width="4%" />
+            <col width="15%" />
+            <col width="21%" />
+            <col width="10%" />
+            <col width="10%" />
+            <col width="10%" />
+            <col width="10%" />
             <col width="8%" />
-            <col width="12%" />
-            <col width="20%" />
-            <col width="10%" />
-            <col width="10%" />
-            <col width="10%" />
-            <col width="10%" />
-            <col width="10%" />
-            <col width="10%" />
+            <col width="8%" />
           </colgroup>
-
           <Table.Header>
             <Table.Row>
+              <Table.HeaderCell className="ck">
+                <Checkbox
+                  checked={checkedCardIds.length === learningList.length}
+                  onClick={lectureService.onAllCheckedCard}
+                >
+                  <span className="blind">전체선택</span>
+                </Checkbox>
+              </Table.HeaderCell>
               {headerColumns &&
                 headerColumns.length &&
                 headerColumns.map((headerColumn) => (
@@ -102,6 +116,15 @@ export function InMyListPageTableView({
 
               return (
                 <Table.Row key={`inMyLecture-list-${index}`}>
+                  <Table.Cell>
+                    <Checkbox
+                      value={inMyLecture.id}
+                      checked={checkedCardIds.includes(inMyLecture.id)}
+                      onClick={lectureService.onCheckedCard}
+                    >
+                      <span className="blind">선택</span>
+                    </Checkbox>
+                  </Table.Cell>
                   <Table.Cell>{totalCount - index}</Table.Cell>
                   <Table.Cell>{collegeName}</Table.Cell>
                   <Table.Cell className="title">

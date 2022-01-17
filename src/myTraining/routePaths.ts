@@ -21,6 +21,11 @@ const routePaths = {
   myPageEarnedStampList: () => routePaths.myPageTab('EarnedStampList'),
   myPageProfile: () => routePaths.myProfile('MyProfile'),
 
+  //playlist
+  myPagePlaylist: (tab: string = 'Playlist') => `/my-training/my-page/${tab}`,
+  myPagePlaylistDetail: (playlistId: string) =>
+    `/my-training/my-page/Playlist/detail/${playlistId}`,
+
   //myPageApprovalList: () => routePaths.myPageTab('ApprovalList'),
 
   myPageNoteTab: (

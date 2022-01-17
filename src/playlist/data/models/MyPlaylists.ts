@@ -1,5 +1,5 @@
-import { PlaylistDetail } from './PlaylistDetail';
+import { PlaylistDetailSummary } from './PlaylistDetailSummary';
 
-export interface MyPlaylists extends PlaylistDetail {
-  cardCount: number;
+export interface MyPlaylists extends PlaylistDetailSummary {
+  totalCount: number;
 }

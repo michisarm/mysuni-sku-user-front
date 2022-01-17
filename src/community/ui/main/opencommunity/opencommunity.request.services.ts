@@ -118,7 +118,7 @@ export async function requestFindAllFields() {
   const fieldCountList = await findCommunityCountByField();
 
   if (fields !== undefined) {
-    const parseFieldItems: FieldItem[] = fields.map(item => {
+    const parseFieldItems: FieldItem[] = fields.map((item) => {
       const findFiedCount = find(fieldCountList, { fieldId: item.id });
 
       return {

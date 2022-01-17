@@ -2,7 +2,6 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, reactAutobind, reactConfirm } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
-import cx from 'classnames';
 
 import { Modal, List, Button } from 'semantic-ui-react';
 import ExamPaperService from '../../paper/present/logic/ExamPaperService';
@@ -63,19 +62,15 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
       this.setState(
         {
           open: false,
-        },
+        }
         // this.clear
       );
     }, 300);
   }
 
   async init() {
-    const {
-      examinationService,
-      examPaperService,
-      answerSheetService,
-      examId,
-    } = this.props;
+    const { examinationService, examPaperService, answerSheetService, examId } =
+      this.props;
 
     if (examId) {
       answerSheetService!.findAnswerSheet(
@@ -88,11 +83,8 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
   }
 
   clear() {
-    const {
-      examinationService,
-      examPaperService,
-      answerSheetService,
-    } = this.props;
+    const { examinationService, examPaperService, answerSheetService } =
+      this.props;
 
     answerSheetService!.clear();
     examinationService!.clear();
@@ -107,7 +99,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     answerSheetService!.setAnswer(
       questionNo,
       answer,
-      questions.map(question => question.questionNo)
+      questions.map((question) => question.questionNo)
     );
   }
 
@@ -323,9 +315,8 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                       answerChkMap.get(question.questionNo) || '';
 
                     // getter
-                    const finishedChkFirst = localStorage.getItem(
-                      'finishedChkFirst'
-                    );
+                    const finishedChkFirst =
+                      localStorage.getItem('finishedChkFirst');
 
                     // 시험, 재응시 최초 화면 진입시 체크 F5
                     if (submittedChk) {
@@ -342,16 +333,15 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                     const finichChkVal = localStorage.getItem('finishedChk');
 
                     // getter
-                    const numberOfTrials = localStorage.getItem(
-                      'numberOfTrials'
-                    );
+                    const numberOfTrials =
+                      localStorage.getItem('numberOfTrials');
 
                     switch (question.questionType) {
                       case QuestionType.ShortAnswer:
                         answerArea = (
                           <ShortAnswerView
                             answer={answer}
-                            onSetAnswer={value =>
+                            onSetAnswer={(value) =>
                               this.onSetAnswer(question.questionNo, value)
                             }
                           />
@@ -361,7 +351,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                         answerArea = (
                           <EssayView
                             answer={answer}
-                            onSetAnswer={value =>
+                            onSetAnswer={(value) =>
                               this.onSetAnswer(question.questionNo, value)
                             }
                           />
@@ -377,7 +367,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                           <MultiChoiceView
                             answer={answer}
                             items={question.items}
-                            onSetAnswer={value =>
+                            onSetAnswer={(value) =>
                               this.onSetAnswer(question.questionNo, value)
                             }
                             type={type}
@@ -391,7 +381,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                             answer={answer}
                             question={question}
                             items={question.items}
-                            onSetAnswer={value =>
+                            onSetAnswer={(value) =>
                               this.onSetAnswer(question.questionNo, value)
                             }
                             type={type}
