@@ -110,6 +110,7 @@ const NoSuchContentPanelMessages = {
   ),
   Playlist: '플레이리스트가 없습니다.',
   PlaylistDetail: '플레이리스트가 ',
+  MyLearningSummary: '나의 학습 현황이',
   getMessageByConentType: (contentType: MyContentType): string => {
     return NoSuchContentPanelMessages[contentType];
   },

@@ -17,6 +17,7 @@ const routePaths = {
     `/my-training/my-page/${tab}/pages/1`,
   //  myPageEarnedBadgeList -> 추가 20200911
   myPageCompletedList: () => routePaths.myPageTab('CompletedList'),
+  myPageMyLearningSummary: () => routePaths.myPageTab('MyLearningSummary'),
   myPageEarnedBadgeList: () => routePaths.myPageTab('EarnedBadgeList'),
   myPageEarnedStampList: () => routePaths.myPageTab('EarnedStampList'),
   myPageProfile: () => routePaths.myProfile('MyProfile'),

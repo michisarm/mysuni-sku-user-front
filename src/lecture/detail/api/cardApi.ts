@@ -21,6 +21,8 @@ import { ChannelAndCardCountRom } from '../model/ChannelAndCardCountRom';
 import { UserLectureCard } from '@sku/skuniv-ui-lecture-card';
 import LearningTabCountViewModel from 'lecture/model/learning/LearningTabCountViewModel';
 import CardOrderBy from 'lecture/model/learning/CardOrderBy';
+import { MyLearningRdo } from '../model/MyLearningRdo';
+import moment from 'moment';
 
 const BASE_URL = '/api/lecture';
 
@@ -80,8 +82,9 @@ export function findCardList(cardIds: string[]) {
     .then(AxiosReturn);
 }
 
-export const [findCardListCache, clearFindCardListCache] =
-  createCacheApi(findCardList);
+export const [findCardListCache, clearFindCardListCache] = createCacheApi(
+  findCardList
+);
 
 export function findMyLatestLearningCards(count: number) {
   const axios = getAxios();
@@ -143,8 +146,10 @@ function findRelatedCards(cardId: string) {
   return axios.get<Card[]>(url).then(AxiosReturn);
 }
 
-export const [findRelatedCardsCache, clearFindRelatedCardsCache] =
-  createCacheApi(findRelatedCards);
+export const [
+  findRelatedCardsCache,
+  clearFindRelatedCardsCache,
+] = createCacheApi(findRelatedCards);
 
 export function findByRdo(cardRdo: CardRdo) {
   const axios = getAxios();
@@ -220,7 +225,9 @@ export function cancelStudents(studentId: string) {
 export function markComplete(studentId: string) {
   const axios = getAxios();
   const url = `${BASE_URL}/students/markComplete`;
-  return axios.put<void>(url, { studentId }).then(AxiosReturn);
+  return axios
+    .put<void>(url, { studentId })
+    .then(AxiosReturn);
 }
 
 export function findEnrollingCardList(lectureFilterRdo: LectureFilterRdoModel) {
@@ -296,8 +303,10 @@ export function findRecommendCardsByChannelId(
   return axios.get(url).then((response) => (response && response.data) || []);
 }
 
-export const [findRecommendCardsCache, clearFindRecommendCards] =
-  createCacheApi(findRecommendCards);
+export const [
+  findRecommendCardsCache,
+  clearFindRecommendCards,
+] = createCacheApi(findRecommendCards);
 
 export function registerHomework(
   studentId: string,
@@ -339,4 +348,10 @@ export function findBookmarkCards(limit?: number, orderBy?: CardOrderBy) {
     orderBy || CardOrderBy.BookmarkRegisteredTimeDesc
   }`;
   return axios.get<OffsetElementList<UserLectureCard>>(url).then(AxiosReturn);
+}
+
+export function findSummeryTimeByYear(year: number) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/cards/findMyLearningRdo/${year}`;
+  return axios.get<MyLearningRdo>(url).then(AxiosReturn);
 }
