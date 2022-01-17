@@ -19,15 +19,15 @@ import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 export function RecommendPopUpLeftComponent() {
   const panes = [
     {
-      menuItem: getPolyglotText('playlist-popup-구성원', '소속 부서 구성원'),
+      menuItem: getPolyglotText('소속 부서 구성원', 'playlist-popup-구성원'),
       render: () => <DepartmentMemberTab />,
     },
     {
-      menuItem: getPolyglotText('playlist-popup-사용자', 'mySUNI 사용자'),
+      menuItem: getPolyglotText('mySUNI 사용자', 'playlist-popup-사용자'),
       render: () => <MySuniUserTab />,
     },
     {
-      menuItem: getPolyglotText('playlist-popup-팔로잉', '팔로잉'),
+      menuItem: getPolyglotText('팔로잉', 'playlist-popup-팔로잉'),
       render: () => <FollowingTab />,
     },
   ];
