@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { srcParser } from 'community/ui/components/Image';
 import moment from 'moment';
 import { onOpenPlaylistInputPopUp } from 'playlist/playlistInputPopUp/playlistInputPopUp.events';
 import {
@@ -9,8 +10,7 @@ import { PlaylistInputPopUpView } from 'playlist/playlistInputPopUp/PlaylistInpu
 import { onOpenPlaylistRecommendPopUp } from 'playlist/playlistRecommendPopUp/playlistRecommendPopUp.events';
 import { PlaylistRecommendPopUpView } from 'playlist/playlistRecommendPopUp/PlaylistRecommendPopUpView';
 import React from 'react';
-import { Icon, Label } from 'semantic-ui-react';
-import Image from 'shared/components/Image';
+import { Icon, Image, Label } from 'semantic-ui-react';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { PlaylistDetail } from '../MyPagePlaylistDetail.services';
 import {
@@ -34,13 +34,13 @@ function MyPagePlaylistDetailHeaderView(props: PlaylistHeaderViewType) {
     photoImagePath,
     recommendation,
     type,
-    playlistId,
     myPlaylistId,
   } = props.playlistDetail;
   const { count, my } = props.PlaylistLikeInfo;
   const date = moment(registeredTime).format('YYYY.MM.DD'); // registeredTime 는 타입별로 생성날짜,담은날짜,추천날짜 값이 알아서 들어감
   const isEditModalOpen = useIsOpenPlaylistInputPopUp();
   const isOpen = getIsOpenPlaylistInputPopUp();
+
   return (
     <>
       <div className="playlist-detail-info-inner">
@@ -50,10 +50,7 @@ function MyPagePlaylistDetailHeaderView(props: PlaylistHeaderViewType) {
           <div className="f-left">
             <div className="maker-thumb">
               <Image
-                src={
-                  'https://image.mysuni.sk.com/suni-asset/public/images/all/profile-01@2x.png' ||
-                  photoImagePath
-                } //생성자 이미지 임시로 저장
+                src={srcParser(photoImagePath)}
                 alt="만든사람 프로필이미지"
               />
             </div>

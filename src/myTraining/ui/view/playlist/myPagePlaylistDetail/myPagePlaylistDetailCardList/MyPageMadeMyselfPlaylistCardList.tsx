@@ -1,7 +1,7 @@
+import { srcParser } from 'community/ui/components/Image';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Table, TableBody, TableCell } from 'semantic-ui-react';
-import Image from 'shared/components/Image';
+import { Image, Table, TableBody, TableCell } from 'semantic-ui-react';
 import { timeToHourMinutePaddingFormat } from 'shared/helper/dateTimeHelper';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { PlaylistCardTable } from '../MyPagePlaylistDetail.services';
@@ -37,7 +37,10 @@ function MyPageMadeMyselfPlaylistCardList(props: PlaylistCardTable) {
                     to={`/lecture/card/${cardId}/view`}
                     className="list-thumb-wrap"
                   >
-                    <Image src={cardThumbnailImage} alt="학습카드썸네일" />
+                    <Image
+                      src={srcParser(cardThumbnailImage)}
+                      alt="학습카드썸네일"
+                    />
                   </Link>
                 </TableCell>
                 <TableCell className="title">
