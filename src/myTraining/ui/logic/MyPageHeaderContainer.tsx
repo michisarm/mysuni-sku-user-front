@@ -46,7 +46,7 @@ function MyPageHeaderContainer({
     myTrainingService!.countMyTrainingsWithStamp();
   }, []);
 
-  useRequestLearningSummary();
+  // useRequestLearningSummary();
 
   const onClickMyBadge = useCallback(() => {
     history.push(myTrainingPaths.myPageEarnedBadgeList());

@@ -70,7 +70,7 @@ function MyPageHeaderContainer({
     }
   }, [skProfile]);
 
-  useRequestLearningSummary();
+  // useRequestLearningSummary();
 
   const onClickShowName = useCallback(async (value: boolean) => {
     if (!skProfile.id || !skProfile.nickname || skProfile.nickname === '') {

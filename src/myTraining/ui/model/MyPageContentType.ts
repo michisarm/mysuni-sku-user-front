@@ -5,6 +5,7 @@ export enum MyPageContentType {
   MyProfile = 'MyProfile',
   Playlist = 'Playlist',
   PlaylistDetail = 'PlaylistDetail',
+  MyLearningSummary = 'MyLearningSummary',
 }
 
 export enum MyPageContentTypeName {
@@ -14,4 +15,5 @@ export enum MyPageContentTypeName {
   MyProfile = 'My Profile',
   Playlist = 'Playlist',
   PlaylistDetail = 'PlaylistDetail',
+  MyLearningSummary = 'MyLearningSummary',
 }

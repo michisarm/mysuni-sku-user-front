@@ -27,6 +27,7 @@ import {
 import { Area } from 'tracker/model';
 import MyPagePlaylistPage from './MyPagePlaylistPage';
 import MyPagePlaylistDetailPage from '../view/playlist/myPagePlaylistDetail/MyPagePlaylistDetailPage';
+import MyPageMyLearningSummaryContainer from '../../../main/sub/MyLearningSummary/MyPageMyLearningSummaryContainer';
 
 interface MyPagePageProps {
   myTrainingService?: MyTrainingService;
@@ -161,7 +162,12 @@ function MyPagePage({
                 <>
                   <ul className="menu_list">
                     <li>
-                      <Link to="">
+                      <Link
+                        to={myPageRoutePaths.myPageMyLearningSummary()}
+                        className={
+                          params.tab === 'MyLearningSummary' ? 'active' : ''
+                        }
+                      >
                         <Icon className="IconStatus" />
                         나의 학습 현황
                       </Link>
@@ -261,6 +267,9 @@ function MyPagePage({
           </div>
         </div>
 
+        {params.tab === 'MyLearningSummary' && (
+          <MyPageMyLearningSummaryContainer />
+        )}
         {params.tab === 'EarnedBadgeList' && <MyPageBadgeListContainer />}
         {params.tab === 'EarnedStampList' && <MyStampListContainer />}
         {params.tab === 'EarnedNoteList' && params.pageNo === '1' && (
