@@ -20,6 +20,7 @@ import MainBanner from './MainComponents/MainBanner';
 import MainChallengingBadgeContainer from './MainComponents/MainChallengingBadgeContainer';
 import { MainHotTopicContainer } from './MainComponents/MainHotTopicContainer';
 import RQDLearning from './MainComponents/RQDLearning';
+import { PlaylistContainerView } from './playlistContainer/PlaylistContainerView';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -74,6 +75,9 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
           .map((c) => (
             <LeraningContainer key={c.id} cardBundle={c} />
           ))}
+
+        {/** 플레이리스트 */}
+        <PlaylistContainerView />
       </div>
       <div className="learning-section-wrap bg-gray">
         {pageElements.some(
@@ -82,17 +86,21 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
             pagemElement.type === 'LRSCards'
         ) && (
           <Abtest name="AB-2" nonExperimentalGroup="A">
-            <ExperimentalGroup name="A" style={{marginBottom: '50px'}}>
-              <LRSFromContentbase profileMemberName={skProfile.profileViewName} />
+            <ExperimentalGroup name="A" style={{ marginBottom: '50px' }}>
+              <LRSFromContentbase
+                profileMemberName={skProfile.profileViewName}
+              />
               <LRSFromLearningPatternBased
                 profileMemberName={skProfile.profileViewName}
               />
             </ExperimentalGroup>
-            <ExperimentalGroup name="B" style={{marginBottom: '50px'}}>
+            <ExperimentalGroup name="B" style={{ marginBottom: '50px' }}>
               <LRSFromLearningPatternBased
                 profileMemberName={skProfile.profileViewName}
               />
-              <LRSFromContentbase profileMemberName={skProfile.profileViewName} />
+              <LRSFromContentbase
+                profileMemberName={skProfile.profileViewName}
+              />
             </ExperimentalGroup>
           </Abtest>
         )}

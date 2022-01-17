@@ -66,11 +66,11 @@ export function addCardsToPlaylists(
 
 // 내가 볼 수 있는 Playlist 조회.
 export function findMyPlaylists(
+  limit: number,
   offset: number,
   playlistType: PlaylistType
 ): Promise<OffsetElementList<PlaylistDetailSummary> | undefined> {
   const axios = getAxios();
-  const limit = 9;
   const url = `${BASE_URL}/available?limit=${limit}&offset=${offset}&type=${playlistType}`;
 
   return axios

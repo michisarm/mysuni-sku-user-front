@@ -38,7 +38,7 @@ export function CardSearch() {
   }, []);
 
   return (
-    <div className="search_box">
+    <div className="search_box box2">
       <Table>
         <Table.Body>
           <Table.Row>

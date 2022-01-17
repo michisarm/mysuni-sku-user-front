@@ -50,7 +50,7 @@ export async function onClickPlaylistSeeMore() {
   }
   const { offset, playlistType } = filterBox;
 
-  const nextValue = await findMyPlaylists(offset + 9, playlistType);
+  const nextValue = await findMyPlaylists(9, offset + 9, playlistType);
   if (nextValue === undefined) {
     return;
   }

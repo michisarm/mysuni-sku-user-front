@@ -11,7 +11,7 @@ async function requestMyPagePlaylist() {
   }
   const { offset, playlistType } = filterBox;
 
-  const myPagePlaylist = await findMyPlaylists(offset, playlistType);
+  const myPagePlaylist = await findMyPlaylists(9, offset, playlistType);
   if (myPagePlaylist === undefined) {
     return;
   }
