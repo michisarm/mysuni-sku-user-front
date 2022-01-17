@@ -112,7 +112,7 @@ function PlaylistItem(props: PropsType) {
               <div className="maker-info-box">
                 <div className="maker-thumb">
                   <Image
-                    src="https://image.mysuni.sk.com/suni-asset/public/images/all/profile-06@2x.png"
+                    src={item.photoImagePath}
                     alt="만든사람 프로필이미지"
                   />
                 </div>
