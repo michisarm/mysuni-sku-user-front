@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { Button, Icon, Modal, Tab } from 'semantic-ui-react';
 import { ProfileComponent } from './components/ProfileComponent';
 import {
   useCheckedMemberList,
   useIsOpenPlaylistRecommendPopUp,
-  useRecommendation,
 } from './playlistRecommendPopUp.store';
 import { DepartmentMemberTab } from './components/DepartmentMemberTab';
 import { MySuniUserTab } from './components/MySuniUserTab';
@@ -12,7 +11,7 @@ import { FollowingTab } from './components/FollowingTab';
 import {
   onClearCheckedMember,
   onClickAllClearCheckedMember,
-  onClickRecommendPlaylist,
+  onRecommendPlaylist,
   onClosePlaylistRecommendPopUp,
 } from './playlistRecommendPopUp.events';
 
@@ -89,7 +88,18 @@ export function RecommendPopUpRightComponent() {
 
 export function PlaylistRecommendPopUpView() {
   const isOpen = useIsOpenPlaylistRecommendPopUp();
-  const recommendation = useRecommendation();
+  const [recommendation, setRecommendation] = useState('');
+
+  const onChangeRecommendation = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setRecommendation(e.target.value);
+    },
+    []
+  );
+
+  const onClickRecommend = useCallback(() => {
+    onRecommendPlaylist(recommendation);
+  }, [recommendation]);
 
   return (
     <Modal open={isOpen} className="base w1000 pl-share">
@@ -121,6 +131,7 @@ export function PlaylistRecommendPopUpView() {
               <input
                 type="text"
                 placeholder="Playlist와 함께 추천할 메시지 내용을 입력해주세요."
+                onChange={onChangeRecommendation}
               />
               <span className="validation">최대 50자까지 입력 가능합니다.</span>
             </div>
@@ -128,7 +139,7 @@ export function PlaylistRecommendPopUpView() {
         </div>
       </Modal.Content>
       <Modal.Actions>
-        <Button className="w190 pop p" onClick={onClickRecommendPlaylist}>
+        <Button className="w190 pop p" onClick={onClickRecommend}>
           추천
         </Button>
       </Modal.Actions>

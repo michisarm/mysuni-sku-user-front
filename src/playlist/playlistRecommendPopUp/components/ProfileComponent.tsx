@@ -3,7 +3,8 @@ import { MemberList } from '../playlistRecommendPopUp.store';
 import Image from '../../../shared/components/Image/Image';
 
 export function ProfileComponent(props: MemberList) {
-  const { name, email, thumbnailImagePath, departmentName } = props;
+  const { name, email, thumbnailImagePath, departmentName, companyName } =
+    props;
 
   return (
     <div className="ui profile">
@@ -14,6 +15,7 @@ export function ProfileComponent(props: MemberList) {
         <div className="info-top">
           <strong className="prf-name">{name}</strong>
           <span className="prf-comp">{departmentName}</span>
+          <span className="prf-group">{`/ ${companyName}`}</span>
         </div>
         <span className="prf-email">{email}</span>
       </div>

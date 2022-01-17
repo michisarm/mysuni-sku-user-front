@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { Icon, Label, Menu } from 'semantic-ui-react';
 import { useMyPagePlaylistDetail } from '../MyPagePlaylistDetail.services';
-import { Link } from 'react-router-dom';
 import MyPagePlaylistDetailNoCardList from './MyPagePlaylistDetailNoCardList';
 import MyPagePlaylistDetailCardList from '../myPagePlaylistDetailCardList/MyPagePlaylistDetailCardList';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';

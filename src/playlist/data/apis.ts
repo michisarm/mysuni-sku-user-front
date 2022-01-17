@@ -103,7 +103,7 @@ export function recommendPlaylist(
   playlistRecommendationSdo: PlaylistRecommendationSdo
 ) {
   const axios = getAxios();
-  const url = `${BASE_URL}/recommnend`;
+  const url = `${BASE_URL}/recommend`;
 
   return axios.post(url, playlistRecommendationSdo).then(AxiosReturn);
 }
