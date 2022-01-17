@@ -1,8 +1,10 @@
+import { isEmpty } from 'lodash';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Checkbox, Icon, Tab } from 'semantic-ui-react';
 import {
   onAllCheckDepartmentMember,
   onCheckDepartmentMember,
+  onSearchDepartmentMember,
 } from '../playlistRecommendPopUp.events';
 import { useRequestDepartMentUser } from '../playlistRecommendPopUp.request';
 import {
@@ -25,7 +27,7 @@ export function DepartmentMemberTab() {
   );
 
   const isAllChecked = useMemo(() => {
-    // 체크된 멤버 정보를 가진 배열에서 소속 부서구성원만 필터
+    // 체크된 멤버 정보를 가진 배열에서 소속 부서 구성원만 필터
     const filteredFollowingList = departmentMember.filter((follow) =>
       checkedMemberIds.includes(follow.id)
     );
@@ -41,6 +43,12 @@ export function DepartmentMemberTab() {
     []
   );
 
+  const onClickSearch = useCallback(() => {
+    onSearchDepartmentMember(searchText).then(() => {
+      setSearchTextResult(searchText);
+    });
+  }, [searchText]);
+
   return (
     <Tab.Pane className="left-inner">
       <div className="sh-left-top">
@@ -50,7 +58,7 @@ export function DepartmentMemberTab() {
             placeholder="이름 또는 이메일을 검색해주세요."
             onChange={onChangeSearchText}
           />
-          <Icon className="search link" />
+          <Icon className="search link" onClick={onClickSearch} />
         </div>
       </div>
       <div className="sh-left-bottom">
