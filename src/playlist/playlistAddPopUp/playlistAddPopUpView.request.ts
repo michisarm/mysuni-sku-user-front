@@ -1,3 +1,4 @@
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { reactAlert } from '@nara.platform/accent';
 import {
   addCardsToPlaylists,
@@ -37,7 +38,7 @@ export async function requestAddCardsToPlaylist(
     playlistIds,
   }).then(() => {
     reactAlert({
-      title: 'Playlist 추가하기',
+      title: getPolyglotText('Playlist 추가하기', 'playlist-popup-추가하기'),
       message: 'Playlist에 학습카드가 추가되었습니다.',
     });
   });

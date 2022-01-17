@@ -1,14 +1,15 @@
+import { srcParser } from 'community/ui/components/Image';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   Button,
   Checkbox,
   Icon,
+  Image,
   Table,
   TableBody,
   TableCell,
 } from 'semantic-ui-react';
-import Image from 'shared/components/Image';
 import {
   checkCardContent,
   downCardContent,
@@ -59,7 +60,7 @@ export function EditCardList(props: CheckedCardListViewProps) {
       </Table.Cell>
       <TableCell>
         <Link to="#" className="list-thumb-wrap">
-          <Image src={cardThumNail} alt="학습카드썸네일" />
+          <Image src={srcParser(cardThumNail)} alt="학습카드썸네일" />
         </Link>
       </TableCell>
       <TableCell className="title">
