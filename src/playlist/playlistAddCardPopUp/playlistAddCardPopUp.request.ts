@@ -1,7 +1,6 @@
 import { reactAlert } from '@nara.platform/accent';
 import { findByRdo } from 'expert/apis/instructorApi';
 import { addCardsToPlaylists } from 'playlist/data/apis';
-import { useEffect } from 'react';
 import { findAllCollege } from 'shared/service/requestAllColleges';
 import { getLectureCardRdo } from './helper/getLectureCardRdo';
 import { onClosePlaylistAddCardPopUp } from './playlistAddCardPopUp.events';

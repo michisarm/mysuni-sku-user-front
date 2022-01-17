@@ -1,25 +1,37 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { Checkbox, Icon, Tab } from 'semantic-ui-react';
 import {
+  onAllCheckDepartmentMember,
+  onCheckDepartmentMember,
+} from '../playlistRecommendPopUp.events';
+import { useRequestDepartMentUser } from '../playlistRecommendPopUp.request';
+import {
   useCheckedMemberList,
-  useDepartmentMember,
+  useDepartmentMembers,
 } from '../playlistRecommendPopUp.store';
 import { ProfileComponent } from './ProfileComponent';
 
 export function DepartmentMemberTab() {
-  const departmentMember = useDepartmentMember();
+  useRequestDepartMentUser();
+
+  const departmentMember = useDepartmentMembers();
   const checkedMemberList = useCheckedMemberList();
   const [searchText, setSearchText] = useState('');
-
-  const isAllChecked = useMemo(
-    () => checkedMemberList.length === departmentMember.length,
-    [checkedMemberList, departmentMember]
-  );
+  const [searchTextResult, setSearchTextResult] = useState('');
 
   const checkedMemberIds = useMemo(
     () => checkedMemberList.map((member) => member.id),
     [checkedMemberList]
   );
+
+  const isAllChecked = useMemo(() => {
+    // 체크된 멤버 정보를 가진 배열에서 소속 부서구성원만 필터
+    const filteredFollowingList = departmentMember.filter((follow) =>
+      checkedMemberIds.includes(follow.id)
+    );
+
+    return departmentMember.length === filteredFollowingList.length;
+  }, [checkedMemberIds, departmentMember]);
 
   const onChangeSearchText = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,8 +59,9 @@ export function DepartmentMemberTab() {
             <Icon className="no-contents80" />
             <span className="blind">콘텐츠 없음</span>
             <div className="text">
-              <strong className="s-word">{searchText}</strong>에 대한 검색결과가
-              없어요! <br /> Playlist를 추천할 다른 학습자를 검색해주세요.
+              <strong className="s-word">{searchTextResult}</strong>에 대한
+              검색결과가 없어요! <br /> Playlist를 추천할 다른 학습자를
+              검색해주세요.
             </div>
           </div>
         ) : (
@@ -58,6 +71,7 @@ export function DepartmentMemberTab() {
                 className="base"
                 label="전체 선택"
                 checked={isAllChecked}
+                onClick={onAllCheckDepartmentMember}
               />
             </div>
             <div className="sh-user-list">
@@ -68,6 +82,7 @@ export function DepartmentMemberTab() {
                       className="base"
                       value={member.id}
                       checked={checkedMemberIds.includes(member.id)}
+                      onClick={onCheckDepartmentMember}
                     />
                   </div>
                   <ProfileComponent {...member} />

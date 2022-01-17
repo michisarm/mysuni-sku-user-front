@@ -5,6 +5,7 @@ import Profile from '../models/Profile';
 import { NameValue } from '../../accent/models/NameValue';
 import { AdditionalUserInfo } from '../models/AdditionalUserInfo';
 import { createCacheApi } from '../../../../packages/api/cacheableApi';
+import { UserIdentities } from '../models/UserIdentities';
 
 const BASE_URL = '/api/user/users';
 
@@ -50,4 +51,22 @@ export function findJsonUserGroup() {
   const axios = getAxios();
   const url = `${BASE_URL}/jsonUserGroup`;
   return axios.get(url).then((response) => (response && response.data) || null);
+}
+
+export function findSameDepartmentUserIdentities(
+  searchWord: string
+): Promise<UserIdentities[] | undefined> {
+  const axios = getAxios();
+  const url = `${BASE_URL}/findSameDepartmentUserIdentities?keyword=${searchWord}`;
+
+  return axios.get<UserIdentities[]>(url).then(AxiosReturn);
+}
+
+export function findUserIdentitiesByKeyword(
+  searchWord: string
+): Promise<UserIdentities[] | undefined> {
+  const axios = getAxios();
+  const url = `${BASE_URL}/findUserIdentitiesByKeyword?keyword=${searchWord}`;
+
+  return axios.get<UserIdentities[]>(url).then(AxiosReturn);
 }
