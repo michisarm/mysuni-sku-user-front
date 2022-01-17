@@ -1,16 +1,39 @@
 import { Accordion, Button, Icon } from 'semantic-ui-react';
 import * as React from 'react';
+import { PlaylistDetailSummary } from '../../../../../playlist/data/models/PlaylistDetailSummary';
+import { PlaylistInCard } from '../../present/logic/PlaylistStore';
 
-interface Props {}
+interface Props {
+  active: boolean;
+  index: number;
+  playlistSummary: PlaylistDetailSummary;
+  playlistInCards: PlaylistInCard[] | undefined;
+
+  onClickPlaylistContents: (index: number) => void;
+  routeToCardOverView: (cardId: string) => void;
+}
+
+function getHourMinuteFormat(hour: number, minute: number) {
+  //
+  let time = '';
+
+  time = hour > 0 ? time + `${hour}h` : time;
+  time = minute > 0 ? time + ` ${minute}m` : time;
+
+  return <span className="time">{time}</span>;
+}
 
 function UserProfileInfoTabPlaylistView(props: Props) {
   //
+  const { active, index, playlistSummary, playlistInCards } = props;
+  const { onClickPlaylistContents, routeToCardOverView } = props;
+
   return (
-    <>
-      <Accordion.Title active={true}>
+    <div className="mylist-acc-item" key={playlistSummary.id}>
+      <Accordion.Title active={active}>
         <div className="acc-top">
           <div className="acc-tit">
-            <strong>[CEO특강_SK에너지] 행복에 이르는 다섯 계단</strong>
+            <strong>{playlistSummary.title}</strong>
           </div>
           <div className="acc-meta">
             <Button className="like">
@@ -23,55 +46,61 @@ function UserProfileInfoTabPlaylistView(props: Props) {
             </Button>
           </div>
           <div className="acc-cnt">
-            <Button className="acc-updown">
-              {`총`}
-              <strong>6개</strong>
+            <Button
+              className="acc-updown"
+              onClick={() => {
+                if (playlistSummary.cardIds.length > 0) {
+                  onClickPlaylistContents(index);
+                }
+              }}
+            >
+              {`총 `}
+              <strong
+                className={playlistSummary.cardIds.length > 0 ? 'cnt' : ''}
+              >
+                {`${playlistSummary.cardIds.length} 개`}
+              </strong>
               {` 학습카드`}
-              <Icon area-hidden="true" className="drop24-down" />
+              {(playlistSummary.cardIds.length > 0 && (
+                <Icon area-hidden="true" className="drop24-down" />
+              )) ||
+                null}
             </Button>
           </div>
         </div>
       </Accordion.Title>
-      <Accordion.Content active={true}>
+      <Accordion.Content active={active}>
         <div className="list-wrap">
           <ul className="acc-card-list">
-            <li className="item">
-              <a href="#" className="inner">
-                <div className="ellipsis tit">
-                  AI/DT 시대의 고객 경험 디자인
-                </div>
-                <div className="item-dt">
-                  <span className="cnt">12개</span>
-                  <span className="time">11h 30m</span>
-                </div>
-              </a>
-            </li>
-            <li className="item">
-              <a href="#" className="inner">
-                <div className="ellipsis tit">
-                  AI/DT 시대의 고객 경험 디자인
-                </div>
-                <div className="item-dt">
-                  <span className="cnt">12개</span>
-                  <span className="time">11h 30m</span>
-                </div>
-              </a>
-            </li>
-            <li className="item">
-              <a href="#" className="inner">
-                <div className="ellipsis tit">
-                  AI/DT 시대의 고객 경험 디자인
-                </div>
-                <div className="item-dt">
-                  <span className="cnt">12개</span>
-                  <span className="time">11h 30m</span>
-                </div>
-              </a>
-            </li>
+            {playlistInCards &&
+              playlistInCards.map((card) => {
+                //
+
+                return (
+                  <li className="item">
+                    <a
+                      href=""
+                      className="inner"
+                      onClick={() => routeToCardOverView(card.cardId)}
+                    >
+                      <div className="ellipsis tit">{card.cardTitle}</div>
+                      <div className="item-dt">
+                        <span className="cnt">{`${card.count}개`}</span>
+                        <span className="time">
+                          {getHourMinuteFormat(
+                            Math.floor(card.leaningTime / 60),
+                            card.leaningTime % 60
+                          )}
+                        </span>
+                      </div>
+                    </a>
+                  </li>
+                );
+              })}
           </ul>
         </div>
       </Accordion.Content>
-    </>
+    </div>
   );
 }
 
