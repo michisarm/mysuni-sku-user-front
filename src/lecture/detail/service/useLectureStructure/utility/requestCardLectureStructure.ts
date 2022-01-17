@@ -43,8 +43,6 @@ import { getDefaultLang } from '../../../../model/LangSupport';
 import { findCardPisAgreement } from '../../../api/profileApi';
 import { useHistory } from 'react-router';
 import { useEffect } from 'react';
-import PlayTimeModel from '../../../model/PlayTimeModel';
-import { findByCubeIds } from '../../../api/panoptoApi';
 
 function parseCubeTestItem(
   card: Card,
@@ -377,8 +375,7 @@ function parseDurationableCubeItem(
   card: Card,
   cube: Cube,
   order: number,
-  cubeStudent?: Student,
-  playTimes?: PlayTimeModel[]
+  cubeStudent?: Student
 ): LectureStructureDurationableCubeItem {
   const {
     id,
@@ -398,19 +395,6 @@ function parseDurationableCubeItem(
     pathname: '',
   };
   params.pathname = toPath(params);
-  // console.log(cubeStudent);
-  // console.log(
-  //   !isNaN(parseInt(cubeStudent?.durationViewSeconds || ''))
-  //     ? parseInt(cubeStudent?.durationViewSeconds || '')
-  //     : undefined
-  // );
-  // console.log(playTimes);
-  const playTime = playTimes?.find((pt) => pt.cubeId === id);
-  let duration = 0;
-  if (playTime) {
-    duration = (playTime.playedSeconds / playTime.duration) * 100;
-  }
-
   const item: LectureStructureDurationableCubeItem = {
     cardId: card.id,
     name: parsePolyglotString(name, getDefaultLang(langSupports)),
@@ -426,10 +410,9 @@ function parseDurationableCubeItem(
     can: true,
     state: convertLearningStateToState(cubeStudent?.learningState),
     cube,
-    // duration: !isNaN(parseInt(cubeStudent?.durationViewSeconds || ''))
-    //   ? parseInt(cubeStudent?.durationViewSeconds || '')
-    //   : undefined,
-    duration,
+    duration: !isNaN(parseInt(cubeStudent?.durationViewSeconds || ''))
+      ? parseInt(cubeStudent?.durationViewSeconds || '')
+      : undefined,
     isDurationable: true,
   };
   if (hasTest) {
@@ -775,8 +758,7 @@ async function parseCubeItem(
   card: Card,
   cube: Cube,
   order: number,
-  cubeStudent?: Student,
-  playTimes?: PlayTimeModel[]
+  cubeStudent?: Student
 ): Promise<LectureStructureCubeItem> {
   const {
     id,
@@ -795,13 +777,7 @@ async function parseCubeItem(
       subType === MediaType.InternalMedia ||
       subType === MediaType.InternalMediaUpload
     ) {
-      return parseDurationableCubeItem(
-        card,
-        cube,
-        order,
-        cubeStudent,
-        playTimes
-      );
+      return parseDurationableCubeItem(card, cube, order, cubeStudent);
     }
   }
   if (type === 'Discussion') {
@@ -898,7 +874,6 @@ function parseItems(
     if (learningContentType === 'Cube') {
       const cube = lectureStructure.cubes.find((c) => c.cubeId === contentId);
       if (cube !== undefined) {
-        // console.log(cube);
         items.push(cube);
       }
     } else if (learningContentType === 'Chapter') {
@@ -978,8 +953,6 @@ export async function requestCardLectureStructure(cardId: string) {
 
   const cardItem = parseCardItem(card, cardContents, cardStudent);
   const cubes = await findCubesByIdsCache(cubeIds);
-  const playTimes: PlayTimeModel[] = await findByCubeIds(cubeIds);
-  // const playTimes: PlayTimeModel[] = [];
 
   let cubeItems: LectureStructureCubeItem[] = [];
 
@@ -990,13 +963,7 @@ export async function requestCardLectureStructure(cardId: string) {
         const order = cardContents.learningContents.findIndex(
           ({ contentId }) => contentId === cube.id
         );
-        const cubeItem = await parseCubeItem(
-          card,
-          cube,
-          order,
-          cubeStudent,
-          playTimes
-        );
+        const cubeItem = await parseCubeItem(card, cube, order, cubeStudent);
         return cubeItem;
       })
     );
@@ -1057,8 +1024,6 @@ export async function requestCardLectureStructure(cardId: string) {
     });
 
   cardItem.canSubmit = cubeItems.every((c) => c.state === 'Completed');
-
-  // console.log(cubeItems);
 
   const lectureStructure: LectureStructure = {
     card: cardItem,

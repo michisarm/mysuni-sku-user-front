@@ -199,12 +199,9 @@ export function getStudentExam(studentId: string) {
   return axios.get<Test>(url).then(AxiosReturn);
 }
 
-export function confirmProgressByStudentId(
-  studentId: string,
-  syncPlayTime: boolean = false
-) {
+export function confirmProgressByStudentId(studentId: string) {
   const axios = getAxios();
-  const url = `${BASE_URL}/students/confirm/progressByStudentId/${studentId}?syncPlaytime=${syncPlayTime}`;
+  const url = `${BASE_URL}/students/confirm/progressByStudentId/${studentId}`;
   return axios.get<Student>(url).then(AxiosReturn);
 }
 

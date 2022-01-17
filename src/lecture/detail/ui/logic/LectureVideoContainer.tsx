@@ -99,20 +99,11 @@ function LectureVideoContainer() {
   }, [params?.cubeId]);
 
   useEffect(() => {
-    // fixed: playerState 변화시 api호출 > 최초 cube화면 진입시로 api호출 시점 변경
-    // if (panoptoEmbedPlayerState?.playerState === undefined) {
-    //   return;
-    // }
-    // callConfirmProgress(panoptoEmbedPlayerState);
+    if (panoptoEmbedPlayerState?.playerState === undefined) {
+      return;
+    }
+    callConfirmProgress();
   }, [panoptoEmbedPlayerState?.playerState]);
-
-  useEffect(() => {
-    // if (panoptoEmbedPlayerState?.playerState === undefined) {
-    //   return;
-    // }
-    // 학습자로 등록이 되어있으면 보내기 없으면 등록하고 보내기
-    callConfirmProgress(panoptoEmbedPlayerState, true);
-  }, [params?.cubeId]);
 
   useEffect(() => {
     if (surveyAlerted === true) {
