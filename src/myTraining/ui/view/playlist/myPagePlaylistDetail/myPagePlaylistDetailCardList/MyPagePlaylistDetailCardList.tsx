@@ -12,6 +12,8 @@ import {
   sumbitEditCardList,
 } from './MyPagePlaylistDetailCardList.event';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { onOpenPlaylistAddCardPopUp } from 'playlist/playlistAddCardPopUp/playlistAddCardPopUp.events';
+import { PlaylistAddCardPopUpView } from 'playlist/playlistAddCardPopUp/PlaylistAddCardPopUpView';
 
 interface propsType {
   type: PlaylistType;
@@ -39,7 +41,11 @@ function MyPagePlaylistDetailCardList(props: propsType) {
                 <Button className="btn-delete-list" onClick={deleteCardContent}>
                   선택 삭제
                 </Button>
-                <Label as="Button" className="onlytext btn-add-list">
+                <Label
+                  as="Button"
+                  className="onlytext btn-add-list"
+                  onClick={onOpenPlaylistAddCardPopUp}
+                >
                   <Icon className="plus round16" />
                   <span>
                     <PolyglotText
@@ -48,6 +54,7 @@ function MyPagePlaylistDetailCardList(props: propsType) {
                     />
                   </span>
                 </Label>
+                <PlaylistAddCardPopUpView />
               </div>
             ) : (
               <>
