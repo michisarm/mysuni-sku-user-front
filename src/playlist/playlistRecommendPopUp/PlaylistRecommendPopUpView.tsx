@@ -15,19 +15,20 @@ import {
   onClickRecommendPlaylist,
   onClosePlaylistRecommendPopUp,
 } from './playlistRecommendPopUp.events';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 export function RecommendPopUpLeftComponent() {
   const panes = [
     {
-      menuItem: '소속 부서 구성원',
+      menuItem: getPolyglotText('playlist-popup-구성원', '소속 부서 구성원'),
       render: () => <DepartmentMemberTab />,
     },
     {
-      menuItem: 'mySUNI 사용자',
+      menuItem: getPolyglotText('playlist-popup-사용자', 'mySUNI 사용자'),
       render: () => <MySuniUserTab />,
     },
     {
-      menuItem: '팔로잉',
+      menuItem: getPolyglotText('playlist-popup-팔로잉', '팔로잉'),
       render: () => <FollowingTab />,
     },
   ];
@@ -43,7 +44,10 @@ export function RecommendPopUpRightComponent() {
       <div className="sh-header">
         <div className="h-left">
           <span>Selected</span>
-          <strong> {checkedMemberList.length}명</strong>
+          <strong>
+            {checkedMemberList.length}
+            <PolyglotText defaultString="명" id="playlist-popup-선택명수" />
+          </strong>
         </div>
         <div className="h-right">
           <Button
@@ -52,7 +56,10 @@ export function RecommendPopUpRightComponent() {
             onClick={onClickAllClearCheckedMember}
           >
             <Icon className="delete14" />
-            전체삭제
+            <PolyglotText
+              defaultString="전체삭제"
+              id="playlist-popup-전체삭제"
+            />
           </Button>
         </div>
       </div>
@@ -61,9 +68,15 @@ export function RecommendPopUpRightComponent() {
           <div className="no-cont-wrap">
             <Icon className="no-contents80" />
             <span className="blind">콘텐츠 없음</span>
-            <div className="text">
-              {' Playlist를 추천할\n학습자를 선택해주세요.'}
-            </div>
+            <div
+              className="text"
+              dangerouslySetInnerHTML={{
+                __html: getPolyglotText(
+                  `Playlist를 추천할\n학습자를 선택해주세요.`,
+                  'playlist-popup-추천구성원'
+                ),
+              }}
+            />
           </div>
         ) : (
           <div className="sh-user-list">
@@ -94,7 +107,12 @@ export function PlaylistRecommendPopUpView() {
   return (
     <Modal open={isOpen} className="base w1000 pl-share">
       <Modal.Header className="res xfl">
-        <span>Playlist 추천하기</span>
+        <span>
+          <PolyglotText
+            defaultString="Playlist 추천하기"
+            id="playlist-popup-추천하기"
+          />
+        </span>
         <Button className="close24" onClick={onClosePlaylistRecommendPopUp}>
           <Icon className="close24" />
         </Button>
@@ -108,7 +126,12 @@ export function PlaylistRecommendPopUpView() {
             <RecommendPopUpRightComponent />
           </div>
           <div className="sh-bottom">
-            <div className="sh-tit">메시지 내용</div>
+            <div className="sh-tit">
+              <PolyglotText
+                defaultString="메시지 내용"
+                id="playlist-popup-메세지내용"
+              />
+            </div>
             <div
               className={`ui right-top-count input ${
                 recommendation.length > 50 ? 'error' : ''
@@ -120,16 +143,24 @@ export function PlaylistRecommendPopUpView() {
               </span>
               <input
                 type="text"
-                placeholder="Playlist와 함께 추천할 메시지 내용을 입력해주세요."
+                placeholder={getPolyglotText(
+                  'Playlist와 함께 추천할 메시지 내용을 입력해주세요.',
+                  'playlist-popup-추천메세지'
+                )}
               />
-              <span className="validation">최대 50자까지 입력 가능합니다.</span>
+              <span className="validation">
+                <PolyglotText
+                  defaultString="최대 50자까지 입력 가능합니다."
+                  id="playlist-popup-최대50"
+                />
+              </span>
             </div>
           </div>
         </div>
       </Modal.Content>
       <Modal.Actions>
         <Button className="w190 pop p" onClick={onClickRecommendPlaylist}>
-          추천
+          <PolyglotText defaultString="추천" id="playlist-popup-추천버튼" />
         </Button>
       </Modal.Actions>
     </Modal>
