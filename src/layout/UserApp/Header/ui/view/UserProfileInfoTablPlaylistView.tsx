@@ -2,6 +2,7 @@ import { Accordion, Button, Icon } from 'semantic-ui-react';
 import * as React from 'react';
 import { PlaylistDetailSummary } from '../../../../../playlist/data/models/PlaylistDetailSummary';
 import { PlaylistInCard } from '../../present/logic/PlaylistStore';
+import { Simulate } from 'react-dom/test-utils';
 
 interface Props {
   active: boolean;
@@ -11,6 +12,7 @@ interface Props {
 
   onClickPlaylistContents: (index: number) => void;
   routeToCardOverView: (cardId: string) => void;
+  onClickLike: (feedbackId: string, state: boolean) => void;
 }
 
 function getHourMinuteFormat(hour: number, minute: number) {
@@ -26,7 +28,7 @@ function getHourMinuteFormat(hour: number, minute: number) {
 function UserProfileInfoTabPlaylistView(props: Props) {
   //
   const { active, index, playlistSummary, playlistInCards } = props;
-  const { onClickPlaylistContents, routeToCardOverView } = props;
+  const { onClickPlaylistContents, routeToCardOverView, onClickLike } = props;
 
   return (
     <div className="mylist-acc-item" key={playlistSummary.id}>
@@ -36,12 +38,25 @@ function UserProfileInfoTabPlaylistView(props: Props) {
             <strong>{playlistSummary.title}</strong>
           </div>
           <div className="acc-meta">
-            <Button className="like">
-              <Icon aria-hidden="true" className="heart16 active" />
-              {`4,288`}
+            <Button
+              className="like"
+              onClick={() =>
+                onClickLike(
+                  playlistSummary.likeFeedbackId,
+                  playlistSummary.myLike
+                )
+              }
+            >
+              <Icon
+                aria-hidden="true"
+                className={
+                  playlistSummary.myLike ? 'heart16' : 'heart16 active'
+                }
+              />
+              {playlistSummary.likeCount}
             </Button>
             <Button className="add-black">
-              <Icon aria-hidden="true" className="add-black16'" />
+              <Icon aria-hidden="true" className="add-black16" />
               {`Playlist 담기`}
             </Button>
           </div>
