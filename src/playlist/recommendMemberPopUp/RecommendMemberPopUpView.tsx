@@ -1,7 +1,8 @@
+import { srcParser } from 'community/ui/components/Image';
 import { PlaylistType } from 'playlist/data/models/PlaylistType';
 import React, { useMemo } from 'react';
-import { Button, Icon, Modal } from 'semantic-ui-react';
-import Image from '../../shared/components/Image/Image';
+import { Button, Icon, Modal, Image } from 'semantic-ui-react';
+
 import { onCloseRecommendMemberPopUp } from './recommendMemberPopUp.events';
 import { useRequestRecommendMemberPopUp } from './recommendMemberPopUp.request';
 import {
@@ -46,13 +47,20 @@ export function RecommendMemberPopUpView({
               <div className="user-prf">
                 <div className="ui profile">
                   <div className="pic s48">
-                    <Image src={member.thumbnailImage} alt="프로필사진" />
+                    <Image
+                      src={srcParser(member.photoImagePath)}
+                      alt="프로필사진"
+                    />
                   </div>
                   <div className="prf-info">
                     <div className="info-top">
                       <strong className="prf-name">{member.name}</strong>
                       <span className="prf-comp">{member.departmentName}</span>
                       <span className="prf-group">{`/ ${member.companyName}`}</span>
+                      {console.log(
+                        member.photoImagePath,
+                        srcParser(member.photoImagePath)
+                      )}
                     </div>
                     <span className="prf-email">{member.email}</span>
                   </div>

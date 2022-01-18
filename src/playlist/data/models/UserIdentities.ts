@@ -5,7 +5,6 @@ export type UserIdentities = Omit<
   | 'backgroundImagePath'
   | 'gdiPhotoImagePath'
   | 'nickname'
-  | 'photoImagePath'
   | 'selfIntroduction'
   | 'useGdiPhoto'
 >;
