@@ -53,8 +53,7 @@ const routePaths = {
   learningRqdLecture: () => routePaths.newLearningTab('Required'),
   learningNewLecture: () => routePaths.newLearningTab('New'),
   learningPopLecture: () => routePaths.newLearningTab('Popular'),
-  learningLrsLecture: (type: string) =>
-    `${routePaths.newLearningTab('Recommend')}/?type=${type}`,
+  learningLrsLecture: (type: string) => `/my-training/new-learning/Recommend/${type}/pages/1`,
   learningEnrLecture: () => routePaths.newLearningTab('Enrolling'),
 
   createPersonalCubeDetail: (personalCubeId: string, cubeType: string) =>
