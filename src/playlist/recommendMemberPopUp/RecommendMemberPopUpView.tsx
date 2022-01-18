@@ -56,10 +56,6 @@ export function RecommendMemberPopUpView({
                     <div className="info-top">
                       <strong className="prf-name">{member.name}</strong>
                       <span className="prf-comp">{member.departmentName}</span>
-                      {console.log(
-                        member.photoImagePath,
-                        srcParser(member.photoImagePath)
-                      )}
                     </div>
                     <span className="prf-email">{member.email}</span>
                   </div>
