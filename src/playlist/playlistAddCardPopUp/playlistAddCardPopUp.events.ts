@@ -1,3 +1,4 @@
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { reactAlert } from '@nara.platform/accent';
 import { isEmpty } from 'lodash';
 import requestMyPagePlaylistDetail from 'myTraining/ui/view/playlist/myPagePlaylistDetail/MyPagePlaylistDetail.request';
@@ -130,8 +131,14 @@ export function onAddCardToPlaylist() {
 
   if (isEmpty(cardIds)) {
     reactAlert({
-      title: 'Playlist 과정 추가',
-      message: 'Playlisy에 추가할 학습카드를 선택해주세요.',
+      title: getPolyglotText(
+        'Playlist 과정 추가',
+        'playlist-popup-과정추가버튼'
+      ),
+      message: getPolyglotText(
+        'Playlisy에 추가할 학습카드를 선택해주세요.',
+        'playlist-popup-학습카드선택'
+      ),
     });
     return;
   }
