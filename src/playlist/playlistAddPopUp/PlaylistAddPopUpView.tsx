@@ -7,7 +7,6 @@ import {
   onClosePlaylistAddPopUpView,
   onIsCheckPlaylist,
 } from './playlistAddPopUpView.events';
-import { useRequestPlaylistAddPopUpView } from './playlistAddPopUpView.request';
 import {
   useMyPlaylist,
   useIsOpenPlayListAddPopUp,
@@ -93,8 +92,6 @@ export function PlaylistAddPopUpView() {
   const isOpen = useIsOpenPlayListAddPopUp();
   const [isShowAddPlaylistInput, setIsShowAddPlaylistInput] = useState(false);
   const [playlistName, setPlaylistName] = useState('');
-
-  useRequestPlaylistAddPopUpView();
 
   const onChangePlaylistName = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {

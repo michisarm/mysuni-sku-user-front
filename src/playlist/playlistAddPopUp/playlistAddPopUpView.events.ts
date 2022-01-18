@@ -4,6 +4,7 @@ import { isEmpty } from 'lodash';
 import { CheckboxProps } from 'semantic-ui-react';
 import {
   requestAddCardsToPlaylist,
+  requestPlaylistAddPopUpView,
   requestRegisterPlaylist,
 } from './playlistAddPopUpView.request';
 import {
@@ -15,6 +16,7 @@ import {
 
 export function onOpenPlaylistAddPopUpView() {
   setIsOpenPlayListAddPopUp(true);
+  requestPlaylistAddPopUpView();
 }
 
 export function onClosePlaylistAddPopUpView() {

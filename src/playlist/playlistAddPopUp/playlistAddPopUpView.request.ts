@@ -5,7 +5,6 @@ import {
   findPlaylistsMadeByMySelf,
   registerPlaylist,
 } from 'playlist/data/apis';
-import { useEffect } from 'react';
 import {
   setMyPlaylist,
   getMyPlaylist,
@@ -56,10 +55,4 @@ export async function requestPlaylistAddPopUpView() {
 
     setMyPlaylist(myplaylist);
   }
-}
-
-export function useRequestPlaylistAddPopUpView() {
-  useEffect(() => {
-    requestPlaylistAddPopUpView();
-  }, []);
 }
