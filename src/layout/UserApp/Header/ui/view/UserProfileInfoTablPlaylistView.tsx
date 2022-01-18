@@ -12,6 +12,7 @@ interface Props {
 
   onClickPlaylistContents: (index: number) => void;
   routeToCardOverView: (cardId: string) => void;
+  onClickLike: (feedbackId: string, state: boolean) => void;
 }
 
 function getHourMinuteFormat(hour: number, minute: number) {
@@ -27,7 +28,9 @@ function getHourMinuteFormat(hour: number, minute: number) {
 function UserProfileInfoTabPlaylistView(props: Props) {
   //
   const { active, index, playlistSummary, playlistInCards } = props;
-  const { onClickPlaylistContents, routeToCardOverView } = props;
+  const { onClickPlaylistContents, routeToCardOverView, onClickLike } = props;
+
+  console.log(playlistSummary.myLike);
 
   return (
     <div className="mylist-acc-item" key={playlistSummary.id}>
@@ -37,8 +40,21 @@ function UserProfileInfoTabPlaylistView(props: Props) {
             <strong>{playlistSummary.title}</strong>
           </div>
           <div className="acc-meta">
-            <Button className="like">
-              <Icon aria-hidden="true" className="heart16 active" />
+            <Button
+              className="like"
+              onClick={() =>
+                onClickLike(
+                  playlistSummary.likeFeedbackId,
+                  playlistSummary.myLike
+                )
+              }
+            >
+              <Icon
+                aria-hidden="true"
+                className={
+                  playlistSummary.myLike ? 'heart16' : 'heart16 active'
+                }
+              />
               {playlistSummary.likeCount}
             </Button>
             <Button className="add-black">

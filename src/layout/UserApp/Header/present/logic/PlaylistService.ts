@@ -3,6 +3,8 @@ import {
   setProfileCardPlaylistCards,
   ProfileCardPlayListInCards,
   PlaylistInCard,
+  getProfileCardPlaylist,
+  ProfileCardPlayListSummaries,
 } from './PlaylistStore';
 import { findMyPlaylistsByDenizenId } from 'playlist/data/apis';
 import { findCards } from '../../../../../expert/apis/instructorApi';
@@ -11,7 +13,10 @@ import { findMyPlaylistCardRdos } from '../../../../../lecture/detail/api/cardAp
 import {
   countAllLikeByFeedbackId,
   findAllLikeByFeedbackIds,
+  likeByFeedbackId,
+  unlikeByFeedbackId,
 } from '../../../../../hotTopic/api/hotTopicLikeApi';
+import { PlaylistDetailSummary } from '../../../../../playlist/data/models/PlaylistDetailSummary';
 
 async function findProfileCardPlaylistByDenizenId(denizenId: string) {
   //
@@ -75,4 +80,14 @@ async function findProfileCardPlaylistByDenizenId(denizenId: string) {
   }
 }
 
-export { findProfileCardPlaylistByDenizenId };
+async function registerLike(feedbackId: string) {
+  //
+  await likeByFeedbackId(feedbackId);
+}
+
+async function removeLike(feedbackId: string) {
+  //
+  await unlikeByFeedbackId(feedbackId);
+}
+
+export { findProfileCardPlaylistByDenizenId, registerLike, removeLike };

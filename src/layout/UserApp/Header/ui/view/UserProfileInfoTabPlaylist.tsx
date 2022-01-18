@@ -6,7 +6,11 @@ import {
   useProfileCardPlaylistCards,
 } from '../../present/logic/PlaylistStore';
 import { useCallback, useEffect, useState } from 'react';
-import { findProfileCardPlaylistByDenizenId } from '../../present/logic/PlaylistService';
+import {
+  findProfileCardPlaylistByDenizenId,
+  registerLike,
+  removeLike,
+} from '../../present/logic/PlaylistService';
 import { useHistory } from 'react-router-dom';
 
 interface Props {
@@ -29,6 +33,17 @@ function UserProfileInfoTabPlaylist(props: Props) {
       setActiveIndex(-1);
     } else {
       setActiveIndex(index);
+    }
+  };
+
+  const onClickLike = async (feedbackId: string, state: boolean) => {
+    if (state) {
+      await removeLike(feedbackId);
+    } else {
+      await registerLike(feedbackId);
+    }
+    if (props.memberId) {
+      await findProfileCardPlaylistByDenizenId(props.memberId);
     }
   };
 
@@ -70,6 +85,7 @@ function UserProfileInfoTabPlaylist(props: Props) {
                             playlistInCards={cards}
                             onClickPlaylistContents={onClickPlaylistContents}
                             routeToCardOverView={routeToCardOverView}
+                            onClickLike={onClickLike}
                           />
                         );
                       }
