@@ -21,7 +21,7 @@ function MyPagePlaylistDetailPage() {
       <div className="mypage-title-wrap">
         <strong className="mypage_title">Playlist</strong>
         <a
-          href={myPageRoutePaths.myPagePlaylist()}
+          href="/suni-main/my-training/my-page/playlist"
           className="btn-txt btn-tolist"
         >
           <PolyglotText

@@ -1,6 +1,7 @@
 import { isEmpty } from 'lodash';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Checkbox, Icon, Tab } from 'semantic-ui-react';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
   onAllCheckDepartmentMember,
   onCheckDepartmentMember,
@@ -55,7 +56,10 @@ export function DepartmentMemberTab() {
         <div className="ui h38 search input">
           <input
             type="text"
-            placeholder="이름 또는 이메일을 검색해주세요."
+            placeholder={getPolyglotText(
+              '이름 또는 이메일을 검색해주세요.',
+              'playlist-popup-이름이메일'
+            )}
             onChange={onChangeSearchText}
           />
           <Icon className="search link" onClick={onClickSearch} />
