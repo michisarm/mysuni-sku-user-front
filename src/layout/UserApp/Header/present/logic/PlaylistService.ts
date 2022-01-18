@@ -6,7 +6,7 @@ import {
   getProfileCardPlaylist,
   ProfileCardPlayListSummaries,
 } from './PlaylistStore';
-import { findMyPlaylistsByDenizenId } from 'playlist/data/apis';
+import { findMyPlaylistsByDenizenId, registerMyPlaylistByPlaylistId } from 'playlist/data/apis';
 import { findCards } from '../../../../../expert/apis/instructorApi';
 import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
 import { findMyPlaylistCardRdos } from '../../../../../lecture/detail/api/cardApi';
@@ -58,26 +58,26 @@ async function findProfileCardPlaylistByDenizenId(denizenId: string) {
   });
 
   if (cardIds) {
-    const cards = await findCards(cardIds);
     const cardInCubeCount = await findMyPlaylistCardRdos(cardIds);
 
-    const playlistInCards: PlaylistInCard[] | undefined = cards?.map((card) => {
-      //
-      const cubeCount = cardInCubeCount.find(
-        (playListInCard) => playListInCard.cardId === card.card.id
-      )?.cubeCount;
-
+    const playlistInCards = cardInCubeCount.map((card) => {
       return {
-        cardId: card.card.id,
-        cardTitle: parsePolyglotString(card.card.name),
-        count: cubeCount || 0,
-        leaningTime: card.card.learningTime,
+        cardId: card.cardId,
+        cardTitle: parsePolyglotString(card.cardName),
+        count: card.cubeCount || 0,
+        leaningTime: card.learningTime,
       };
     });
+
     setProfileCardPlaylistCards({
       playlistInCards,
     });
   }
+}
+
+async function addMyPlaylistByPlaylistId(playlistId: string) {
+  //
+  await registerMyPlaylistByPlaylistId(playlistId);
 }
 
 async function registerLike(feedbackId: string) {
@@ -90,4 +90,4 @@ async function removeLike(feedbackId: string) {
   await unlikeByFeedbackId(feedbackId);
 }
 
-export { findProfileCardPlaylistByDenizenId, registerLike, removeLike };
+export { findProfileCardPlaylistByDenizenId, addMyPlaylistByPlaylistId, registerLike, removeLike };

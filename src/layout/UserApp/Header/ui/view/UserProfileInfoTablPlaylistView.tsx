@@ -12,6 +12,7 @@ interface Props {
 
   onClickPlaylistContents: (index: number) => void;
   routeToCardOverView: (cardId: string) => void;
+  onClickRegisterPlaylist: (playlistId: string) => void;
   onClickLike: (feedbackId: string, state: boolean) => void;
 }
 
@@ -28,7 +29,12 @@ function getHourMinuteFormat(hour: number, minute: number) {
 function UserProfileInfoTabPlaylistView(props: Props) {
   //
   const { active, index, playlistSummary, playlistInCards } = props;
-  const { onClickPlaylistContents, routeToCardOverView, onClickLike } = props;
+  const {
+    onClickPlaylistContents,
+    routeToCardOverView,
+    onClickRegisterPlaylist,
+    onClickLike,
+  } = props;
 
   return (
     <div className="mylist-acc-item" key={playlistSummary.id}>
@@ -55,7 +61,10 @@ function UserProfileInfoTabPlaylistView(props: Props) {
               />
               {playlistSummary.likeCount}
             </Button>
-            <Button className="add-black">
+            <Button
+              className="add-black"
+              onClick={() => onClickRegisterPlaylist(playlistSummary.id)}
+            >
               <Icon aria-hidden="true" className="add-black16" />
               {`Playlist 담기`}
             </Button>
