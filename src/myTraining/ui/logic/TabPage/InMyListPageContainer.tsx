@@ -284,7 +284,11 @@ function InMyListPageContainer({
           <PlaylistAddPopUpView />
           <div className="left-wrap">
             <Button className="post add" onClick={onOpenPlaylistAddPopUpView}>
-              + <PolyglotText defaultString="Playlist 추가" id="" />
+              +{' '}
+              <PolyglotText
+                defaultString="Playlist 추가"
+                id="playlist-popup-추가버튼"
+              />
             </Button>
             <div
               className="list-number"
