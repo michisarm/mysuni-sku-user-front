@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router';
 import { Segment } from 'semantic-ui-react';
 import { PlaylistSwiper } from '../playlistContainer.store';
@@ -8,14 +8,71 @@ import 'swiper/css/swiper.css';
 import { PlaylistInputPopUpView } from 'playlist/playlistInputPopUp/PlaylistInputPopUpView';
 import { onOpenPlaylistInputPopUp } from 'playlist/playlistInputPopUp/playlistInputPopUp.events';
 import { SkProfileService } from 'profile/stores';
+import { PlaylistType } from 'playlist/data/models/PlaylistType';
 
-function PlaylistCircleComponent(playlist: PlaylistSwiper) {
+/**
+ * 슬라이드 loop 기능 사용시 복사된 요소들이 생성 되는데
+ * 이 복사된 요소는 react dom에 포함되지 않는 요소라서 클릭이벤트가 bind되지 않는다.
+ * 이 문제를 해결하기 위해 복사된 요소들을 가져와서 이벤트를 직접 넣어주는 방식을 사용하였다.
+ * */
+
+function useDuplicateElementAddEvent(
+  index: number,
+  type: PlaylistType,
+  onClickMove: () => void
+) {
+  // 복사된 요소들을 querySelector를 사용하여 가져온다.
+  const slides = document.querySelectorAll(
+    '.plylistSwiper .swiper-slide.swiper-slide-duplicate'
+  );
+
+  useEffect(() => {
+    //복사된 요소들의 배열에 현재 index값을 이용하여 요소를 불러온 뒤 event를 넣어준다.
+    if (slides[index] !== undefined) {
+      if (type === '') {
+        slides[index] &&
+          slides[index].children[0].addEventListener(
+            'click',
+            onOpenPlaylistInputPopUp
+          );
+        return;
+      }
+      slides[index] &&
+        slides[index].children[0].addEventListener('click', onClickMove);
+    }
+
+    // remove Event
+    return () => {
+      if (slides[index] !== undefined) {
+        if (type === '') {
+          slides[index].children[0].removeEventListener(
+            'click',
+            onOpenPlaylistInputPopUp
+          );
+        }
+        slides[index].children[0].removeEventListener('click', onClickMove);
+      }
+    };
+  }, [index, onClickMove, slides, type]);
+}
+
+interface PlaylistCircleComponentProps {
+  index: number;
+  playlist: PlaylistSwiper;
+}
+
+function PlaylistCircleComponent({
+  index,
+  playlist,
+}: PlaylistCircleComponentProps) {
   const { id, name, title, photoImagePath, thumbImagePath, type } = playlist;
   const history = useHistory();
 
   const onClickMovePlaylistDetail = useCallback(() => {
     history.push(`/my-training/my-page/Playlist/detail/${id}`);
   }, [history, id]);
+
+  useDuplicateElementAddEvent(index, type, onClickMovePlaylistDetail);
 
   const playlistTypeName = useMemo(() => {
     switch (type) {
@@ -45,7 +102,7 @@ function PlaylistCircleComponent(playlist: PlaylistSwiper) {
 
   if (type === '') {
     return (
-      <div className="item plus">
+      <div className="item plus" onClick={onOpenPlaylistInputPopUp}>
         <div className="item-img">
           <Image
             src="https://image.mysuni.sk.com/suni-asset/public/images/all/btn-playlist-plus.png"
@@ -53,7 +110,7 @@ function PlaylistCircleComponent(playlist: PlaylistSwiper) {
             className="ui image"
           />
         </div>
-        <div className="item-cont" onClick={onOpenPlaylistInputPopUp}>
+        <div className="item-cont">
           <div className="plus-wrap">
             <Image
               src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-create-playlist.png"
@@ -72,11 +129,14 @@ function PlaylistCircleComponent(playlist: PlaylistSwiper) {
   }
 
   return (
-    <div className={`item ${playlistTypeClasses}`}>
+    <div
+      className={`item ${playlistTypeClasses}`}
+      onClick={onClickMovePlaylistDetail}
+    >
       <div className="item-img">
         <Image src={thumbImagePath} alt="" className="ui image" />
       </div>
-      <div className="item-cont" onClick={onClickMovePlaylistDetail}>
+      <div className="item-cont">
         <div className="tit-wrap">
           <em>{playlistTypeName}</em>
           <strong>{title}</strong>
@@ -131,7 +191,7 @@ export function PlaylistSwiperComponent({
           <Swiper {...PlaylistSwiperOption}>
             {playlistSwiper.map((playlist, i) => (
               <div className="swiper-slide" key={i}>
-                <PlaylistCircleComponent {...playlist} />
+                <PlaylistCircleComponent index={i} playlist={playlist} />
               </div>
             ))}
           </Swiper>
