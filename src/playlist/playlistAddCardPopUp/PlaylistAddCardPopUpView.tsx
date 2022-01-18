@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Icon, Modal } from 'semantic-ui-react';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { CardSearch } from './components/CardSearch';
 import { CardSearchResult } from './components/CardSearchResult';
 import {
@@ -26,7 +27,7 @@ export function PlaylistAddCardPopUpView() {
       </Modal.Content>
       <Modal.Actions>
         <Button className="w190 pop p" onClick={onAddCardToPlaylist}>
-          추가
+          <PolyglotText defaultString="playlist-popup-서밋버튼" id="추가" />
         </Button>
       </Modal.Actions>
     </Modal>
