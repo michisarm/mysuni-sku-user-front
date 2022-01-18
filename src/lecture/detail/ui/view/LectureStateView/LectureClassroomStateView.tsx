@@ -125,7 +125,7 @@ function CanceledView(props: CanceledViewProps) {
 
   /* eslint-enable */
   const onClassroomSelected = useCallback(
-    (selected: Classroom) => {
+    async (selected: Classroom) => {
       if (
         selected.enrollingAvailable &&
         selected.freeOfCharge.approvalProcess &&
@@ -135,7 +135,13 @@ function CanceledView(props: CanceledViewProps) {
         applyReferenceModalRef.current.onOpenModal();
       } else {
         classroomSubmit(selected);
-        submitFromCubeId(cubeId, cubeType, selected.round);
+        const errCode = await submitFromCubeId(
+          cubeId,
+          cubeType,
+          selected.round
+        );
+
+        errCode && alertErrorMessage(errCode);
       }
     },
     [cubeId, cubeType]
@@ -153,34 +159,38 @@ function CanceledView(props: CanceledViewProps) {
           member.id
         );
 
-        let errMessage = '';
-
-        switch (errCode) {
-          case 'limitationIsOver':
-            errMessage = getPolyglotText(
-              '정원 초과로 신청이 불가능합니다.',
-              'card-신청실패-err1'
-            );
-            break;
-          case 'AlreadyRegisteredInOtherRound':
-            errMessage = getPolyglotText(
-              '이미 다른 차수에 신청한 이력이 있습니다.',
-              'card-신청실패-err2'
-            );
-            break;
-          default:
-            errMessage = '';
-        }
-
-        errMessage &&
-          reactAlert({
-            title: getPolyglotText('알림', 'card-신청실패-title'),
-            message: errMessage,
-          });
+        errCode && alertErrorMessage(errCode);
       }
     },
     [selectedClassroom, cubeId, cubeType]
   );
+
+  const alertErrorMessage = (errCode: string) => {
+    let errMessage = '';
+
+    switch (errCode) {
+      case 'limitationIsOver':
+        errMessage = getPolyglotText(
+          '정원 초과로 신청이 불가능합니다.',
+          'card-신청실패-err1'
+        );
+        break;
+      case 'AlreadyRegisteredInOtherRound':
+        errMessage = getPolyglotText(
+          '이미 다른 차수에 신청한 이력이 있습니다.',
+          'card-신청실패-err2'
+        );
+        break;
+      default:
+        errMessage = '';
+    }
+
+    errMessage &&
+      reactAlert({
+        title: getPolyglotText('알림', 'card-신청실패-title'),
+        message: errMessage,
+      });
+  };
   return (
     <>
       <ClassroomModalView
