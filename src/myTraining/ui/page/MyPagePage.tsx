@@ -169,7 +169,10 @@ function MyPagePage({
                         }
                       >
                         <Icon className="IconStatus" />
-                        나의 학습 현황
+                        <PolyglotText
+                          id="mapg-mifa-summary"
+                          defaultString="나의 학습 현황"
+                        />
                       </Link>
                     </li>
                     <li>
