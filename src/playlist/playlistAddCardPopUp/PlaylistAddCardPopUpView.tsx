@@ -27,7 +27,7 @@ export function PlaylistAddCardPopUpView() {
       </Modal.Content>
       <Modal.Actions>
         <Button className="w190 pop p" onClick={onAddCardToPlaylist}>
-          <PolyglotText defaultString="playlist-popup-서밋버튼" id="추가" />
+          <PolyglotText defaultString="추가" id="playlist-popup-서밋버튼" />
         </Button>
       </Modal.Actions>
     </Modal>
