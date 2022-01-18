@@ -12,6 +12,7 @@ import myPageRoutePaths from 'myTraining/routePaths';
 import {
   MyPlaylistsTable,
   selectOptions,
+  setMyPagePlaylistFilterBox,
   useMyPagePlaylist,
   useMyPagePlaylistFilterBox,
   useRequestMyPagePlaylist,
@@ -28,6 +29,7 @@ import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { PlaylistInputPopUpView } from 'playlist/playlistInputPopUp/PlaylistInputPopUpView';
 import { onOpenPlaylistInputPopUp } from 'playlist/playlistInputPopUp/playlistInputPopUp.events';
 import { SeeMoreButton } from 'lecture';
+import requestMyPagePlaylist from '../view/playlist/myPagePlaylist/MyPagePlaylist.request';
 
 interface PropsType {
   playlist: MyPlaylistsTable;
@@ -45,7 +47,7 @@ function PlaylistItem(props: PropsType) {
         }
       });
     },
-    [onClickPlaylistSeeMore]
+    []
   );
 
   const observer = useMemo<IntersectionObserver | null>(() => {
@@ -134,6 +136,11 @@ function PlaylistItem(props: PropsType) {
 }
 
 function NoPlaylistItem() {
+  const afterAddPlaylistCallback = useCallback(() => {
+    setMyPagePlaylistFilterBox({ playlistType: '', offset: 0 });
+    requestMyPagePlaylist();
+  }, []);
+
   return (
     <>
       <div className="no-cont-wrap">
@@ -156,7 +163,10 @@ function NoPlaylistItem() {
           />
         </Button>
       </div>
-      <PlaylistInputPopUpView type="CREATE" />
+      <PlaylistInputPopUpView
+        type="CREATE"
+        afterCloseCallback={afterAddPlaylistCallback}
+      />
     </>
   );
 }
@@ -165,6 +175,11 @@ function MyPagePlaylistPage() {
   useRequestMyPagePlaylist();
   const filter = useMyPagePlaylistFilterBox();
   const playlist = useMyPagePlaylist();
+
+  const afterAddPlaylistCallback = useCallback(() => {
+    setMyPagePlaylistFilterBox({ playlistType: '', offset: 0 });
+    requestMyPagePlaylist();
+  }, []);
 
   return (
     <>
@@ -212,7 +227,10 @@ function MyPagePlaylistPage() {
           </div>
         </Segment>
       </div>
-      <PlaylistInputPopUpView type="CREATE" />
+      <PlaylistInputPopUpView
+        type="CREATE"
+        afterCloseCallback={afterAddPlaylistCallback}
+      />
     </>
   );
 }

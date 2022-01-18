@@ -84,16 +84,16 @@ export function onSavePlaylistInput() {
     return;
   }
 
-  requestSavePlaylistInput(title, description, expose);
   setPlaylistInputPopUp({
     title: '',
     description: '',
     expose: true,
   });
+  return requestSavePlaylistInput(title, description, expose);
 }
 
 // 플레이리스트 수정
-export function onEditPlaylistInput() {
+export function onEditPlaylistInput(callback?: () => void) {
   const playlistInputPopUp = getPlaylistInputPopUp();
   const { title, description, expose } = playlistInputPopUp;
 
@@ -121,11 +121,15 @@ export function onEditPlaylistInput() {
       'playlist-popup-수정컨펌'
     ),
     onOk: () => {
-      requestEditPlaylistInput(title, description, expose);
       setPlaylistInputPopUp({
         title: '',
         description: '',
         expose: true,
+      });
+      requestEditPlaylistInput(title, description, expose)?.then((result) => {
+        if (result) {
+          callback && callback();
+        }
       });
     },
   });

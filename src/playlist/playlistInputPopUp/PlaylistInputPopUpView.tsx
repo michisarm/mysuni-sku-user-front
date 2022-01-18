@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
   Button,
   Checkbox,
@@ -24,10 +24,11 @@ import {
 
 interface PlaylistInputPopUpProps {
   type: 'CREATE' | 'EDIT';
+  afterCloseCallback?: () => void;
 }
 
 export function PlaylistInputPopUpView(props: PlaylistInputPopUpProps) {
-  const { type } = props;
+  const { type, afterCloseCallback } = props;
   const isOpen = useIsOpenPlaylistInputPopUp();
   const playlistInput = usePlaylistInputPopUp();
 
@@ -37,12 +38,16 @@ export function PlaylistInputPopUpView(props: PlaylistInputPopUpProps) {
 
   const onSubmitPlaylist = useCallback(() => {
     if (type === 'CREATE') {
-      onSavePlaylistInput();
+      onSavePlaylistInput()?.then((result) => {
+        if (result) {
+          afterCloseCallback && afterCloseCallback();
+        }
+      });
     }
     if (type === 'EDIT') {
-      onEditPlaylistInput();
+      onEditPlaylistInput(afterCloseCallback);
     }
-  }, [type]);
+  }, [type, afterCloseCallback]);
 
   return (
     <Modal open={isOpen} className="base w600 pl-create">

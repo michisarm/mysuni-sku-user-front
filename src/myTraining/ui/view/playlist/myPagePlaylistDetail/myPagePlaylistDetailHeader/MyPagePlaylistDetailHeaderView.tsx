@@ -2,16 +2,13 @@ import classNames from 'classnames';
 import { srcParser } from 'community/ui/components/Image';
 import moment from 'moment';
 import { onOpenPlaylistInputPopUp } from 'playlist/playlistInputPopUp/playlistInputPopUp.events';
-import {
-  getIsOpenPlaylistInputPopUp,
-  useIsOpenPlaylistInputPopUp,
-} from 'playlist/playlistInputPopUp/playlistInputPopUp.store';
 import { PlaylistInputPopUpView } from 'playlist/playlistInputPopUp/PlaylistInputPopUpView';
 import { onOpenPlaylistRecommendPopUp } from 'playlist/playlistRecommendPopUp/playlistRecommendPopUp.events';
 import { PlaylistRecommendPopUpView } from 'playlist/playlistRecommendPopUp/PlaylistRecommendPopUpView';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Icon, Image, Label } from 'semantic-ui-react';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
+import requestMyPagePlaylistDetail from '../MyPagePlaylistDetail.request';
 import { PlaylistDetail } from '../MyPagePlaylistDetail.services';
 import {
   likePlaylist,
@@ -35,11 +32,14 @@ function MyPagePlaylistDetailHeaderView(props: PlaylistHeaderViewType) {
     recommendation,
     type,
     myPlaylistId,
+    playlistId,
   } = props.playlistDetail;
   const { count, my } = props.PlaylistLikeInfo;
   const date = moment(registeredTime).format('YYYY.MM.DD'); // registeredTime 는 타입별로 생성날짜,담은날짜,추천날짜 값이 알아서 들어감
-  const isEditModalOpen = useIsOpenPlaylistInputPopUp();
-  const isOpen = getIsOpenPlaylistInputPopUp();
+
+  const afterEditPlaylistCallback = useCallback(() => {
+    requestMyPagePlaylistDetail(playlistId);
+  }, [playlistId]);
 
   return (
     <>
@@ -162,7 +162,10 @@ function MyPagePlaylistDetailHeaderView(props: PlaylistHeaderViewType) {
           {recommendation}
         </div>
       ) : null}
-      {isOpen && <PlaylistInputPopUpView type="EDIT" />}
+      <PlaylistInputPopUpView
+        type="EDIT"
+        afterCloseCallback={afterEditPlaylistCallback}
+      />
       <PlaylistRecommendPopUpView />
     </>
   );

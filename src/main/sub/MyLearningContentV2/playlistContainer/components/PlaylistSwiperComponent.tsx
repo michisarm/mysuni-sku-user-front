@@ -9,6 +9,7 @@ import { PlaylistInputPopUpView } from 'playlist/playlistInputPopUp/PlaylistInpu
 import { onOpenPlaylistInputPopUp } from 'playlist/playlistInputPopUp/playlistInputPopUp.events';
 import { SkProfileService } from 'profile/stores';
 import { PlaylistType } from 'playlist/data/models/PlaylistType';
+import { requestPlaylistSwiper } from '../playlistContainer.request';
 
 /**
  * 슬라이드 loop 기능 사용시 복사된 요소들이 생성 되는데
@@ -201,7 +202,10 @@ export function PlaylistSwiperComponent({
           </div>
         </div>
       </div>
-      <PlaylistInputPopUpView type="CREATE" />
+      <PlaylistInputPopUpView
+        type="CREATE"
+        afterCloseCallback={requestPlaylistSwiper}
+      />
     </Segment>
   );
 }

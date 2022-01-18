@@ -3,6 +3,7 @@ import { Button, Grid, Segment } from 'semantic-ui-react';
 import Image from '../../../../../shared/components/Image/Image';
 import { PlaylistInputPopUpView } from 'playlist/playlistInputPopUp/PlaylistInputPopUpView';
 import { onOpenPlaylistInputPopUp } from 'playlist/playlistInputPopUp/playlistInputPopUp.events';
+import { requestPlaylistSwiper } from '../playlistContainer.request';
 
 export function NoContentsPlaylistSwiperComponent() {
   return (
@@ -88,7 +89,10 @@ export function NoContentsPlaylistSwiperComponent() {
           </Grid.Row>
         </Grid>
       </div>
-      <PlaylistInputPopUpView type="CREATE" />
+      <PlaylistInputPopUpView
+        type="CREATE"
+        afterCloseCallback={requestPlaylistSwiper}
+      />
     </Segment>
   );
 }

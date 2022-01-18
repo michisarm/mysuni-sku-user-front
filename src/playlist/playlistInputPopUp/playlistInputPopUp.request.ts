@@ -1,6 +1,3 @@
-import requestMyPagePlaylist from 'myTraining/ui/view/playlist/myPagePlaylist/MyPagePlaylist.request';
-import { setMyPagePlaylistFilterBox } from 'myTraining/ui/view/playlist/myPagePlaylist/MyPagePlaylist.services';
-import requestMyPagePlaylistDetail from 'myTraining/ui/view/playlist/myPagePlaylistDetail/MyPagePlaylistDetail.request';
 import { getMyPagePlaylistDetail } from 'myTraining/ui/view/playlist/myPagePlaylistDetail/MyPagePlaylistDetail.services';
 import {
   findPlaylistDetail,
@@ -9,19 +6,20 @@ import {
 } from 'playlist/data/apis';
 import { useEffect } from 'react';
 import { onClosePlaylistInputPopUp } from './playlistInputPopUp.events';
-import { setPlaylistInputPopUp } from './playlistInputPopUp.store';
+import {
+  setPlaylistInputPopUp,
+  useIsOpenPlaylistInputPopUp,
+} from './playlistInputPopUp.store';
 
 export function requestSavePlaylistInput(
   title: string,
   description: string,
   expose: boolean
 ) {
-  registerPlaylist(title, description, expose)
-    .then(() => onClosePlaylistInputPopUp())
-    .then(() => {
-      setMyPagePlaylistFilterBox({ playlistType: '', offset: 0 });
-      requestMyPagePlaylist();
-    });
+  return registerPlaylist(title, description, expose).then(() => {
+    onClosePlaylistInputPopUp();
+    return true;
+  });
 }
 
 export function requestEditPlaylistInput(
@@ -30,17 +28,20 @@ export function requestEditPlaylistInput(
   expose: boolean
 ) {
   const playlist = getMyPagePlaylistDetail();
+
   if (playlist === undefined) {
     return;
   }
+
   const nameValues = [
     { name: 'title', value: title },
     { name: 'description', value: description },
     { name: 'expose', value: JSON.stringify(expose) },
   ];
-  modifyPlaylist(playlist.playlistId, { nameValues })
-    .then(() => onClosePlaylistInputPopUp())
-    .then(() => requestMyPagePlaylistDetail(playlist.playlistId));
+  return modifyPlaylist(playlist.playlistId, { nameValues }).then(() => {
+    onClosePlaylistInputPopUp();
+    return true;
+  });
 }
 
 export async function requsetPlaylistDetail() {
@@ -59,9 +60,10 @@ export async function requsetPlaylistDetail() {
 }
 
 export function useRequestPlaylistDetail(type: 'CREATE' | 'EDIT') {
+  const isOpen = useIsOpenPlaylistInputPopUp();
   useEffect(() => {
-    if (type === 'EDIT') {
+    if (type === 'EDIT' && isOpen) {
       requsetPlaylistDetail();
     }
-  }, [type]);
+  }, [type, isOpen]);
 }
