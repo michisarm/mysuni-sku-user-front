@@ -44,7 +44,41 @@ interface CanceledViewProps {
   cubeType: CubeType;
 }
 
-function classroomSubmit(classroom: Classroom) {
+function classroomSubmit(classroom: Classroom, errCode?: string) {
+  //
+  const alertErrorMessage = (errCode: string) => {
+    let errMessage = '';
+
+    switch (errCode) {
+      case 'limitationIsOver':
+        errMessage = getPolyglotText(
+          '정원 초과로 신청이 불가능합니다.',
+          'card-신청실패-err1'
+        );
+        break;
+      case 'AlreadyRegisteredInOtherRound':
+        errMessage = getPolyglotText(
+          '이미 다른 차수에 신청한 이력이 있습니다.',
+          'card-신청실패-err2'
+        );
+        break;
+      default:
+        errMessage = '';
+    }
+
+    errMessage &&
+      reactAlert({
+        title: getPolyglotText('알림', 'card-신청실패-title'),
+        message: errMessage,
+        onClose: () => window.location.reload(),
+      });
+  };
+
+  if (errCode) {
+    alertErrorMessage(errCode);
+    return;
+  }
+
   if (classroom.enrollingAvailable && classroom.freeOfCharge.approvalProcess) {
     const messageStr = getPolyglotText(
       `본 과정은 승인권자가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은<br>&#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.`,
@@ -134,14 +168,13 @@ function CanceledView(props: CanceledViewProps) {
         setSelectedClassroom(selected);
         applyReferenceModalRef.current.onOpenModal();
       } else {
-        classroomSubmit(selected);
         const errCode = await submitFromCubeId(
           cubeId,
           cubeType,
           selected.round
         );
 
-        errCode && alertErrorMessage(errCode);
+        await classroomSubmit(selected, errCode);
       }
     },
     [cubeId, cubeType]
@@ -150,7 +183,6 @@ function CanceledView(props: CanceledViewProps) {
     async (member: ApprovalMemberModel) => {
       if (selectedClassroom !== null) {
         // 22-01-18 학습 신청 실패 모달 추가(추후 다국어 데이터 추가 필요)
-        classroomSubmit(selectedClassroom);
         const errCode = await submitFromCubeId(
           cubeId,
           cubeType,
@@ -159,38 +191,12 @@ function CanceledView(props: CanceledViewProps) {
           member.id
         );
 
-        errCode && alertErrorMessage(errCode);
+        await classroomSubmit(selectedClassroom, errCode);
       }
     },
     [selectedClassroom, cubeId, cubeType]
   );
 
-  const alertErrorMessage = (errCode: string) => {
-    let errMessage = '';
-
-    switch (errCode) {
-      case 'limitationIsOver':
-        errMessage = getPolyglotText(
-          '정원 초과로 신청이 불가능합니다.',
-          'card-신청실패-err1'
-        );
-        break;
-      case 'AlreadyRegisteredInOtherRound':
-        errMessage = getPolyglotText(
-          '이미 다른 차수에 신청한 이력이 있습니다.',
-          'card-신청실패-err2'
-        );
-        break;
-      default:
-        errMessage = '';
-    }
-
-    errMessage &&
-      reactAlert({
-        title: getPolyglotText('알림', 'card-신청실패-title'),
-        message: errMessage,
-      });
-  };
   return (
     <>
       <ClassroomModalView

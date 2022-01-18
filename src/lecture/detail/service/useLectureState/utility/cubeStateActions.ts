@@ -81,6 +81,8 @@ export async function submitFromCubeId(
   updateCardLectureStructure(cardId);
   requestLectureState(cardId, cubeId, cubeType);
 
+  return '';
+
   // refreshInprogess();
 }
 
