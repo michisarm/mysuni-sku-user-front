@@ -66,10 +66,21 @@ export async function submitFromCubeId(
     //approvalProcess,
     approverDenizenId: approvalEmail,
   };
-  await registerStudent(studentCdo);
+  let registerResult = '';
+  await registerStudent(studentCdo)
+    .then(() => (registerResult = ''))
+    .catch((e) => {
+      registerResult = e.response.headers['x-message-code'];
+    });
+
+  if (registerResult) {
+    return registerResult;
+  }
+
   clearFindMyCardRelatedStudentsCache();
   updateCardLectureStructure(cardId);
   requestLectureState(cardId, cubeId, cubeType);
+
   // refreshInprogess();
 }
 
