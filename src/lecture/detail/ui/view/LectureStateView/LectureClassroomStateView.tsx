@@ -1,32 +1,30 @@
 import { reactAlert } from '@nara.platform/accent';
+import { find } from 'lodash';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { Action, ActionType, Area } from 'tracker/model';
 import { ApplyReferenceModal } from '../../../../../approval';
 import { ApprovalMemberModel } from '../../../../../approval/member/model/ApprovalMemberModel';
+import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 import ClassroomModalView from '../../../../category/ui/view/ClassroomModalView';
 import CubeType from '../../../../model/CubeType';
 import Student from '../../../../model/Student';
-import { findApplyingClassroom } from '../../../service/useLectureClassroom/utility/classroomFinders';
-import {
-  cancel,
-  submit,
-  submitFromCubeId,
-  cancleFromCubeId,
-} from '../../../service/useLectureState/utility/cubeStateActions';
-import LectureClassroom, {
-  Classroom,
-} from '../../../viewModel/LectureClassroom';
-import LectureState from '../../../viewModel/LectureState';
-import { ActionType, Action, Area } from 'tracker/model';
-import { findAgreement } from '../../../api/profileApi';
 import {
   findContentProviderCache,
   findCubeDetailCache,
 } from '../../../api/cubeApi';
+import { findAgreement } from '../../../api/profileApi';
 import { onOpenLectureAgreementModal } from '../../../service/LectureAgreementModal/useLectureAgreementModal';
-import { LectureAgreementModalView } from './LectureAgreementModalView';
-import { find } from 'lodash';
+import { findApplyingClassroom } from '../../../service/useLectureClassroom/utility/classroomFinders';
+import {
+  cancleFromCubeId,
+  submitFromCubeId,
+} from '../../../service/useLectureState/utility/cubeStateActions';
 import { getLectureState } from '../../../store/LectureStateStore';
-import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
+import LectureClassroom, {
+  Classroom,
+} from '../../../viewModel/LectureClassroom';
+import LectureState from '../../../viewModel/LectureState';
+import { LectureAgreementModalView } from './LectureAgreementModalView';
 
 const APPROVE = getPolyglotText('학습하기', 'CollageState-Classroom-학습하기');
 const SUBMIT = getPolyglotText('신청하기', 'CollageState-Classroom-신청하기');
@@ -143,17 +141,42 @@ function CanceledView(props: CanceledViewProps) {
     [cubeId, cubeType]
   );
   const onApply = useCallback(
-    (member: ApprovalMemberModel) => {
+    async (member: ApprovalMemberModel) => {
       if (selectedClassroom !== null) {
+        // 22-01-18 학습 신청 실패 모달 추가(추후 다국어 데이터 추가 필요)
         classroomSubmit(selectedClassroom);
-        // 22-01-17 김민준 : 학습 동시 신청 수정
-        submitFromCubeId(
+        const errCode = await submitFromCubeId(
           cubeId,
           cubeType,
           selectedClassroom.round,
           true,
           member.id
         );
+
+        let errMessage = '';
+
+        switch (errCode) {
+          case 'limitationIsOver':
+            errMessage = getPolyglotText(
+              '정원 초과로 신청이 불가능합니다.',
+              'card-신청실패-err1'
+            );
+            break;
+          case 'AlreadyRegisteredInOtherRound':
+            errMessage = getPolyglotText(
+              '이미 다른 차수에 신청한 이력이 있습니다.',
+              'card-신청실패-err2'
+            );
+            break;
+          default:
+            errMessage = '';
+        }
+
+        errMessage &&
+          reactAlert({
+            title: getPolyglotText('알림', 'card-신청실패-title'),
+            message: errMessage,
+          });
       }
     },
     [selectedClassroom, cubeId, cubeType]
