@@ -104,8 +104,9 @@ export function sumbitEditCardList() {
               value: JSON.stringify(cardIds),
             },
           ],
+        }).then(() => {
+          requestMyPagePlaylistDetail(playlist.playlistId);
         });
-        requestMyPagePlaylistDetail(playlist.playlistId);
       },
       onCancel: () => {
         return false;
