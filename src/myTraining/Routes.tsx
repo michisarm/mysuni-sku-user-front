@@ -43,6 +43,11 @@ export default function MainRoutes() {
       />
       <Route exact path="/my-training/apl/create" component={AplCreatePage} />
       <Route
+        exact
+        path="/my-training/new-learning/:type/:id/pages/:pageNo"
+        component={NewLearningPage}
+      />
+      <Route
         path="/my-training/new-learning/:type"
         component={NewLearningPage}
       />

@@ -44,7 +44,13 @@ class BoardDetailContentHeaderView extends Component<Props> {
 
     const { getCategoryName } = this.props;
     const { qna, finalOperator } = this.props;
+    const questionState = () => {
+      if (qna.question.state === QnaState.AnswerCompleted) {
+        return 'done';
+      }
 
+      return 'wait';
+    };
     return (
       <div className="title-area">
         <div className="title-inner">
@@ -55,12 +61,7 @@ class BoardDetailContentHeaderView extends Component<Props> {
               <span>{`${getCategoryName(qna.question.mainCategoryId)}`}</span>
               <span>{`${getCategoryName(qna.question.subCategoryId)}`}</span>
             </div>
-            <strong
-              className={`stat ${
-                (qna.question.state === QnaState.AnswerCompleted && 'done') ||
-                'wait'
-              }`}
-            >
+            <strong className={`stat ${questionState()}`}>
               {getStateToString(qna.question.state)}
             </strong>
           </div>

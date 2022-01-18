@@ -120,7 +120,7 @@ class QnaManagementListView extends React.Component<Props> {
                   </Table.Cell>
                   <Table.Cell>
                     <span className="ellipsis">
-                      {parsePolyglotString(qna.inquirerIdentity.name)}
+                      {parsePolyglotString(qna.inquirerIdentity?.name)}
                     </span>
                   </Table.Cell>
                   <Table.Cell>

@@ -125,7 +125,7 @@ class CategoryMenuPanelView extends Component<Props> {
         <div className="table-css">
           <div className="row head">
             <div className="cell v-middle">
-              <PolyglotText defaultString="College" id="home-cipp-구분cl" />
+              <PolyglotText defaultString="Category" id="home-cipp-구분cl" />
             </div>
             <div className="cell v-middle">
               <PolyglotText defaultString="Channel" id="home-cipp-구분ch" />
@@ -169,7 +169,7 @@ class CategoryMenuPanelView extends Component<Props> {
                   >
                     <span className="category-title">
                       {activeCollege.name}{' '}
-                      <PolyglotText defaultString="College" id="home-cipp-ch" />
+                      {/* <PolyglotText defaultString="College" id="home-cipp-ch" /> */}
                       {/* <span className="num"> ({activeCollege.totalCount})</span> */}
                     </span>
                     <button

@@ -508,6 +508,15 @@ a.button.ui.btn-badge-go {
 .introduction .providers {
   background: #f6f6f6;
 }
+#root section.content .tab-menu-inner.sub .ui.attached.tabular.menu {
+  display: table;
+}
+#root section.content .tab-menu-inner.sub .ui.attached.tabular.menu .item {
+  display: table-cell;
+}
+#root section.content.introduction .college-cont-map.pbtom {
+  padding-bottom: 120px;
+}
 
 /* My Learning */
 .filter-table .title {
@@ -2150,6 +2159,9 @@ i.icon.testHeader02::before {
 /* 학습카드 오버뷰 코멘트영역 수정(2021.12.23) */
 .ui.segment.full .contents.comment {
   min-height: 20rem;
+}
+.qna-admin .qna-navi .wait {
+  color: #aaa;
 }
 
 /* Web Page Cube Embed iFrame CSS 오류 수정 (2022.01.08)*/

@@ -4,9 +4,9 @@ export function filterConditionNamePolyglot(s: string) {
   if (s === '교육유형') {
     return getPolyglotText('교육유형', '통검-필레팝-교육유형');
   } else if (s === 'College') {
-    return getPolyglotText('College', '통검-필레팝-컬리지');
+    return getPolyglotText('Category', '통검-필레팝-컬리지');
   } else if (s === '컬리지') {
-    return getPolyglotText('College', '통검-필레팝-컬리지');
+    return getPolyglotText('Category', '통검-필레팝-컬리지');
   } else if (s === '난이도') {
     return getPolyglotText('난이도', '통검-필레팝-난이도');
   } else if (s === '학습시간') {

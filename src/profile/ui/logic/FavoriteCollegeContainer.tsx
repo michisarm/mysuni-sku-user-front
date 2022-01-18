@@ -207,7 +207,7 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
           <div className="column">
             <div className="f-tit">
               <PolyglotText
-                defaultString="College"
+                defaultString="Category"
                 id="college-favorite-college"
               />
             </div>

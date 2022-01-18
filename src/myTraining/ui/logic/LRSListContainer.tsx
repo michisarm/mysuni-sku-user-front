@@ -25,9 +25,8 @@ import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
 
 const CONTENT_TYPE_NAME = '추천과정';
 
-function getTitle() {
-  const search = window.location.search;
-  if (search.includes('LearningPatternBased')) {
+function getTitle(id: string) {  
+  if (id === 'LearningPatternBased') {
     return getPolyglotText(
       '{name} 님의 학습패턴을 기반으로 AI가 추천 드려요!',
       'lrs-title1',
@@ -46,14 +45,17 @@ function getTitle() {
   }
 }
 
-function LRSListContainer() {
+interface Props {
+  id: string;
+}
+
+function LRSListContainer(props: Props) {
   const [viewModel, setViewModel] = useState<RecommendationViewModel>();
 
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    const search = window.location.search;
-    if (search.includes('LearningPatternBased')) {
+    if (props.id === 'LearningPatternBased') {
       findRecommendationCardsFromLearningPatternBased().then((next) => {
         if (next !== undefined) {
           setViewModel(next);
@@ -68,7 +70,7 @@ function LRSListContainer() {
     }
   }, []);
 
-  const title = useMemo(() => getTitle(), []);
+  const title = useMemo(() => getTitle(props.id), []);
 
   if (viewModel === undefined) {
     return null;
@@ -114,7 +116,7 @@ function LRSListContainer() {
                     {...card}
                     useBookMark={true}
                     dataArea={
-                      window.location.search.includes('LearningPatternBased')
+                      props.id === 'LearningPatternBased'
                         ? Area.NEWLEARNING_RECOMMEND
                         : Area.NEWLEARNING_PATTERN
                     }
