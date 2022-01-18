@@ -3016,6 +3016,7 @@ i.icon.add-black16::after {
   color: #b9b9b9;
   font-weight: normal;
 }
+.mypagev3 .mypage_menu_list .logout-area .ui.button i.icon.logout-16px{margin : 0 0 0 6px !important}
 
 i.icon.logout-16px { width : 16px; height: 16px; vertical-align: top;}
 i.icon.logout-16px::before{ content:""; display:inline-block; width :16px; height: 16px; vertical-align: top; background : url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-lnb-logout.svg') 0 0/100% auto no-repeat !important;}
