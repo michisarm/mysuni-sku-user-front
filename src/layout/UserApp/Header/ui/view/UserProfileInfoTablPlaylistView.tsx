@@ -30,8 +30,6 @@ function UserProfileInfoTabPlaylistView(props: Props) {
   const { active, index, playlistSummary, playlistInCards } = props;
   const { onClickPlaylistContents, routeToCardOverView, onClickLike } = props;
 
-  console.log(playlistSummary.myLike);
-
   return (
     <div className="mylist-acc-item" key={playlistSummary.id}>
       <Accordion.Title active={active}>
