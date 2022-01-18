@@ -15,4 +15,7 @@ export interface PlaylistDetailSummary {
   thumbImagePath: string;
   title: string;
   type: PlaylistType;
+
+  likeCount: number;
+  myLike: boolean;
 }

@@ -2,6 +2,7 @@ import { Accordion, Button, Icon } from 'semantic-ui-react';
 import * as React from 'react';
 import { PlaylistDetailSummary } from '../../../../../playlist/data/models/PlaylistDetailSummary';
 import { PlaylistInCard } from '../../present/logic/PlaylistStore';
+import { Simulate } from 'react-dom/test-utils';
 
 interface Props {
   active: boolean;
@@ -38,7 +39,7 @@ function UserProfileInfoTabPlaylistView(props: Props) {
           <div className="acc-meta">
             <Button className="like">
               <Icon aria-hidden="true" className="heart16 active" />
-              {`4,288`}
+              {playlistSummary.likeCount}
             </Button>
             <Button className="add-black">
               <Icon aria-hidden="true" className="add-black16" />

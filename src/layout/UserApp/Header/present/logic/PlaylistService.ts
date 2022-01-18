@@ -7,10 +7,36 @@ import {
 import { findMyPlaylistsByDenizenId } from 'playlist/data/apis';
 import { findCards } from '../../../../../expert/apis/instructorApi';
 import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
+import { findMyPlaylistCardRdos } from '../../../../../lecture/detail/api/cardApi';
+import {
+  countAllLikeByFeedbackId,
+  findAllLikeByFeedbackIds,
+} from '../../../../../hotTopic/api/hotTopicLikeApi';
 
 async function findProfileCardPlaylistByDenizenId(denizenId: string) {
   //
   const playlistDetailSummary = await findMyPlaylistsByDenizenId(denizenId);
+  const feedbackIds = playlistDetailSummary?.map(
+    (playlist) => playlist.likeFeedbackId
+  );
+
+  if (feedbackIds) {
+    const likeCounts = await countAllLikeByFeedbackId(feedbackIds);
+    const myLikes = await findAllLikeByFeedbackIds(feedbackIds);
+
+    playlistDetailSummary?.forEach((playlist) => {
+      likeCounts.forEach((likeCount) => {
+        if (likeCount.feedbackId === playlist.likeFeedbackId) {
+          playlist.likeCount = likeCount.count;
+        }
+      });
+      myLikes.forEach((myLike) => {
+        if (myLike && myLike.feedbackId === playlist.likeFeedbackId) {
+          playlist.myLike = true;
+        }
+      });
+    });
+  }
 
   setProfileCardPlaylist({
     playListSummaries: playlistDetailSummary,
@@ -28,12 +54,18 @@ async function findProfileCardPlaylistByDenizenId(denizenId: string) {
 
   if (cardIds) {
     const cards = await findCards(cardIds);
+    const cardInCubeCount = await findMyPlaylistCardRdos(cardIds);
 
     const playlistInCards: PlaylistInCard[] | undefined = cards?.map((card) => {
+      //
+      const cubeCount = cardInCubeCount.find(
+        (playListInCard) => playListInCard.cardId === card.card.id
+      )?.cubeCount;
+
       return {
         cardId: card.card.id,
         cardTitle: parsePolyglotString(card.card.name),
-        count: -1,
+        count: cubeCount || 0,
         leaningTime: card.card.learningTime,
       };
     });

@@ -21,6 +21,7 @@ import { ChannelAndCardCountRom } from '../model/ChannelAndCardCountRom';
 import { UserLectureCard } from '@sku/skuniv-ui-lecture-card';
 import LearningTabCountViewModel from 'lecture/model/learning/LearningTabCountViewModel';
 import CardOrderBy from 'lecture/model/learning/CardOrderBy';
+import MyPlaylistCardRdo from '../../../layout/UserApp/Header/present/model/MyPlaylistCardRdo';
 
 const BASE_URL = '/api/lecture';
 
@@ -339,4 +340,13 @@ export function findBookmarkCards(limit?: number, orderBy?: CardOrderBy) {
     orderBy || CardOrderBy.BookmarkRegisteredTimeDesc
   }`;
   return axios.get<OffsetElementList<UserLectureCard>>(url).then(AxiosReturn);
+}
+
+export function findMyPlaylistCardRdos(
+  cardIds: string[]
+): Promise<MyPlaylistCardRdo[]> {
+  //
+  const axios = getAxios();
+  const url = `${BASE_URL}/cards/myPlaylistCards`;
+  return axios.post(url, cardIds).then(AxiosReturn);
 }
