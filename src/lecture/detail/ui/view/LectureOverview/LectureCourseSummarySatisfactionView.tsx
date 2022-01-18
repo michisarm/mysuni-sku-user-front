@@ -7,12 +7,15 @@ import { useLectureParams } from 'lecture/detail/store/LectureParamsStore';
 import { useHistory } from 'react-router-dom';
 import { Button, Icon, Rating } from 'semantic-ui-react';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { useLectureStructure } from 'lecture/detail/store/LectureStructureStore';
 
 export default function LectureCourseSummarySatisfactionView() {
   const history = useHistory();
   const params = useLectureParams();
   const satisfaction =
     useLectureCoureSatisfaction() || initLectureCourseSatisfaction();
+  const lectureStructure = useLectureStructure();
+  const canSurvey = lectureStructure?.card?.survey?.can;
 
   if (
     satisfaction.surveyCaseId === undefined ||
@@ -45,8 +48,7 @@ export default function LectureCourseSummarySatisfactionView() {
             ${getPolyglotText('명', 'cicl-학상본문-명')})`
           : '0'}
       </span>
-
-      {satisfaction.isDoneSurvey && (
+      {canSurvey && satisfaction.isDoneSurvey && (
         <Button
           className="re-feedback"
           onClick={() => history.push(`/lecture/card/${params?.cardId}/survey`)}
