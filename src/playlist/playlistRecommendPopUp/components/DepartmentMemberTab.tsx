@@ -62,11 +62,16 @@ export function DepartmentMemberTab() {
           <div className="no-cont-wrap">
             <Icon className="no-contents80" />
             <span className="blind">콘텐츠 없음</span>
-            <div className="text">
-              <strong className="s-word">{searchTextResult}</strong>에 대한
-              검색결과가 없어요! <br /> Playlist를 추천할 다른 학습자를
-              검색해주세요.
-            </div>
+            <div
+              className="text"
+              dangerouslySetInnerHTML={{
+                __html: getPolyglotText(
+                  `<strong className="s-word">{text}</strong>에 대한 검색결과가 없어요! <br /> Playlist를 추천할 다른 학습자를 검색해주세요.`,
+                  'playlist-popup-학습자검색',
+                  { text: searchTextResult }
+                ),
+              }}
+            />
           </div>
         ) : (
           <div className="sh-left-slct">

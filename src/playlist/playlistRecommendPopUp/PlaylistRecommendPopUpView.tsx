@@ -27,7 +27,7 @@ export function RecommendPopUpLeftComponent() {
       render: () => <MySuniUserTab />,
     },
     {
-      menuItem: getPolyglotText('팔로잉', 'playlist-popup-팔로잉'),
+      menuItem: getPolyglotText('팔로워', 'playlist-popup-팔로워'),
       render: () => <FollowingTab />,
     },
   ];
