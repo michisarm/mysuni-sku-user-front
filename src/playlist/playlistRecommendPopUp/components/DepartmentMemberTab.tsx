@@ -1,6 +1,7 @@
 import { isEmpty } from 'lodash';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Checkbox, Icon, Tab } from 'semantic-ui-react';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
   onAllCheckDepartmentMember,
   onCheckDepartmentMember,
@@ -55,7 +56,10 @@ export function DepartmentMemberTab() {
         <div className="ui h38 search input">
           <input
             type="text"
-            placeholder="이름 또는 이메일을 검색해주세요."
+            placeholder={getPolyglotText(
+              '이름 또는 이메일을 검색해주세요.',
+              'playlist-popup-이름이메일'
+            )}
             onChange={onChangeSearchText}
           />
           <Icon className="search link" onClick={onClickSearch} />
@@ -66,11 +70,16 @@ export function DepartmentMemberTab() {
           <div className="no-cont-wrap">
             <Icon className="no-contents80" />
             <span className="blind">콘텐츠 없음</span>
-            <div className="text">
-              <strong className="s-word">{searchTextResult}</strong>에 대한
-              검색결과가 없어요! <br /> Playlist를 추천할 다른 학습자를
-              검색해주세요.
-            </div>
+            <div
+              className="text"
+              dangerouslySetInnerHTML={{
+                __html: getPolyglotText(
+                  `<strong className="s-word">{text}</strong>에 대한 검색결과가 없어요! <br /> Playlist를 추천할 다른 학습자를 검색해주세요.`,
+                  'playlist-popup-학습자검색',
+                  { text: searchTextResult }
+                ),
+              }}
+            />
           </div>
         ) : (
           <div className="sh-left-slct">

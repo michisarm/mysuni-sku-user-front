@@ -2905,23 +2905,8 @@ i.icon.add-black16::after {
   width: 100%;
   padding: 50px 20px 30px;
 }
-.mypagev3
-  .profile-contents-area
-  .profile-info-wrapper
-  .profile-info-area
-  .profile-info {
-  color: #222;
-  margin-top: 10px;
-}
-.mypagev3
-  .profile-contents-area
-  .profile-info-wrapper
-  .profile-info-area
-  .profile-info
-  .foll-info {
-  color: #666;
-  margin-top: 10px;
-}
+.mypagev3 .profile-contents-area .profile-info-wrapper .profile-info-area .profile-info { color: #222; margin-top: 6px;}
+.mypagev3 .profile-contents-area .profile-info-wrapper .profile-info-area .profile-info .foll-info { color: #666; margin-top: 8px;}
 .mypagev3
   .profile-contents-area
   .profile-info-wrapper
@@ -2942,20 +2927,9 @@ i.icon.add-black16::after {
   border-bottom: #ddd 1px solid;
   padding: 10px 0;
 }
-.mypagev3 .mypage_menu_list ul li {
-  padding: 10px 14px;
-  border: 0;
-}
-.mypagev3 .mypage_menu_list ul li a {
-  display: inline-block;
-  padding: 10px;
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 300;
-}
-.mypagev3 .mypage_menu_list ul li a.active {
-  font-weight: bold;
-}
+.mypagev3 .mypage_menu_list ul li {padding: 10px 14px 10px; border: 0;}
+.mypagev3 .mypage_menu_list ul li a { display: inline-block; padding:7px 10px 7px; font-size: 14px; line-height: 20px; font-weight: 300;}
+.mypagev3 .mypage_menu_list ul li a.active { font-weight: bold;}
 .mypage_menu_list .icon {
   margin-right: 5px;
   transform: translateY(-1px);
@@ -3036,15 +3010,16 @@ i.icon.add-black16::after {
   color: #222;
   font-weight: bold;
 }
-.mypagev3 .mypage_menu_list .logout-area {
-  margin: 30px 0;
-  text-align: left;
-  padding-left: 25px;
-}
+.mypagev3 .mypage_menu_list .logout-area {margin: 13px 19px 0; text-align: right; }
 .mypagev3 .mypage_menu_list .logout-area .ui.button {
-  color: #999;
+  text-decoration: none;
+  color: #b9b9b9;
   font-weight: normal;
 }
+.mypagev3 .mypage_menu_list .logout-area .ui.button i.icon.logout-16px{margin : 0 0 0 6px !important}
+
+i.icon.logout-16px { width : 16px; height: 16px; vertical-align: top;}
+i.icon.logout-16px::before{ content:""; display:inline-block; width :16px; height: 16px; vertical-align: top; background : url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-lnb-logout.svg') 0 0/100% auto no-repeat !important;}
 
 .mypagev3 .mypage_contents .ui.segment.full {
   width: 100%;
@@ -3111,9 +3086,7 @@ i.icon.add-black16::after {
   border-top: #ddd 1px solid;
   padding-top: 20px;
 }
-.playlist-list.list-wrapper {
-  padding-top: 30px;
-}
+.playlist-list.list-wrapper { padding-top: 0;}
 
 /* Playlist card */
 .ui.cards.palylist-container {
@@ -3128,6 +3101,8 @@ i.icon.add-black16::after {
   text-align: center;
   position: relative;
 }
+.ui.card.playlist-box.card-item:hover{ box-shadow: 0 2px 10px 0 rgb(67 67 67 / 20%)}
+
 .playlist-info-box {
   display: block;
 }
@@ -3611,27 +3586,33 @@ i.icon.plus.round16:before {
 .gauge-box-wrap {
   margin-bottom: 20px;
 }
-.personal-content-wrap {
-  margin-top: 30px;
-}
-.profile-dashboard-contents .personal-content-box-wrap {
-  margin: 0 -10px !important;
-}
-.profile-dashboard-contents
-  .personal-content-box-wrap
-  .card.personal-content-box {
-  margin: 10px;
-  width: calc(50% - 20px);
+
+.personal-content-wrap {margin-top: 30px;}
+.profile-dashboard-contents .personal-content-wrap {margin-top: 38px;}
+.profile-dashboard-contents .playlist-list.list-wrapper { padding-top: 20px;}
+.profile-dashboard-contents .personal-content-box-wrap { margin: 0 !important; justify-content: space-between; width: 100%; }
+.profile-dashboard-contents .mypage_title { font-size: 28px; letter-spacing: -0.37px;}
+.profile-dashboard-contents .personal-content-box-wrap .card.personal-content-box {
+  margin: 10px 0 6px;
+  padding: 22px 25px 16px;
+  width: calc(50% - 10px);
   box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2);
-  padding: 22px 25px;
   height: auto;
 }
+.profile-dashboard-contents .ui.cards.personal-content-box-wrap.time-detail .card.personal-content-box { padding-bottom: 25px;}
+.profile-dashboard-contents .ui.cards::after {display: none;}
+
 .ui.label.onlytext.btn-modify-list i.icon.cog16 {
   margin: 0 0.5rem 0 0;
 }
-.personal-card-item .card-item-tit h3 {
-  line-height: 30px;
-}
+.personal-card-item .card-item-tit { margin-bottom: 14px;}
+.personal-card-item .card-item-tit.mb23 {margin-bottom: 23px;}
+.personal-card-item .card-item-tit h3 { line-height: 30px;}
+.profile-dashboard-contents .card-gauge-bar .gauge-tit {margin-right: 0;}
+.profile-dashboard-contents .card-gauge-bar.sty2 {width: 200px;}
+.profile-dashboard-contents .card-item-con.sty2 > .item-con-box > .item-con-left { margin-right: 32px;}
+.profile-dashboard-contents .card-item-con.sty2 > .item-con-box > .item-con-right.detail { width: 225px; }
+
 
 /* gauge-box */
 .main-gauge-box {
@@ -3671,10 +3652,7 @@ i.icon.plus.round16:before {
   font-size: 14px;
   color: #999;
 }
-.playlist-list .gauge-content .gauge-content-box em {
-  font-style: normal;
-  font-weight: 300;
-}
+.playlist-list .gauge-content .gauge-content-box em { font-size:20px; font-style: normal; font-weight: 300;}
 
 /* gauge-box bg */
 .playlist-list .gauge-bg5 {

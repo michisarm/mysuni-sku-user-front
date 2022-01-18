@@ -453,7 +453,10 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
               <a onClick={onOpenPlaylistAddPopUpView}>
                 <span>
                   <Icon className="plAdd" />
-                  <PolyglotText defaultString="Playlist 추가" id="" />
+                  <PolyglotText
+                    defaultString="Playlist 추가"
+                    id="playlist-popup-추가버튼"
+                  />
                 </span>
               </a>
               <a onClick={copyUrl}>

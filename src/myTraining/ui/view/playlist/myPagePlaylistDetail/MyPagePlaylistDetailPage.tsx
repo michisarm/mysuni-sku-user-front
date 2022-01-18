@@ -8,6 +8,7 @@ import MyPagePlaylistDetailHeaderContainer from './myPagePlaylistDetailHeader/My
 import MyPagePlaylistDetailContentContainer from './myPagePlaylistDetailContent/MyPagePlaylistDetailContentContainer';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import myPageRoutePaths from 'myTraining/routePaths';
+import { Link } from 'react-router-dom';
 
 function MyPagePlaylistDetailPage() {
   useRequestMyPagePlaylistDetail();
@@ -20,15 +21,15 @@ function MyPagePlaylistDetailPage() {
     <div className="mypage_contents profile-playlist-contents">
       <div className="mypage-title-wrap">
         <strong className="mypage_title">Playlist</strong>
-        <a
-          href={myPageRoutePaths.myPagePlaylist()}
+        <Link
+          to={myPageRoutePaths.myPagePlaylist()}
           className="btn-txt btn-tolist"
         >
           <PolyglotText
             defaultString="목록으로"
             id="mypage-playlist-목록으로"
           />
-        </a>
+        </Link>
       </div>
       <Segment className="full">
         <div className="group-wrapper">

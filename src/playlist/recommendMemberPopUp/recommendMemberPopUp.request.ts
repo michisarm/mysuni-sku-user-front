@@ -20,7 +20,6 @@ export async function requestRecommendMemberPopUp(playlistType: PlaylistType) {
     playlistId,
     playlistType
   );
-  console.log(userIdentities);
   if (userIdentities !== undefined) {
     setRecommendMemberPopUp(userIdentitiesToMemberList(userIdentities));
   }

@@ -1,8 +1,8 @@
+import requestMyPagePlaylistDetail from '../MyPagePlaylistDetail.request';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import { modifyPlaylist } from 'playlist/data/apis';
 import { getMyPagePlaylistDetail } from '../MyPagePlaylistDetail.services';
-import requestMyPagePlaylistDetailCardList from './MyPagePlaylistDetailCardList.request';
 import {
   getCheckedCardList,
   setCheckedCardList,
@@ -104,8 +104,9 @@ export function sumbitEditCardList() {
               value: JSON.stringify(cardIds),
             },
           ],
+        }).then(() => {
+          requestMyPagePlaylistDetail(playlist.playlistId);
         });
-        requestMyPagePlaylistDetailCardList(cardIds);
       },
       onCancel: () => {
         return false;

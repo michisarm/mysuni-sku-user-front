@@ -23,6 +23,7 @@ import LearningTabCountViewModel from 'lecture/model/learning/LearningTabCountVi
 import CardOrderBy from 'lecture/model/learning/CardOrderBy';
 import { MyLearningRdo } from '../model/MyLearningRdo';
 import moment from 'moment';
+import MyPlaylistCardRdo from '../../../layout/UserApp/Header/present/model/MyPlaylistCardRdo';
 
 const BASE_URL = '/api/lecture';
 
@@ -82,9 +83,8 @@ export function findCardList(cardIds: string[]) {
     .then(AxiosReturn);
 }
 
-export const [findCardListCache, clearFindCardListCache] = createCacheApi(
-  findCardList
-);
+export const [findCardListCache, clearFindCardListCache] =
+  createCacheApi(findCardList);
 
 export function findMyLatestLearningCards(count: number) {
   const axios = getAxios();
@@ -354,4 +354,13 @@ export function findSummeryTimeByYear(year: number) {
   const axios = getAxios();
   const url = `${BASE_URL}/cards/findMyLearningRdo/${year}`;
   return axios.get<MyLearningRdo>(url).then(AxiosReturn);
+}
+
+export function findMyPlaylistCardRdos(
+  cardIds: string[]
+): Promise<MyPlaylistCardRdo[]> {
+  //
+  const axios = getAxios();
+  const url = `${BASE_URL}/cards/myPlaylistCards`;
+  return axios.post(url, cardIds).then(AxiosReturn);
 }

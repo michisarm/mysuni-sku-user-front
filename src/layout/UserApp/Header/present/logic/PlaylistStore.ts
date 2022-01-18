@@ -1,7 +1,5 @@
 import { createStore } from '../../../../../shared/store/Store';
-import { useEffect } from 'react';
 import { PlaylistDetailSummary } from '../../../../../playlist/data/models/PlaylistDetailSummary';
-import MyCommunityIntro from '../../../../../community/viewModel/MyCommunityIntro/MyCommunityIntro';
 
 export interface ProfileCardPlayListSummaries {
   playListSummaries: PlaylistDetailSummary[] | undefined;

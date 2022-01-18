@@ -121,7 +121,6 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
         getDisplayTotalLearningTime();
         getDisplayMySuniLeaningTime();
         getDisplayCompanyLearningTime();
-        // requestCollegePercent();
         setCollegePercent(myLearningSummary.collegeLearningTimes);
       }
     );
