@@ -37,7 +37,6 @@ function MyPagePlaylistDetailContentContainer() {
 
   const { sharedUserCount, recommendedUserCount, cardIds, type } =
     playlistDetail;
-  console.log(cardIds);
   return (
     <div className="playlist-detail-content">
       <Menu className="playlist-view-tab">

@@ -54,7 +54,7 @@ export function onChangePlaylistExpose(
   _: React.FormEvent,
   data: CheckboxProps
 ) {
-  const isExpose = data.checked || true;
+  const isExpose = data.checked || false;
   const playlistInputPopUp = getPlaylistInputPopUp();
 
   setPlaylistInputPopUp({
