@@ -3101,6 +3101,8 @@ i.icon.logout-16px::before{ content:""; display:inline-block; width :16px; heigh
   text-align: center;
   position: relative;
 }
+.ui.card.playlist-box.card-item:hover{ box-shadow: 0 2px 10px 0 rgb(67 67 67 / 20%)}
+
 .playlist-info-box {
   display: block;
 }
