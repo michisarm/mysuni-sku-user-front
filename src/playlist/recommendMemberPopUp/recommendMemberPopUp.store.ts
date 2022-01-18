@@ -7,7 +7,7 @@ export interface RecommendMemberPopUp {
   name: string;
   email: string;
   departmentName: string;
-  thumbnailImage: string;
+  photoImagePath: string;
 }
 
 export function userIdentitiesToMemberList(userIdentities: UserIdentities[]) {
@@ -17,7 +17,7 @@ export function userIdentitiesToMemberList(userIdentities: UserIdentities[]) {
       name: parsePolyglotString(user.name),
       email: user.email,
       departmentName: parsePolyglotString(user.departmentName),
-      thumbnailImage: '',
+      photoImagePath: user.photoImagePath,
     };
   });
 

@@ -60,7 +60,7 @@ function MyPagePlaylistDetailContentContainer() {
             as="button"
             className="onlytext"
             onClick={
-              recommendedUserCount === 0
+              recommendedUserCount !== 0
                 ? onOpenRecommenedMemberPopUp
                 : () => {}
             }
@@ -81,7 +81,7 @@ function MyPagePlaylistDetailContentContainer() {
           <Label
             as="button"
             className="onlytext"
-            onClick={sharedUserCount === 0 ? onOpenMadeByOthersPopUp : () => {}}
+            onClick={sharedUserCount !== 0 ? onOpenMadeByOthersPopUp : () => {}}
           >
             <Icon className="list-like" />
             <span
