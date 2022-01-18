@@ -12,6 +12,7 @@ import {
   onCheckFollowing,
   onAllCheckedFollowing,
 } from '../playlistRecommendPopUp.events';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 export function FollowingTab() {
   useRequestFollowing();
@@ -62,7 +63,10 @@ export function FollowingTab() {
         <div className="ui h38 search input">
           <input
             type="text"
-            placeholder="이름 또는 이메일을 검색해주세요."
+            placeholder={getPolyglotText(
+              '이름 또는 이메일을 검색해주세요.',
+              'playlist-popup-이름이메일'
+            )}
             onChange={onChangeSearchText}
           />
           <Icon className="search link" onClick={onClickSearch} />

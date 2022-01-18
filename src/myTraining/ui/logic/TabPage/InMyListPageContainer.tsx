@@ -17,7 +17,7 @@ import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import ReactGA from 'react-ga';
 import { useHistory, useParams } from 'react-router';
 import FilterBoxService from 'shared/present/logic/FilterBoxService';
-import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { convertToKeyInMyLearningTable } from '../../../../lecture/shared/present/logic/LectureService';
 import StudentLearningType from '../../../../lecture/model/learning/StudentLearningType';
 import { Button } from 'semantic-ui-react';
@@ -284,7 +284,7 @@ function InMyListPageContainer({
           <PlaylistAddPopUpView />
           <div className="left-wrap">
             <Button className="post add" onClick={onOpenPlaylistAddPopUpView}>
-              + Playlist 추가
+              + <PolyglotText defaultString="Playlist 추가" id="" />
             </Button>
             <div
               className="list-number"

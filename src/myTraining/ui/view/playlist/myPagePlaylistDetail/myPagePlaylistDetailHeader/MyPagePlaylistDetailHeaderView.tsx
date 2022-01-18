@@ -38,7 +38,6 @@ function MyPagePlaylistDetailHeaderView(props: PlaylistHeaderViewType) {
   } = props.playlistDetail;
   const { count, my } = props.PlaylistLikeInfo;
   const date = moment(registeredTime).format('YYYY.MM.DD'); // registeredTime 는 타입별로 생성날짜,담은날짜,추천날짜 값이 알아서 들어감
-  const isEditModalOpen = useIsOpenPlaylistInputPopUp();
   const isOpen = getIsOpenPlaylistInputPopUp();
 
   return (

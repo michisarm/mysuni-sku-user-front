@@ -1,6 +1,7 @@
 import { isEmpty } from 'lodash';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Checkbox, Icon, Tab } from 'semantic-ui-react';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
   onAllCheckedMySuniMember,
   onCheckMySuniUser,
@@ -67,7 +68,10 @@ export function MySuniUserTab() {
         <div className="ui h38 search input">
           <input
             type="text"
-            placeholder="이름 또는 이메일을 검색해주세요."
+            placeholder={getPolyglotText(
+              '이름 또는 이메일을 검색해주세요.',
+              'playlist-popup-이름이메일'
+            )}
             onChange={onChangeSearchText}
           />
           <Icon className="search link" onClick={onClickSearch} />
@@ -78,8 +82,18 @@ export function MySuniUserTab() {
           <div className="no-cont-wrap">
             <Icon className="search50" />
             <span className="blind">검색전</span>
-            <strong className="no-tit">mySUNI 사용자 검색하기</strong>
-            <div className="text">{`Playlist를 추천할\nmySUNI 사용자 이름 또는 이메일을 검색해보세요!`}</div>
+            <strong className="no-tit">
+              <PolyglotText
+                defaultString="mySUNI 사용자 검색하기"
+                id="playlist-popup-검색하기"
+              />
+            </strong>
+            <div className="text">
+              {getPolyglotText(
+                `Playlist를 추천할<br/>mySUNI 사용자 이름 또는 이메일을 검색해보세요!`,
+                'playlist-popup-검색설명'
+              )}
+            </div>
           </div>
         )}
         {isSearchAfter && mySuniUser.length === 0 ? (
