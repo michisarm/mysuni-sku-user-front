@@ -40,12 +40,22 @@ function UserProfileInfoTabPlaylist(props: Props) {
 
   const onClickRegisterPlaylist = async (playlistId: string) => {
     //
-    await addMyPlaylistByPlaylistId(playlistId);
-    reactAlert({
-      title: 'Playlist 추가하기',
-      message: 'Playlist가 추가되었습니다.',
-      onClose: () => {},
-    });
+    const added = await addMyPlaylistByPlaylistId(playlistId);
+
+    if (added) {
+      reactAlert({
+        title: 'Playlist 추가하기',
+        message: 'MyPage > Playlist 메뉴에서 확인하세요.',
+        onClose: () => {},
+      });
+    } else {
+      reactAlert({
+        title: 'Playlist 추가하기',
+        message:
+          '이미 담은 Playlist 입니다. MyPage > Playlist 메뉴에서 확인하세요.',
+        onClose: () => {},
+      });
+    }
   };
 
   const onClickLike = async (feedbackId: string, state: boolean) => {
@@ -75,7 +85,7 @@ function UserProfileInfoTabPlaylist(props: Props) {
             profileCardPlaylistSummaries.playListSummaries && (
               <>
                 <div className="list-top">
-                  총<strong> 32개</strong>의 Playlist가 있습니다.
+                  {`총 ${profileCardPlaylistSummaries.playListSummaries.length}의 Playlist가 있습니다.`}
                 </div>
                 <div className="pl-mylist">
                   <Accordion className="pl-mylist-acc">

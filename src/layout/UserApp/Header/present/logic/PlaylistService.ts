@@ -1,13 +1,11 @@
 import {
   setProfileCardPlaylist,
   setProfileCardPlaylistCards,
-  ProfileCardPlayListInCards,
-  PlaylistInCard,
-  getProfileCardPlaylist,
-  ProfileCardPlayListSummaries,
 } from './PlaylistStore';
-import { findMyPlaylistsByDenizenId, registerMyPlaylistByPlaylistId } from 'playlist/data/apis';
-import { findCards } from '../../../../../expert/apis/instructorApi';
+import {
+  findMyPlaylistsByDenizenId,
+  registerMyPlaylistByPlaylistId,
+} from 'playlist/data/apis';
 import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
 import { findMyPlaylistCardRdos } from '../../../../../lecture/detail/api/cardApi';
 import {
@@ -16,7 +14,7 @@ import {
   likeByFeedbackId,
   unlikeByFeedbackId,
 } from '../../../../../hotTopic/api/hotTopicLikeApi';
-import { PlaylistDetailSummary } from '../../../../../playlist/data/models/PlaylistDetailSummary';
+import { patronInfo } from '@nara.platform/dock';
 
 async function findProfileCardPlaylistByDenizenId(denizenId: string) {
   //
@@ -75,9 +73,24 @@ async function findProfileCardPlaylistByDenizenId(denizenId: string) {
   }
 }
 
-async function addMyPlaylistByPlaylistId(playlistId: string) {
+async function addMyPlaylistByPlaylistId(playlistId: string): Promise<boolean> {
   //
-  await registerMyPlaylistByPlaylistId(playlistId);
+  const denizenId = patronInfo.getDenizenId();
+  if (denizenId) {
+    const myPlaylist = await findMyPlaylistsByDenizenId(denizenId);
+
+    const alreadyRegister = myPlaylist?.find(
+      (playlist) => playlist.id === playlistId
+    );
+
+    if (alreadyRegister) {
+      return false;
+    } else {
+      await registerMyPlaylistByPlaylistId(playlistId);
+      return true;
+    }
+  }
+  return false;
 }
 
 async function registerLike(feedbackId: string) {
@@ -90,4 +103,9 @@ async function removeLike(feedbackId: string) {
   await unlikeByFeedbackId(feedbackId);
 }
 
-export { findProfileCardPlaylistByDenizenId, addMyPlaylistByPlaylistId, registerLike, removeLike };
+export {
+  findProfileCardPlaylistByDenizenId,
+  addMyPlaylistByPlaylistId,
+  registerLike,
+  removeLike,
+};
