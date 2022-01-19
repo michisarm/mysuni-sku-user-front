@@ -139,8 +139,8 @@ function PlaylistItem(props: PropsType) {
 
 function NoPlaylistItem() {
   const afterAddPlaylistCallback = useCallback(() => {
-    setMyPagePlaylistFilterBox({ playlistType: '', offset: 0 });
-    requestMyPagePlaylist();
+    // setMyPagePlaylistFilterBox({ playlistType: '', offset: 0 });
+    // requestMyPagePlaylist();
   }, []);
 
   return (
@@ -179,8 +179,8 @@ function MyPagePlaylistPage() {
   const playlist = useMyPagePlaylist();
 
   const afterAddPlaylistCallback = useCallback(() => {
-    setMyPagePlaylistFilterBox({ playlistType: '', offset: 0 });
-    requestMyPagePlaylist();
+    // setMyPagePlaylistFilterBox({ playlistType: '', offset: 0 });
+    // requestMyPagePlaylist();
   }, []);
 
   return (
