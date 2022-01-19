@@ -10,6 +10,7 @@ import { onOpenPlaylistInputPopUp } from 'playlist/playlistInputPopUp/playlistIn
 import { SkProfileService } from 'profile/stores';
 import { PlaylistType } from 'playlist/data/models/PlaylistType';
 import { requestPlaylistSwiper } from '../playlistContainer.request';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 /**
  * 슬라이드 loop 기능 사용시 복사된 요소들이 생성 되는데
@@ -78,11 +79,11 @@ function PlaylistCircleComponent({
   const playlistTypeName = useMemo(() => {
     switch (type) {
       case 'MadeByMyself':
-        return '내가 만든';
+        return getPolyglotText('내가 만든', 'playlist-item-내가만든');
       case 'MadeByOthers':
-        return '내가 담은';
+        return getPolyglotText('내가 담은', 'playlist-item-내가담은');
       case 'Recommended':
-        return '추천 받은';
+        return getPolyglotText('추천 받은', 'playlist-item-추천받은');
       default:
         return '';
     }
@@ -118,11 +119,14 @@ function PlaylistCircleComponent({
               alt="프로필 추가"
               className="ui image"
             />
-            <p>
-              나만의 Playlist를
-              <br />
-              만들어 보세요.
-            </p>
+            <p
+              dangerouslySetInnerHTML={{
+                __html: getPolyglotText(
+                  '나만의 Playlist를 <br /> 만들어 보세요.',
+                  'home-playlist-만들어'
+                ),
+              }}
+            />
           </div>
         </div>
       </div>
