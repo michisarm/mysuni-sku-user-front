@@ -1026,7 +1026,6 @@ class LectureService {
 
   @action
   async findEnrolledList() {
-    //
     const result = await this.lectureApi.findEnrolledList();
 
     const cardIds = (await result.map((card) => card.cardId)) || [];
@@ -1049,6 +1048,7 @@ class LectureService {
 
     result.length !== this.enrolledCount && this.countLearningTab();
   }
+
   // 찜한 과정 체크박스 이벤트
   @action
   onAllCheckedCard() {
@@ -1081,8 +1081,6 @@ class LectureService {
       setAddLearningCardIds(addedCardIds);
     }
   }
-
-  ////////////////////////////////////////////////////////// 개편 //////////////////////////////////////////////////////////
 }
 
 LectureService.instance = new LectureService(
