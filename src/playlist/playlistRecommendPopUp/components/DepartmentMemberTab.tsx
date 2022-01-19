@@ -119,10 +119,7 @@ export function DepartmentMemberTab() {
             <div className="sh-sl-top">
               <Checkbox
                 className="base"
-                label={getPolyglotText(
-                  '"전체 선택" ',
-                  'playlist-popup-전체선택'
-                )}
+                label={getPolyglotText('전체 선택', 'playlist-popup-전체선택')}
                 checked={isAllChecked}
                 onClick={onAllCheckDepartmentMember}
               />
