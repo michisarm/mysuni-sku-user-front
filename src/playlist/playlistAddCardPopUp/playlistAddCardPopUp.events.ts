@@ -97,6 +97,7 @@ export function onChangeNextOffset() {
     offset: offset + 1,
     totalCount,
   });
+  requestLectureCardRdo();
 }
 
 // offset - 1
@@ -108,6 +109,7 @@ export function onChangePrevOffset() {
     offset: offset - 1,
     totalCount,
   });
+  requestLectureCardRdo();
 }
 
 // 검색어
