@@ -11,6 +11,7 @@ import { SkProfileService } from 'profile/stores';
 import { PlaylistType } from 'playlist/data/models/PlaylistType';
 import { requestPlaylistSwiper } from '../playlistContainer.request';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import myPageRoutePaths from 'myTraining/routePaths';
 
 /**
  * 슬라이드 loop 기능 사용시 복사된 요소들이 생성 되는데
@@ -104,7 +105,12 @@ function PlaylistCircleComponent({
 
   if (type === '') {
     return (
-      <div className="item plus" onClick={onOpenPlaylistInputPopUp}>
+      <div
+        className="item plus"
+        onClick={() => {
+          history.push(myPageRoutePaths.myPagePlaylist());
+        }}
+      >
         <div className="item-img">
           <Image
             src="https://image.mysuni.sk.com/suni-asset/public/images/all/btn-playlist-plus.png"
