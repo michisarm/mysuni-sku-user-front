@@ -70,7 +70,7 @@ class ReplyFormPage extends React.Component<Props> {
             text: `${parsePolyglotString(
               college.name,
               getDefaultLang(college.langSupports)
-            )} College`,
+            )} Category`,
             path: routePaths.collegeLectures(college.collegeId),
           },
           {

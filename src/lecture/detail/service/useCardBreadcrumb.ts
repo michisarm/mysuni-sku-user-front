@@ -19,7 +19,7 @@ export function useCardBreadcrumb() {
   useEffect(() => {
     const breadcrumbValue = [
       {
-        text: `${getCollgeName(lectureSummary.category.collegeId)} College`,
+        text: `${getCollgeName(lectureSummary.category.collegeId)} Category`,
         path: routePaths.collegeLectures(lectureSummary.category.collegeId),
       },
       {
