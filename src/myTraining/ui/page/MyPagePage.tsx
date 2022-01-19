@@ -253,6 +253,7 @@ function MyPagePage({
                         id="mapg-mifa-logout"
                         defaultString="Logout"
                       />
+                      <Icon className="logout-16px" />
                     </Button>
                   </div>
                 </>
@@ -263,6 +264,7 @@ function MyPagePage({
                       id="mapg-mifa-logout2"
                       defaultString="Logout"
                     />
+                    <Icon className="logout-16px" />
                   </Button>
                 </div>
               )}
