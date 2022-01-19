@@ -117,6 +117,10 @@ export function onChangeSearchWord(e: React.ChangeEvent<HTMLInputElement>) {
 
 // 학습카드 검색
 export function onSearchCard() {
+  setPlaylistAddCardPopUpOffset({
+    offset: 1,
+    totalCount: 0,
+  });
   requestLectureCardRdo();
 }
 
