@@ -23,6 +23,10 @@ function getHourMinuteFormat(hour: number, minute: number) {
   time = hour > 0 ? time + `${hour}h` : time;
   time = minute > 0 ? time + ` ${minute}m` : time;
 
+  if (hour === 0 && minute === 0) {
+    time = '00h 00m';
+  }
+
   return <span className="time">{time}</span>;
 }
 
