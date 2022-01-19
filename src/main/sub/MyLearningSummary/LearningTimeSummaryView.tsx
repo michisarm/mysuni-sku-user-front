@@ -11,25 +11,21 @@ import {
 } from '../../../shared/ui/logic/PolyglotText';
 
 interface LearningTimeSummaryViewProps {
+  year: string;
   totalLearningTime: number;
-  totalAccrueLearningTime: number;
-  learningObjectives: LearningObjectives;
+  learningGoalHour: number;
 }
 
 export default function LearningTimeSummaryView({
+  year,
   totalLearningTime,
-  totalAccrueLearningTime,
-  learningObjectives,
+  learningGoalHour,
 }: LearningTimeSummaryViewProps) {
   let LearningObjectivesPer = Math.floor(
-    (totalLearningTime / (learningObjectives!.AnnualLearningObjectives * 60)) *
-      100
+    (totalLearningTime / (learningGoalHour * 60)) * 100
   );
 
-  if (
-    learningObjectives.AnnualLearningObjectives !== 0 &&
-    LearningObjectivesPer > 100
-  ) {
+  if (LearningObjectivesPer > 100) {
     LearningObjectivesPer = 100;
   } else if (LearningObjectivesPer === Infinity) {
     LearningObjectivesPer = 0;
@@ -44,7 +40,7 @@ export default function LearningTimeSummaryView({
             `{year}년 학습시간`,
             'home-Summary-학습시간',
             {
-              year: CURRENT_YEAR.toString(),
+              year,
             }
           ),
         }}
@@ -65,10 +61,7 @@ export default function LearningTimeSummaryView({
               <p>
                 <LearningTimeView learningTime={totalLearningTime} />
               </p>
-              <span>
-                <PolyglotText defaultString="목표" id="home-Summary-목표" />{' '}
-                {learningObjectives!.AnnualLearningObjectives}h
-              </span>
+              <span>{learningGoalHour}h</span>
             </div>
           </div>
         }
@@ -84,17 +77,13 @@ export default function LearningTimeSummaryView({
         </span>
         <span>
           <strong>
-            <AccruedLearningTimeView
-              accruedLearningTime={totalAccrueLearningTime}
-            />
+            <LearningTimeView learningTime={totalLearningTime} />
           </strong>
         </span>
       </Popup>
     </div>
   );
 }
-
-const CURRENT_YEAR = moment().year();
 
 const style = {
   borderRadius: '0.375rem',

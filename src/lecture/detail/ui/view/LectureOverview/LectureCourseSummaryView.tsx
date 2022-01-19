@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { reactAlert } from '@nara.platform/accent';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
@@ -32,6 +33,8 @@ import { parsePolyglotHTML } from '../../../../../shared/helper/parseHelper';
 import { LearningState } from '../../../../../shared/model';
 import LectureCourseSummarySatisfactionView from './LectureCourseSummarySatisfactionView';
 import { SkProfileService } from '../../../../../profile/stores';
+import { onOpenPlaylistAddPopUpView } from 'playlist/playlistAddPopUp/playlistAddPopUpView.events';
+import { PlaylistAddPopUpView } from 'playlist/playlistAddPopUp/PlaylistAddPopUpView';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -448,6 +451,15 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
                     : getPolyglotText('찜한 과정', 'Course-Summary-관심제거')}
                 </span>
               </a>
+              <a onClick={onOpenPlaylistAddPopUpView}>
+                <span>
+                  <Icon className="plAdd" />
+                  <PolyglotText
+                    defaultString="Playlist 추가"
+                    id="playlist-popup-추가버튼"
+                  />
+                </span>
+              </a>
               <a onClick={copyUrl}>
                 <span>
                   <Icon className="linkCopy" />
@@ -457,6 +469,7 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
                   />
                 </span>
               </a>
+              <PlaylistAddPopUpView />
             </div>
           </div>
         </div>

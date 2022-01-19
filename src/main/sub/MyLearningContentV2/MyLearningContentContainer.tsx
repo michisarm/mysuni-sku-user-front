@@ -1,5 +1,4 @@
 import { mobxHelper } from '@nara.platform/accent';
-import { Abtest, ExperimentalGroup } from 'abtest/components';
 import { inject } from 'mobx-react';
 import { SkProfileService } from 'profile/stores';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -20,6 +19,7 @@ import MainBanner from './MainComponents/MainBanner';
 import MainChallengingBadgeContainer from './MainComponents/MainChallengingBadgeContainer';
 import { MainHotTopicContainer } from './MainComponents/MainHotTopicContainer';
 import RQDLearning from './MainComponents/RQDLearning';
+import { PlaylistContainerView } from './playlistContainer/PlaylistContainerView';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -74,6 +74,9 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
           .map((c) => (
             <LeraningContainer key={c.id} cardBundle={c} />
           ))}
+
+        {/** 플레이리스트 */}
+        <PlaylistContainerView />
       </div>
       <div className="learning-section-wrap bg-gray">
         {pageElements.some(

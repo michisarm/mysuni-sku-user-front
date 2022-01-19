@@ -100,12 +100,18 @@ class MyLearningSummaryService {
   // }
 
   @action
-  async findMyLearningSummaryByYear(year: number = moment().year().valueOf()) {
-    const learningSummary =
-      await this.myLearningSummaryApi.findMyLearningSummaryByYear(year);
+  async findMyLearningSummaryByYear(
+    year?: number
+  ): Promise<MyLearningSummaryModel> {
+    //
+    const learningSummary = await this.myLearningSummaryApi.findMyLearningSummaryByYear(
+      year || moment().year()
+    );
     runInAction(() => {
       this.myLearningSummary = new MyLearningSummaryModel(learningSummary);
     });
+
+    return learningSummary;
   }
 
   @action

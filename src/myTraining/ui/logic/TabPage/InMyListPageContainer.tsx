@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { mobxHelper } from '@nara.platform/accent';
 import { LectureService } from 'lecture';
 import LectureParams, { toPath } from 'lecture/detail/viewModel/LectureParams';
@@ -16,9 +17,12 @@ import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import ReactGA from 'react-ga';
 import { useHistory, useParams } from 'react-router';
 import FilterBoxService from 'shared/present/logic/FilterBoxService';
-import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { convertToKeyInMyLearningTable } from '../../../../lecture/shared/present/logic/LectureService';
 import StudentLearningType from '../../../../lecture/model/learning/StudentLearningType';
+import { Button } from 'semantic-ui-react';
+import { onOpenPlaylistAddPopUpView } from 'playlist/playlistAddPopUp/playlistAddPopUpView.events';
+import { PlaylistAddPopUpView } from 'playlist/playlistAddPopUp/PlaylistAddPopUpView';
 
 interface InMyListPageContainerProps {
   lectureService?: LectureService;
@@ -61,13 +65,8 @@ function InMyListPageContainer({
     clearMyLearningCard,
   } = lectureService!;
 
-  const {
-    conditions,
-    filterCount,
-    showResult,
-    setOpenFilter,
-    openFilter,
-  } = filterBoxService!;
+  const { conditions, filterCount, showResult, setOpenFilter, openFilter } =
+    filterBoxService!;
 
   // useRequestFilterCountView();
 
@@ -282,18 +281,28 @@ function InMyListPageContainer({
           filterOpotions={filterOptions}
           contentType={contentType}
         >
-          <div
-            className="list-number"
-            dangerouslySetInnerHTML={{
-              __html: getPolyglotText(
-                '총 <strong>{totalCount}개</strong>의 리스트가 있습니다.',
-                'learning-학보드-게시물총수',
-                {
-                  totalCount: (totalMyLearningCardCount || 0).toString(),
-                }
-              ),
-            }}
-          />
+          <PlaylistAddPopUpView />
+          <div className="left-wrap">
+            <Button className="post add" onClick={onOpenPlaylistAddPopUpView}>
+              +{' '}
+              <PolyglotText
+                defaultString="Playlist 추가"
+                id="playlist-popup-추가버튼"
+              />
+            </Button>
+            <div
+              className="list-number"
+              dangerouslySetInnerHTML={{
+                __html: getPolyglotText(
+                  '총 <strong>{totalCount}개</strong>의 리스트가 있습니다.',
+                  'learning-학보드-게시물총수',
+                  {
+                    totalCount: (totalMyLearningCardCount || 0).toString(),
+                  }
+                ),
+              }}
+            />
+          </div>
         </TabHeader>
       }
       {(bookmarkCount > 0 && (

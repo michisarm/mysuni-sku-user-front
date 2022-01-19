@@ -8,7 +8,6 @@ import {
 } from '../../../api/mWatchlogApi';
 import { getLectureParams } from '../../../store/LectureParamsStore';
 import { findCubeDetailCache } from '../../../api/cubeApi';
-import { start, stop } from '../../../api/panoptoApi';
 
 export async function getWatchLogSumViewSeconds(): Promise<void> {
   const params = getLectureParams();
@@ -23,16 +22,14 @@ export async function getWatchLogSumViewSeconds(): Promise<void> {
 }
 
 export async function getMultiVideoOverlap(
-  viewState: string,
-  usid: string
+  viewState: String,
+  usid: String
 ): Promise<string> {
   // alert(patronInfo.getPatronId());
-  // const rtn = await multiVideoOverlap(
-  //   patronInfo.getPatronId(),
-  //   viewState,
-  //   usid
-  // );
-  // return rtn;
-
-  return viewState === 'start' ? start(usid) : stop();
+  const rtn = await multiVideoOverlap(
+    patronInfo.getPatronId(),
+    viewState,
+    usid
+  );
+  return rtn;
 }

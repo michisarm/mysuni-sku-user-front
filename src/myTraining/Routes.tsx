@@ -38,6 +38,11 @@ export default function MainRoutes() {
       />
       <Route
         exact
+        path="/my-training/my-page/:tab/detail/:playlistId"
+        component={MyPagePage}
+      />
+      <Route
+        exact
         path="/my-training/my-page/ApprovalList/detail/:studentId"
         component={ApprovalSharedDetailContainer}
       />

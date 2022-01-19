@@ -6,6 +6,7 @@ import UserProfileInfoTabCommunity from './UserProfileInfoTabCommunity';
 import UserProfileInfoTabFeed from './UserProfileInfoTabFeed';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { isCommunityAuth } from 'layout/UserApp/store/MenuAuthStore';
+import UserProfileInfoTabPlaylist from './UserProfileInfoTabPlaylist';
 
 interface Props {
   open: boolean;
@@ -23,7 +24,7 @@ interface Props {
 interface State {}
 
 function UserProfileInfoView(props: Props) {
-  const [selectedMenuName, setSelectMenuName] = useState<string>('Community');
+  const [selectedMenuName, setSelectMenuName] = useState<string>('Playlist');
 
   const setMenu = useCallback((menuName: string) => {
     setSelectMenuName(menuName);
@@ -56,6 +57,12 @@ function UserProfileInfoView(props: Props) {
                   selectedMenu={selectedMenuName}
                   setMneu={setMenu}
                 />
+                {selectedMenuName === 'Playlist' && (
+                  <UserProfileInfoTabPlaylist
+                    memberId={props.memberId}
+                    setOpen={props.setOpen}
+                  />
+                )}
                 {/* {selectedMenuName === 'Badge' && <UserProfileInfoTabBadge memberId={props.memberId} setOpen={props.setOpen} />} */}
                 {selectedMenuName === 'Community' && (
                   <UserProfileInfoTabCommunity

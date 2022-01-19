@@ -1,0 +1,211 @@
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { useHistory } from 'react-router';
+import { Segment } from 'semantic-ui-react';
+import { PlaylistSwiper } from '../playlistContainer.store';
+import Image from '../../../../../shared/components/Image/Image';
+import Swiper from 'react-id-swiper';
+import 'swiper/css/swiper.css';
+import { PlaylistInputPopUpView } from 'playlist/playlistInputPopUp/PlaylistInputPopUpView';
+import { onOpenPlaylistInputPopUp } from 'playlist/playlistInputPopUp/playlistInputPopUp.events';
+import { SkProfileService } from 'profile/stores';
+import { PlaylistType } from 'playlist/data/models/PlaylistType';
+import { requestPlaylistSwiper } from '../playlistContainer.request';
+
+/**
+ * 슬라이드 loop 기능 사용시 복사된 요소들이 생성 되는데
+ * 이 복사된 요소는 react dom에 포함되지 않는 요소라서 클릭이벤트가 bind되지 않는다.
+ * 이 문제를 해결하기 위해 복사된 요소들을 가져와서 이벤트를 직접 넣어주는 방식을 사용하였다.
+ * */
+
+function useDuplicateElementAddEvent(
+  index: number,
+  type: PlaylistType,
+  onClickMove: () => void
+) {
+  // 복사된 요소들을 querySelector를 사용하여 가져온다.
+  const slides = document.querySelectorAll(
+    '.plylistSwiper .swiper-slide.swiper-slide-duplicate'
+  );
+
+  useEffect(() => {
+    //복사된 요소들의 배열에 현재 index값을 이용하여 요소를 불러온 뒤 event를 넣어준다.
+    if (slides[index] !== undefined) {
+      if (type === '') {
+        slides[index] &&
+          slides[index].children[0].addEventListener(
+            'click',
+            onOpenPlaylistInputPopUp
+          );
+        return;
+      }
+      slides[index] &&
+        slides[index].children[0].addEventListener('click', onClickMove);
+    }
+
+    // remove Event
+    return () => {
+      if (slides[index] !== undefined) {
+        if (type === '') {
+          slides[index].children[0].removeEventListener(
+            'click',
+            onOpenPlaylistInputPopUp
+          );
+        }
+        slides[index].children[0].removeEventListener('click', onClickMove);
+      }
+    };
+  }, [index, onClickMove, slides, type]);
+}
+
+interface PlaylistCircleComponentProps {
+  index: number;
+  playlist: PlaylistSwiper;
+}
+
+function PlaylistCircleComponent({
+  index,
+  playlist,
+}: PlaylistCircleComponentProps) {
+  const { id, name, title, photoImagePath, thumbImagePath, type } = playlist;
+  const history = useHistory();
+
+  const onClickMovePlaylistDetail = useCallback(() => {
+    history.push(`/my-training/my-page/Playlist/detail/${id}`);
+  }, [history, id]);
+
+  useDuplicateElementAddEvent(index, type, onClickMovePlaylistDetail);
+
+  const playlistTypeName = useMemo(() => {
+    switch (type) {
+      case 'MadeByMyself':
+        return '내가 만든';
+      case 'MadeByOthers':
+        return '내가 담은';
+      case 'Recommended':
+        return '추천 받은';
+      default:
+        return '';
+    }
+  }, [type]);
+
+  const playlistTypeClasses = useMemo(() => {
+    switch (type) {
+      case 'MadeByMyself':
+        return 'case1';
+      case 'MadeByOthers':
+        return 'case3';
+      case 'Recommended':
+        return 'case2';
+      default:
+        return 'plus';
+    }
+  }, [type]);
+
+  if (type === '') {
+    return (
+      <div className="item plus" onClick={onOpenPlaylistInputPopUp}>
+        <div className="item-img">
+          <Image
+            src="https://image.mysuni.sk.com/suni-asset/public/images/all/btn-playlist-plus.png"
+            alt="프로필 추가"
+            className="ui image"
+          />
+        </div>
+        <div className="item-cont">
+          <div className="plus-wrap">
+            <Image
+              src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-create-playlist.png"
+              alt="프로필 추가"
+              className="ui image"
+            />
+            <p>
+              나만의 Playlist를
+              <br />
+              만들어 보세요.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className={`item ${playlistTypeClasses}`}
+      onClick={onClickMovePlaylistDetail}
+    >
+      <div className="item-img">
+        <Image src={thumbImagePath} alt="" className="ui image" />
+      </div>
+      <div className="item-cont">
+        <div className="tit-wrap">
+          <em>{playlistTypeName}</em>
+          <strong>{title}</strong>
+        </div>
+        <div className="profile-wrap">
+          <div className="ui profile">
+            <div className="pic">
+              <Image
+                src={photoImagePath}
+                alt="프로필 사진"
+                className="ui image"
+              />
+            </div>
+            <strong className="name">{name}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+interface PlaylistSwiperComponentProps {
+  playlistSwiper: PlaylistSwiper[];
+}
+export function PlaylistSwiperComponent({
+  playlistSwiper,
+}: PlaylistSwiperComponentProps) {
+  const PlaylistSwiperOption = {
+    slidesPerView: 'auto',
+    centeredSlides: true,
+    spaceBetween: 0,
+    slideToClickedSlide: true,
+    loop: true,
+    initialSlide: 2,
+    speed: 300,
+    navigation: {
+      nextEl: '.plylistSwiperNav .swiper-button-next',
+      prevEl: '.plylistSwiperNav .swiper-button-prev',
+    },
+  };
+
+  return (
+    <Segment className="full learning-section type1">
+      <div className="section-head">
+        <div className="sec-tit-txt">
+          <strong>{SkProfileService.instance.profileMemberName}님</strong>의{' '}
+          <strong>Playlist</strong>
+        </div>
+      </div>
+      <div className="section-body">
+        <div className="plylistSwiper">
+          <Swiper {...PlaylistSwiperOption}>
+            {playlistSwiper.map((playlist, i) => (
+              <div className="swiper-slide" key={i}>
+                <PlaylistCircleComponent index={i} playlist={playlist} />
+              </div>
+            ))}
+          </Swiper>
+          <div className="plylistSwiperNav">
+            <div className="swiper-button-prev" />
+            <div className="swiper-button-next" />
+          </div>
+        </div>
+      </div>
+      <PlaylistInputPopUpView
+        type="CREATE"
+        afterCloseCallback={requestPlaylistSwiper}
+      />
+    </Segment>
+  );
+}

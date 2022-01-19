@@ -392,24 +392,24 @@ function updateItems(
   lectureStructure: LectureStructure
 ): LectureStructureItem[] {
   const items = lectureStructure.items
-    .map((item) => {
+    .map(item => {
       if (isLectureStructureCubeItem(item)) {
         return lectureStructure.cubes.find(
-          (c) => c.cubeId === item.cubeId
+          c => c.cubeId === item.cubeId
         ) as LectureStructureItem;
       }
       if (isLectureStructureChapterItem(item)) {
         return lectureStructure.chapters.find(
-          (c) => c.id === item.id
+          c => c.id === item.id
         ) as LectureStructureItem;
       }
       if (isLectureStructureDiscussionItem(item)) {
         return lectureStructure.discussions.find(
-          (c) => c.id === item.id
+          c => c.id === item.id
         ) as LectureStructureItem;
       }
     })
-    .filter((c) => c !== undefined) as LectureStructureItem[];
+    .filter(c => c !== undefined) as LectureStructureItem[];
   return items;
 }
 
@@ -424,12 +424,12 @@ export async function updateCardLectureStructure(cardId: string) {
   }
   const { cardStudent, cubeStudents } = myCardRelatedStudentsRom;
   lectureStructure.cubes = await Promise.all(
-    lectureStructure.cubes.map((item) => {
+    lectureStructure.cubes.map(item => {
       const cubeStudent = findCubeStudent(item.cubeId, cubeStudents);
       return updateCubeItem(item, cubeStudent);
     })
   );
-  lectureStructure.discussions = lectureStructure.discussions.map((item) => {
+  lectureStructure.discussions = lectureStructure.discussions.map(item => {
     return updateDiscussionItem(lectureStructure.card, item, cardStudent);
   });
 
@@ -438,7 +438,7 @@ export async function updateCardLectureStructure(cardId: string) {
   lectureStructure.card = updateCardItem(lectureStructure.card, cardStudent);
 
   lectureStructure.card.canSubmit = lectureStructure.cubes.every(
-    (c) => c.state === 'Completed'
+    c => c.state === 'Completed'
   );
 
   setLectureStructure({ ...lectureStructure });

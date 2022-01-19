@@ -10,7 +10,8 @@ export function useRequestLearningSummary() {
 }
 
 const requestMyLearningSummary = () => {
-  const currentYear = moment().year();
+  // const currentYear = moment().year();
+  const currentYear = 2019;
   MyLearningSummaryService.instance.findMyLearningSummaryByYear(currentYear);
 };
 
