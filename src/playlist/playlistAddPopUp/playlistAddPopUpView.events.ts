@@ -1,3 +1,4 @@
+import { useAddLearningCardIds } from 'playlist/playlistAddPopUp/playlistAddPopUpView.store';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { reactAlert } from '@nara.platform/accent';
 import { isEmpty } from 'lodash';
@@ -13,10 +14,17 @@ import {
   setIsOpenPlayListAddPopUp,
   getAddLearningCardIds,
 } from './playlistAddPopUpView.store';
+import { useCallback } from 'react';
 
 export function onOpenPlaylistAddPopUpView() {
-  setIsOpenPlayListAddPopUp(true);
-  requestPlaylistAddPopUpView();
+  const checkedCardIds = getAddLearningCardIds();
+  console.log(checkedCardIds);
+  if (checkedCardIds.length !== 0) {
+    setIsOpenPlayListAddPopUp(true);
+    requestPlaylistAddPopUpView();
+  } else {
+    onClickNoCheckCard();
+  }
 }
 
 export function onClosePlaylistAddPopUpView() {
@@ -80,15 +88,10 @@ export function onAddLearningCard() {
   if (myPlaylist.length === 0) {
     reactAlert({
       title: getPolyglotText('Playlist 추가하기', 'playlist-popup-추가하기'),
-      message:
-        getPolyglotText(
-          '생성된 Playlist가 없습니다.',
-          'playlist-popup-NoPlaylist1'
-        ) +
-        getPolyglotText(
-          '구성원들과 함께 학습할 Playlist를 만들어보세요!',
-          'playlist-popup-NoPlaylist2'
-        ),
+      message: getPolyglotText(
+        '생성된 Playlist가 없습니다.\n구성원들과 함께 학습할 Playlist를 만들어보세요!',
+        'playlist-popup-NoPlaylist'
+      ),
     });
     return;
   }
@@ -118,3 +121,13 @@ export function onAddLearningCard() {
 
   requestAddCardsToPlaylist(cardIds, checkedPlaylistIds);
 }
+
+export const onClickNoCheckCard = () => {
+  reactAlert({
+    title: getPolyglotText('Playlist 추가하기', 'playlist-popup-추가하기'),
+    message: getPolyglotText(
+      'Playlist에 추가할 과정을 선택해주세요.',
+      'playlist-popup-추가과정선택'
+    ),
+  });
+};
