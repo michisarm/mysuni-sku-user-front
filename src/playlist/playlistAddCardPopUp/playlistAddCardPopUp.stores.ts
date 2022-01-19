@@ -76,6 +76,7 @@ export const [
   offset: 1,
   totalCount: 0,
 });
+
 export const [useSearchWord, setSearchWord, getSearchWord] =
   createStore<string>('');
 export const [
