@@ -42,7 +42,7 @@ export function RecommendPopUpRightComponent() {
     <>
       <div className="sh-header">
         <div className="h-left">
-          <span>Selected</span>
+          <span>Selected</span>{' '}
           <strong>
             {checkedMemberList.length}
             <PolyglotText defaultString="명" id="playlist-popup-선택명수" />

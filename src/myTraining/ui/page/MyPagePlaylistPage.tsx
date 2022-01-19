@@ -15,7 +15,6 @@ import {
   setMyPagePlaylistFilterBox,
   useMyPagePlaylist,
   useMyPagePlaylistFilterBox,
-  useRequestMyPagePlaylist,
 } from '../view/playlist/myPagePlaylist/MyPagePlaylist.services';
 import {
   playListItemClassName,
@@ -29,7 +28,10 @@ import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { PlaylistInputPopUpView } from 'playlist/playlistInputPopUp/PlaylistInputPopUpView';
 import { onOpenPlaylistInputPopUp } from 'playlist/playlistInputPopUp/playlistInputPopUp.events';
 import { SeeMoreButton } from 'lecture';
-import requestMyPagePlaylist from '../view/playlist/myPagePlaylist/MyPagePlaylist.request';
+import {
+  requestMyPagePlaylist,
+  useRequestMyPagePlaylist,
+} from '../view/playlist/myPagePlaylist/MyPagePlaylist.request';
 
 interface PropsType {
   playlist: MyPlaylistsTable;
@@ -199,7 +201,7 @@ function MyPagePlaylistPage() {
           />
           <div className="select-wrap">
             <Select
-              placeholder="선택"
+              placeholder={getPolyglotText('선택', 'mypage-playlist-선택')}
               className="ui small-border dropdown m0"
               options={selectOptions}
               onChange={onMyPagePlaylistPageFilter}
