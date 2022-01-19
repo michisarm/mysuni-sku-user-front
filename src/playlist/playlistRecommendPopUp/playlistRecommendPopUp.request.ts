@@ -1,3 +1,4 @@
+import requestMyPagePlaylistDetail from 'myTraining/ui/view/playlist/myPagePlaylistDetail/MyPagePlaylistDetail.request';
 import { getDenizedId } from 'community/ui/app.formatters';
 import { findFollowingUsers } from 'community/ui/data/community/apis/followApi';
 import {
@@ -26,9 +27,13 @@ export function requestRecommendPlaylist(
     denizenIds,
     playlistId,
     recommendation,
-  }).then(() => {
-    onClosePlaylistRecommendPopUp();
-  });
+  })
+    .then(() => {
+      onClosePlaylistRecommendPopUp();
+    })
+    .then(() => {
+      requestMyPagePlaylistDetail(playlistId);
+    });
 }
 
 // 소속 부서 구성원 tab 데이터 호출
