@@ -17,7 +17,7 @@ export async function onDeletePlaylistClick(myPlaylistId: string) {
   reactConfirm({
     title: getPolyglotText('Playlist 삭제하기', 'playlist-popup-삭제하기'),
     message: getPolyglotText(
-      'Playlist를 삭제하시겠습니까 ? <br/>추천받은 구성원들에게도 삭제됩니다.',
+      'Playlist를 삭제하시겠습니까?',
       'playlist-popup-삭제컨펌'
     ),
     onOk: () => {

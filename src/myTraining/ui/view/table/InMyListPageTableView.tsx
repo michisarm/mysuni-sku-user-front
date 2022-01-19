@@ -1,13 +1,9 @@
 import CardForUserViewModel from 'lecture/model/learning/CardForUserViewModel';
-import { InMyLectureTableViewModel } from 'myTraining/model';
 import { LearningTypeName } from 'myTraining/model/LearningType';
 import { inProgressPolyglot } from 'myTraining/ui/model/TableHeaderColumn';
-import {
-  setAddLearningCardIds,
-  useAddLearningCardIds,
-} from 'playlist/playlistAddPopUp/playlistAddPopUpView.store';
-import React, { useCallback } from 'react';
-import { Checkbox, CheckboxProps, Icon, Table } from 'semantic-ui-react';
+import { useAddLearningCardIds } from 'playlist/playlistAddPopUp/playlistAddPopUpView.store';
+import React from 'react';
+import { Checkbox, Icon, Table } from 'semantic-ui-react';
 import {
   convertTimeToDate,
   timeToHourMinutePaddingFormat,
