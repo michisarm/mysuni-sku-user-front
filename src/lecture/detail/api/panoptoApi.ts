@@ -62,3 +62,13 @@ export function stop(): Promise<string> {
     .get(url)
     .then((response) => (response && response.data) || null);
 }
+
+export function findByCubeIdsInPost(
+  cubeIds: string[]
+): Promise<PlayTimeModel[]> {
+  //
+  const url = `${BASE_URL}/playTimes/findByCubeIds`;
+  return axiosApi
+    .post(url, cubeIds)
+    .then((response) => (response && response.data) || null);
+}
