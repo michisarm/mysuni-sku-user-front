@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { Menu } from 'semantic-ui-react';
+import { PolyglotText } from '../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   selectedMenu: string;
@@ -14,6 +15,16 @@ export function UserProfileInfoTabMenu(props: Props) {
     <>
       <div className="contents-tab-menu">
         <Menu className="sku">
+          <Menu.Item
+            name="Playlist"
+            active={props.selectedMenu === 'Playlist'}
+            onClick={() => onMenuItemClick('Playlist')}
+          >
+            <PolyglotText
+              defaultString="Playlist"
+              id="mypage-유저모달-Playlist"
+            />
+          </Menu.Item>
           <Menu.Item
             name="Community"
             active={props.selectedMenu === 'Community'}
