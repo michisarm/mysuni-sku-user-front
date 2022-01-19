@@ -1,4 +1,5 @@
-import { isEmpty } from 'lodash';
+import { reactAlert } from '@nara.platform/accent';
+import { isEmpty, trim } from 'lodash';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Checkbox, Icon, Tab } from 'semantic-ui-react';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
@@ -48,11 +49,29 @@ export function MySuniUserTab() {
   );
 
   const onClickSearch = useCallback(() => {
-    if (!isEmpty(searchText)) {
-      onSearchMySuniUser(searchText).then(() => {
-        setIsSearchAfter(true);
-        setSearchTextResult(searchText);
+    if (trim(searchText).length === 0) {
+      reactAlert({
+        title: getPolyglotText('구성원 검색하기', 'playlist-popup-구성원검색'),
+        message: getPolyglotText(
+          '이름 또는 이메일을 입력해주세요.',
+          'playlist-popup-구성원입력'
+        ),
       });
+    } else if (trim(searchText).length < 2) {
+      reactAlert({
+        title: getPolyglotText('구성원 검색하기', 'playlist-popup-구성원검색'),
+        message: getPolyglotText(
+          '두 글자 이상 검색해주세요.',
+          'playlist-popup-두글자검색'
+        ),
+      });
+    } else {
+      if (!isEmpty(searchText)) {
+        onSearchMySuniUser(searchText).then(() => {
+          setIsSearchAfter(true);
+          setSearchTextResult(searchText);
+        });
+      }
     }
   }, [searchText]);
 
@@ -88,23 +107,31 @@ export function MySuniUserTab() {
                 id="playlist-popup-검색하기"
               />
             </strong>
-            <div className="text">
-              {getPolyglotText(
-                `Playlist를 추천할<br/>mySUNI 사용자 이름 또는 이메일을 검색해보세요!`,
-                'playlist-popup-검색설명'
-              )}
-            </div>
+            <div
+              className="text"
+              dangerouslySetInnerHTML={{
+                __html: getPolyglotText(
+                  `Playlist를 추천할<br/>mySUNI 사용자 이름 또는 이메일을 검색해보세요!`,
+                  'playlist-popup-검색설명'
+                ),
+              }}
+            />
           </div>
         )}
         {isSearchAfter && mySuniUser.length === 0 ? (
           <div className="no-cont-wrap">
             <Icon className="no-contents80" />
             <span className="blind">콘텐츠 없음</span>
-            <div className="text">
-              <strong className="s-word">{searchTextResult}</strong>에 대한
-              검색결과가 없어요! <br />
-              Playlist를 추천할 다른 학습자를 검색해주세요.
-            </div>
+            <div
+              className="text"
+              dangerouslySetInnerHTML={{
+                __html: getPolyglotText(
+                  ` <strong className="s-word">{text}</strong>에 대한 검색결과가 없어요! <br /> Playlist를 추천할 다른 학습자를 검색해주세요.`,
+                  'playlist-popup-학습자검색',
+                  { text: searchTextResult }
+                ),
+              }}
+            />
           </div>
         ) : (
           isSearchAfter && (

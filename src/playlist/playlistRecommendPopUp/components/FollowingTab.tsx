@@ -13,6 +13,8 @@ import {
   onAllCheckedFollowing,
 } from '../playlistRecommendPopUp.events';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { reactAlert } from '@nara.platform/accent';
+import { trim } from 'lodash';
 
 export function FollowingTab() {
   useRequestFollowing();
@@ -52,9 +54,27 @@ export function FollowingTab() {
   );
 
   const onClickSearch = useCallback(() => {
-    const searchResult = onSearchFollowing(searchText);
-    setSearchTextResult(searchText);
-    setSearchResult(searchResult);
+    if (trim(searchText).length === 0) {
+      reactAlert({
+        title: getPolyglotText('구성원 검색하기', 'playlist-popup-구성원검색'),
+        message: getPolyglotText(
+          '이름 또는 이메일을 입력해주세요.',
+          'playlist-popup-구성원입력'
+        ),
+      });
+    } else if (trim(searchText).length < 2) {
+      reactAlert({
+        title: getPolyglotText('구성원 검색하기', 'playlist-popup-구성원검색'),
+        message: getPolyglotText(
+          '두 글자 이상 검색해주세요.',
+          'playlist-popup-두글자검색'
+        ),
+      });
+    } else {
+      const searchResult = onSearchFollowing(searchText);
+      setSearchTextResult(searchText);
+      setSearchResult(searchResult);
+    }
   }, [searchText]);
 
   return (

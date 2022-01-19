@@ -72,10 +72,16 @@ function AddPlaylistBottomView(props: AddPlaylistBottomViewProps) {
                   <strong className="ellipsis">{playlist.title}</strong>
                 </div>
                 <div className="add-info">
-                  <div className="add-cnt">
-                    전체 <strong>{playlist.learningCardCount}개</strong>{' '}
-                    학습카드
-                  </div>
+                  <div
+                    className="add-cnt"
+                    dangerouslySetInnerHTML={{
+                      __html: getPolyglotText(
+                        `전체 <strong>{totalCount}개</strong> 학습카드`,
+                        'mypage-playlist-학습카드수',
+                        { totalCount: playlist.learningCardCount.toString() }
+                      ),
+                    }}
+                  />
                   <span>{playlist.registeredTime}</span>
                 </div>
               </div>
@@ -169,10 +175,16 @@ export function PlaylistAddPopUpView() {
                 </span>
               </div>
               <Button className="bl" onClick={handleAddPlaylistButton}>
-                만들기
+                <PolyglotText
+                  defaultString="확인"
+                  id="playlist-popup-확인버튼"
+                />
               </Button>
               <Button className="cl" onClick={onClickIsShowAddPlaylistInput}>
-                취소
+                <PolyglotText
+                  defaultString="취소"
+                  id="playlist-popup-취소버튼"
+                />
               </Button>
             </div>
           </div>
@@ -183,7 +195,7 @@ export function PlaylistAddPopUpView() {
       </Modal.Content>
       <ModalActions>
         <Button className="w190 pop p" onClick={onAddLearningCard}>
-          추가
+          <PolyglotText defaultString="추가" id="playlist-popup-서밋버튼" />
         </Button>
       </ModalActions>
     </Modal>

@@ -1,4 +1,5 @@
-import { isEmpty } from 'lodash';
+import { reactAlert } from '@nara.platform/accent';
+import { isEmpty, trim } from 'lodash';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Checkbox, Icon, Tab } from 'semantic-ui-react';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
@@ -45,9 +46,27 @@ export function DepartmentMemberTab() {
   );
 
   const onClickSearch = useCallback(() => {
-    onSearchDepartmentMember(searchText).then(() => {
-      setSearchTextResult(searchText);
-    });
+    if (trim(searchText).length === 0) {
+      reactAlert({
+        title: getPolyglotText('구성원 검색하기', 'playlist-popup-구성원검색'),
+        message: getPolyglotText(
+          '이름 또는 이메일을 입력해주세요.',
+          'playlist-popup-구성원입력'
+        ),
+      });
+    } else if (trim(searchText).length < 2) {
+      reactAlert({
+        title: getPolyglotText('구성원 검색하기', 'playlist-popup-구성원검색'),
+        message: getPolyglotText(
+          '두 글자 이상 검색해주세요.',
+          'playlist-popup-두글자검색'
+        ),
+      });
+    } else {
+      onSearchDepartmentMember(searchText).then(() => {
+        setSearchTextResult(searchText);
+      });
+    }
   }, [searchText]);
 
   return (
@@ -86,7 +105,10 @@ export function DepartmentMemberTab() {
             <div className="sh-sl-top">
               <Checkbox
                 className="base"
-                label="전체 선택"
+                label={getPolyglotText(
+                  '"전체 선택" ',
+                  'playlist-popup-전체선택'
+                )}
                 checked={isAllChecked}
                 onClick={onAllCheckDepartmentMember}
               />

@@ -7,7 +7,7 @@ import {
   setMyPagePlaylistFilterBox,
 } from './MyPagePlaylist.services';
 import { findMyPlaylists } from 'playlist/data/apis';
-import requestMyPagePlaylist from './MyPagePlaylist.request';
+import { requestMyPagePlaylist } from './MyPagePlaylist.request';
 
 export function playListItemClassName(playlistType: PlaylistType) {
   switch (playlistType) {

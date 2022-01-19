@@ -1,9 +1,7 @@
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
-import { useEffect } from 'react';
 import { PlaylistType } from '../../../../../playlist/data/models/PlaylistType';
 import { PlaylistDetailSummary } from '../../../../../playlist/data/models/PlaylistDetailSummary';
 import { createStore } from 'shared/store/Store';
-import requestMyPagePlaylist from './MyPagePlaylist.request';
 
 export const selectOptions = [
   {
@@ -61,10 +59,3 @@ export const [
   getMyPagePlaylistFilterBox,
   useMyPagePlaylistFilterBox,
 ] = createStore<MyPlaylistFilterBox>({ offset: 0, playlistType: '' });
-
-export function useRequestMyPagePlaylist() {
-  useEffect(() => {
-    setMyPagePlaylistFilterBox({ playlistType: '', offset: 0 });
-    requestMyPagePlaylist();
-  }, []);
-}
