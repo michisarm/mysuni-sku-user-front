@@ -15,6 +15,8 @@ import {
   onClosePlaylistRecommendPopUp,
 } from './playlistRecommendPopUp.events';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { trim } from 'lodash';
+import { reactAlert } from '@nara.platform/accent';
 
 export function RecommendPopUpLeftComponent() {
   const panes = [
@@ -111,7 +113,15 @@ export function PlaylistRecommendPopUpView() {
   );
 
   const onClickRecommend = useCallback(() => {
-    onRecommendPlaylist(recommendation);
+    trim(recommendation).length === 0
+      ? reactAlert({
+          title: getPolyglotText('알림', 'cicl-학상본문-알림'),
+          message: getPolyglotText(
+            '추천할 메세지 내용을 입력해주세요.',
+            'playlist-popup-추천메세지'
+          ),
+        })
+      : onRecommendPlaylist(recommendation);
   }, [recommendation]);
 
   return (
