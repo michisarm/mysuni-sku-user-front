@@ -22,7 +22,8 @@ import myPageRoutePaths from 'myTraining/routePaths';
 function useDuplicateElementAddEvent(
   index: number,
   type: PlaylistType,
-  onClickMove: () => void
+  onClickMovePlaylistDetail: () => void,
+  onClickMovePlaylist: () => void
 ) {
   // 복사된 요소들을 querySelector를 사용하여 가져온다.
   const slides = document.querySelectorAll(
@@ -36,12 +37,15 @@ function useDuplicateElementAddEvent(
         slides[index] &&
           slides[index].children[0].addEventListener(
             'click',
-            onOpenPlaylistInputPopUp
+            onClickMovePlaylist
           );
         return;
       }
       slides[index] &&
-        slides[index].children[0].addEventListener('click', onClickMove);
+        slides[index].children[0].addEventListener(
+          'click',
+          onClickMovePlaylistDetail
+        );
     }
 
     // remove Event
@@ -50,13 +54,16 @@ function useDuplicateElementAddEvent(
         if (type === '') {
           slides[index].children[0].removeEventListener(
             'click',
-            onOpenPlaylistInputPopUp
+            onClickMovePlaylist
           );
         }
-        slides[index].children[0].removeEventListener('click', onClickMove);
+        slides[index].children[0].removeEventListener(
+          'click',
+          onClickMovePlaylistDetail
+        );
       }
     };
-  }, [index, onClickMove, slides, type]);
+  }, [index, onClickMovePlaylistDetail, onClickMovePlaylist, slides, type]);
 }
 
 interface PlaylistCircleComponentProps {
@@ -75,7 +82,16 @@ function PlaylistCircleComponent({
     history.push(`/my-training/my-page/Playlist/detail/${id}`);
   }, [history, id]);
 
-  useDuplicateElementAddEvent(index, type, onClickMovePlaylistDetail);
+  const onClickMovePlaylist = useCallback(() => {
+    history.push(myPageRoutePaths.myPagePlaylist());
+  }, [history]);
+
+  useDuplicateElementAddEvent(
+    index,
+    type,
+    onClickMovePlaylistDetail,
+    onClickMovePlaylist
+  );
 
   const playlistTypeName = useMemo(() => {
     switch (type) {
@@ -105,12 +121,7 @@ function PlaylistCircleComponent({
 
   if (type === '') {
     return (
-      <div
-        className="item plus"
-        onClick={() => {
-          history.push(myPageRoutePaths.myPagePlaylist());
-        }}
-      >
+      <div className="item plus" onClick={onClickMovePlaylist}>
         <div className="item-img">
           <Image
             src="https://image.mysuni.sk.com/suni-asset/public/images/all/btn-playlist-plus.png"
