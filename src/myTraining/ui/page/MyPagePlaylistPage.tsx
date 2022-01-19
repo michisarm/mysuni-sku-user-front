@@ -201,7 +201,10 @@ function MyPagePlaylistPage() {
           />
           <div className="select-wrap">
             <Select
-              placeholder={getPolyglotText('선택', 'mypage-playlist-선택')}
+              placeholder={getPolyglotText(
+                `전체`,
+                'mypage-playlist-전체리스트'
+              )}
               className="ui small-border dropdown m0"
               options={selectOptions}
               onChange={onMyPagePlaylistPageFilter}
