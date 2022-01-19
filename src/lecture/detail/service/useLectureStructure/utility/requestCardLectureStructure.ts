@@ -44,7 +44,7 @@ import { findCardPisAgreement } from '../../../api/profileApi';
 import { useHistory } from 'react-router';
 import { useEffect } from 'react';
 import PlayTimeModel from '../../../model/PlayTimeModel';
-import { findByCubeIds } from '../../../api/panoptoApi';
+import { findByCubeIds, findByCubeIdsInPost } from '../../../api/panoptoApi';
 
 function parseCubeTestItem(
   card: Card,
@@ -978,7 +978,7 @@ export async function requestCardLectureStructure(cardId: string) {
 
   const cardItem = parseCardItem(card, cardContents, cardStudent);
   const cubes = await findCubesByIdsCache(cubeIds);
-  const playTimes: PlayTimeModel[] = await findByCubeIds(cubeIds);
+  const playTimes: PlayTimeModel[] = await findByCubeIdsInPost(cubeIds);
   // const playTimes: PlayTimeModel[] = [];
 
   let cubeItems: LectureStructureCubeItem[] = [];
