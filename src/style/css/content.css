@@ -2338,7 +2338,8 @@ i.icon.search50::after {
 .ui.button.acc-updown i.icon.drop24-down {
   margin: 0 !important;
   height: 24px;
-  vertical-align: 3px;
+  vertical-align: top;
+  transform: translateY(-3px);
 }
 
 .ui.button.like {
@@ -2819,7 +2820,7 @@ i.icon.add-black16::after {
   color: #00bfae;
 }
 .ui.accordion .title.active .acc-updown .drop24-down {
-  transform: rotate(180deg);
+  transform: rotate(180deg) translateY(3px);
 }
 
 .ui.accordion.pl-mylist-acc .mylist-acc-item .content.active {
@@ -3435,6 +3436,7 @@ i.icon.plus.round16:before {
 }
 .playlist-detail-wrap .ui.table td.title {
   text-align: left;
+  max-width: 520px;
 }
 .playlist-detail-wrap .ui.table td.title a {
   font-weight: 600;
