@@ -2287,6 +2287,7 @@ i.icon.listmore16-black::after {
   height: 24px;
   vertical-align: top;
 }
+i.icon.close24:before{display: block;}
 .ui.icon.button.all-dt {
   margin: 0;
   padding: 0 10px;

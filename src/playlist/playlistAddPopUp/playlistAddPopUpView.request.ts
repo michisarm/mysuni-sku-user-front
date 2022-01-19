@@ -9,6 +9,7 @@ import {
   setMyPlaylist,
   getMyPlaylist,
   madeByMySelfToMyPlaylist,
+  setIsOpenPlayListAddPopUp,
 } from './playlistAddPopUpView.store';
 
 export async function requestRegisterPlaylist(playlistName: string) {
@@ -35,15 +36,19 @@ export async function requestAddCardsToPlaylist(
   await addCardsToPlaylists({
     cardIds,
     playlistIds,
-  }).then(() => {
-    reactAlert({
-      title: getPolyglotText('Playlist 추가하기', 'playlist-popup-추가하기'),
-      message: getPolyglotText(
-        'Playlist에 학습카드가 추가되었습니다.',
-        'playlist-popup-추가완료'
-      ),
+  })
+    .then(() => {
+      reactAlert({
+        title: getPolyglotText('Playlist 추가하기', 'playlist-popup-추가하기'),
+        message: getPolyglotText(
+          'Playlist에 학습카드가 추가되었습니다.',
+          'playlist-popup-추가완료'
+        ),
+      });
+    })
+    .then(() => {
+      setIsOpenPlayListAddPopUp(false);
     });
-  });
   requestPlaylistAddPopUpView();
 }
 
