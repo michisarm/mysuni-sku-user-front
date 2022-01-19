@@ -37,6 +37,15 @@ export function CardSearch() {
     setIsFocus(false);
   }, []);
 
+  const onEnterSearch = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter') {
+        onSearchCard();
+      }
+    },
+    [onSearchCard]
+  );
+
   return (
     <div className="search_box box2">
       <Table>
@@ -78,6 +87,7 @@ export function CardSearch() {
                   onFocus={onFocus}
                   onBlur={onBlur}
                   onChange={onChangeSearchWord}
+                  onKeyUp={onEnterSearch}
                 />
                 <Button className="note_btn" onClick={onSearchCard}>
                   검색

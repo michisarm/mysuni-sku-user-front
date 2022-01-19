@@ -45,7 +45,7 @@ export function DepartmentMemberTab() {
     []
   );
 
-  const onClickSearch = useCallback(() => {
+  const search = useCallback(() => {
     if (trim(searchText).length === 0) {
       reactAlert({
         title: getPolyglotText('구성원 검색하기', 'playlist-popup-구성원검색'),
@@ -69,6 +69,19 @@ export function DepartmentMemberTab() {
     }
   }, [searchText]);
 
+  const onEnterSearch = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter') {
+        search();
+      }
+    },
+    [search]
+  );
+
+  const onClickSearch = useCallback(() => {
+    search();
+  }, [search]);
+
   return (
     <Tab.Pane className="left-inner">
       <div className="sh-left-top">
@@ -80,6 +93,7 @@ export function DepartmentMemberTab() {
               'playlist-popup-이름이메일'
             )}
             onChange={onChangeSearchText}
+            onKeyUp={onEnterSearch}
           />
           <Icon className="search link" onClick={onClickSearch} />
         </div>
