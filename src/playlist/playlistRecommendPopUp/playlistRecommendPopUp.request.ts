@@ -1,3 +1,5 @@
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { reactAlert } from '@nara.platform/accent';
 import requestMyPagePlaylistDetail from 'myTraining/ui/view/playlist/myPagePlaylistDetail/MyPagePlaylistDetail.request';
 import { getDenizedId } from 'community/ui/app.formatters';
 import { findFollowerUsers } from 'community/ui/data/community/apis/followApi';
@@ -30,6 +32,13 @@ export function requestRecommendPlaylist(
   })
     .then(() => {
       onClosePlaylistRecommendPopUp();
+      reactAlert({
+        title: getPolyglotText('Playlist 추천하기', 'playlist-popup-추천하기'),
+        message: getPolyglotText(
+          '선택한 구성원들에게 Playlist가 추천되었습니다.',
+          'playlist-popup-추천컨펌'
+        ),
+      });
     })
     .then(() => {
       requestMyPagePlaylistDetail(playlistId);
