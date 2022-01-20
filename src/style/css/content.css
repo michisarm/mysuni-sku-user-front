@@ -2335,6 +2335,8 @@ i.icon.search50::after {
   width: auto;
   padding: 0 16px !important;
 }
+
+.ui.button.acc-updown > div {display: inline-block;}
 .ui.button.acc-updown i.icon.drop24-down {
   margin: 0 !important;
   height: 24px;
@@ -3152,7 +3154,10 @@ i.icon.logout-16px::before{ content:""; display:inline-block; width :16px; heigh
   display: inline-block;
 }
 .ui.card.playlist-box.card-item .maker-info-box .maker-thumb img {
+  display:inline-block;
   max-width: 100%;
+  height: 100%;
+  image-rendering : -webkit-optimize-contrast;
 }
 .ui.card.playlist-box.card-item .maker-info-box .maker-user {
   font-weight: 700;
