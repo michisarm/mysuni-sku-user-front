@@ -20,8 +20,8 @@ export function playlistsToPlaylistSwiper(
       id: playlist.id,
       title: playlist.title,
       name: playlist.displayNicknameFirst
-        ? playlist.nickname
-        : parsePolyglotString(playlist.name),
+        ? playlist.nickname || parsePolyglotString(playlist.name)
+        : parsePolyglotString(playlist.name) || playlist.nickname,
       photoImagePath: playlist.photoImagePath,
       thumbImagePath: playlist.thumbImagePath,
       type: playlist.type,
