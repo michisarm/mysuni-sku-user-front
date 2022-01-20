@@ -3,18 +3,19 @@ import { findCardFromCardBundle } from 'hotTopic/api/hotTopicApi';
 import { phaseStepCount } from '../MyPagePlaylistDetail.event';
 import { setMyPagePlaylistDetailCards } from '../MyPagePlaylistDetail.services';
 import { setCheckedCardList } from './MyPagePlaylistDetailCardList.service';
+import { findPlaylistCardWithProgressRdos } from 'lecture/detail/api/cardApi';
 
 async function requestMyPagePlaylistDetailCardList(cardIds: string[]) {
-  const cards = await findCardFromCardBundle(cardIds);
+  const cards = await findPlaylistCardWithProgressRdos(cardIds);
   if (cards === undefined) {
     return;
   }
 
   const value = cards.map((card) => {
     return {
-      cardId: card.id,
+      cardId: card.cardId,
       cardThumbnailImage: card.thumbnailImagePath,
-      cardTitle: parsePolyglotString(card.name),
+      cardTitle: parsePolyglotString(card.cardName),
       phaseCount: card.phaseCount,
       completePhaseCount: card.completePhaseCount || 0,
       learningTime: card.learningTime,
@@ -36,8 +37,8 @@ async function requestMyPagePlaylistDetailCardList(cardIds: string[]) {
 
   const checkedValue = cards.map((card) => {
     return {
-      cardId: card.id,
-      cardTitle: parsePolyglotString(card.name),
+      cardId: card.cardId,
+      cardTitle: parsePolyglotString(card.cardName),
       cardThumNail: card.thumbnailImagePath,
       checked: false,
     };
