@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { Button, Icon, Modal, Tab } from 'semantic-ui-react';
 import { ProfileComponent } from './components/ProfileComponent';
 import {
+  getCheckedMemberList,
   useCheckedMemberList,
   useIsOpenPlaylistRecommendPopUp,
 } from './playlistRecommendPopUp.store';
@@ -102,6 +103,7 @@ export function RecommendPopUpRightComponent() {
 }
 
 export function PlaylistRecommendPopUpView() {
+  // const checkedMemberList = getCheckedMemberList();
   const isOpen = useIsOpenPlaylistRecommendPopUp();
   const [recommendation, setRecommendation] = useState('');
 
@@ -113,15 +115,28 @@ export function PlaylistRecommendPopUpView() {
   );
 
   const onClickRecommend = useCallback(() => {
-    trim(recommendation).length === 0
-      ? reactAlert({
-          title: getPolyglotText('알림', 'cicl-학상본문-알림'),
-          message: getPolyglotText(
-            '추천할 메세지 내용을 입력해주세요.',
-            'playlist-popup-추천메세지'
-          ),
-        })
-      : onRecommendPlaylist(recommendation);
+    const checkedMemberList = getCheckedMemberList();
+    if (checkedMemberList.length === 0) {
+      reactAlert({
+        title: getPolyglotText('알림', 'cicl-학상본문-알림'),
+        message: getPolyglotText(
+          '추천할 멤버를 체크해주세요.',
+          'playlist-popup-멤버체크안함'
+        ),
+      });
+      return;
+    }
+    if (trim(recommendation).length === 0) {
+      reactAlert({
+        title: getPolyglotText('알림', 'cicl-학상본문-알림'),
+        message: getPolyglotText(
+          '추천할 메세지 내용을 입력해주세요.',
+          'playlist-popup-추천메세지'
+        ),
+      });
+      return;
+    }
+    onRecommendPlaylist(recommendation);
   }, [recommendation]);
 
   return (
