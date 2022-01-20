@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { Button, Select, Table } from 'semantic-ui-react';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { getChannelOption } from '../helper/getChannelOption';
 import { getCollegeOption } from '../helper/getCollegeOption';
 import {
@@ -55,7 +56,10 @@ export function CardSearch() {
             <Table.Cell>
               <div className="option_box">
                 <Select
-                  placeholder="전체"
+                  placeholder={getPolyglotText(
+                    '전체',
+                    'mypage-playlist-전체리스트'
+                  )}
                   options={collegeOption}
                   value={selectedCollegeId}
                   onChange={onSelectCollege}
@@ -66,7 +70,10 @@ export function CardSearch() {
             <Table.Cell>
               <div className="option_box">
                 <Select
-                  placeholder="전체"
+                  placeholder={getPolyglotText(
+                    '전체',
+                    'mypage-playlist-전체리스트'
+                  )}
                   options={channelOption}
                   value={selectedChannelId}
                   onChange={onSelectChannel}
@@ -75,12 +82,17 @@ export function CardSearch() {
             </Table.Cell>
           </Table.Row>
           <Table.Row>
-            <Table.HeaderCell>과정명</Table.HeaderCell>
+            <Table.HeaderCell>
+              <PolyglotText defaultString="과정명" id="mypage-note-과정명" />
+            </Table.HeaderCell>
             <Table.Cell colSpan="3">
               <div className={`ui input note_input ${isFocus ? 'focus' : ''}`}>
                 <input
                   type="text"
-                  placeholder="검색어를 입력해주세요"
+                  placeholder={getPolyglotText(
+                    '검색어를 입력해주세요.',
+                    'mypage-note-검색어입력'
+                  )}
                   value={searchWord}
                   onFocus={onFocus}
                   onBlur={onBlur}
@@ -88,7 +100,7 @@ export function CardSearch() {
                   onKeyUp={onEnterSearch}
                 />
                 <Button className="note_btn" onClick={onSearchCard}>
-                  검색
+                  <PolyglotText defaultString="검색" id="통검-필레팝얼-검색" />
                 </Button>
               </div>
             </Table.Cell>
