@@ -83,8 +83,9 @@ export function findCardList(cardIds: string[]) {
     .then(AxiosReturn);
 }
 
-export const [findCardListCache, clearFindCardListCache] =
-  createCacheApi(findCardList);
+export const [findCardListCache, clearFindCardListCache] = createCacheApi(
+  findCardList
+);
 
 export function findMyLatestLearningCards(count: number) {
   const axios = getAxios();
@@ -350,9 +351,9 @@ export function findBookmarkCards(limit?: number, orderBy?: CardOrderBy) {
   return axios.get<OffsetElementList<UserLectureCard>>(url).then(AxiosReturn);
 }
 
-export function findSummeryTimeByYear(year: number) {
+export function findSummeryTimeByYear() {
   const axios = getAxios();
-  const url = `${BASE_URL}/cards/findMyLearningRdo/${year}`;
+  const url = `${BASE_URL}/cards/findMyLearningRdo`;
   return axios.get<MyLearningRdo>(url).then(AxiosReturn);
 }
 

@@ -34,6 +34,7 @@ interface State {
   selectYear: number;
   isLoading: boolean;
   myLearningRdo: MyLearningRdo;
+  currentYearLearningTime: number;
 }
 
 interface Injected {
@@ -65,6 +66,7 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
     selectYear: moment().year(),
     isLoading: true,
     myLearningRdo: initMyLearningRdo(),
+    currentYearLearningTime: 0,
   };
 
   constructor(props: Props) {
@@ -74,13 +76,15 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
   }
 
   async init() {
-    const { badgeService } = this.injected;
+    const { badgeService, myLearningSummaryService } = this.injected;
 
-    await this.findMySummaries();
+    await this.findMySummaries(undefined, true);
     this.makeSelectOptions();
     badgeService.findAllBadgeCount();
 
-    this.setState({ isLoading: false });
+    this.setState({
+      isLoading: false,
+    });
   }
 
   makeSelectOptions() {
@@ -102,7 +106,7 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
     return years;
   }
 
-  async findMySummaries(year?: number) {
+  async findMySummaries(year?: number, init?: boolean) {
     const { skProfileService, myLearningSummaryService } = this.injected;
     const {
       getDisplayMySuniLeaningTime,
@@ -122,9 +126,14 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
         getDisplayMySuniLeaningTime();
         getDisplayCompanyLearningTime();
         setCollegePercent(myLearningSummary.collegeLearningTimes);
+        init &&
+          this.setState({
+            currentYearLearningTime:
+              myLearningSummaryService.displayTotalLearningTime,
+          });
       }
     );
-    findSummeryTimeByYear(year || moment().year()).then((rdo) => {
+    findSummeryTimeByYear().then((rdo) => {
       if (rdo !== undefined) {
         this.setState({ myLearningRdo: rdo });
       }
@@ -139,10 +148,15 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
   }
 
   render() {
-    const { selectYear, selectYearOptions, myLearningRdo } = this.state;
+    const {
+      selectYear,
+      selectYearOptions,
+      myLearningRdo,
+      currentYearLearningTime,
+    } = this.state;
     const {
       learningGoalHour,
-      obtainedStampCountForYear,
+      obtainedStampCount,
       totalStampCount,
     } = myLearningRdo;
     const { myLearningSummaryService, badgeService } = this.injected;
@@ -177,13 +191,12 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
                       issuedCount={issuedCount}
                     />
                     <StampSummaryView
-                      obtainedStampCountForYear={obtainedStampCountForYear}
+                      obtainedStampCount={obtainedStampCount}
                       totalStampCount={totalStampCount}
                     />
                     <LearningTimeSummaryView
-                      year={year}
                       learningGoalHour={learningGoalHour}
-                      totalLearningTime={displayTotalLearningTime}
+                      totalLearningTime={currentYearLearningTime}
                     />
                   </div>
                 </div>

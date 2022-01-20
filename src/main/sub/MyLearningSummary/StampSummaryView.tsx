@@ -9,15 +9,15 @@ import {
 
 interface StampSummaryViewProps {
   totalStampCount: number;
-  obtainedStampCountForYear: number;
+  obtainedStampCount: number;
 }
 
 export default function StampSummaryView({
   totalStampCount,
-  obtainedStampCountForYear,
+  obtainedStampCount,
 }: StampSummaryViewProps) {
   const complateStampValue = Math.round(
-    (obtainedStampCountForYear / totalStampCount) * 100
+    (obtainedStampCount / totalStampCount) * 100
   );
 
   return (
@@ -29,7 +29,7 @@ export default function StampSummaryView({
         }`}
       >
         <div className="gauge-content-box">
-          <p>{obtainedStampCountForYear}</p>
+          <p>{obtainedStampCount}</p>
         </div>
       </div>
 

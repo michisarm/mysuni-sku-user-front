@@ -2,8 +2,6 @@ import React from 'react';
 import { Popup } from 'semantic-ui-react';
 import moment from 'moment';
 import LearningTimeView from './LearningTimeView';
-import AccruedLearningTimeView from './AccruedLearningTimeView';
-import LearningObjectives from '../PersonalBoard/viewModel/LearningObjectives';
 import { convertProgressValue } from './convertProgressValue';
 import {
   PolyglotText,
@@ -11,13 +9,11 @@ import {
 } from '../../../shared/ui/logic/PolyglotText';
 
 interface LearningTimeSummaryViewProps {
-  year: string;
   totalLearningTime: number;
   learningGoalHour: number;
 }
 
 export default function LearningTimeSummaryView({
-  year,
   totalLearningTime,
   learningGoalHour,
 }: LearningTimeSummaryViewProps) {
@@ -44,7 +40,7 @@ export default function LearningTimeSummaryView({
             `{year}년 학습시간`,
             'home-Summary-학습시간',
             {
-              year,
+              year: moment().year().toString(),
             }
           ),
         }}
