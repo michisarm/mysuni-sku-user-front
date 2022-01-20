@@ -3,6 +3,7 @@ import * as React from 'react';
 import { PlaylistDetailSummary } from '../../../../../playlist/data/models/PlaylistDetailSummary';
 import { PlaylistInCard } from '../../present/logic/PlaylistStore';
 import { Simulate } from 'react-dom/test-utils';
+import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   active: boolean;
@@ -22,6 +23,10 @@ function getHourMinuteFormat(hour: number, minute: number) {
 
   time = hour > 0 ? time + `${hour}h` : time;
   time = minute > 0 ? time + ` ${minute}m` : time;
+
+  if (hour === 0 && minute === 0) {
+    time = '00h 00m';
+  }
 
   return <span className="time">{time}</span>;
 }
@@ -66,7 +71,7 @@ function UserProfileInfoTabPlaylistView(props: Props) {
               onClick={() => onClickRegisterPlaylist(playlistSummary.id)}
             >
               <Icon aria-hidden="true" className="add-black16" />
-              {`Playlist 담기`}
+              {getPolyglotText(`Playlist 담기`, 'profilecard-playlist-add')}
             </Button>
           </div>
           <div className="acc-cnt">
@@ -78,13 +83,17 @@ function UserProfileInfoTabPlaylistView(props: Props) {
                 }
               }}
             >
-              {`총 `}
-              <strong
-                className={playlistSummary.cardIds.length > 0 ? 'cnt' : ''}
-              >
-                {`${playlistSummary.cardIds.length} 개`}
-              </strong>
-              {` 학습카드`}
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: getPolyglotText(
+                    `총 {cardCount}개의 학습카드`,
+                    'profilecard-playlist-cardcount',
+                    {
+                      cardCount: playlistSummary.cardIds.length.toString(),
+                    }
+                  ),
+                }}
+              />
               {(playlistSummary.cardIds.length > 0 && (
                 <Icon area-hidden="true" className="drop24-down" />
               )) ||
@@ -109,7 +118,19 @@ function UserProfileInfoTabPlaylistView(props: Props) {
                     >
                       <div className="ellipsis tit">{card.cardTitle}</div>
                       <div className="item-dt">
-                        <span className="cnt">{`${card.count}개`}</span>
+                        <span className="cnt">
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: getPolyglotText(
+                                `{cubeCount}개`,
+                                'profilecard-playlist-cubecount',
+                                {
+                                  cubeCount: card.count.toString(),
+                                }
+                              ),
+                            }}
+                          />
+                        </span>
                         <span className="time">
                           {getHourMinuteFormat(
                             Math.floor(card.leaningTime / 60),
