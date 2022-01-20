@@ -1,5 +1,6 @@
 import React from 'react';
 import { Checkbox, Table } from 'semantic-ui-react';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { onCheckedCard } from '../playlistAddCardPopUp.events';
 import {
   useCheckedCardIds,
@@ -25,9 +26,21 @@ export function CardSearchResult() {
             <Table.HeaderCell>
               <span className="hidden">선택여부</span>
             </Table.HeaderCell>
-            <Table.HeaderCell>과정명</Table.HeaderCell>
-            <Table.HeaderCell>생성자</Table.HeaderCell>
-            <Table.HeaderCell>등록일자</Table.HeaderCell>
+            <Table.HeaderCell>
+              <PolyglotText defaultString="과정명" id="mypage-note-과정명" />
+            </Table.HeaderCell>
+            <Table.HeaderCell>
+              <PolyglotText
+                defaultString="생성자"
+                id="승인관리-개인학습-헤더6"
+              />
+            </Table.HeaderCell>
+            <Table.HeaderCell>
+              <PolyglotText
+                defaultString="등록일자"
+                id="승인관리-개인학습-헤더5"
+              />
+            </Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>

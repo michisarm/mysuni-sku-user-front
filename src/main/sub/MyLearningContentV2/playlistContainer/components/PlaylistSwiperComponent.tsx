@@ -10,7 +10,7 @@ import { onOpenPlaylistInputPopUp } from 'playlist/playlistInputPopUp/playlistIn
 import { SkProfileService } from 'profile/stores';
 import { PlaylistType } from 'playlist/data/models/PlaylistType';
 import { requestPlaylistSwiper } from '../playlistContainer.request';
-import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import myPageRoutePaths from 'myTraining/routePaths';
 
 /**
@@ -69,11 +69,13 @@ function useDuplicateElementAddEvent(
 interface PlaylistCircleComponentProps {
   index: number;
   playlist: PlaylistSwiper;
+  onClickMovePlaylist: () => void;
 }
 
 function PlaylistCircleComponent({
   index,
   playlist,
+  onClickMovePlaylist,
 }: PlaylistCircleComponentProps) {
   const { id, name, title, photoImagePath, thumbImagePath, type } = playlist;
   const history = useHistory();
@@ -81,10 +83,6 @@ function PlaylistCircleComponent({
   const onClickMovePlaylistDetail = useCallback(() => {
     history.push(`/my-training/my-page/Playlist/detail/${id}`);
   }, [history, id]);
-
-  const onClickMovePlaylist = useCallback(() => {
-    history.push(myPageRoutePaths.myPagePlaylist());
-  }, [history]);
 
   useDuplicateElementAddEvent(
     index,
@@ -192,20 +190,38 @@ export function PlaylistSwiperComponent({
     spaceBetween: 0,
     slideToClickedSlide: true,
     loop: true,
-    initialSlide: 2,
+    initialSlide: 0,
     speed: 300,
     navigation: {
       nextEl: '.plylistSwiperNav .swiper-button-next',
       prevEl: '.plylistSwiperNav .swiper-button-prev',
     },
   };
+  const history = useHistory();
+  const onClickMovePlaylist = useCallback(() => {
+    history.push(myPageRoutePaths.myPagePlaylist());
+  }, [history]);
 
   return (
     <Segment className="full learning-section type1">
       <div className="section-head">
-        <div className="sec-tit-txt">
-          <strong>{SkProfileService.instance.profileMemberName}님</strong>의{' '}
-          <strong>Playlist</strong>
+        <div
+          className="sec-tit-txt"
+          dangerouslySetInnerHTML={{
+            __html: getPolyglotText(
+              `<strong>{name}님</strong>의 <strong>Playlist</strong>`,
+              'home-playlist-나의리스트',
+              { name: SkProfileService.instance.profileMemberName }
+            ),
+          }}
+        />
+        <div className="sec-tit-btn">
+          <button className="btn-more" onClick={onClickMovePlaylist}>
+            <PolyglotText
+              defaultString="전체보기"
+              id="home-playlist-전체보기"
+            />
+          </button>
         </div>
       </div>
       <div className="section-body">
@@ -213,7 +229,11 @@ export function PlaylistSwiperComponent({
           <Swiper {...PlaylistSwiperOption}>
             {playlistSwiper.map((playlist, i) => (
               <div className="swiper-slide" key={i}>
-                <PlaylistCircleComponent index={i} playlist={playlist} />
+                <PlaylistCircleComponent
+                  index={i}
+                  playlist={playlist}
+                  onClickMovePlaylist={onClickMovePlaylist}
+                />
               </div>
             ))}
           </Swiper>
