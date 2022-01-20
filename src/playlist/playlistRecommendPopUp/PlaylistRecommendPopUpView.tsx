@@ -118,17 +118,17 @@ export function PlaylistRecommendPopUpView() {
     const checkedMemberList = getCheckedMemberList();
     if (checkedMemberList.length === 0) {
       reactAlert({
-        title: getPolyglotText('알림', 'cicl-학상본문-알림'),
+        title: getPolyglotText('Playlist 추천하기', 'playlist-popup-추천하기'),
         message: getPolyglotText(
-          '추천할 멤버를 체크해주세요.',
-          'playlist-popup-멤버체크안함'
+          'Playlist를 추천할 구성원을 선택해주세요.',
+          'playlist-popup-추천구성원'
         ),
       });
       return;
     }
     if (trim(recommendation).length === 0) {
       reactAlert({
-        title: getPolyglotText('알림', 'cicl-학상본문-알림'),
+        title: getPolyglotText('Playlist 추천하기', 'playlist-popup-추천하기'),
         message: getPolyglotText(
           '추천할 메세지 내용을 입력해주세요.',
           'playlist-popup-추천메세지'

@@ -17,7 +17,7 @@ export function UserIdentitiesToMemberList(
 ): MemberList[] {
   const departmentMembers = sameDepartmentUsers.map((user) => {
     return {
-      id: user.denizenId,
+      id: user.id,
       name: user.displayNicknameFirst
         ? user.nickname || parsePolyglotString(user.name)
         : parsePolyglotString(user.name) || user.nickname,

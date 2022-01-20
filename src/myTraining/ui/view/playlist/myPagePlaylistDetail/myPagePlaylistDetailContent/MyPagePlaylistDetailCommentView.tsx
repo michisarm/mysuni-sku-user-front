@@ -62,7 +62,7 @@ function MyPagePlaylistDetailCommentView() {
   };
 
   const {
-    skProfile: { companyName, departmentName, name, email },
+    skProfile: { companyName, departmentName, name, email, language },
   } = SkProfileService.instance;
 
   const playlistDetail = useMyPagePlaylistDetail();
@@ -89,6 +89,7 @@ function MyPagePlaylistDetailCommentView() {
               setPlaylistComment({ ...playlistComment, commentsCount });
             }
           }}
+          language={language}
           onRemoveCommentConfirm={onRemoveCommentConfirm}
           onNoContentAlert={onNoContentAlert}
         />
