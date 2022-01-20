@@ -77,16 +77,16 @@ function UserProfileInfoTabPlaylistView(props: Props) {
             <Button
               className="acc-updown"
               onClick={() => {
-                if (playlistSummary.cardIds.length > 0) {
+                if (playlistSummary.accessibleCardCount > 0) {
                   onClickPlaylistContents(index);
                 }
               }}
             >
               {`총 `}
               <strong
-                className={playlistSummary.cardIds.length > 0 ? 'cnt' : ''}
+                className={playlistSummary.accessibleCardCount > 0 ? 'cnt' : ''}
               >
-                {`${playlistSummary.cardIds.length} 개`}
+                {`${playlistSummary.accessibleCardCount} 개`}
               </strong>
               {` 학습카드`}
               {(playlistSummary.cardIds.length > 0 && (
