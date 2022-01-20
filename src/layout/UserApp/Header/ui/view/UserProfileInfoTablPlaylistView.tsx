@@ -82,16 +82,19 @@ function UserProfileInfoTabPlaylistView(props: Props) {
                   onClickPlaylistContents(index);
                 }
               }}
-              dangerouslySetInnerHTML={{
-                __html: getPolyglotText(
-                  `총 {cardCount}개의 학습카드`,
-                  'profilecard-playlist-cardcount',
-                  {
-                    cardCount: playlistSummary.cardIds.length.toString(),
-                  }
-                ),
-              }}
             >
+              <div
+                style={{ display: 'inline-block' }}
+                dangerouslySetInnerHTML={{
+                  __html: getPolyglotText(
+                    `총 {cardCount}개의 학습카드`,
+                    'profilecard-playlist-cardcount',
+                    {
+                      cardCount: playlistSummary.cardIds.length.toString(),
+                    }
+                  ),
+                }}
+              />
               {(playlistSummary.cardIds.length > 0 && (
                 <Icon area-hidden="true" className="drop24-down" />
               )) ||
