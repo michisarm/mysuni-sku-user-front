@@ -3669,279 +3669,79 @@ i.icon.plus.round16:before {
 }
 
 /* MyPage DashBoard */
-.profile-dashboard-contents .group-wrapper {
-  border-top: #ddd 1px solid;
-  padding-top: 20px;
-}
-.profile-dashboard-contents .top-line {
-  position: relative;
-  margin-bottom: 30px;
-}
-.profile-dashboard-contents .top-line .select-wrap {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-}
-.gauge-box-wrap {
-  margin-bottom: 20px;
-}
+.profile-dashboard-contents .mypage_title { font-size: 28px; letter-spacing: -0.37px;}
+.profile-dashboard-contents .group-wrapper { border-top: #ddd 1px solid; padding-top: 20px; }
+.profile-dashboard-contents .top-line { position: relative; margin-bottom: 30px; }
+.profile-dashboard-contents .top-line .select-wrap { position: absolute; right: 0; bottom: 0; }
+/* .gauge-box-wrap { margin-bottom: 20px; } */
+.personal-content-wrap { margin-top: 30px; }
+.profile-dashboard-contents .ui.cards::after {display: none;}
+.profile-dashboard-contents .playlist-list.list-wrapper { padding-top: 20px;}
+.profile-dashboard-contents .personal-content-wrap {margin-top: 38px;}
+.profile-dashboard-contents .personal-content-select {margin-bottom:10px; text-align: right;}
+.profile-dashboard-contents .ui.cards.personal-content-box-wrap { justify-content: space-between; width: 100%;}
+.profile-dashboard-contents .ui.cards.personal-content-box-wrap .card.personal-content-box { margin: 10px 0 10px; padding: 22px 25px 16px; width: calc(50% - 10px); box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2); height: auto; }
+.ui.label.onlytext.btn-modify-list i.icon.cog16 { margin: 0 0.5rem 0 0;}
+.personal-card-item .card-item-tit { margin-bottom: 14px;}
+.personal-card-item .card-item-tit.mb23 { margin-bottom: 23px;}
+.personal-card-item .card-item-tit h3 { line-height: 30px; }
+.playlist-list .card-gauge-bar.sty2 {width: 200px;}
+.playlist-list .card-item-con.sty2 > .item-con-box > .item-con-left { margin-right: 32px;}
+.playlist-list .card-item-con.sty2 > .item-con-box > .item-con-right.detail { width: 225px; }
+.playlist-list .card-gauge-bar .gauge-tit {margin-right: 0;}
 
-.personal-content-wrap {
-  margin-top: 30px;
-}
-.profile-dashboard-contents .personal-content-wrap {
-  margin-top: 38px;
-}
-.profile-dashboard-contents .playlist-list.list-wrapper {
-  padding-top: 20px;
-}
-.profile-dashboard-contents .personal-content-box-wrap {
-  margin: 0 !important;
-  justify-content: space-between;
-  width: 100%;
-}
-.profile-dashboard-contents .mypage_title {
-  font-size: 28px;
-  letter-spacing: -0.37px;
-}
-.profile-dashboard-contents
-  .personal-content-box-wrap
-  .card.personal-content-box {
-  margin: 10px 0 6px;
-  padding: 22px 25px 16px;
-  width: calc(50% - 10px);
-  box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2);
-  height: auto;
-}
-.profile-dashboard-contents
-  .ui.cards.personal-content-box-wrap.time-detail
-  .card.personal-content-box {
-  padding-bottom: 25px;
-}
-.profile-dashboard-contents .ui.cards::after {
-  display: none;
-}
-
-.ui.label.onlytext.btn-modify-list i.icon.cog16 {
-  margin: 0 0.5rem 0 0;
-}
-.personal-card-item .card-item-tit {
-  margin-bottom: 14px;
-}
-.personal-card-item .card-item-tit.mb23 {
-  margin-bottom: 23px;
-}
-.personal-card-item .card-item-tit h3 {
-  line-height: 30px;
-}
-.profile-dashboard-contents .card-gauge-bar .gauge-tit {
-  margin-right: 0;
-}
-.profile-dashboard-contents .card-gauge-bar.sty2 {
-  width: 200px;
-}
-.profile-dashboard-contents
-  .card-item-con.sty2
-  > .item-con-box
-  > .item-con-left {
-  margin-right: 32px;
-}
-.profile-dashboard-contents
-  .card-item-con.sty2
-  > .item-con-box
-  > .item-con-right.detail {
-  width: 225px;
-}
+.playlist-list .ui.cards.personal-content-box-wrap.time-detail .ui.card.personal-content-box { padding-bottom: 25px;}
 
 /* gauge-box */
-.main-gauge-box {
-  display: flex;
-  justify-content: center;
-}
-.main-gauge {
-  width: 220px;
-  text-align: center;
-  margin: 0 20px;
-}
-.playlist-list .gauge-content {
-  width: 180px;
-  height: 160px;
-  margin: 20px auto 0;
-}
-.playlist-list .gauge-content .gauge-content-box {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-.playlist-list .gauge-content .gauge-content-box > p {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  font-size: 24px;
-  font-weight: 700;
-}
-.playlist-list .gauge-content .gauge-content-box > p + span {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  font-size: 14px;
-  color: #999;
-}
-.playlist-list .gauge-content .gauge-content-box em {
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 300;
-}
+.main-gauge-box { display: flex; justify-content: center; margin-bottom:-18px;}
+.main-gauge { width: 220px; text-align: center; margin: 0 20px;}
+.playlist-list .gauge-content { width: 180px; height: 160px; margin: 20px auto 0; }
+.playlist-list .gauge-content .gauge-content-box { width: 100%; height: 100%; position: relative; }
+.playlist-list .gauge-content .gauge-content-box > p { position: absolute; top: calc(50% + 4px); left: 50%; transform: translate(-50%,-50%); width: 100%; font-size: 24px; font-weight: 700; }
+.playlist-list .gauge-content .gauge-content-box > p + span { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; font-size: 14px; color: #999; }
+.playlist-list .gauge-content .gauge-content-box em { font-style: normal; font-weight: 300; font-size: 20px;}
+
 
 /* gauge-box bg */
-.playlist-list .gauge-bg5 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-badge-00.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-bg15 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-badge-01.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-bg25 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-badge-02.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-bg35 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-badge-03.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-bg45 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-badge-04.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-bg55 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-badge-05.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-bg65 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-badge-06.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-bg75 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-badge-07.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-bg85 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-badge-08.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-bg95 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-badge-09.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-bg100 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-badge-10.svg')
-    0 0 no-repeat;
-}
+.playlist-list .gauge-bg5{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-badge-00.svg") 0 0 no-repeat;}
+.playlist-list .gauge-bg15{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-badge-01.svg") 0 0 no-repeat;}
+.playlist-list .gauge-bg25{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-badge-02.svg") 0 0 no-repeat;}
+.playlist-list .gauge-bg35{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-badge-03.svg") 0 0 no-repeat;}
+.playlist-list .gauge-bg45{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-badge-04.svg") 0 0 no-repeat;}
+.playlist-list .gauge-bg55{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-badge-05.svg") 0 0 no-repeat;}
+.playlist-list .gauge-bg65{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-badge-06.svg") 0 0 no-repeat;}
+.playlist-list .gauge-bg75{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-badge-07.svg") 0 0 no-repeat;}
+.playlist-list .gauge-bg85{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-badge-08.svg") 0 0 no-repeat;}
+.playlist-list .gauge-bg95{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-badge-09.svg") 0 0 no-repeat;}
+.playlist-list .gauge-bg100{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-badge-10.svg") 0 0 no-repeat;}
 
-.playlist-list .gauge-time5 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-time-00.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-time15 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-time-01.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-time25 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-time-02.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-time35 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-time-03.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-time45 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-time-04.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-time55 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-time-05.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-time65 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-time-06.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-time75 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-time-07.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-time85 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-time-08.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-time95 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-time-09.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-time100 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-time-10.svg')
-    0 0 no-repeat;
-}
+.playlist-list .gauge-time5{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-time-00.svg") 0 0 no-repeat;}
+.playlist-list .gauge-time15{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-time-01.svg") 0 0 no-repeat;}
+.playlist-list .gauge-time25{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-time-02.svg") 0 0 no-repeat;}
+.playlist-list .gauge-time35{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-time-03.svg") 0 0 no-repeat;}
+.playlist-list .gauge-time45{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-time-04.svg") 0 0 no-repeat;}
+.playlist-list .gauge-time55{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-time-05.svg") 0 0 no-repeat;}
+.playlist-list .gauge-time65{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-time-06.svg") 0 0 no-repeat;}
+.playlist-list .gauge-time75{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-time-07.svg") 0 0 no-repeat;}
+.playlist-list .gauge-time85{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-time-08.svg") 0 0 no-repeat;}
+.playlist-list .gauge-time95{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-time-09.svg") 0 0 no-repeat;}
+.playlist-list .gauge-time100{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-time-10.svg") 0 0 no-repeat;}
 
-.playlist-list .gauge-stamp5 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-stamp-00.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-stamp15 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-stamp-01.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-stamp25 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-stamp-02.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-stamp35 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-stamp-03.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-stamp45 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-stamp-04.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-stamp55 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-stamp-05.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-stamp65 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-stamp-06.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-stamp75 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-stamp-07.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-stamp85 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-stamp-08.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-stamp95 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-stamp-09.svg')
-    0 0 no-repeat;
-}
-.playlist-list .gauge-stamp100 {
-  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-stamp-10.svg')
-    0 0 no-repeat;
-}
+.playlist-list .gauge-stamp5{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-stamp-00.svg") 0 0 no-repeat;}
+.playlist-list .gauge-stamp15{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-stamp-01.svg") 0 0 no-repeat;}
+.playlist-list .gauge-stamp25{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-stamp-02.svg") 0 0 no-repeat;}
+.playlist-list .gauge-stamp35{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-stamp-03.svg") 0 0 no-repeat;}
+.playlist-list .gauge-stamp45{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-stamp-04.svg") 0 0 no-repeat;}
+.playlist-list .gauge-stamp55{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-stamp-05.svg") 0 0 no-repeat;}
+.playlist-list .gauge-stamp65{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-stamp-06.svg") 0 0 no-repeat;}
+.playlist-list .gauge-stamp75{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-stamp-07.svg") 0 0 no-repeat;}
+.playlist-list .gauge-stamp85{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-stamp-08.svg") 0 0 no-repeat;}
+.playlist-list .gauge-stamp95{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-stamp-09.svg") 0 0 no-repeat;}
+.playlist-list .gauge-stamp100{background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/img-personal-stamp-10.svg") 0 0 no-repeat;}
 
 /* gauge bubble popup */
-.b-popup.ui.popup {
-  border-radius: 0.375rem;
-  text-align: center;
-  background-color: #fff;
-  color: #4c4c4c;
-  font-size: 0.875rem;
-  border: 1px solid #aaa;
-}
+.b-popup.ui.popup {margin-top:-3px; padding:10px 20px; border-radius:  0.375rem; text-align: center; background-color: #fff; color:#4c4c4c; font-size: 0.875rem; border: 1px solid #aaa; letter-spacing: -0.4px;}
+
 
 /* Playlist */
 .plylistSwiper {
