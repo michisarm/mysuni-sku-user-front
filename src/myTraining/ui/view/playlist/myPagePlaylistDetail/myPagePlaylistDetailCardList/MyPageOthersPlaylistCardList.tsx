@@ -45,7 +45,7 @@ function MyPageOthersPlaylistCardList(props: PlaylistCardTable) {
                 </TableCell>
                 <TableCell className="title">
                   <Link to={`/lecture/card/${cardId}/view`}>
-                    <span className="ellipsis">{cardTitle}</span>
+                    <span className="ellipsis2">{cardTitle}</span>
                   </Link>
                 </TableCell>
                 <TableCell>

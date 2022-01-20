@@ -107,7 +107,7 @@ function PlaylistItem(props: PropsType) {
                       `총 {totalCount}개 학습카드`,
                       'mypage-playlist-학습카드총수',
                       {
-                        totalCount: item.accessibleCardCount.toString(),
+                        totalCount: item.cardIds.length.toString(),
                       }
                     ),
                   }}
