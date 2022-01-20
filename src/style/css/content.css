@@ -3900,6 +3900,7 @@ i.icon.plus.round16:before {
 .plylistSwiper .item .item-cont {
   position: relative;
   z-index: 2;
+  padding:0 40px;
   text-align: center;
   color: #fff;
   opacity: 0;
@@ -3931,6 +3932,14 @@ i.icon.plus.round16:before {
   font-size: 22px;
   line-height: 28px;
   font-weight: 700;
+  max-height:84px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:normal;
+  word-break:break-all;
+  display:-webkit-box;
+  -webkit-line-clamp:3;
+  -webkit-box-orient:vertical;
 }
 .plylistSwiper .item .item-cont .profile-wrap {
   margin-top: 30px;
