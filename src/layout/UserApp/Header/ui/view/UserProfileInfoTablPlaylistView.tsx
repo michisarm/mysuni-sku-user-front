@@ -84,7 +84,6 @@ function UserProfileInfoTabPlaylistView(props: Props) {
               }}
             >
               <div
-                style={{ display: 'inline-block' }}
                 dangerouslySetInnerHTML={{
                   __html: getPolyglotText(
                     `총 {cardCount}개의 학습카드`,
