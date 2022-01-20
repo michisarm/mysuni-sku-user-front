@@ -3972,7 +3972,13 @@ i.icon.plus.round16:before {
 .plylistSwiper .swiper-slide-active {
   cursor: pointer;
 }
-
+.plylistSwiper .swiper-slide-active .item {
+  box-shadow: 0 10px 20px 0 rgba(76, 76, 76, 0.4);
+  pointer-events: auto;
+}
+.plylistSwiper .swiper-slide-active .item.plus {
+  background-color: #666666;
+}
 .plylistSwiper .swiper-slide-active .item.plus::after {
   background-color: transparent;
   opacity: 0;
@@ -3989,15 +3995,6 @@ i.icon.plus.round16:before {
   background-color: #007cae;
   opacity: 0.8;
 }
-.plylistSwiper .swiper-slide-active .item {
-  background-color: #666666;
-  box-shadow: 0 10px 20px 0 rgba(76, 76, 76, 0.4);
-}
-
-.plylistSwiper .swiper-slide-active .item {
-  pointer-events: auto;
-}
-
 .plylistSwiper .swiper-slide-active .item-cont {
   opacity: 1;
 }
