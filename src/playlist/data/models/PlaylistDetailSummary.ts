@@ -1,7 +1,6 @@
 import { PlaylistType } from './PlaylistType';
 
 export interface PlaylistDetailSummary {
-  accessibleCardCount: number;
   cardIds: string[];
   displayNicknameFirst: boolean;
   id: string;

@@ -153,7 +153,6 @@ function MyPagePage({
             <MyPageProfileCardContainer
               clickTabHandler={clickTabHandler}
               photoImageBase64={photoImageBase64}
-              bgImageBase64={bgImageBase64}
             />
             <div className="mypage_menu_list">
               {(!isExternalInstructor() && (

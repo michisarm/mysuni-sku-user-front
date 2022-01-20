@@ -65,7 +65,7 @@ export function EditCardList(props: CheckedCardListViewProps) {
       </TableCell>
       <TableCell className="title">
         <Link to="#">
-          <span className="ellipsis">{cardTitle}</span>
+          <span className="ellipsis2">{cardTitle}</span>
         </Link>
       </TableCell>
       <TableCell>

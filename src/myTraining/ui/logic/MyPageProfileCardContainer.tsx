@@ -31,14 +31,12 @@ interface MyPageHeaderContainerProps {
   skProfileService?: SkProfileService;
   clickTabHandler?: (id: string) => void;
   photoImageBase64: string;
-  bgImageBase64: string;
 }
 
 function MyPageHeaderContainer({
   skProfileService,
   clickTabHandler,
   photoImageBase64,
-  bgImageBase64,
 }: MyPageHeaderContainerProps) {
   const { skProfile, modifySkProfile } = skProfileService!;
 
@@ -106,14 +104,6 @@ function MyPageHeaderContainer({
       <div className="profile-contents-area">
         <div className="profile-wrapper">
           <div className="bg-wrapper">
-            <ProfileImage
-              src={skProfile.backgroundImagePath || DefaultBgImg}
-              onError={(event: any) => {
-                event.currentTarget.style.display = 'none';
-              }}
-              onLoad={(event: any) => (event.currentTarget.style.display = '')}
-              alt="프로필배경기본이미지"
-            />
             <div className="profile-info-wrapper">
               <div className="profile-info-area">
                 <div className="image-area">
