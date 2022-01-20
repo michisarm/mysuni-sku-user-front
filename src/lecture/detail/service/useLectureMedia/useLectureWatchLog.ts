@@ -28,6 +28,7 @@ interface RetMultiVideoOverlap {
   (viewState: string, usid: string): Promise<string>;
 }
 
+// not used
 export const getCubeWatchLogItem: GetCubeWatchLogItem = () => {
   getCubeLectureWatchLog();
 };
@@ -36,10 +37,12 @@ export const setWatchLog: SetWatchLog = (watchLog: WatchLog) => {
   setCubeLectureWatchLog(watchLog);
 };
 
+// not used
 export const getWatchLogSumViewCount: GetWatchLogSumViewCount = () => {
   getWatchLogSumViewSeconds();
 };
 
+// not used
 export const lectureConfirmProgress: LectureConfirmProgress = () => {
   return confirmProgress();
 };

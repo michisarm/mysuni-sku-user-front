@@ -8,9 +8,11 @@ import {
 import { findCubeStudent } from '../../../utility/findCubeStudent';
 import { requestLectureState } from '../../useLectureState/utility/requestLectureState';
 import { updateCardLectureStructure } from '../../useLectureStructure/utility/updateCardLectureStructure';
-import { MyTrainingService } from '../../../../../myTraining/stores';
 
-export async function confirmProgress(studentId?: string): Promise<void> {
+export async function confirmProgress(
+  syncPlayTime?: boolean,
+  studentId?: string
+): Promise<void> {
   const params = getLectureParams();
   let _stduentId = studentId;
   if (
@@ -19,17 +21,17 @@ export async function confirmProgress(studentId?: string): Promise<void> {
     params?.cubeType !== undefined
   ) {
     if (_stduentId === undefined) {
-      const myCardRelatedStudents = await findMyCardRelatedStudentsCache(
+      const cachedMyCardRelatedStudents = await findMyCardRelatedStudentsCache(
         params?.cardId
       );
-      const cubeStudents = myCardRelatedStudents?.cubeStudents;
-      const student = findCubeStudent(params?.cubeId, cubeStudents);
-      _stduentId = student?.id;
+      const cachedCubeStudents = cachedMyCardRelatedStudents?.cubeStudents;
+      const cachedStudent = findCubeStudent(params?.cubeId, cachedCubeStudents);
+      _stduentId = cachedStudent?.id;
     }
     if (_stduentId === undefined) {
       return;
     }
-    await confirmProgressByStudentId(_stduentId);
+    await confirmProgressByStudentId(_stduentId, syncPlayTime);
     clearFindMyCardRelatedStudentsCache();
     updateCardLectureStructure(params.cardId);
     requestLectureState(params.cardId, params.cubeId, params.cubeType);
