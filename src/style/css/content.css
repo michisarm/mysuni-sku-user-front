@@ -476,9 +476,10 @@ a.button.ui.btn-badge-go {
 .profile-modal-new .right-side .ui.menu {
   border-bottom: 1px solid #00bfae;
 }
-.profile-modal-new .list-wrapper .top-line span strong {
-  color: #00bfae;
-}
+
+.profile-modal-new .list-wrapper .top-line span { color:#444; font-size: 1rem; padding-left: 0; }
+.profile-modal-new .contents-wrapper .right-side .list-wrapper .front-dot span:before { display: none;}
+.profile-modal-new .list-wrapper .top-line span strong {color: #444;}
 
 /* Category poopup */
 .g-menu-detail .layer .table-css .row.head .cell:last-of-type {
@@ -2343,7 +2344,6 @@ i.icon.search50::after {
   vertical-align: top;
   transform: translateY(-3px);
 }
-
 .ui.button.like {
   margin: 0;
   padding: 0;
