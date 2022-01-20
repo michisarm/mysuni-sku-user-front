@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { Checkbox, Icon, Tab } from 'semantic-ui-react';
 import { onSearchFollowing } from '../playlistRecommendPopUp.events';
-import { useRequestFollowing } from '../playlistRecommendPopUp.request';
+import { useRequestFollower } from '../playlistRecommendPopUp.request';
 import {
   MemberList,
   useCheckedMemberList,
@@ -17,7 +17,7 @@ import { reactAlert } from '@nara.platform/accent';
 import { trim } from 'lodash';
 
 export function FollowingTab() {
-  useRequestFollowing();
+  useRequestFollower();
 
   const followingList = useFollowingList();
   const checkedMemberList = useCheckedMemberList();

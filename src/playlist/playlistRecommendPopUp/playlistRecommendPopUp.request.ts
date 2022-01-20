@@ -1,6 +1,6 @@
 import requestMyPagePlaylistDetail from 'myTraining/ui/view/playlist/myPagePlaylistDetail/MyPagePlaylistDetail.request';
 import { getDenizedId } from 'community/ui/app.formatters';
-import { findFollowingUsers } from 'community/ui/data/community/apis/followApi';
+import { findFollowerUsers } from 'community/ui/data/community/apis/followApi';
 import {
   findSameDepartmentUserIdentities,
   findUserIdentitiesByKeyword,
@@ -59,9 +59,9 @@ export async function requestMysuniUser(searchWord: string) {
 }
 
 // following tab 데이터 호출
-export async function requestFollowing() {
+export async function requestFollower() {
   const memberId = getDenizedId();
-  const followingUser = await findFollowingUsers(memberId);
+  const followingUser = await findFollowerUsers(memberId);
 
   if (followingUser !== undefined) {
     const memberList = followingToMemberList(followingUser.results);
@@ -79,8 +79,8 @@ export function useRequestDepartMentUser() {
   }, [isOpen]);
 }
 
-export function useRequestFollowing() {
+export function useRequestFollower() {
   useEffect(() => {
-    requestFollowing();
+    requestFollower();
   }, []);
 }
