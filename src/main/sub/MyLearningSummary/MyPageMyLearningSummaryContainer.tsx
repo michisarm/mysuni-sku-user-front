@@ -166,18 +166,6 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
       <>
         <div className="mypage_contents profile-dashboard-contents">
           <strong className="mypage_title">나의 학습 현황</strong>
-          <div className="top-line">
-            <div className="select-wrap">
-              <Select
-                className="ui small-border dropdown m0"
-                options={selectYearOptions}
-                value={selectYear}
-                onChange={(event, data) =>
-                  this.onChangeSelectYear(Number(data.value))
-                }
-              />
-            </div>
-          </div>
 
           <Segment className="full">
             <div className="group-wrapper">
@@ -200,6 +188,19 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
                   </div>
                 </div>
                 <div className="personal-content-wrap">
+                  <div className="personal-content-select">
+                    <div className="select-wrap">
+                      <Select
+                        className="ui small-border dropdown m0"
+                        options={selectYearOptions}
+                        value={selectYear}
+                        onChange={(event, data) =>
+                          this.onChangeSelectYear(Number(data.value))
+                        }
+                      />
+                    </div>
+                  </div>
+
                   <div className="ui cards personal-content-box-wrap">
                     <MyPageBadgeLearningTimeView
                       year={year}
@@ -216,6 +217,7 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
                       aplTime={myLearningSummary && myLearningSummary.aplTime}
                     />
                     <MyPageCollegeTopChartView
+                      year={year}
                       myLearningSummary={myLearningSummary}
                     />
                   </div>

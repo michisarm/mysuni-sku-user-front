@@ -20,32 +20,42 @@ export default function BadgeLearningSummaryView({
     <div className="main-gauge">
       <PolyglotText defaultString="Badge" id="home-Summary-Badge" />
 
-      <Popup
-        trigger={
-          <div
-            className={`gauge-content gauge-bg${
-              badgeValue ? convertProgressValue(badgeValue) : 5
-            }`}
-          >
-            <div className="gauge-content-box">
-              <p>{issuedCount}</p>
-              <span>{challengingCount}</span>
-            </div>
-          </div>
-        }
-        style={style}
-        position="bottom center"
-        wide
+      <div
+        className={`gauge-content gauge-bg${
+          badgeValue ? convertProgressValue(badgeValue) : 5
+        }`}
       >
-        <span className="personal_pop_tit">
-          <PolyglotText defaultString="도전중" id="home-Summary-Badge도전중" />
-          {' Badge '}
-        </span>
-        <span>
-          <strong>{challengingCount}</strong>
-          <PolyglotText defaultString="개" id="" />
-        </span>
-      </Popup>
+        <div className="gauge-content-box">
+          <p>{issuedCount}</p>
+        </div>
+      </div>
+
+      {/*<Popup*/}
+      {/*  trigger={*/}
+      {/*    <div*/}
+      {/*      className={`gauge-content gauge-bg${*/}
+      {/*        badgeValue ? convertProgressValue(badgeValue) : 5*/}
+      {/*      }`}*/}
+      {/*    >*/}
+      {/*      <div className="gauge-content-box">*/}
+      {/*        <p>{issuedCount}</p>*/}
+      {/*        <span>{challengingCount}</span>*/}
+      {/*      </div>*/}
+      {/*    </div>*/}
+      {/*  }*/}
+      {/*  style={style}*/}
+      {/*  position="bottom center"*/}
+      {/*  wide*/}
+      {/*>*/}
+      {/*  <span className="personal_pop_tit">*/}
+      {/*    <PolyglotText defaultString="도전중" id="home-Summary-Badge도전중" />*/}
+      {/*    {' Badge '}*/}
+      {/*  </span>*/}
+      {/*  <span>*/}
+      {/*    <strong>{challengingCount}</strong>*/}
+      {/*    <PolyglotText defaultString="개" id="" />*/}
+      {/*  </span>*/}
+      {/*</Popup>*/}
     </div>
   );
 }

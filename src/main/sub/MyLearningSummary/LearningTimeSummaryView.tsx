@@ -21,8 +21,12 @@ export default function LearningTimeSummaryView({
   totalLearningTime,
   learningGoalHour,
 }: LearningTimeSummaryViewProps) {
+  //
+  const learningGoalMin =
+    (learningGoalHour > 200 ? 200 : learningGoalHour) * 60;
+
   let LearningObjectivesPer = Math.floor(
-    (totalLearningTime / (learningGoalHour * 60)) * 100
+    (totalLearningTime / learningGoalMin) * 100
   );
 
   if (LearningObjectivesPer > 100) {
@@ -61,7 +65,7 @@ export default function LearningTimeSummaryView({
               <p>
                 <LearningTimeView learningTime={totalLearningTime} />
               </p>
-              <span>{learningGoalHour}h</span>
+              {/*<span>{learningGoalHour}h</span>*/}
             </div>
           </div>
         }
@@ -70,14 +74,18 @@ export default function LearningTimeSummaryView({
         wide
       >
         <span className="personal_pop_tit">
+          {/*<PolyglotText*/}
+          {/*  defaultString="누적 학습시간"*/}
+          {/*  id="home-Summary-누적시간"*/}
+          {/*/>*/}
           <PolyglotText
-            defaultString="누적 학습시간"
-            id="home-Summary-누적시간"
+            defaultString="목표 학습시간"
+            id="home-Summary-목표학습시간"
           />
         </span>
         <span>
           <strong>
-            <LearningTimeView learningTime={totalLearningTime} />
+            <LearningTimeView learningTime={learningGoalMin} />
           </strong>
         </span>
       </Popup>
