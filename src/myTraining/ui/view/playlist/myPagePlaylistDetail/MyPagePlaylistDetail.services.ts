@@ -44,7 +44,8 @@ export function useRequestMyPagePlaylistDetail() {
 
   useEffect(() => {
     requestMyPagePlaylistDetail(playlistId);
-    return setMyPagePlaylistDetail();
+    window.scrollTo(0, 0);
+    return setMyPagePlaylistDetail(), setMyPagePlaylistDetailCards();
   }, [playlistId]);
 }
 
