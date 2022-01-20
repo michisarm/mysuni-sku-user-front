@@ -3,6 +3,7 @@ import * as React from 'react';
 import { PlaylistDetailSummary } from '../../../../../playlist/data/models/PlaylistDetailSummary';
 import { PlaylistInCard } from '../../present/logic/PlaylistStore';
 import { Simulate } from 'react-dom/test-utils';
+import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   active: boolean;
@@ -70,25 +71,29 @@ function UserProfileInfoTabPlaylistView(props: Props) {
               onClick={() => onClickRegisterPlaylist(playlistSummary.id)}
             >
               <Icon aria-hidden="true" className="add-black16" />
-              {`Playlist 담기`}
+              {getPolyglotText(`Playlist 담기`, 'profilecard-playlist-add')}
             </Button>
           </div>
           <div className="acc-cnt">
             <Button
               className="acc-updown"
               onClick={() => {
-                if (playlistSummary.accessibleCardCount > 0) {
+                if (playlistSummary.cardIds.length > 0) {
                   onClickPlaylistContents(index);
                 }
               }}
             >
-              {`총 `}
-              <strong
-                className={playlistSummary.accessibleCardCount > 0 ? 'cnt' : ''}
-              >
-                {`${playlistSummary.accessibleCardCount} 개`}
-              </strong>
-              {` 학습카드`}
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: getPolyglotText(
+                    `총 {cardCount}개의 학습카드`,
+                    'profilecard-playlist-cardcount',
+                    {
+                      cardCount: playlistSummary.cardIds.length.toString(),
+                    }
+                  ),
+                }}
+              />
               {(playlistSummary.cardIds.length > 0 && (
                 <Icon area-hidden="true" className="drop24-down" />
               )) ||
@@ -113,7 +118,19 @@ function UserProfileInfoTabPlaylistView(props: Props) {
                     >
                       <div className="ellipsis tit">{card.cardTitle}</div>
                       <div className="item-dt">
-                        <span className="cnt">{`${card.count}개`}</span>
+                        <span className="cnt">
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: getPolyglotText(
+                                `{cubeCount}개`,
+                                'profilecard-playlist-cubecount',
+                                {
+                                  cubeCount: card.count.toString(),
+                                }
+                              ),
+                            }}
+                          />
+                        </span>
                         <span className="time">
                           {getHourMinuteFormat(
                             Math.floor(card.leaningTime / 60),

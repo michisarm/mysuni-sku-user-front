@@ -14,6 +14,7 @@ import {
 } from '../../present/logic/PlaylistService';
 import { useHistory } from 'react-router-dom';
 import { reactAlert } from '@nara.platform/accent';
+import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   memberId: string | undefined;
@@ -84,9 +85,19 @@ function UserProfileInfoTabPlaylist(props: Props) {
           {(profileCardPlaylistSummaries &&
             profileCardPlaylistSummaries.playListSummaries && (
               <>
-                <div className="list-top">
-                  {`총 ${profileCardPlaylistSummaries.playListSummaries.length}의 Playlist가 있습니다.`}
-                </div>
+                <div
+                  className="list-top"
+                  dangerouslySetInnerHTML={{
+                    __html: getPolyglotText(
+                      `총 {totalCount}개의 Playlist가 있습니다.`,
+                      'profilecard-playlist-count',
+                      {
+                        totalCount:
+                          profileCardPlaylistSummaries.playListSummaries.length.toString(),
+                      }
+                    ),
+                  }}
+                />
                 <div className="pl-mylist">
                   <Accordion className="pl-mylist-acc">
                     {profileCardPlaylistSummaries.playListSummaries.map(
