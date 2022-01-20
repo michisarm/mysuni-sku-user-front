@@ -14,7 +14,10 @@ import {
 } from '../../present/logic/PlaylistService';
 import { useHistory } from 'react-router-dom';
 import { reactAlert } from '@nara.platform/accent';
-import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   memberId: string | undefined;
@@ -130,8 +133,19 @@ function UserProfileInfoTabPlaylist(props: Props) {
             )) || (
             <div className="no-cont-wrap">
               <Icon aria-hidden="true" className="no-contents80" />
-              <span className="blind">콘텐츠 없음</span>
-              <div className="text">생성된 PlayList가 없습니다.</div>
+              <span className="blind">
+                <PolyglotText
+                  id="통검-전학강-콘텐츠없음"
+                  defaultString="콘텐츠 없음"
+                />
+              </span>
+              <div className="text">
+                <PolyglotText
+                  id="profilecard-playlist-nodata"
+                  defaultString="생성된 Playlist가 없습니다."
+                />
+                생성된 PlayList가 없습니다.
+              </div>
             </div>
           )}
         </div>
