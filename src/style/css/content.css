@@ -2287,7 +2287,9 @@ i.icon.listmore16-black::after {
   height: 24px;
   vertical-align: top;
 }
-i.icon.close24:before{display: block;}
+i.icon.close24:before {
+  display: block;
+}
 .ui.icon.button.all-dt {
   margin: 0;
   padding: 0 10px;
@@ -2574,7 +2576,7 @@ i.icon.add-black16::after {
 .table_card .ui.table {
   border-color: #666;
 }
-.search_box .box2 .note_input {
+.search_box.box2 .note_input {
   margin: 0;
   width: calc(100% - 15px);
   background-color: transparent;
