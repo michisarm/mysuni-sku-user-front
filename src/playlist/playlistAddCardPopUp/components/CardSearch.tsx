@@ -76,10 +76,8 @@ export function CardSearch() {
           </Table.Row>
           <Table.Row>
             <Table.HeaderCell>과정명</Table.HeaderCell>
-            <Table.Cell colSpan={3}>
-              <div
-                className={`ui input note_input", ${isFocus ? 'focus' : ''}`}
-              >
+            <Table.Cell colSpan="3">
+              <div className={`ui input note_input ${isFocus ? 'focus' : ''}`}>
                 <input
                   type="text"
                   placeholder="검색어를 입력해주세요"
