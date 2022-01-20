@@ -426,10 +426,10 @@ function parseDurationableCubeItem(
     can: true,
     state: convertLearningStateToState(cubeStudent?.learningState),
     cube,
-    // duration: !isNaN(parseInt(cubeStudent?.durationViewSeconds || ''))
-    //   ? parseInt(cubeStudent?.durationViewSeconds || '')
-    //   : undefined,
-    duration,
+    duration: !isNaN(parseInt(cubeStudent?.durationViewSeconds || ''))
+      ? parseInt(cubeStudent?.durationViewSeconds || '')
+      : undefined,
+    // duration,
     isDurationable: true,
   };
   if (hasTest) {
@@ -978,7 +978,7 @@ export async function requestCardLectureStructure(cardId: string) {
 
   const cardItem = parseCardItem(card, cardContents, cardStudent);
   const cubes = await findCubesByIdsCache(cubeIds);
-  const playTimes: PlayTimeModel[] = await findByCubeIdsInPost(cubeIds);
+  // const playTimes: PlayTimeModel[] = await findByCubeIdsInPost(cubeIds);
   // const playTimes: PlayTimeModel[] = [];
 
   let cubeItems: LectureStructureCubeItem[] = [];
@@ -994,8 +994,8 @@ export async function requestCardLectureStructure(cardId: string) {
           card,
           cube,
           order,
-          cubeStudent,
-          playTimes
+          cubeStudent
+          // playTimes
         );
         return cubeItem;
       })

@@ -68,7 +68,11 @@ const DurationableCubeView: React.FC<CubeViewProps> =
     can,
     duration = 0,
   }) {
+    const MAX = 10;
+    const MIN = 0;
+    // const step = Math.min(Math.max(Math.ceil(duration / 10), MIN), MAX);
     const step = Math.ceil(duration / 10);
+
     return (
       <StructureLink
         className={`btn-state-course ${activated ? 'act-on' : ''}`}
