@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { CommentList } from '@nara.drama/feedback';
 import { LectureTaskDetail } from 'lecture/detail/viewModel/LectureTaskDetail';
 import React, { Fragment, useCallback, useEffect, useRef } from 'react';
@@ -14,7 +15,7 @@ import {
 import { SkProfileService } from '../../../../../profile/stores';
 import { getActiveCubeStructureItem } from '../../../utility/lectureStructureHelper';
 import { setPinByPostId } from '../../../../../lecture/detail/api/cubeApi';
-import { reactAlert } from '@nara.platform/accent';
+import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import LectureState from '../../../viewModel/LectureState';
 import { findCommunityProfile } from '../../../../../community/api/profileApi';
 import CommunityProfileModal from '../../../../../community/ui/view/CommunityProfileModal';
@@ -23,6 +24,7 @@ import {
   PolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { Comment } from '@sku/skuniv-ui-comment';
 
 interface LectureTaskDetailViewProps {
   boardId: string;
@@ -66,10 +68,12 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> =
     const [pinned, setPinned] = useState<number>(0);
     const [profileInfo, setProfileInfo] = useState<profileParams>();
     const [profileOpen, setProfileOpen] = useState<boolean>(false);
-
     const [filesMap, setFilesMap] = useState<Map<string, any>>(
       new Map<string, any>()
     );
+
+    const skProfile = SkProfileService.instance.skProfile;
+
     useEffect(() => {
       setPinned(taskDetail?.pinned);
       getFileIds();
@@ -108,16 +112,8 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> =
       handleOnClickReplies(taskId);
     }, []);
 
-    useEffect(() => {
-      window.addEventListener('clickProfile', clickProfileEventHandler);
-      return () => {
-        window.removeEventListener('clickProfile', clickProfileEventHandler);
-      };
-    }, []);
-
-    const clickProfileEventHandler = useCallback(async () => {
-      const id = document.body.getAttribute('selectedProfileId');
-      findCommunityProfile(id!).then((result) => {
+    const clickProfileEventHandler = useCallback(async (denizenId: string) => {
+      findCommunityProfile(denizenId!).then((result) => {
         setProfileInfo({
           id: result!.id,
           profileImg: result!.profileImg,
@@ -205,6 +201,30 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> =
       },
       [canNotice]
     );
+
+    const onNoContentAlert = () => {
+      reactAlert({
+        title: getPolyglotText('알림', 'feedback-comment-notice-title'),
+        message: getPolyglotText(
+          '댓글 내용을 입력하세요.',
+          'feedback-comment-notice-nonetext-message'
+        ),
+      });
+    };
+
+    const onRemoveCommentConfirm = () => {
+      return new Promise<boolean>((resolve) => {
+        reactConfirm({
+          title: getPolyglotText('삭제', 'feedback-comment-delete-title'),
+          message: getPolyglotText(
+            '댓글을 삭제 하시겠습니까?',
+            'feedback-comment-delete-message'
+          ),
+          onOk: () => resolve(true),
+          onCancel: () => resolve(false),
+        });
+      });
+    };
 
     const isPostWriter =
       SkProfileService.instance.skProfile.id ===
@@ -334,23 +354,19 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> =
               </Button>
             </div>
             {taskId === taskDetail.id && (
-              <CommentList
-                feedbackId={taskDetail.commentFeedbackId}
-                name={
-                  (taskDetail.writer.name &&
-                    parsePolyglotString(taskDetail.writer.name)) ||
-                  ''
-                }
-                email={taskDetail.writer.email}
-                companyName={
-                  (taskDetail.writer.companyName &&
-                    parsePolyglotString(taskDetail.writer.companyName)) ||
-                  ''
-                }
-                departmentName={taskDetail.writer.companyCode}
-                cubeCommentStartFunction={onRegisterStudent}
-                cubeCommentEndFunction={onRefresh}
-              />
+              <div className="contents comment">
+                <Comment
+                  feedbackId={taskDetail.commentFeedbackId}
+                  name={JSON.stringify(skProfile.name)}
+                  email={skProfile.email}
+                  companyName={parsePolyglotString(skProfile.companyName)}
+                  departmentName={skProfile.companyCode}
+                  hasPinRole={false}
+                  onOpenProfileModal={clickProfileEventHandler}
+                  onRemoveCommentConfirm={onRemoveCommentConfirm}
+                  onNoContentAlert={onNoContentAlert}
+                />
+              </div>
             )}
           </>
         )}

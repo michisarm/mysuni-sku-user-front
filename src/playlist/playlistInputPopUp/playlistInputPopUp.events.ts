@@ -117,7 +117,7 @@ export function onEditPlaylistInput(callback?: () => void) {
   reactConfirm({
     title: getPolyglotText('Playlist 수정하기', 'playlist-popup-수정하기'),
     message: getPolyglotText(
-      'Playlist를 수정하시겠습니까 ? \n 추천받은 구성원들에게도 수정된 내용이 반영됩니다.',
+      'Playlist를 수정하시겠습니까 ? <br/> 추천받은 구성원들에게도 수정된 내용이 반영됩니다.',
       'playlist-popup-수정컨펌'
     ),
     onOk: () => {

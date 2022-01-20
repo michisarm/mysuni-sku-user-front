@@ -1,10 +1,10 @@
 import Note from '../model/Note';
 import moment from 'moment';
 import Folder from '../model/Folder';
-import { CollegeModel } from '../../college/model';
-import NoteWithLecture from '../model/NoteWithLecture';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
-import { getDefaultLang } from '../../lecture/model/LangSupport';
+import { getCollgeName } from 'shared/service/useCollege/useRequestCollege';
+import NoteContent from '../model/NoteContent';
+import { playSecondToString } from '../ui/logic/NoteHelper';
 
 export class NoteXlsxModel {
   //
@@ -14,50 +14,43 @@ export class NoteXlsxModel {
   Card명: string = '';
   Cube명: string = '';
   학습유형?: string = '';
-  Playtime: string = '';
+  PlaySecond: string = '';
   작성일자: string = '';
   상태: string = '';
   내용: string = '';
 }
 
 export function convertNoteToNoteXlsxModel(
-  noteWithLecture: NoteWithLecture,
+  note: Note,
   index: number,
-  folder?: Folder,
-  collegesName?: CollegeModel[]
-): NoteXlsxModel {
+  folder?: Folder
+): NoteXlsxModel[] {
   const idNames = folder?.folders.idNames.filter((f) => {
-    if (f.id === noteWithLecture.note.folderId) {
+    if (f.id === note.folderId) {
       return f.name;
     }
   });
-  const collegeName = collegesName?.filter((f) => {
-    if (f.id === noteWithLecture.lectureRom.collegeId) {
-      return f;
-    }
+
+  return note.noteContents.map((noteContent: NoteContent, contentIndex) => {
+    return {
+      No: index + contentIndex + 1,
+      폴더:
+        (idNames &&
+          idNames?.length > 0 &&
+          (idNames[0].id !== '' || idNames[0].id !== null) &&
+          idNames[0].name) ||
+        '미지정',
+      Category: getCollgeName(note.collegeId),
+      Card명: parsePolyglotString(note.cardName),
+      Cube명: parsePolyglotString(note.cubeName),
+      학습유형: note.cubeType,
+      PlaySecond:
+        noteContent.playSecond === 0
+          ? ''
+          : playSecondToString(noteContent.playSecond),
+      작성일자: moment(noteContent.registeredTime).format('YYYY-MM-DD'),
+      상태: noteContent.modifiedTime !== 0 ? '편집' : '작성',
+      내용: noteContent.content,
+    };
   });
-  return {
-    No: index + 1,
-    폴더:
-      (idNames &&
-        idNames?.length > 0 &&
-        idNames[0].id !== '0000' &&
-        idNames[0].name) ||
-      '미지정',
-    Category:
-      (collegeName &&
-        collegeName.length > 0 &&
-        parsePolyglotString(
-          collegeName[0].name,
-          getDefaultLang(collegeName[0].langSupports)
-        )) ||
-      '',
-    Card명: parsePolyglotString(noteWithLecture.lectureRom.cardName),
-    Cube명: parsePolyglotString(noteWithLecture.lectureRom.cubeName),
-    학습유형: noteWithLecture.note.cubeType,
-    Playtime: noteWithLecture.note.playTime,
-    작성일자: moment(noteWithLecture.note.registeredTime).format('YYYY-MM-DD'),
-    상태: noteWithLecture.note.modifiedTime !== 0 ? '편집' : '작성',
-    내용: noteWithLecture.note.content,
-  };
 }

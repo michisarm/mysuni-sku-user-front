@@ -15,8 +15,14 @@ export enum ContentType {
   Enrolling = 'Enrolling',
 }
 
+export enum ContentId {
+  LearningPatternBased = 'LearningPatternBased',
+  ContentBase = 'ContentBase',
+}
+
 interface Params {
   type: string;
+  id: string;
   pageNo: string;
 }
 
@@ -24,8 +30,9 @@ function NewLearningPage() {
   const [breadcrumbTItle, setBreadcrumbTItle] = useState<string>('');
   const [cardType, setCardType] = useState<String>('');
   const [dataArea, setDataArea] = useState<Area | undefined>(undefined);
-  const { type } = useParams<Params>();
+  const { type, id } = useParams<Params>();
   const contentType = type as ContentType;
+  const contentId = id as ContentId;
 
   const getDisplayName = async () => {
     const cardBundles = await findAvailableCardBundlesCache();
@@ -62,9 +69,7 @@ function NewLearningPage() {
     let area = null;
     switch (contentType) {
       case ContentType.Recommend:
-        area = window.location.search.includes('LearningPatternBased')
-          ? Area.NEWLEARNING_PATTERN
-          : Area.NEWLEARNING_RECOMMEND;
+        area = id === 'LearningPatternBased' ? Area.NEWLEARNING_PATTERN : Area.NEWLEARNING_RECOMMEND;
         break;
       case ContentType.Enrolling:
         area = Area.NEWLEARNING_ENROLLING;
@@ -94,7 +99,7 @@ function NewLearningPage() {
   const renderLearningList = () => {
     switch (contentType) {
       case ContentType.Recommend:
-        return <LRSListContainer />;
+        return <LRSListContainer id={contentId}/>;
       case ContentType.Enrolling:
         return <LearningListContainer />;
       default:

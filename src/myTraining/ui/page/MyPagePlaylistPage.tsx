@@ -107,7 +107,7 @@ function PlaylistItem(props: PropsType) {
                       `총 {totalCount}개 학습카드`,
                       'mypage-playlist-학습카드총수',
                       {
-                        totalCount: item.cardIds.length.toString(),
+                        totalCount: item.accessibleCardCount.toString(),
                       }
                     ),
                   }}
@@ -139,8 +139,8 @@ function PlaylistItem(props: PropsType) {
 
 function NoPlaylistItem() {
   const afterAddPlaylistCallback = useCallback(() => {
-    setMyPagePlaylistFilterBox({ playlistType: '', offset: 0 });
-    requestMyPagePlaylist();
+    // setMyPagePlaylistFilterBox({ playlistType: '', offset: 0 });
+    // requestMyPagePlaylist();
   }, []);
 
   return (
@@ -179,8 +179,8 @@ function MyPagePlaylistPage() {
   const playlist = useMyPagePlaylist();
 
   const afterAddPlaylistCallback = useCallback(() => {
-    setMyPagePlaylistFilterBox({ playlistType: '', offset: 0 });
-    requestMyPagePlaylist();
+    // setMyPagePlaylistFilterBox({ playlistType: '', offset: 0 });
+    // requestMyPagePlaylist();
   }, []);
 
   return (
@@ -201,7 +201,10 @@ function MyPagePlaylistPage() {
           />
           <div className="select-wrap">
             <Select
-              placeholder={getPolyglotText('선택', 'mypage-playlist-선택')}
+              placeholder={getPolyglotText(
+                `전체`,
+                'mypage-playlist-전체리스트'
+              )}
               className="ui small-border dropdown m0"
               options={selectOptions}
               onChange={onMyPagePlaylistPageFilter}

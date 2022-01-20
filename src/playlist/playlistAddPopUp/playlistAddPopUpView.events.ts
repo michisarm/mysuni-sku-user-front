@@ -103,7 +103,10 @@ export function onAddLearningCard() {
   if (checkedPlaylistIds.length === 0) {
     reactAlert({
       title: getPolyglotText('Playlist 추가하기', 'playlist-popup-추가하기'),
-      message: 'Playlist를 선택해주세요.',
+      message: getPolyglotText(
+        '학습카드를 추가할 Playlist를 선택해주세요.',
+        'playlist-popup-플레이선택'
+      ),
     });
     return;
   }

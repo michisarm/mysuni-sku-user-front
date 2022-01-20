@@ -1,3 +1,4 @@
+import EnrolledCardModel from 'lecture/model/EnrolledCardModel';
 import { MyTrainingTableViewModel } from 'myTraining/model';
 import { LearningTypeName } from 'myTraining/model/LearningType';
 import { inProgressPolyglot } from 'myTraining/ui/model/TableHeaderColumn';
@@ -11,17 +12,17 @@ import { SeeMoreButton } from '../../../../lecture';
 interface props {
   totalCount: number;
   headerColumns: { key: number; text: string; icon?: boolean | undefined }[];
-  learningList: MyTrainingTableViewModel[];
+  learningList: EnrolledCardModel[];
   showSeeMore: boolean;
-  onClickRow: (e: any, myTraining: MyTrainingTableViewModel) => void;
-  onClickSeeMore: () => void;
+  onClickRow: (e: any, myTraining: EnrolledCardModel) => void;
+  // onClickSeeMore: () => void;
 
   getOrderIcon: (
     column: string,
     fromStyle?: boolean
   ) => 'list-down16' | 'list-up16' | '내림차순 정렬' | '오름차순 정렬';
   onClickSort: (column: string) => void;
-  seeMoreButtonViewRef: (ref: HTMLDivElement | null) => void;
+  // seeMoreButtonViewRef: (ref: HTMLDivElement | null) => void;
   isLoading: boolean;
 }
 
@@ -31,11 +32,11 @@ export function EnrolledListPageTableView({
   learningList,
   showSeeMore,
   onClickRow,
-  onClickSeeMore,
+  // onClickSeeMore,
 
   getOrderIcon,
   onClickSort,
-  seeMoreButtonViewRef,
+  // seeMoreButtonViewRef,
   isLoading,
 }: props) {
   //
@@ -90,7 +91,7 @@ export function EnrolledListPageTableView({
                           myTraining.useNote ? 'noteOn' : ''
                         }`}
                       >
-                        {parsePolyglotString(myTraining.cubeName)}
+                        {parsePolyglotString(myTraining.name)}
                       </span>
                     </a>
                   </Table.Cell>
@@ -110,9 +111,9 @@ export function EnrolledListPageTableView({
         </Table>
       </div>
 
-      {!isLoading && showSeeMore && (
+      {/* {!isLoading && showSeeMore && (
         <SeeMoreButton onClick={onClickSeeMore} ref={seeMoreButtonViewRef} />
-      )}
+      )} */}
     </>
   );
 }

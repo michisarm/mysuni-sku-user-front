@@ -1,6 +1,12 @@
 import { reactAlert } from '@nara.platform/accent';
 import { isEmpty, trim } from 'lodash';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  ReactType,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { Checkbox, Icon, Tab } from 'semantic-ui-react';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
@@ -21,6 +27,12 @@ export function MySuniUserTab() {
   const [isSearchAfter, setIsSearchAfter] = useState(false); // 검색 전인지 후인지 확인하는 상태 값
   const [searchText, setSearchText] = useState('');
   const [searchTextResult, setSearchTextResult] = useState('');
+
+  useEffect(() => {
+    return () => {
+      setMySuniUsers([]);
+    };
+  }, []);
 
   const checkedMemberIds = useMemo(
     () => checkedMemberList.map((member) => member.id),
@@ -48,7 +60,7 @@ export function MySuniUserTab() {
     []
   );
 
-  const onClickSearch = useCallback(() => {
+  const search = useCallback(() => {
     if (trim(searchText).length === 0) {
       reactAlert({
         title: getPolyglotText('구성원 검색하기', 'playlist-popup-구성원검색'),
@@ -75,11 +87,18 @@ export function MySuniUserTab() {
     }
   }, [searchText]);
 
-  useEffect(() => {
-    return () => {
-      setMySuniUsers([]);
-    };
-  }, []);
+  const onEnterSearch = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter') {
+        search();
+      }
+    },
+    [search]
+  );
+
+  const onClickSearch = useCallback(() => {
+    search();
+  }, [search]);
 
   return (
     <Tab.Pane className="left-inner">
@@ -92,6 +111,7 @@ export function MySuniUserTab() {
               'playlist-popup-이름이메일'
             )}
             onChange={onChangeSearchText}
+            onKeyUp={onEnterSearch}
           />
           <Icon className="search link" onClick={onClickSearch} />
         </div>

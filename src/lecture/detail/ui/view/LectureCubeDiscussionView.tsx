@@ -547,6 +547,8 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
                 }}
                 onRemoveCommentConfirm={onRemoveCommentConfirm}
                 onNoContentAlert={onNoContentAlert}
+                onBeforeRegisterComment={registerStudent}
+                onAfterRegisterComment={onRefresh}
               />
             </div>
             <CommunityProfileModal

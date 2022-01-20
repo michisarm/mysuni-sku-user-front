@@ -56,8 +56,8 @@ const LectureNoteAdd: React.FC<Props> = function LectureNoteView({
     } else if (noteType === 'popup') {
       if (window.opener.document.getElementById('handlePlayTime')) {
         window.opener.document.getElementById('handlePlayTime').click();
-        const playTime =
-          window.opener.document.getElementById('handlePlayTime').innerText;
+        const playTime = window.opener.document.getElementById('handlePlayTime')
+          .innerText;
         onChangeTime(playTime ? playTime : 0);
       } else {
         onChangeTime(0);
@@ -79,7 +79,7 @@ const LectureNoteAdd: React.FC<Props> = function LectureNoteView({
       setLectureNoteTab(true);
     }
     setTimeout(() => {
-      noteInput.current.focus();
+      noteInput.current && noteInput.current.focus();
     }, 100);
   }, []);
 
@@ -99,8 +99,8 @@ const LectureNoteAdd: React.FC<Props> = function LectureNoteView({
       }
     } else if (noteType === 'popup') {
       window.opener.document.getElementById('handlePlayTime').click();
-      const playTime =
-        window.opener.document.getElementById('handlePlayTime').innerText;
+      const playTime = window.opener.document.getElementById('handlePlayTime')
+        .innerText;
       onChangeTime(playTime ? playTime : 0);
     }
   }, [addNote]);

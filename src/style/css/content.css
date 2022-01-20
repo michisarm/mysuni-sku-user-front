@@ -508,6 +508,15 @@ a.button.ui.btn-badge-go {
 .introduction .providers {
   background: #f6f6f6;
 }
+#root section.content .tab-menu-inner.sub .ui.attached.tabular.menu {
+  display: table;
+}
+#root section.content .tab-menu-inner.sub .ui.attached.tabular.menu .item {
+  display: table-cell;
+}
+#root section.content.introduction .college-cont-map.pbtom {
+  padding-bottom: 120px;
+}
 
 /* My Learning */
 .filter-table .title {
@@ -958,6 +967,9 @@ i.icon.icon_emoji_8 {
 }
 .essential-wrap {
   box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2);
+}
+.essential-wrap .essential-card p img {
+  max-width: 100%;
 }
 
 /* 마이러닝 > 학습이수시간 팝업 */
@@ -2148,6 +2160,32 @@ i.icon.testHeader02::before {
 .ui.segment.full .contents.comment {
   min-height: 20rem;
 }
+.qna-admin .qna-navi .wait {
+  color: #aaa;
+}
+
+/* Web Page Cube Embed iFrame CSS 오류 수정 (2022.01.08)*/
+.embedded.iframe-area.s990 {
+  max-width: initial;
+}
+
+/* Web Page Cube Embed iFrame CSS 오류 수정 */
+@media (max-width: 1301px) {
+  .content.lms .course-info-detail {
+    padding-left: initial;
+    padding-right: initial;
+  }
+}
+/* 22-01-06 조찬기 Swiper Disabled 배경클릭 방지(공통) */
+.swiper-button-prev.swiper-button-disabled,
+.swiper-button-next.swiper-button-disabled {
+  pointer-events: auto !important;
+}
+
+/* 학습카드 오버뷰 코멘트영역 수정(2021.12.23) */
+.ui.segment.full .contents.comment {
+  min-height: 20rem;
+}
 
 /* ------------ 플레이리스트 css ---------------- */
 
@@ -2907,8 +2945,23 @@ i.icon.add-black16::after {
   width: 100%;
   padding: 50px 20px 30px;
 }
-.mypagev3 .profile-contents-area .profile-info-wrapper .profile-info-area .profile-info { color: #222; margin-top: 6px;}
-.mypagev3 .profile-contents-area .profile-info-wrapper .profile-info-area .profile-info .foll-info { color: #666; margin-top: 8px;}
+.mypagev3
+  .profile-contents-area
+  .profile-info-wrapper
+  .profile-info-area
+  .profile-info {
+  color: #222;
+  margin-top: 6px;
+}
+.mypagev3
+  .profile-contents-area
+  .profile-info-wrapper
+  .profile-info-area
+  .profile-info
+  .foll-info {
+  color: #666;
+  margin-top: 8px;
+}
 .mypagev3
   .profile-contents-area
   .profile-info-wrapper
@@ -2929,9 +2982,20 @@ i.icon.add-black16::after {
   border-bottom: #ddd 1px solid;
   padding: 10px 0;
 }
-.mypagev3 .mypage_menu_list ul li {padding: 10px 14px 10px; border: 0;}
-.mypagev3 .mypage_menu_list ul li a { display: inline-block; padding:7px 10px 7px; font-size: 14px; line-height: 20px; font-weight: 300;}
-.mypagev3 .mypage_menu_list ul li a.active { font-weight: bold;}
+.mypagev3 .mypage_menu_list ul li {
+  padding: 10px 14px 10px;
+  border: 0;
+}
+.mypagev3 .mypage_menu_list ul li a {
+  display: inline-block;
+  padding: 7px 10px 7px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 300;
+}
+.mypagev3 .mypage_menu_list ul li a.active {
+  font-weight: bold;
+}
 .mypage_menu_list .icon {
   margin-right: 5px;
   transform: translateY(-1px);
@@ -3012,16 +3076,33 @@ i.icon.add-black16::after {
   color: #222;
   font-weight: bold;
 }
-.mypagev3 .mypage_menu_list .logout-area {margin: 13px 19px 0; text-align: right; }
+.mypagev3 .mypage_menu_list .logout-area {
+  margin: 13px 19px 0;
+  text-align: right;
+}
 .mypagev3 .mypage_menu_list .logout-area .ui.button {
   text-decoration: none;
   color: #b9b9b9;
   font-weight: normal;
 }
-.mypagev3 .mypage_menu_list .logout-area .ui.button i.icon.logout-16px{margin : 0 0 0 6px !important}
+.mypagev3 .mypage_menu_list .logout-area .ui.button i.icon.logout-16px {
+  margin: 0 0 0 6px !important;
+}
 
-i.icon.logout-16px { width : 16px; height: 16px; vertical-align: top;}
-i.icon.logout-16px::before{ content:""; display:inline-block; width :16px; height: 16px; vertical-align: top; background : url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-lnb-logout.svg') 0 0/100% auto no-repeat !important;}
+i.icon.logout-16px {
+  width: 16px;
+  height: 16px;
+  vertical-align: top;
+}
+i.icon.logout-16px::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  vertical-align: top;
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-lnb-logout.svg')
+    0 0/100% auto no-repeat !important;
+}
 
 .mypagev3 .mypage_contents .ui.segment.full {
   width: 100%;
@@ -3088,7 +3169,9 @@ i.icon.logout-16px::before{ content:""; display:inline-block; width :16px; heigh
   border-top: #ddd 1px solid;
   padding-top: 20px;
 }
-.playlist-list.list-wrapper { padding-top: 0;}
+.playlist-list.list-wrapper {
+  padding-top: 0;
+}
 
 /* Playlist card */
 .ui.cards.palylist-container {
@@ -3103,7 +3186,9 @@ i.icon.logout-16px::before{ content:""; display:inline-block; width :16px; heigh
   text-align: center;
   position: relative;
 }
-.ui.card.playlist-box.card-item:hover{ box-shadow: 0 2px 10px 0 rgb(67 67 67 / 20%)}
+.ui.card.playlist-box.card-item:hover {
+  box-shadow: 0 2px 10px 0 rgb(67 67 67 / 20%);
+}
 
 .playlist-info-box {
   display: block;
@@ -3590,32 +3675,72 @@ i.icon.plus.round16:before {
   margin-bottom: 20px;
 }
 
-.personal-content-wrap {margin-top: 30px;}
-.profile-dashboard-contents .personal-content-wrap {margin-top: 38px;}
-.profile-dashboard-contents .playlist-list.list-wrapper { padding-top: 20px;}
-.profile-dashboard-contents .personal-content-box-wrap { margin: 0 !important; justify-content: space-between; width: 100%; }
-.profile-dashboard-contents .mypage_title { font-size: 28px; letter-spacing: -0.37px;}
-.profile-dashboard-contents .personal-content-box-wrap .card.personal-content-box {
+.personal-content-wrap {
+  margin-top: 30px;
+}
+.profile-dashboard-contents .personal-content-wrap {
+  margin-top: 38px;
+}
+.profile-dashboard-contents .playlist-list.list-wrapper {
+  padding-top: 20px;
+}
+.profile-dashboard-contents .personal-content-box-wrap {
+  margin: 0 !important;
+  justify-content: space-between;
+  width: 100%;
+}
+.profile-dashboard-contents .mypage_title {
+  font-size: 28px;
+  letter-spacing: -0.37px;
+}
+.profile-dashboard-contents
+  .personal-content-box-wrap
+  .card.personal-content-box {
   margin: 10px 0 6px;
   padding: 22px 25px 16px;
   width: calc(50% - 10px);
   box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2);
   height: auto;
 }
-.profile-dashboard-contents .ui.cards.personal-content-box-wrap.time-detail .card.personal-content-box { padding-bottom: 25px;}
-.profile-dashboard-contents .ui.cards::after {display: none;}
+.profile-dashboard-contents
+  .ui.cards.personal-content-box-wrap.time-detail
+  .card.personal-content-box {
+  padding-bottom: 25px;
+}
+.profile-dashboard-contents .ui.cards::after {
+  display: none;
+}
 
 .ui.label.onlytext.btn-modify-list i.icon.cog16 {
   margin: 0 0.5rem 0 0;
 }
-.personal-card-item .card-item-tit { margin-bottom: 14px;}
-.personal-card-item .card-item-tit.mb23 {margin-bottom: 23px;}
-.personal-card-item .card-item-tit h3 { line-height: 30px;}
-.profile-dashboard-contents .card-gauge-bar .gauge-tit {margin-right: 0;}
-.profile-dashboard-contents .card-gauge-bar.sty2 {width: 200px;}
-.profile-dashboard-contents .card-item-con.sty2 > .item-con-box > .item-con-left { margin-right: 32px;}
-.profile-dashboard-contents .card-item-con.sty2 > .item-con-box > .item-con-right.detail { width: 225px; }
-
+.personal-card-item .card-item-tit {
+  margin-bottom: 14px;
+}
+.personal-card-item .card-item-tit.mb23 {
+  margin-bottom: 23px;
+}
+.personal-card-item .card-item-tit h3 {
+  line-height: 30px;
+}
+.profile-dashboard-contents .card-gauge-bar .gauge-tit {
+  margin-right: 0;
+}
+.profile-dashboard-contents .card-gauge-bar.sty2 {
+  width: 200px;
+}
+.profile-dashboard-contents
+  .card-item-con.sty2
+  > .item-con-box
+  > .item-con-left {
+  margin-right: 32px;
+}
+.profile-dashboard-contents
+  .card-item-con.sty2
+  > .item-con-box
+  > .item-con-right.detail {
+  width: 225px;
+}
 
 /* gauge-box */
 .main-gauge-box {
@@ -3655,7 +3780,11 @@ i.icon.plus.round16:before {
   font-size: 14px;
   color: #999;
 }
-.playlist-list .gauge-content .gauge-content-box em { font-size:20px; font-style: normal; font-weight: 300;}
+.playlist-list .gauge-content .gauge-content-box em {
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 300;
+}
 
 /* gauge-box bg */
 .playlist-list .gauge-bg5 {

@@ -54,48 +54,52 @@ function MyPagePlaylistDetailContentContainer() {
         >
           Comments
         </Menu.Item>
-        <div className="playlist-view-right">
-          <Label
-            as="button"
-            className="onlytext"
-            onClick={
-              recommendedUserCount !== 0
-                ? onOpenRecommenedMemberPopUp
-                : () => {}
-            }
-          >
-            <Icon className="list-recommended" />
-            <span
-              dangerouslySetInnerHTML={{
-                __html: getPolyglotText(
-                  `추천받은 구성원 <strong>{recommendedUserCount}명</strong>`,
-                  'mypage-playlist-추천받은수',
-                  {
-                    recommendedUserCount: recommendedUserCount.toString(),
-                  }
-                ),
-              }}
-            />
-          </Label>
-          <Label
-            as="button"
-            className="onlytext"
-            onClick={sharedUserCount !== 0 ? onOpenMadeByOthersPopUp : () => {}}
-          >
-            <Icon className="list-like" />
-            <span
-              dangerouslySetInnerHTML={{
-                __html: getPolyglotText(
-                  `담아간 구성원 <strong>{sharedUserCount}명</strong>`,
-                  'mypage-playlist-담아간수',
-                  {
-                    sharedUserCount: sharedUserCount.toString(),
-                  }
-                ),
-              }}
-            />
-          </Label>
-        </div>
+        {type === 'MadeByMyself' && (
+          <div className="playlist-view-right">
+            <Label
+              as="button"
+              className="onlytext"
+              onClick={
+                recommendedUserCount !== 0
+                  ? onOpenRecommenedMemberPopUp
+                  : () => {}
+              }
+            >
+              <Icon className="list-recommended" />
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: getPolyglotText(
+                    `추천받은 구성원 <strong>{recommendedUserCount}명</strong>`,
+                    'mypage-playlist-추천받은수',
+                    {
+                      recommendedUserCount: recommendedUserCount.toString(),
+                    }
+                  ),
+                }}
+              />
+            </Label>
+            <Label
+              as="button"
+              className="onlytext"
+              onClick={
+                sharedUserCount !== 0 ? onOpenMadeByOthersPopUp : () => {}
+              }
+            >
+              <Icon className="list-like" />
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: getPolyglotText(
+                    `담아간 구성원 <strong>{sharedUserCount}명</strong>`,
+                    'mypage-playlist-담아간수',
+                    {
+                      sharedUserCount: sharedUserCount.toString(),
+                    }
+                  ),
+                }}
+              />
+            </Label>
+          </div>
+        )}
       </Menu>
       <RecommendMemberPopUpView playlistType={playlistType} />
       {cardIds.length !== 0

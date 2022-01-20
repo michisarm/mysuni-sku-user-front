@@ -28,21 +28,21 @@ enum ContentType {
 
 enum ContentTypeKoName {
   MySuni = 'mySUNI 소개',
-  College = 'College 소개',
+  College = 'Category 소개',
   Certification = '인증제도 소개',
   PromotionTab = '홍보자료',
 }
 
 enum ContentTypeEnName {
   MySuni = 'mySUNI Introduction',
-  College = 'College Introduction',
+  College = 'Category Introduction',
   Certification = 'Certification System Introduction',
   PromotionTab = 'Promotional Materials',
 }
 
 enum ContentTypeZhName {
   MySuni = 'mySUNI介绍',
-  College = 'College介绍',
+  College = 'Category介绍',
   Certification = '认证制度介绍',
   PromotionTab = '宣传资料',
 }

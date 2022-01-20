@@ -45,7 +45,7 @@ export function useRequestMyPagePlaylistDetail() {
   useEffect(() => {
     requestMyPagePlaylistDetail(playlistId);
     return setMyPagePlaylistDetail();
-  }, []);
+  }, [playlistId]);
 }
 
 export interface PlaylistCardTable {

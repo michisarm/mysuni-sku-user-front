@@ -22,7 +22,7 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({}) {
                   <a className="card-item-link">
                     <h3>
                       <PolyglotText
-                        defaultString="College별 학습 비중"
+                        defaultString="Category별 학습 비중"
                         id="home-PersonalBoard-college비중"
                       />
                     </h3>
@@ -32,7 +32,7 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({}) {
 
               <span>
                 <PolyglotText
-                  defaultString="전체 College 중 Top5"
+                  defaultString="전체 Category 중 Top5"
                   id="home-PersonalBoard-collegeTop5"
                 />
               </span>

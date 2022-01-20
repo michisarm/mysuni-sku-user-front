@@ -32,6 +32,9 @@ import { getDefaultLang } from 'lecture/model/LangSupport';
 import { getLectureState } from 'lecture/detail/store/LectureStateStore';
 import { isEmpty, trim } from 'lodash';
 import { findIsBookmark } from '../../../service/useLectureCourseOverview/useLectureCourseSummary';
+import { onOpenPlaylistAddPopUpView } from 'playlist/playlistAddPopUp/playlistAddPopUpView.events';
+import { PlaylistAddPopUpView } from 'playlist/playlistAddPopUp/PlaylistAddPopUpView';
+import { getLectureStructure } from 'lecture/detail/store/LectureStructureStore';
 
 function numberWithCommas(x: number) {
   let s = x.toString();
@@ -206,6 +209,24 @@ function getDifficultyLevelIcon(difficultyLevel: DifficultyLevel) {
       return 'export';
     default:
       return 'basic';
+  }
+}
+
+function isAloneCube() {
+  const lectureStructure = getLectureStructure();
+
+  if (lectureStructure === undefined) {
+    return false;
+  }
+
+  if (
+    lectureStructure.cubes.length === 1 &&
+    lectureStructure.items.length === 1 &&
+    lectureStructure.card.test === undefined &&
+    lectureStructure.card.report === undefined &&
+    lectureStructure.card.survey === undefined
+  ) {
+    return true;
   }
 }
 
@@ -539,6 +560,20 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> =
                     : getPolyglotText('찜한 과정', 'cicl-학상본문-관심제거')}
                 </span>
               </a>
+              {isAloneCube() && (
+                <>
+                  <a onClick={onOpenPlaylistAddPopUpView}>
+                    <span>
+                      <Icon className="plAdd" />
+                      <PolyglotText
+                        defaultString="Playlist 추가"
+                        id="playlist-popup-추가버튼"
+                      />
+                    </span>
+                  </a>
+                  <PlaylistAddPopUpView />
+                </>
+              )}
               <a onClick={copyUrl}>
                 <span>
                   <Icon className="linkCopy" />

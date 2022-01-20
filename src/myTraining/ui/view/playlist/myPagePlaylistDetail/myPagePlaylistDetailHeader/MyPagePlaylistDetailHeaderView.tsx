@@ -136,7 +136,7 @@ function MyPagePlaylistDetailHeaderView(props: PlaylistHeaderViewType) {
               as="button"
               className="onlytext"
               onClick={() => {
-                onDeletePlaylistClick(myPlaylistId);
+                onDeletePlaylistClick(myPlaylistId, type);
               }}
             >
               <Icon className="delete16" />

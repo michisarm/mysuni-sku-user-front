@@ -1,3 +1,4 @@
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { PlaylistType } from '../../../../../playlist/data/models/PlaylistType';
 import { DropdownProps } from 'semantic-ui-react';
 import {
@@ -22,11 +23,11 @@ export function playListItemClassName(playlistType: PlaylistType) {
 export function playListItemType(playlistType: PlaylistType) {
   switch (playlistType) {
     case 'Recommended':
-      return '추천 받은';
+      return getPolyglotText('추천 받은', 'playlist-item-추천받은');
     case 'MadeByMyself':
-      return '내가 만든';
+      return getPolyglotText('내가 만든', 'playlist-item-내가만든');
     case 'MadeByOthers':
-      return '내가 담은';
+      return getPolyglotText('내가 담은', 'playlist-item-내가담은');
   }
 }
 

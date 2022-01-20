@@ -31,8 +31,8 @@ function MyTrainingTabContainer() {
     bookmarkCount,
     completedCount,
     retryCount,
+    enrolledCount,
   } = LectureService.instance;
-  const { enrolledCount } = PersonalCubeService.instance;
   const {
     aplCount: { all: personalCompletedCount },
   } = AplService.instance;
@@ -42,7 +42,6 @@ function MyTrainingTabContainer() {
     // InMyLectureService.instance.findAllTabCount();
     LectureService.instance.countLearningTab();
     AplService.instance.findAllTabCount(CountType.patronKeyString);
-    PersonalCubeService.instance.findCountByEnrolledTabCount();
   }, []);
 
   const getTabs = () => {

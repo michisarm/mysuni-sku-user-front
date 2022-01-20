@@ -474,7 +474,7 @@ export const getPathName = async (path: string, search: string) => {
       break;
     case /(^\/suni-main)?\/my-training\/.*/.test(path):
       switch (true) {
-        case /(^\/suni-main)?\/my-training\/(.*?)\/(.*?)\/.*/.test(path):
+        case /(^\/suni-main)?\/my-training\/(.*?)\/(.*?)\/(.*?)\/.*/.test(path):
           switch (RegExp.$2) {
             case 'learning':
               pathName = 'Learning';
@@ -513,6 +513,11 @@ export const getPathName = async (path: string, search: string) => {
                   break;
                 case 'Recommend':
                   pathName += '::추천과정';
+                  if(RegExp.$4 === 'LearningPatternBased'){
+                    pathName += '::학습패턴';
+                  }else if(RegExp.$4 === 'ContentBase'){
+                    pathName += '::유사한학습자';
+                  }
                   break;
                 case 'Enrolling':
                   pathName += '::수강신청과정';

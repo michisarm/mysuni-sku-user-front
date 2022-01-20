@@ -10,6 +10,8 @@ import { onOpenPlaylistInputPopUp } from 'playlist/playlistInputPopUp/playlistIn
 import { SkProfileService } from 'profile/stores';
 import { PlaylistType } from 'playlist/data/models/PlaylistType';
 import { requestPlaylistSwiper } from '../playlistContainer.request';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import myPageRoutePaths from 'myTraining/routePaths';
 
 /**
  * 슬라이드 loop 기능 사용시 복사된 요소들이 생성 되는데
@@ -20,7 +22,8 @@ import { requestPlaylistSwiper } from '../playlistContainer.request';
 function useDuplicateElementAddEvent(
   index: number,
   type: PlaylistType,
-  onClickMove: () => void
+  onClickMovePlaylistDetail: () => void,
+  onClickMovePlaylist: () => void
 ) {
   // 복사된 요소들을 querySelector를 사용하여 가져온다.
   const slides = document.querySelectorAll(
@@ -34,12 +37,15 @@ function useDuplicateElementAddEvent(
         slides[index] &&
           slides[index].children[0].addEventListener(
             'click',
-            onOpenPlaylistInputPopUp
+            onClickMovePlaylist
           );
         return;
       }
       slides[index] &&
-        slides[index].children[0].addEventListener('click', onClickMove);
+        slides[index].children[0].addEventListener(
+          'click',
+          onClickMovePlaylistDetail
+        );
     }
 
     // remove Event
@@ -48,13 +54,16 @@ function useDuplicateElementAddEvent(
         if (type === '') {
           slides[index].children[0].removeEventListener(
             'click',
-            onOpenPlaylistInputPopUp
+            onClickMovePlaylist
           );
         }
-        slides[index].children[0].removeEventListener('click', onClickMove);
+        slides[index].children[0].removeEventListener(
+          'click',
+          onClickMovePlaylistDetail
+        );
       }
     };
-  }, [index, onClickMove, slides, type]);
+  }, [index, onClickMovePlaylistDetail, onClickMovePlaylist, slides, type]);
 }
 
 interface PlaylistCircleComponentProps {
@@ -73,16 +82,25 @@ function PlaylistCircleComponent({
     history.push(`/my-training/my-page/Playlist/detail/${id}`);
   }, [history, id]);
 
-  useDuplicateElementAddEvent(index, type, onClickMovePlaylistDetail);
+  const onClickMovePlaylist = useCallback(() => {
+    history.push(myPageRoutePaths.myPagePlaylist());
+  }, [history]);
+
+  useDuplicateElementAddEvent(
+    index,
+    type,
+    onClickMovePlaylistDetail,
+    onClickMovePlaylist
+  );
 
   const playlistTypeName = useMemo(() => {
     switch (type) {
       case 'MadeByMyself':
-        return '내가 만든';
+        return getPolyglotText('내가 만든', 'playlist-item-내가만든');
       case 'MadeByOthers':
-        return '내가 담은';
+        return getPolyglotText('내가 담은', 'playlist-item-내가담은');
       case 'Recommended':
-        return '추천 받은';
+        return getPolyglotText('추천 받은', 'playlist-item-추천받은');
       default:
         return '';
     }
@@ -103,7 +121,7 @@ function PlaylistCircleComponent({
 
   if (type === '') {
     return (
-      <div className="item plus" onClick={onOpenPlaylistInputPopUp}>
+      <div className="item plus" onClick={onClickMovePlaylist}>
         <div className="item-img">
           <Image
             src="https://image.mysuni.sk.com/suni-asset/public/images/all/btn-playlist-plus.png"
@@ -118,11 +136,14 @@ function PlaylistCircleComponent({
               alt="프로필 추가"
               className="ui image"
             />
-            <p>
-              나만의 Playlist를
-              <br />
-              만들어 보세요.
-            </p>
+            <p
+              dangerouslySetInnerHTML={{
+                __html: getPolyglotText(
+                  '나만의 Playlist를 <br /> 만들어 보세요.',
+                  'home-playlist-만들어'
+                ),
+              }}
+            />
           </div>
         </div>
       </div>

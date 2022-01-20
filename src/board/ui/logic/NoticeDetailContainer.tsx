@@ -1,6 +1,11 @@
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { CommentList } from '@nara.drama/feedback';
-import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import {
+  mobxHelper,
+  reactAlert,
+  reactAutobind,
+  reactConfirm,
+} from '@nara.platform/accent';
 import { findCommunityProfile } from 'community/api/profileApi';
 import CommunityProfileModal from 'community/ui/view/CommunityProfileModal';
 import { inject, observer } from 'mobx-react';
@@ -9,10 +14,14 @@ import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Button, Icon, Segment } from 'semantic-ui-react';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
-import { PolyglotText } from '../../../shared/ui/logic/PolyglotText';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../shared/ui/logic/PolyglotText';
 import routePaths from '../../routePaths';
 import { PostService } from '../../stores';
 import BoardDetailContentHeaderView from '../view/BoardDetailContentHeaderView';
+import { Comment } from '@sku/skuniv-ui-comment';
 
 interface Props extends RouteComponentProps<{ postId: string }> {
   postService?: PostService;
@@ -62,15 +71,10 @@ class NoticeDetailContainer extends React.Component<Props, State> {
     postService!.findPostByPostId(postId).then(() => this.getFileIds());
 
     this.setState({ profileOpen: false });
-    window.addEventListener('clickProfile', this.clickProfileEventHandler);
-    return () => {
-      window.removeEventListener('clickProfile', this.clickProfileEventHandler);
-    };
   }
 
-  clickProfileEventHandler() {
-    const id = document.body.getAttribute('selectedProfileId');
-    findCommunityProfile(id!).then((result) => {
+  clickProfileEventHandler(denizenId: string) {
+    findCommunityProfile(denizenId!).then((result) => {
       this.setState({
         profileInfo: {
           id: result!.id,
@@ -122,6 +126,30 @@ class NoticeDetailContainer extends React.Component<Props, State> {
     postService
       .deletePost(post.id, post)
       .then(() => postService!.findPostByPostId(post.id));
+  }
+
+  onNoContentAlert() {
+    reactAlert({
+      title: getPolyglotText('알림', 'feedback-comment-notice-title'),
+      message: getPolyglotText(
+        '댓글 내용을 입력하세요.',
+        'feedback-comment-notice-nonetext-message'
+      ),
+    });
+  }
+
+  onRemoveCommentConfirm() {
+    return new Promise<boolean>((resolve) => {
+      reactConfirm({
+        title: getPolyglotText('삭제', 'feedback-comment-delete-title'),
+        message: getPolyglotText(
+          '댓글을 삭제 하시겠습니까?',
+          'feedback-comment-delete-message'
+        ),
+        onOk: () => resolve(true),
+        onCancel: () => resolve(false),
+      });
+    });
   }
 
   render() {
@@ -193,7 +221,7 @@ class NoticeDetailContainer extends React.Component<Props, State> {
 
         <Segment className="full">
           <div className="comment-area">
-            <CommentList
+            {/* <CommentList
               feedbackId={(post && post.commentFeedbackId) || ''}
               getFeedbackId={this.getFeedbackId}
               hideCamera
@@ -201,7 +229,20 @@ class NoticeDetailContainer extends React.Component<Props, State> {
               email={skProfile.email}
               companyName={parsePolyglotString(skProfile.companyName)}
               departmentName={parsePolyglotString(skProfile.departmentName)}
-            />
+            /> */}
+            <div className="contents comment">
+              <Comment
+                feedbackId={(post && post.commentFeedbackId) || ''}
+                name={JSON.stringify(skProfile.name)}
+                email={skProfile.email}
+                companyName={parsePolyglotString(skProfile.companyName)}
+                departmentName={parsePolyglotString(skProfile.departmentName)}
+                hasPinRole={false}
+                onOpenProfileModal={this.clickProfileEventHandler}
+                onRemoveCommentConfirm={this.onRemoveCommentConfirm}
+                onNoContentAlert={this.onNoContentAlert}
+              />
+            </div>
           </div>
           <div className="actions bottom">
             <Button icon className="left post list2" onClick={this.onClickList}>
