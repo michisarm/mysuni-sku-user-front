@@ -2444,6 +2444,7 @@ i.icon.add-black16::after {
 .ui.modal.pl-add .scroll {
   height: 485px;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 .ui.modal.pl-add .add-top {
   width: 100%;
