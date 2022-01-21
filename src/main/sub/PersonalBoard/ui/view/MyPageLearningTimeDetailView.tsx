@@ -96,6 +96,7 @@ function MyPageLearningTimeDetailView(props: Props) {
           <div className="personal-card-item">
             <div className="card-item-tit mb23">
               <MyLearningSummaryModal
+                year={year}
                 trigger={
                   <a className="card-item-link">
                     <h3>

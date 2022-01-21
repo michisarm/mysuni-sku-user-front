@@ -6,6 +6,7 @@ import {
   PolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
 import { useBadgeLearningTimeItem } from '../../store/PersonalBoardStore';
+import { MyLearningSummaryModal } from '../../../../../myTraining';
 
 interface BadgeLearningTimeViewProps {
   year: string;
@@ -21,7 +22,7 @@ export function MyPageBadgeLearningTimeView({
   const badgeLearningTimeItem = useBadgeLearningTimeItem();
 
   const goToBadge = useCallback(() => {
-    history.push('/certification/badge/EarnedBadgeList/pages/1');
+    history.push('/my-training/my-page/EarnedBadgeList/pages/1');
   }, []);
 
   const goToLearning = useCallback(() => {
@@ -147,14 +148,20 @@ export function MyPageBadgeLearningTimeView({
           <div className="ui card personal-content-box time">
             <div className="personal-card-item">
               <div className="card-item-tit">
-                <a className="card-item-link" onClick={goToLearning}>
-                  <h3>
-                    <PolyglotText
-                      defaultString="학습 시간"
-                      id="home-PersonalBoard-학습시간TITLE"
-                    />
-                  </h3>
-                </a>
+                <MyLearningSummaryModal
+                  year={year}
+                  trigger={
+                    <a className="card-item-link">
+                      <h3>
+                        <PolyglotText
+                          defaultString="학습 시간"
+                          id="home-PersonalBoard-학습시간TITLE"
+                        />
+                      </h3>
+                    </a>
+                  }
+                />
+
                 <span>
                   {year === '전체' ? (
                     <PolyglotText

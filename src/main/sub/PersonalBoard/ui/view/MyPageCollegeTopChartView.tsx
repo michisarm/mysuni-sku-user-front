@@ -24,6 +24,7 @@ const MyPageCollegeTopChartView: React.FC<Props> = function MyPageCollegeTopChar
           <div className="personal-card-item">
             <div className="card-item-tit mb18">
               <MyLearningSummaryModal
+                year={year}
                 trigger={
                   <a className="card-item-link">
                     <h3>
@@ -37,11 +38,6 @@ const MyPageCollegeTopChartView: React.FC<Props> = function MyPageCollegeTopChar
               />
 
               <span>
-                {/*<PolyglotText*/}
-                {/*  defaultString="{year}년 Top5"*/}
-                {/*  id="home-PersonalBoard-collegeTop5"*/}
-                {/*/>*/}
-                {}
                 {year === '전체' ? (
                   <PolyglotText
                     defaultString="전체 기준"
