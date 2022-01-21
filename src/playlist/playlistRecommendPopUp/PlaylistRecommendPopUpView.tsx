@@ -4,8 +4,8 @@ import { ProfileComponent } from './components/ProfileComponent';
 import {
   getCheckedMemberList,
   useCheckedMemberList,
+  useCompanyName,
   useIsOpenPlaylistRecommendPopUp,
-  useSelectedDepartmentName,
 } from './playlistRecommendPopUp.store';
 import { DepartmentMemberTab } from './components/DepartmentMemberTab';
 import { MySuniUserTab } from './components/MySuniUserTab';
@@ -21,11 +21,11 @@ import { trim } from 'lodash';
 import { reactAlert } from '@nara.platform/accent';
 
 export function RecommendPopUpLeftComponent() {
-  const departmentName = useSelectedDepartmentName();
+  const companyName = useCompanyName();
 
   const panes = [
     {
-      menuItem: departmentName,
+      menuItem: companyName,
       render: () => <DepartmentMemberTab />,
     },
     {
