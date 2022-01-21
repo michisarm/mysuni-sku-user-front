@@ -1124,6 +1124,8 @@ ul.ui.list.my-task-bar {
 .note_content_total > strong + span{margin-left: 0.625rem; padding-left: 0.625rem; }
 .note_content_total > span + strong { padding-left : 3px}
 .note_content_total > strong + span:before { content: ''; display: block; position: absolute; top: 0.825rem; left: 0; width:1px; height: 0.375rem; background-color: #999;}
+.folder_inner .folder_new { width: auto; margin-right: 10px;}
+.folder_inner .folder_new .button { width: auto; max-width: none; display: block; white-space: nowrap;}
 
 /* 개인학습 create */
 .ui.table.create {
