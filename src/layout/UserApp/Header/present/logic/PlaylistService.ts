@@ -7,7 +7,10 @@ import {
   registerMyPlaylistByPlaylistId,
 } from 'playlist/data/apis';
 import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
-import { findMyPlaylistCardRdos } from '../../../../../lecture/detail/api/cardApi';
+import {
+  findMyPlaylistCardRdos,
+  findPlaylistCardWithProgressRdos,
+} from '../../../../../lecture/detail/api/cardApi';
 import {
   countAllLikeByFeedbackId,
   findAllLikeByFeedbackIds,
@@ -56,7 +59,7 @@ async function findProfileCardPlaylistByDenizenId(denizenId: string) {
   });
 
   if (cardIds) {
-    const cardInCubeCount = await findMyPlaylistCardRdos(cardIds);
+    const cardInCubeCount = await findPlaylistCardWithProgressRdos(cardIds);
 
     const playlistInCards = cardInCubeCount.map((card) => {
       return {

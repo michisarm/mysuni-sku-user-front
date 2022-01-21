@@ -15,6 +15,20 @@ export const [
   usePlaylistLikeInfo,
 ] = createStore<PlaylistLikeInfo>();
 
+interface profileParams {
+  id: string;
+  profileImg: string;
+  introduce: string;
+  nickName: string;
+  creatorName: string;
+}
+export const [
+  setPlaylistResistrantProfileInfo,
+  onPlaylistResistrantProfileInfo,
+  getPlaylistResistrantProfileInfo,
+  usePlaylistResistrantProfileInfo,
+] = createStore<profileParams>();
+
 export function useRequestPlaylistLike() {
   useEffect(() => {
     requestPlaylistLike();
