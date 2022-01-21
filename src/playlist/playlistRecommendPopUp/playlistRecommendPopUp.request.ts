@@ -65,8 +65,13 @@ export async function requestMemberByDepartmentCode(departmentCode: string) {
   );
 
   if (memberByDepartmentCode !== undefined) {
+    const myId = SkProfileService.instance.additionalUserInfo.id;
+    const filteredMemberByDepartmentCode = memberByDepartmentCode.filter(
+      (member) => member.id !== myId
+    );
+
     const departmentMembers = MembersByDepartmentCodeToMemberList(
-      memberByDepartmentCode
+      filteredMemberByDepartmentCode
     );
     setDepartmentMembers(departmentMembers);
   }
@@ -88,7 +93,14 @@ export async function requestMysuniUser(searchWord: string) {
   const mySuniUserIdentities = await findUserIdentitiesByKeyword(searchWord);
 
   if (mySuniUserIdentities !== undefined) {
-    const mySuniUsers = userIdentitiesToMemberList(mySuniUserIdentities);
+    const myId = SkProfileService.instance.additionalUserInfo.id;
+    const filteredMySuniUserIdentities = mySuniUserIdentities.filter(
+      (user) => user.id !== myId
+    );
+
+    const mySuniUsers = userIdentitiesToMemberList(
+      filteredMySuniUserIdentities
+    );
     setMySuniUsers(mySuniUsers);
   }
 }
