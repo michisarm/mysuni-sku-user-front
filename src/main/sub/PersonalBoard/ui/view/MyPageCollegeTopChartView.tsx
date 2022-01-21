@@ -41,12 +41,20 @@ const MyPageCollegeTopChartView: React.FC<Props> = function MyPageCollegeTopChar
                 {/*  defaultString="{year}년 Top5"*/}
                 {/*  id="home-PersonalBoard-collegeTop5"*/}
                 {/*/>*/}
-                {getPolyglotText(
-                  `{year}년 Top5`,
-                  'home-PersonalBoard-collegeTop5',
-                  {
-                    year,
-                  }
+                {}
+                {year === '전체' ? (
+                  <PolyglotText
+                    defaultString="전체 기준"
+                    id="home-PersonalBoard-collegeTop5InAll"
+                  />
+                ) : (
+                  getPolyglotText(
+                    `{year}년 Top5`,
+                    'home-PersonalBoard-collegeTop5',
+                    {
+                      year,
+                    }
+                  )
                 )}
               </span>
             </div>

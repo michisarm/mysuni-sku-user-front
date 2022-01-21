@@ -142,9 +142,9 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
 
   async onChangeSelectYear(value: number) {
     //
-
+    this.setState({ selectYear: value });
     await this.findMySummaries(value);
-    this.setState({ selectYear: value, isLoading: false });
+    this.setState({ isLoading: false });
   }
 
   render() {
@@ -174,7 +174,7 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
       displayTotalLearningTime,
     } = myLearningSummaryService;
 
-    const year = selectYear === -1 ? '전체 ' : selectYear.toString();
+    const year = selectYear === -1 ? '전체' : selectYear.toString();
 
     return (
       <>
