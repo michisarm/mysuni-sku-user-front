@@ -15,7 +15,9 @@ export function userIdentitiesToMemberList(userIdentities: UserIdentities[]) {
   const memberList = userIdentities.map((user) => {
     return {
       denizedId: user.id,
-      name: parsePolyglotString(user.name),
+      name: user.displayNicknameFirst
+        ? user.nickname || parsePolyglotString(user.name)
+        : parsePolyglotString(user.name) || user.nickname,
       email: user.email,
       departmentName: parsePolyglotString(user.departmentName),
       companyName: parsePolyglotString(user.companyName),

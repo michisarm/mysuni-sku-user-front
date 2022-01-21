@@ -14,6 +14,10 @@ import {
 } from '../../present/logic/PlaylistService';
 import { useHistory } from 'react-router-dom';
 import { reactAlert } from '@nara.platform/accent';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   memberId: string | undefined;
@@ -40,12 +44,22 @@ function UserProfileInfoTabPlaylist(props: Props) {
 
   const onClickRegisterPlaylist = async (playlistId: string) => {
     //
-    await addMyPlaylistByPlaylistId(playlistId);
-    reactAlert({
-      title: 'Playlist 추가하기',
-      message: 'Playlist가 추가되었습니다.',
-      onClose: () => {},
-    });
+    const added = await addMyPlaylistByPlaylistId(playlistId);
+
+    if (added) {
+      reactAlert({
+        title: 'Playlist 추가하기',
+        message: 'MyPage > Playlist 메뉴에서 확인하세요.',
+        onClose: () => {},
+      });
+    } else {
+      reactAlert({
+        title: 'Playlist 추가하기',
+        message:
+          '이미 담은 Playlist 입니다. MyPage > Playlist 메뉴에서 확인하세요.',
+        onClose: () => {},
+      });
+    }
   };
 
   const onClickLike = async (feedbackId: string, state: boolean) => {
@@ -74,9 +88,19 @@ function UserProfileInfoTabPlaylist(props: Props) {
           {(profileCardPlaylistSummaries &&
             profileCardPlaylistSummaries.playListSummaries && (
               <>
-                <div className="list-top">
-                  총<strong> 32개</strong>의 Playlist가 있습니다.
-                </div>
+                <div
+                  className="list-top"
+                  dangerouslySetInnerHTML={{
+                    __html: getPolyglotText(
+                      `총 {totalCount}개의 Playlist가 있습니다.`,
+                      'profilecard-playlist-count',
+                      {
+                        totalCount:
+                          profileCardPlaylistSummaries.playListSummaries.length.toString(),
+                      }
+                    ),
+                  }}
+                />
                 <div className="pl-mylist">
                   <Accordion className="pl-mylist-acc">
                     {profileCardPlaylistSummaries.playListSummaries.map(
@@ -109,8 +133,19 @@ function UserProfileInfoTabPlaylist(props: Props) {
             )) || (
             <div className="no-cont-wrap">
               <Icon aria-hidden="true" className="no-contents80" />
-              <span className="blind">콘텐츠 없음</span>
-              <div className="text">생성된 PlayList가 없습니다.</div>
+              <span className="blind">
+                <PolyglotText
+                  id="통검-전학강-콘텐츠없음"
+                  defaultString="콘텐츠 없음"
+                />
+              </span>
+              <div className="text">
+                <PolyglotText
+                  id="profilecard-playlist-nodata"
+                  defaultString="생성된 Playlist가 없습니다."
+                />
+                생성된 PlayList가 없습니다.
+              </div>
             </div>
           )}
         </div>

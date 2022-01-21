@@ -20,10 +20,10 @@ export async function requestAddCardsToPlaylist(
 ) {
   await addCardsToPlaylists({ cardIds, playlistIds }).then(() => {
     reactAlert({
-      title: getPolyglotText('Playlist 만들기', 'playlist-popup-만들기'),
+      title: getPolyglotText('Playlist 편집하기', 'playlist-popup-편집하기'),
       message: getPolyglotText(
-        'Playlist가 생성되었습니다.',
-        'playlist-popup-생성완료'
+        'Playlist에 학습카드가 추가되었습니다.',
+        'playlist-popup-추가완료'
       ),
       onClose: () => onClosePlaylistAddCardPopUp(),
     });

@@ -77,6 +77,11 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
 
         {/** 플레이리스트 */}
         <PlaylistContainerView />
+        {pageElements.some(
+          (pagemElement) =>
+            pagemElement.position === 'HomeElement' &&
+            pagemElement.type === 'HotTopic'
+        ) && <MainHotTopicContainer />}
       </div>
       <div className="learning-section-wrap bg-gray">
         {pageElements.some(
@@ -105,11 +110,6 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
             pagemElement.type === 'Certification'
         ) &&
           !isExternal && <MainChallengingBadgeContainer />}
-        {pageElements.some(
-          (pagemElement) =>
-            pagemElement.position === 'HomeElement' &&
-            pagemElement.type === 'HotTopic'
-        ) && <MainHotTopicContainer />}
       </div>
 
       {pageElements.some(

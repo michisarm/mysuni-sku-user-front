@@ -63,7 +63,9 @@ export function userIdentitiesToMemberList(
   const departmentMembers = sameDepartmentUsers.map((user) => {
     return {
       id: user.Id,
-      name: parsePolyglotString(user.name),
+      name: user.displayNicknameFirst
+        ? user.nickname
+        : parsePolyglotString(user.name),
       email: user.email,
       departmentName: parsePolyglotString(user.departmentName),
       companyName: parsePolyglotString(user.companyName),
@@ -79,7 +81,9 @@ export function followingToMemberList(following: Profile[]): MemberList[] {
   const memberList = following.map((member) => {
     return {
       id: member.id,
-      name: parsePolyglotString(member.name),
+      name: member.displayNicknameFirst
+        ? member.nickname || parsePolyglotString(member.name)
+        : parsePolyglotString(member.name) || member.nickname,
       email: member.email,
       departmentName: parsePolyglotString(member.departmentName),
       companyName: parsePolyglotString(member.companyName),
@@ -127,8 +131,9 @@ export const [
   getDepartmentMembers,
 ] = createStore<MemberList[]>([]);
 
-export const [useFollowingList, setFollowingList, getFollowingList] =
-  createStore<MemberList[]>([]);
+export const [useFollowerList, setFollowerList, getFollowerList] = createStore<
+  MemberList[]
+>([]);
 
 export const [
   useCheckedMemberList,

@@ -52,7 +52,6 @@ export async function requestUserProfileInfo(memberId: string) {
       });
 
       const newCommunityList = communityList?.results.map((community) => {
-        console.log(community.signTime, community.signModifyTime);
         return {
           ...community,
           signInTime:

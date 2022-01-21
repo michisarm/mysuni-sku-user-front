@@ -1,24 +1,24 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { Checkbox, Icon, Tab } from 'semantic-ui-react';
-import { onSearchFollowing } from '../playlistRecommendPopUp.events';
-import { useRequestFollowing } from '../playlistRecommendPopUp.request';
+import { onSearchFollower } from '../playlistRecommendPopUp.events';
+import { useRequestFollower } from '../playlistRecommendPopUp.request';
 import {
   MemberList,
   useCheckedMemberList,
-  useFollowingList,
+  useFollowerList,
 } from '../playlistRecommendPopUp.store';
 import { ProfileComponent } from './ProfileComponent';
 import {
-  onCheckFollowing,
-  onAllCheckedFollowing,
+  onCheckFollower,
+  onAllCheckedFollower,
 } from '../playlistRecommendPopUp.events';
-import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { OrganizationChartTree } from './OrganizationChartTree';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 export function FollowingTab() {
-  useRequestFollowing();
+  useRequestFollower();
 
-  const followingList = useFollowingList();
+  const followerList = useFollowerList();
   const checkedMemberList = useCheckedMemberList();
   const [searchText, setSearchText] = useState('');
   const [searchTextResult, setSearchTextResult] = useState('');
@@ -33,7 +33,7 @@ export function FollowingTab() {
 
   const isAllChecked = useMemo(() => {
     // 체크된 멤버 정보를 가진 배열에서 팔로잉 멤버만 필터
-    const filteredFollowingList = followingList.filter((follow) =>
+    const filteredFollowingList = followerList.filter((follow) =>
       checkedMemberIds.includes(follow.id)
     );
 
@@ -41,11 +41,11 @@ export function FollowingTab() {
       return false;
     }
 
-    return followingList.length === filteredFollowingList.length;
-  }, [checkedMemberIds, followingList]);
+    return followerList.length === filteredFollowingList.length;
+  }, [checkedMemberIds, followerList]);
 
   const onSearch = useCallback(() => {
-    const searchResult = onSearchFollowing(searchText);
+    const searchResult = onSearchFollower(searchText);
     setSearchTextResult(searchText);
     setSearchResult(searchResult);
   }, [searchText]);
@@ -90,11 +90,16 @@ export function FollowingTab() {
             <div className="no-cont-wrap">
               <Icon className="no-contents80" />
               <span className="blind">콘텐츠 없음</span>
-              <div className="text">
-                <strong className="s-word">{searchTextResult}</strong>에 대한
-                검색결과가 없어요! <br />
-                Playlist를 추천할 다른 학습자를 검색해주세요.
-              </div>
+              <div
+                className="text"
+                dangerouslySetInnerHTML={{
+                  __html: getPolyglotText(
+                    ` <strong className="s-word">{text}</strong>에 대한 검색결과가 없어요! <br /> Playlist를 추천할 다른 학습자를 검색해주세요.`,
+                    'playlist-popup-학습자검색',
+                    { text: searchTextResult }
+                  ),
+                }}
+              />
             </div>
           ) : (
             <div className="sh-left-slct">
@@ -102,18 +107,18 @@ export function FollowingTab() {
                 <Checkbox
                   className="base"
                   label="전체 선택"
-                  onClick={onAllCheckedFollowing}
+                  onClick={onAllCheckedFollower}
                   checked={isAllChecked}
                 />
               </div>
               <div className="sh-user-list">
-                {(searchResult || followingList).map((member) => (
+                {(searchResult || followerList).map((member) => (
                   <div className="user-prf" id={member.id}>
                     <div className="user-check">
                       <Checkbox
                         className="base"
                         value={member.id}
-                        onClick={onCheckFollowing}
+                        onClick={onCheckFollower}
                         checked={checkedMemberIds.includes(member.id)}
                       />
                     </div>

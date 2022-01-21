@@ -1,6 +1,8 @@
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { reactAlert } from '@nara.platform/accent';
 import requestMyPagePlaylistDetail from 'myTraining/ui/view/playlist/myPagePlaylistDetail/MyPagePlaylistDetail.request';
 import { getDenizedId } from 'community/ui/app.formatters';
-import { findFollowingUsers } from 'community/ui/data/community/apis/followApi';
+import { findFollowerUsers } from 'community/ui/data/community/apis/followApi';
 import {
   findSameDepartmentUserIdentities,
   findUserIdentitiesByKeyword,
@@ -11,7 +13,7 @@ import { onClosePlaylistRecommendPopUp } from './playlistRecommendPopUp.events';
 import {
   followingToMemberList,
   setDepartmentMembers,
-  setFollowingList,
+  setFollowerList,
   useIsOpenPlaylistRecommendPopUp,
   setMySuniUsers,
   setOrganizationChartTree,
@@ -42,6 +44,13 @@ export function requestRecommendPlaylist(
   })
     .then(() => {
       onClosePlaylistRecommendPopUp();
+      reactAlert({
+        title: getPolyglotText('Playlist 추천하기', 'playlist-popup-추천하기'),
+        message: getPolyglotText(
+          '선택한 구성원들에게 Playlist가 추천되었습니다.',
+          'playlist-popup-추천컨펌'
+        ),
+      });
     })
     .then(() => {
       requestMyPagePlaylistDetail(playlistId);
@@ -85,13 +94,13 @@ export async function requestMysuniUser(searchWord: string) {
 }
 
 // following tab 데이터 호출
-export async function requestFollowing() {
+export async function requestFollower() {
   const memberId = getDenizedId();
-  const followingUser = await findFollowingUsers(memberId);
+  const followerUser = await findFollowerUsers(memberId);
 
-  if (followingUser !== undefined) {
-    const memberList = followingToMemberList(followingUser.results);
-    setFollowingList(memberList);
+  if (followerUser !== undefined) {
+    const memberList = followingToMemberList(followerUser.results);
+    setFollowerList(memberList);
   }
 }
 
@@ -135,8 +144,8 @@ export function useRequestDepartMentUser() {
   }, [isOpen]);
 }
 
-export function useRequestFollowing() {
+export function useRequestFollower() {
   useEffect(() => {
-    requestFollowing();
+    requestFollower();
   }, []);
 }

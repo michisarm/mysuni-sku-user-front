@@ -40,7 +40,7 @@ function MyPagePlaylistDetailCardList(props: propsType) {
               <div className="list-top-left f-left">
                 <Button className="btn-delete-list" onClick={deleteCardContent}>
                   <PolyglotText
-                    defaultString="학습카드 삭제"
+                    defaultString="선택 삭제"
                     id="playlist-popup-삭제버튼"
                   />
                 </Button>

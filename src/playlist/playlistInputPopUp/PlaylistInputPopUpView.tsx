@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import {
   Button,
   Checkbox,
@@ -7,6 +7,7 @@ import {
   Modal,
   ModalActions,
 } from 'semantic-ui-react';
+import { getCurrentHistory } from 'shared/store/HistoryStore';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
   onChangePlaylistDescription,
@@ -21,6 +22,7 @@ import {
   useIsOpenPlaylistInputPopUp,
   usePlaylistInputPopUp,
 } from './playlistInputPopUp.store';
+import myPageRoutePaths from 'myTraining/routePaths';
 
 interface PlaylistInputPopUpProps {
   type: 'CREATE' | 'EDIT';
@@ -38,9 +40,11 @@ export function PlaylistInputPopUpView(props: PlaylistInputPopUpProps) {
 
   const onSubmitPlaylist = useCallback(() => {
     if (type === 'CREATE') {
-      onSavePlaylistInput()?.then((result) => {
-        if (result) {
-          afterCloseCallback && afterCloseCallback();
+      onSavePlaylistInput()?.then((playlistId) => {
+        if (playlistId) {
+          getCurrentHistory()?.push(
+            myPageRoutePaths.myPagePlaylistDetail(playlistId)
+          );
         }
       });
     }

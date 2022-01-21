@@ -16,9 +16,9 @@ export function requestSavePlaylistInput(
   description: string,
   expose: boolean
 ) {
-  return registerPlaylist(title, description, expose).then(() => {
+  return registerPlaylist(title, description, expose).then((playlistId) => {
     onClosePlaylistInputPopUp();
-    return true;
+    return playlistId;
   });
 }
 
