@@ -33,12 +33,7 @@ const Calendar: React.FC<CalendarProps> = function Calendar({
   );
 
   useEffect(() => {
-    if (defaultSearchType && defaultSearchType === 'years') {
-      onSetSearchYear(1);
-    } else {
-      // onSetSearchWeek(1);
-      onSetSearchMon(1);
-    }
+    onSetSearchYear(1); //서치박스 디폴트 1년
     createTime && createTime > 0 && setStartDate(moment(createTime));
   }, [createTime]);
 
