@@ -1,5 +1,29 @@
 import { decorate, observable } from 'mobx';
 import { LangStrings, IdName } from 'shared/model';
+import { PolyglotString } from 'shared/viewmodel/PolyglotString';
+
+export interface DepartmentChartModel {
+  chartDisplayed: boolean;
+  chartId: string;
+  code: string;
+  id: string;
+  level: number;
+  managerId: string;
+  name: PolyglotString;
+  parentCode: string;
+  sortOrder: string;
+}
+
+export interface DepartmentApiModel {
+  id: string;
+  name: PolyglotString;
+  chartId: string;
+  code: string;
+  parentCode: string;
+  level: number;
+  sortOrder: string;
+  chartDisplayed: boolean;
+}
 
 export class DepartmentModel {
   //

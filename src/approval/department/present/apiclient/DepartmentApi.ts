@@ -1,5 +1,10 @@
 import { axiosApi as axios } from '@nara.platform/accent';
-import { DepartmentModel } from '../../model/DepartmentModel';
+import { createCacheApi } from 'lecture/detail/api/cacheableApi';
+import { AxiosReturn } from 'shared/api/AxiosReturn';
+import {
+  DepartmentChartModel,
+  DepartmentModel,
+} from '../../model/DepartmentModel';
 
 export default class DepartmentApi {
   //
@@ -20,6 +25,17 @@ export default class DepartmentApi {
       );
   }
 }
+
+export function retrieveDepartments(chartId: string) {
+  return axios
+    .get<DepartmentChartModel[]>(
+      `/api/approval/departments/byChartId?chartId=${chartId}`
+    )
+    .then(AxiosReturn);
+}
+
+export const [retrieveDepartmentsCache, clearRetrieveDepartmentsCache] =
+  createCacheApi(retrieveDepartments);
 
 Object.defineProperty(DepartmentApi, 'instance', {
   value: new DepartmentApi(),
