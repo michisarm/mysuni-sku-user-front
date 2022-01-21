@@ -2739,7 +2739,7 @@ i.icon.add-black16::after {
   border-bottom: 1px solid #ddd;
 }
 .sh-left-slct .sh-user-list {
-  height: 100%;
+  height: calc(100% - 55px);
   overflow: auto;
   margin-left: -30px;
   margin-right: -30px;
@@ -2789,6 +2789,8 @@ i.icon.add-black16::after {
   flex:none;
 }
 .user-prf .prf-info {
+  position:relative; 
+  top:1px;
   margin-left: 10px;
   display: block;
   width:calc(100% - 58px)
@@ -2872,10 +2874,13 @@ i.icon.add-black16::after {
 .pl-share .no-cont-wrap {
   position:absolute; 
   left:0; 
-  top:50%; 
+  top:calc(50% - 10px);
   width:100%; 
   text-align: center; 
   transform: translateY(-50%);
+}
+.pl-share .sh-left-list .no-cont-wrap {
+  top:calc(50% - 10px - 39px);
 }
 .pl-share .sh-left-top + .sh-left-bottom .no-cont-wrap {
   margin-top: calc(50% - 78px);
