@@ -107,15 +107,21 @@ function MyPageLearningTimeDetailView(props: Props) {
                   </a>
                 }
               />
-              <span
-                dangerouslySetInnerHTML={{
-                  __html: getPolyglotText(
+
+              <span>
+                {year === '전체' ? (
+                  <PolyglotText
+                    defaultString="전체 기준"
+                    id="home-PersonalBoard-TimeDetailAll"
+                  />
+                ) : (
+                  getPolyglotText(
                     '{year}년 기준',
                     'home-PersonalBoard-TimeDetailYear',
                     { year: `${year}` }
-                  ),
-                }}
-              />
+                  )
+                )}
+              </span>
             </div>
             <div className="card-item-con sty2">
               <div className="item-con-box">

@@ -17,7 +17,6 @@ export function MyPageBadgeLearningTimeView({
   totalLearningTime,
 }: BadgeLearningTimeViewProps) {
   //
-
   const history = useHistory();
   const badgeLearningTimeItem = useBadgeLearningTimeItem();
 
@@ -156,15 +155,20 @@ export function MyPageBadgeLearningTimeView({
                     />
                   </h3>
                 </a>
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: getPolyglotText(
+                <span>
+                  {year === '전체' ? (
+                    <PolyglotText
+                      defaultString="전체 완료 학습"
+                      id="home-PersonalBoard-전체완료학습"
+                    />
+                  ) : (
+                    getPolyglotText(
                       '{year}년 완료 학습',
                       'home-PersonalBoard-완료학습',
                       { year: `${year}` }
-                    ),
-                  }}
-                />
+                    )
+                  )}
+                </span>
               </div>
               <div className="card-item-con">
                 <div className="card-gauge-bar color-manage">
