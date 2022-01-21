@@ -2781,21 +2781,39 @@ i.icon.add-black16::after {
   right: 0;
   transform: translateY(-50%);
 }
-.user-prf .prf-info {
-  margin-left: 10px;
-  display: inline-block;
-}
 .user-prf .ui.profile {
   display: flex;
   justify-content: flex-start;
 }
-.prf-info .info-top .prf-comp {
+.user-prf .ui.profile .pic {
+  flex:none;
+}
+.user-prf .prf-info {
+  margin-left: 10px;
+  display: block;
+  width:calc(100% - 58px)
+}
+.sh-right .user-prf .prf-info {
+  width:calc(100% - 98px)
+}
+.user-prf .prf-info .info-top {
+  display:block; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  white-space: nowrap;
+}
+.user-prf .prf-info .info-top span {
+  position: relative;
+  /* display: inline-block; */
+  color: #999;
+}
+.user-prf .prf-info .info-top .prf-comp {
   padding-left: 20px;
   display: inline-block;
   color: #999;
   position: relative;
 }
-.prf-info .info-top .prf-comp::before {
+.user-prf .prf-info .info-top .prf-comp::before {
   content: '';
   display: inline-block;
   width: 1px;
@@ -2805,19 +2823,39 @@ i.icon.add-black16::after {
   top: 5px;
   left: 10px;
 }
-.prf-info .info-top .prf-group {
-  padding-left: 3px;
+.user-prf .prf-info .info-top .prf-group {
+  margin-left:3px;
+  text-overflow: ellipsis; 
+  white-space: nowrap;
 }
-.prf-info .info-top span {
-  position: relative;
-  display: inline-block;
-  color: #999;
-}
-.prf-info .prf-email {
+.user-prf .prf-info .prf-email {
   display: inline-block;
   margin-top: 6px;
   color: #222;
   font-size: 0.875rem;
+}
+
+/* 플레이리스트 내 user-list Popup */
+.ui.popup.user-prf-popup.top::before {
+  bottom:-5px;
+}
+.ui.popup.user-prf-popup {
+  padding:9px 15px 11px; 
+  max-width:276px;
+}
+.ui.popup.user-prf-popup .content .info-top {
+  font-size:11px; 
+  line-height:15px; 
+  color:#444;
+}
+.ui.popup.user-prf-popup .content .prf-name {
+  display:block; 
+  font-weight: 400; 
+  margin-bottom:3px;
+}
+.ui.popup.user-prf-popup .content .prf-comp::after {
+  content:'/'; 
+  margin:0 4px;
 }
 
 /* nodata, 검색전 공통 */
@@ -4230,6 +4268,7 @@ i.icon.plus.round16:before {
 }
 .pl-share .ui.accordion.tree-chart .active.content,
 .pl-share .ui.accordion.tree-chart .content {
+  margin:0;
   padding: 0 !important;
   border: none;
 }
