@@ -24,6 +24,7 @@ import CardOrderBy from 'lecture/model/learning/CardOrderBy';
 import { MyLearningRdo } from '../model/MyLearningRdo';
 import moment from 'moment';
 import MyPlaylistCardRdo from '../../../layout/UserApp/Header/present/model/MyPlaylistCardRdo';
+import PlaylistCardWithProgressRdo from '../model/PlaylistCardWithProgressRdo';
 
 const BASE_URL = '/api/lecture';
 
@@ -83,8 +84,9 @@ export function findCardList(cardIds: string[]) {
     .then(AxiosReturn);
 }
 
-export const [findCardListCache, clearFindCardListCache] =
-  createCacheApi(findCardList);
+export const [findCardListCache, clearFindCardListCache] = createCacheApi(
+  findCardList
+);
 
 export function findMyLatestLearningCards(count: number) {
   const axios = getAxios();
@@ -146,10 +148,8 @@ function findRelatedCards(cardId: string) {
   return axios.get<Card[]>(url).then(AxiosReturn);
 }
 
-export const [
-  findRelatedCardsCache,
-  clearFindRelatedCardsCache,
-] = createCacheApi(findRelatedCards);
+export const [findRelatedCardsCache, clearFindRelatedCardsCache] =
+  createCacheApi(findRelatedCards);
 
 export function findByRdo(cardRdo: CardRdo) {
   const axios = getAxios();
@@ -228,9 +228,7 @@ export function cancelStudents(studentId: string) {
 export function markComplete(studentId: string) {
   const axios = getAxios();
   const url = `${BASE_URL}/students/markComplete`;
-  return axios
-    .put<void>(url, { studentId })
-    .then(AxiosReturn);
+  return axios.put<void>(url, { studentId }).then(AxiosReturn);
 }
 
 export function findEnrollingCardList(lectureFilterRdo: LectureFilterRdoModel) {
@@ -306,10 +304,8 @@ export function findRecommendCardsByChannelId(
   return axios.get(url).then((response) => (response && response.data) || []);
 }
 
-export const [
-  findRecommendCardsCache,
-  clearFindRecommendCards,
-] = createCacheApi(findRecommendCards);
+export const [findRecommendCardsCache, clearFindRecommendCards] =
+  createCacheApi(findRecommendCards);
 
 export function registerHomework(
   studentId: string,
@@ -353,9 +349,9 @@ export function findBookmarkCards(limit?: number, orderBy?: CardOrderBy) {
   return axios.get<OffsetElementList<UserLectureCard>>(url).then(AxiosReturn);
 }
 
-export function findSummeryTimeByYear(year: number) {
+export function findSummeryTimeByYear() {
   const axios = getAxios();
-  const url = `${BASE_URL}/cards/findMyLearningRdo/${year}`;
+  const url = `${BASE_URL}/cards/findMyLearningRdo`;
   return axios.get<MyLearningRdo>(url).then(AxiosReturn);
 }
 
@@ -365,5 +361,14 @@ export function findMyPlaylistCardRdos(
   //
   const axios = getAxios();
   const url = `${BASE_URL}/cards/myPlaylistCards`;
+  return axios.post(url, cardIds).then(AxiosReturn);
+}
+
+export function findPlaylistCardWithProgressRdos(
+  cardIds: string[]
+): Promise<PlaylistCardWithProgressRdo[]> {
+  //
+  const axios = getAxios();
+  const url = `${BASE_URL}/cards/playlistCardsWithProgress`;
   return axios.post(url, cardIds).then(AxiosReturn);
 }
