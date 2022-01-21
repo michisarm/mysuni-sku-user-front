@@ -20,7 +20,7 @@ import MySuniCollegeTimeView from '../view/MySuniCollegeTimeView';
 
 interface Props {
   trigger: React.ReactNode;
-  year?: number;
+  year?: string;
   myLearningSummaryService?: MyLearningSummaryService;
   aplService?: AplService;
   personalCubeService?: PersonalCubeService;
@@ -86,10 +86,30 @@ class MyLearningSummaryModal extends Component<Props> {
     });
   }
 
+  getDateText() {
+    //
+    const { year } = this.props;
+    const currentYear = moment().year();
+    const today = moment(new Date()).format('YYYY.MM.DD');
+
+    if (year === undefined || year === currentYear.toString())
+      return `${currentYear}.01.01 ~ ${today}`;
+
+    if (year === '전체') {
+      return `2019.12.01 ~ ${today}`;
+    } else {
+      return `${year}.01.01 ~ ${year}.12.31`;
+    }
+  }
+
   render() {
     const { openModal, checkedTab } = this.state;
-    const { trigger, myLearningSummaryService, menuControlAuthService } =
-      this.props;
+    const {
+      year,
+      trigger,
+      myLearningSummaryService,
+      menuControlAuthService,
+    } = this.props;
     const { menuControlAuth } = menuControlAuthService!;
     const {
       displayMyCompanyLearningTime,
@@ -97,9 +117,6 @@ class MyLearningSummaryModal extends Component<Props> {
       myLearningSummary,
       instructTimeSummary,
     } = myLearningSummaryService!;
-
-    const year = moment().year();
-    const today = moment(new Date()).format('YYYY.MM.DD');
 
     return (
       <Modal
@@ -129,9 +146,7 @@ class MyLearningSummaryModal extends Component<Props> {
                   <div className="cell v-middle">
                     <Icon className="total-time16" />
                     <span className="blind">total time</span>
-                    <span className="text01">
-                      {year}.01.01 ~ {today}
-                    </span>
+                    <span className="text01">{this.getDateText()}</span>
                   </div>
                   <div className="cell v-middle">
                     <span className="text01">
