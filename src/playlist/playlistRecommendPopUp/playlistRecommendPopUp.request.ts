@@ -14,7 +14,7 @@ import {
   followingToMemberList,
   UserIdentitiesToMemberList,
   setDepartmentMembers,
-  setFollowingList,
+  setFollowerList,
   useIsOpenPlaylistRecommendPopUp,
   setMySuniUsers,
 } from './playlistRecommendPopUp.store';
@@ -70,11 +70,11 @@ export async function requestMysuniUser(searchWord: string) {
 // following tab 데이터 호출
 export async function requestFollower() {
   const memberId = getDenizedId();
-  const followingUser = await findFollowerUsers(memberId);
+  const followerUser = await findFollowerUsers(memberId);
 
-  if (followingUser !== undefined) {
-    const memberList = followingToMemberList(followingUser.results);
-    setFollowingList(memberList);
+  if (followerUser !== undefined) {
+    const memberList = followingToMemberList(followerUser.results);
+    setFollowerList(memberList);
   }
 }
 
