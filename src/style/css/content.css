@@ -2612,7 +2612,7 @@ i.icon.add-black16::after {
 }
 
 .pl-share .sh-header {
-  padding: 14px 30px;
+  padding: 14px 0px;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -2692,12 +2692,13 @@ i.icon.add-black16::after {
 
 /* share popup - left */
 .sh-left .ui.pointing.secondary.menu {
+  padding:0 15px;
   margin: 0;
   border-bottom: 1px solid #ddd;
-  justify-content: space-around;
 }
 .sh-left .ui.pointing.secondary.menu .item {
-  padding: 17px 0;
+  margin:0 15px;
+  padding: 16px 0;
   color: #4c4c4c;
   font-size: 0.875rem;
   line-height: 1.43;
@@ -2715,9 +2716,6 @@ i.icon.add-black16::after {
   height: 455px;
   overflow-y: hidden;
   border: 0;
-}
-.sh-left .sh-left-top {
-  padding: 20px 0;
 }
 .sh-left-top .ui.h38.search.input {
   width: 100%;
@@ -2823,7 +2821,7 @@ i.icon.add-black16::after {
 }
 
 /* nodata, 검색전 공통 */
-.ui.modal.pl-add .no-cont-wrap {
+/* .ui.modal.pl-add .no-cont-wrap {
   text-align: center;
   margin-top: calc(50% - 141px);
   transform: translateY(-50%);
@@ -2832,10 +2830,13 @@ i.icon.add-black16::after {
   margin-top: calc(50% - 100px);
   transform: translateY(-50%);
   text-align: center;
-}
+} */
 .pl-share .no-cont-wrap {
-  text-align: center;
-  margin-top: 50%;
+  position:absolute; 
+  left:0; 
+  top:50%; 
+  width:100%; 
+  text-align: center; 
   transform: translateY(-50%);
 }
 .pl-share .sh-left-top + .sh-left-bottom .no-cont-wrap {
