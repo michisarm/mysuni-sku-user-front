@@ -3669,7 +3669,7 @@ i.icon.plus.round16:before {
 }
 
 /* MyPage DashBoard */
-.profile-dashboard-contents .mypage_title { display:block; padding-bottom:30px; font-size: 28px; letter-spacing: -0.37px;}
+.profile-dashboard-contents .mypage_title { display:block; font-size: 28px; letter-spacing: -0.37px;}
 .profile-dashboard-contents .group-wrapper { border-top: #ddd 1px solid; padding-top: 20px; }
 .profile-dashboard-contents .mypage_title + .ui.segment.full {margin-top: 30px;}
 .profile-dashboard-contents .top-line { position: relative; margin-bottom: 30px; }
