@@ -87,7 +87,7 @@ export function MySuniUserTab() {
             <Icon className="search link" onClick={onSearch} />
           </div>
         </div>
-        <div className="sh-left-bottom">
+        <div className="sh-left-slct-wrap">
           {!isSearchAfter && (
             <div className="no-cont-wrap">
               <Icon className="search50" />
@@ -130,7 +130,10 @@ export function MySuniUserTab() {
                 <div className="sh-sl-top">
                   <Checkbox
                     className="base"
-                    label="전체 선택"
+                    label={getPolyglotText(
+                      '전체 선택 ',
+                      'playlist-popup-전체선택'
+                    )}
                     checked={isAllChecked}
                     onClick={onAllCheckedMySuniMember}
                   />
