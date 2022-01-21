@@ -3150,9 +3150,7 @@ i.icon.logout-16px::before {
 }
 .mypage_contents.my-stamp-list .table-wrapper .community_nodata{padding:120px 0 150px; box-shadow : 0 0.125rem 0.375rem 0 rgb(76 76 76 / 20%)}
 
-.profile-playlist-contents .top-line {
-  padding: 2.75rem 0 1rem;
-}
+.profile-playlist-contents .top-line {padding: 1.875rem 0 1rem;}
 .profile-playlist-contents .top-line:after {
   display: block;
   content: '';
@@ -3587,7 +3585,7 @@ i.icon.plus.round16:before {
   color: #00bfae !important;
   font-weight: 700 !important;
 }
-.playlist-list .ui.button.btn-control {
+.ui.button.btn-control {
   display: inline-block;
   width: 26px;
   height: 26px;
@@ -3596,7 +3594,7 @@ i.icon.plus.round16:before {
   box-sizing: border-box;
   margin: 0;
 }
-.playlist-list .ui.button.btn-control i.icon {
+.ui.button.btn-control i.icon {
   margin: 0 !important;
   display: inline-block;
   color: #999;
