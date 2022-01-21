@@ -120,7 +120,7 @@ export function DepartmentMemberTab() {
                 <Checkbox
                   className="base"
                   label={getPolyglotText(
-                    '"전체 선택" ',
+                    '전체 선택 ',
                     'playlist-popup-전체선택'
                   )}
                   checked={isAllChecked}

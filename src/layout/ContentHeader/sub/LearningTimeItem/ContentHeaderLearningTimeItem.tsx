@@ -133,7 +133,7 @@ class ContentHeaderLearningTimeItem extends PureComponent<Props> {
                 {total}
               </Button>
             }
-            year={year}
+            year={year ? year.toString() : undefined}
           />
         }
       </div>
