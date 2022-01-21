@@ -4267,6 +4267,7 @@ i.icon.plus.round16:before {
 }
 .pl-share .ui.accordion.tree-chart .active.content,
 .pl-share .ui.accordion.tree-chart .content {
+  margin:0;
   padding: 0 !important;
   border: none;
 }
