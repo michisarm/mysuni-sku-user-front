@@ -29,7 +29,7 @@ const Calendar: React.FC<CalendarProps> = function Calendar({
   const [startDate, setStartDate] = useState<moment.Moment>();
   const [endDate, setEndDate] = useState<moment.Moment>();
   const [activeBtn, setActiveBtn] = useState<ActiveBtnState>(
-    ActiveBtnState.NONE
+    ActiveBtnState.YEAR
   );
 
   useEffect(() => {
