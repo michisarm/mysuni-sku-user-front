@@ -617,6 +617,7 @@ a.button.ui.btn-badge-go {
 
 .stamp-list-wrapper .ui.table {
   box-shadow: 0 2px 8px 0 rgba(76, 76, 76, 0.2);
+  border : none;
 }
 
 /* Learning, Mypage */
@@ -2463,6 +2464,7 @@ i.icon.add-black16::after {
 .create-form .ui.input {
   width: 100%;
 }
+.create-form .ui.input.right-top-count input{padding : 0 15px}
 .create-form .ui.input.error {
   margin-bottom: 32px;
 }
@@ -2520,7 +2522,7 @@ i.icon.add-black16::after {
   margin-right: 10px;
 }
 .pl-search .ui.input input {
-  padding: 9px 15px;
+  padding: 0 15px;
 }
 .pl-search .ui.input.h38.error {
   margin-bottom: 30px;
@@ -3232,7 +3234,7 @@ i.icon.logout-16px::before {
 .ui.card.playlist-box.card-item .maker-info-box {
   position: absolute;
   left: 50%;
-  bottom: 30px;
+  bottom: 36px;
   transform: translateX(-50%);
   width: 100%;
 }
@@ -3242,6 +3244,7 @@ i.icon.logout-16px::before {
   border-radius: 50%;
   overflow: hidden;
   display: inline-block;
+  border : 1px solid #ddd;
 }
 .ui.card.playlist-box.card-item .maker-info-box .maker-thumb img {
   display:inline-block;
