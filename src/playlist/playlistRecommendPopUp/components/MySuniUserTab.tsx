@@ -124,7 +124,7 @@ export function MySuniUserTab() {
             <strong className="no-tit">
               <PolyglotText
                 defaultString="mySUNI 사용자 검색하기"
-                id="playlist-popup-검색하기"
+                id="playlist-popup-사용자검색"
               />
             </strong>
             <div
