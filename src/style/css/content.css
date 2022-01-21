@@ -3514,6 +3514,7 @@ i.icon.logout-16px::before {
   left: 0;
   transform: translateY(-50%);
 }
+.playlist-view-right .ui.label span {letter-spacing: -0.35px;}
 i.icon.list-recommended {
   background: url(https://image.mysuni.sk.com/suni-asset/public/images/all/icon-mypage-menu-recommended.svg)
     0 0 no-repeat;
