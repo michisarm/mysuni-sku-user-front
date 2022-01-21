@@ -20,7 +20,7 @@ export function getEmptySearchBox(): SearchBox {
     content: '',
     cubeName: '',
     collegeId: '',
-    startDate: moment().startOf('day').subtract(1, 'months').toDate().getTime(),
+    startDate: moment().startOf('day').subtract(1, 'year').toDate().getTime(),
     endDate: moment().endOf('day').toDate().getTime(),
   };
 }

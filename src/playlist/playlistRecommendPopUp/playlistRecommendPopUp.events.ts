@@ -1,6 +1,10 @@
-import { ButtonProps, CheckboxProps } from 'semantic-ui-react';
 import {
-  requestDepartMentUser,
+  AccordionTitleProps,
+  ButtonProps,
+  CheckboxProps,
+} from 'semantic-ui-react';
+import {
+  requestMemberByDepartmentCode,
   requestMysuniUser,
   requestRecommendPlaylist,
 } from './playlistRecommendPopUp.request';
@@ -12,10 +16,13 @@ import {
   setCheckedMemberList,
   setIsOpenPlaylistRecommendPopUp,
   setMySuniUsers,
+  setSelcetedDepartmentCode,
+  setSelectedDepartmentName,
 } from './playlistRecommendPopUp.store';
 import { onAllCheckMember, onCheckMember } from './helper/onCheckMember';
-import { isEmpty } from 'lodash';
 import { getMyPagePlaylistDetail } from 'myTraining/ui/view/playlist/myPagePlaylistDetail/MyPagePlaylistDetail.services';
+import { textValidationCheck } from './helper/textValidationCheck';
+import { clearRetrieveDepartmentsCache } from 'approval/department/present/apiclient/DepartmentApi';
 
 export function onOpenPlaylistRecommendPopUp() {
   setIsOpenPlaylistRecommendPopUp(true);
@@ -25,6 +32,7 @@ export function onClosePlaylistRecommendPopUp() {
   setIsOpenPlaylistRecommendPopUp(false);
   setCheckedMemberList([]);
   setMySuniUsers([]);
+  clearRetrieveDepartmentsCache();
 }
 
 // 플레이리스트 추천하기
@@ -123,25 +131,52 @@ export function onClickAllClearCheckedMember() {
 // 팔로워 검색
 export function onSearchFollower(searchText: string) {
   const followerList = getFollowerList();
+  const isValidationChecked = textValidationCheck(searchText);
 
-  if (isEmpty(searchText)) {
-    return undefined;
+  if (isValidationChecked) {
+    const filteredFollowerList = followerList.filter(
+      (member) =>
+        member.name.includes(searchText) || member.email.includes(searchText)
+    );
+
+    return filteredFollowerList;
   }
-
-  const filteredFollowerList = followerList.filter(
-    (member) =>
-      member.name.includes(searchText) || member.email.includes(searchText)
-  );
-
-  return filteredFollowerList;
 }
 
 // mySuni사용자 검색
 export function onSearchMySuniUser(searchText: string) {
-  return requestMysuniUser(searchText);
+  const isValidationChecked = textValidationCheck(searchText);
+
+  if (isValidationChecked) {
+    return requestMysuniUser(searchText);
+  }
 }
 
 // 부서 구성원 검색
 export function onSearchDepartmentMember(searchText: string) {
-  return requestDepartMentUser(searchText);
+  const departmentMember = getDepartmentMembers();
+  const isValidationChecked = textValidationCheck(searchText);
+
+  if (isValidationChecked && departmentMember !== undefined) {
+    const filteredDepartmentMember = departmentMember.filter(
+      (department) =>
+        department.name.includes(searchText) ||
+        department.email.includes(searchText)
+    );
+
+    return filteredDepartmentMember;
+  }
+}
+
+// 조직도에서 부서 선택
+export function onClickDepartment(
+  _: React.MouseEvent,
+  data: AccordionTitleProps
+) {
+  const departmentCode = data.departmentCode as string;
+  const departmentName = data.departmentName as string;
+
+  setSelcetedDepartmentCode(departmentCode);
+  setSelectedDepartmentName(departmentName);
+  requestMemberByDepartmentCode(departmentCode);
 }

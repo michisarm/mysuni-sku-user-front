@@ -1404,3 +1404,13 @@ i.icon.info20:before{ background: url("https://image.mysuni.sk.com/suni-asset/pu
 .footer .foot-nav .foot-nav-item .foot-nav-li {
   padding: 2px 0;
 }
+
+body ::-webkit-scrollbar-track {
+  border-radius: 5px !important;
+}
+
+.ui.modal.w1200 {
+  max-width: 75rem;
+  width: 100%;
+  min-width: 62.5rem;
+}

@@ -1,7 +1,7 @@
 import { PolyglotString } from 'shared/viewmodel/PolyglotString';
 
 export interface UserIdentities {
-  id: string;
+  Id: string;
   displayNicknameFirst: boolean;
   nickname: string;
   name: PolyglotString;
