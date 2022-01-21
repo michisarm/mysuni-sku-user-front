@@ -2901,7 +2901,7 @@ i.icon.add-black16::after {
   padding: 0;
   position: absolute;
   right: 20px;
-  bottom: 20px;
+  bottom: 13px;
 }
 .mylist-acc-item .acc-cnt .acc-updown {
   margin: 0 !important;
@@ -2933,7 +2933,7 @@ i.icon.add-black16::after {
 }
 
 .ui.accordion.pl-mylist-acc .mylist-acc-item .content.active {
-  border: 1px solid #eee;
+  border-top: 1px solid #eee;
   padding: 0 30px;
 }
 .acc-card-list .item {
