@@ -3686,12 +3686,13 @@ i.icon.plus.round16:before {
 .personal-card-item .card-item-tit { margin-bottom: 14px;}
 .personal-card-item .card-item-tit.mb23 { margin-bottom: 23px;}
 .personal-card-item .card-item-tit h3 { line-height: 30px; }
-.playlist-list .card-gauge-bar.sty2 {width: 200px;}
+.playlist-list .card-gauge-bar { display: flex; align-items: center;}
+.playlist-list .card-gauge-bar.sty2 {display:inline-block; width: 200px;}
 .playlist-list .card-item-con.sty2 > .item-con-box > .item-con-left { margin-right: 32px;}
 .playlist-list .card-item-con.sty2 > .item-con-box > .item-con-right.detail { width: 225px; }
 .playlist-list .card-gauge-bar .gauge-tit {margin-right: 0;}
-
 .playlist-list .ui.cards.personal-content-box-wrap.time-detail .ui.card.personal-content-box { padding-bottom: 25px;}
+
 
 /* gauge-box */
 .main-gauge-box { display: flex; justify-content: center; margin-bottom:-18px;}
