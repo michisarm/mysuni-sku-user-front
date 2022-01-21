@@ -1,3 +1,4 @@
+import { findCommunityProfile } from 'community/api/profileApi';
 import { PlaylistType } from 'playlist/data/models/PlaylistType';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { getCurrentHistory } from 'shared/store/HistoryStore';
@@ -12,6 +13,7 @@ import {
 } from './MyPagePlaylistDetailHeader.service';
 import { removeMyPlaylist } from 'playlist/data/apis';
 import myPageRoutePaths from 'myTraining/routePaths';
+import { useCallback } from 'react';
 
 export async function onDeletePlaylistClick(
   myPlaylistId: string,

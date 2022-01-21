@@ -3,6 +3,7 @@ import { findPlaylistDetail } from 'playlist/data/apis';
 import { setMyPagePlaylistDetail } from './MyPagePlaylistDetail.services';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import requestMyPagePlaylistDetailCardList from './myPagePlaylistDetailCardList/MyPagePlaylistDetailCardList.request';
+import { setPlaylistResistrantProfileInfo } from './myPagePlaylistDetailHeader/MyPagePlaylistDetailHeader.service';
 
 async function requestMyPagePlaylistDetail(playlistId: string) {
   const playlistDetail = await findPlaylistDetail(playlistId);
@@ -45,6 +46,15 @@ async function requestMyPagePlaylistDetail(playlistId: string) {
     commentFeedbackId,
     commentHasPinRole,
   });
+
+  setPlaylistResistrantProfileInfo({
+    id: playlistDetail.registrant.id,
+    profileImg: playlistDetail.registrant.photoImagePath,
+    introduce: playlistDetail.registrant.selfIntroduction,
+    nickName: playlistDetail.registrant.nickname,
+    creatorName: parsePolyglotString(playlistDetail.registrant.name),
+  });
+
   requestMyPagePlaylistDetailCardList(cardIds);
 }
 

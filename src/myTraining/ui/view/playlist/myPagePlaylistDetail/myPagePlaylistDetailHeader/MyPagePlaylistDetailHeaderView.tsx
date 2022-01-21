@@ -1,11 +1,12 @@
 import classNames from 'classnames';
 import { srcParser } from 'community/ui/components/Image';
+import CommunityProfileModal from 'community/ui/view/CommunityProfileModal';
 import moment from 'moment';
 import { onOpenPlaylistInputPopUp } from 'playlist/playlistInputPopUp/playlistInputPopUp.events';
 import { PlaylistInputPopUpView } from 'playlist/playlistInputPopUp/PlaylistInputPopUpView';
 import { onOpenPlaylistRecommendPopUp } from 'playlist/playlistRecommendPopUp/playlistRecommendPopUp.events';
 import { PlaylistRecommendPopUpView } from 'playlist/playlistRecommendPopUp/PlaylistRecommendPopUpView';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Icon, Image, Label } from 'semantic-ui-react';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import requestMyPagePlaylistDetail from '../MyPagePlaylistDetail.request';
@@ -15,7 +16,10 @@ import {
   onDeletePlaylistClick,
   unlikePlaylist,
 } from './MyPagePlaylistDetailHeader.events';
-import { PlaylistLikeInfo } from './MyPagePlaylistDetailHeader.service';
+import {
+  getPlaylistResistrantProfileInfo,
+  PlaylistLikeInfo,
+} from './MyPagePlaylistDetailHeader.service';
 
 export interface PlaylistHeaderViewType {
   playlistDetail: PlaylistDetail;
@@ -36,11 +40,12 @@ function MyPagePlaylistDetailHeaderView(props: PlaylistHeaderViewType) {
   } = props.playlistDetail;
   const { count, my } = props.PlaylistLikeInfo;
   const date = moment(registeredTime).format('YYYY.MM.DD'); // registeredTime 는 타입별로 생성날짜,담은날짜,추천날짜 값이 알아서 들어감
-
+  const [profileOpen, setProfileOpen] = useState<boolean>(false);
   const afterEditPlaylistCallback = useCallback(() => {
     requestMyPagePlaylistDetail(playlistId);
   }, [playlistId]);
 
+  const profileInfo = getPlaylistResistrantProfileInfo();
   return (
     <>
       <div className="playlist-detail-info-inner">
@@ -48,13 +53,15 @@ function MyPagePlaylistDetailHeaderView(props: PlaylistHeaderViewType) {
         <div className="playlist-subtxt">{playlistDescription}</div>
         <div className="playlist-sub-infobox">
           <div className="f-left">
-            <div className="maker-thumb">
+            <div className="maker-thumb" onClick={() => setProfileOpen(true)}>
               <Image
                 src={srcParser(photoImagePath)}
                 alt="만든사람 프로필이미지"
               />
             </div>
-            <div className="maker-user">{registerdDisplayName}</div>
+            <div className="maker-user" onClick={() => setProfileOpen(true)}>
+              {registerdDisplayName}
+            </div>
             {type === 'MadeByMyself' && (
               <div
                 className="maker-date"
@@ -167,6 +174,15 @@ function MyPagePlaylistDetailHeaderView(props: PlaylistHeaderViewType) {
         afterCloseCallback={afterEditPlaylistCallback}
       />
       <PlaylistRecommendPopUpView />
+      <CommunityProfileModal
+        open={profileOpen}
+        setOpen={setProfileOpen}
+        userProfile={profileInfo && profileInfo.profileImg}
+        memberId={profileInfo && profileInfo.id}
+        introduce={profileInfo && profileInfo.introduce}
+        nickName={profileInfo && profileInfo.nickName}
+        name={profileInfo && profileInfo.creatorName}
+      />
     </>
   );
 }
