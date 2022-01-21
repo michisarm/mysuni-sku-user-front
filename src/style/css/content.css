@@ -1119,9 +1119,11 @@ ul.ui.list.my-task-bar {
 .note_title { border-color: transparent;}
 .folder_area { border-color: #ddd;}
 .note_area .ui.accordion .content.active { border-top: 1px solid #ddd;}
-.note_content_total > strong { font-size: 1rem; color: #222;}
-.note_content_total > span { position: relative; margin-left: 0.625rem; padding-left: 0.625rem; color: #222; font-size: 0.875rem; }
-.note_content_total > span:before { content: ''; display: block; position: absolute; top: 0.825rem; left: 0; height: 0.375rem; background-color: #999;}
+.note_content_total > strong { font-size: 1rem; color: #222; position: relative;}
+.note_content_total > span { position: relative; color: #222; font-size: 0.875rem;}
+.note_content_total > strong + span{margin-left: 0.625rem; padding-left: 0.625rem; }
+.note_content_total > span + strong { padding-left : 3px}
+.note_content_total > strong + span:before { content: ''; display: block; position: absolute; top: 0.825rem; left: 0; width:1px; height: 0.375rem; background-color: #999;}
 
 /* 개인학습 create */
 .ui.table.create {
