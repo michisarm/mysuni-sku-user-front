@@ -2739,7 +2739,7 @@ i.icon.add-black16::after {
   border-bottom: 1px solid #ddd;
 }
 .sh-left-slct .sh-user-list {
-  height: 100%;
+  height: calc(100% - 55px);
   overflow: auto;
   margin-left: -30px;
   margin-right: -30px;
@@ -2789,6 +2789,8 @@ i.icon.add-black16::after {
   flex:none;
 }
 .user-prf .prf-info {
+  position:relative; 
+  top:1px;
   margin-left: 10px;
   display: block;
   width:calc(100% - 58px)
