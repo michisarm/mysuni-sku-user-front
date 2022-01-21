@@ -1151,15 +1151,7 @@ ul.ui.list.my-task-bar {
 .ui.radio.rect-icon input:checked + label {
   background: #00bfae;
 }
-.completion-time
-  .table-css
-  .radio-wrap
-  ul
-  li
-  .ui.radio.rect-icon
-  input:checked
-  + label
-  + .buri {
+.completion-time .table-css .radio-wrap ul li .ui.radio.rect-icon input:checked + label + .buri {
   width: 0;
   height: 0;
   border-width: 9px;
@@ -3359,6 +3351,7 @@ i.icon.logout-16px::before {
   position: relative;
   overflow: hidden;
   margin-right: 10px;
+  cursor: pointer;
 }
 .playlist-sub-infobox .maker-thumb img {
   display: block;
@@ -3366,12 +3359,14 @@ i.icon.logout-16px::before {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  cursor: pointer;
 }
 .playlist-sub-infobox .maker-user {
   height: 36px;
   line-height: 36px;
   margin-right: 10px;
   font-size: 14px;
+  cursor: pointer;
 }
 .playlist-sub-infobox .maker-date {
   height: 36px;
