@@ -153,8 +153,5 @@ export const [
   getSelcetedDepartmentCode,
 ] = createStore<string>('');
 
-export const [
-  useSelectedDepartmentName,
-  setSelectedDepartmentName,
-  getSelectedDepartmentName,
-] = createStore<string>('');
+export const [useCompanyName, setCompanyName, getCompanyName] =
+  createStore<string>('');

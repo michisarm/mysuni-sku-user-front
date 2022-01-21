@@ -17,7 +17,6 @@ import {
   setIsOpenPlaylistRecommendPopUp,
   setMySuniUsers,
   setSelcetedDepartmentCode,
-  setSelectedDepartmentName,
 } from './playlistRecommendPopUp.store';
 import { onAllCheckMember, onCheckMember } from './helper/onCheckMember';
 import { getMyPagePlaylistDetail } from 'myTraining/ui/view/playlist/myPagePlaylistDetail/MyPagePlaylistDetail.services';
@@ -174,9 +173,7 @@ export function onClickDepartment(
   data: AccordionTitleProps
 ) {
   const departmentCode = data.departmentCode as string;
-  const departmentName = data.departmentName as string;
 
   setSelcetedDepartmentCode(departmentCode);
-  setSelectedDepartmentName(departmentName);
   requestMemberByDepartmentCode(departmentCode);
 }

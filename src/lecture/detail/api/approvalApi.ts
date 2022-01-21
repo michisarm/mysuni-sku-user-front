@@ -1,5 +1,6 @@
 import { getAxios } from '../../../shared/api/Axios';
 import { AxiosReturn } from '../../../shared/api/AxiosReturn';
+import { Company } from '../model/Company';
 import { MemberByDepartmentCode } from '../model/MemberByDepartmentCode';
 import { createCacheApi } from './cacheableApi';
 
@@ -20,7 +21,7 @@ export function findMembersByDepartmentCode(
 
 export const [
   findMembersByDepartmentCodeCache,
-  clearfindMembersByDepartmentCodeCache,
+  clearFindMembersByDepartmentCodeCache,
 ] = createCacheApi(findMembersByDepartmentCode);
 
 export function findDefaultIndexByDepartmentCode(departmentCode: string) {
@@ -28,3 +29,17 @@ export function findDefaultIndexByDepartmentCode(departmentCode: string) {
   const url = `${BASE_URL}/orgcharts/departmentsAndDefaultIndexByDepartmentCode?departmentCode=${departmentCode}`;
   return axios.get<{ [key: string]: number }>(url).then(AxiosReturn);
 }
+
+export const [
+  findfindDefaultIndexByDepartmentCodeCache,
+  clearFindDefaultIndexByDepartmentCodeCache,
+] = createCacheApi(findMembersByDepartmentCode);
+
+export function findCompany(companyCode: string): Promise<Company | undefined> {
+  const axios = getAxios();
+  const url = `${BASE_URL}/companies/${companyCode}`;
+  return axios.get<Company>(url).then(AxiosReturn);
+}
+
+export const [findCompanyCahche, clearFindCompanyCache] =
+  createCacheApi(findCompany);
