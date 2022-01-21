@@ -590,6 +590,7 @@ a.button.ui.btn-badge-go {
 }
 .ui.menu.note-tab a.item {
   color: #777;
+  width : auto;
 }
 .search_box .ui.table {
   border-color: #ddd;
