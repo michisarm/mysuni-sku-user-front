@@ -65,8 +65,9 @@ export const [
   getDepartmentMembers,
 ] = createStore<MemberList[]>([]);
 
-export const [useFollowingList, setFollowingList, getFollowingList] =
-  createStore<MemberList[]>([]);
+export const [useFollowerList, setFollowerList, getFollowerList] = createStore<
+  MemberList[]
+>([]);
 
 export const [
   useCheckedMemberList,

@@ -6,7 +6,7 @@ import {
 } from './playlistRecommendPopUp.request';
 import {
   getCheckedMemberList,
-  getFollowingList,
+  getFollowerList,
   getMySuniUsers,
   getDepartmentMembers,
   setCheckedMemberList,
@@ -55,21 +55,18 @@ export function onClearCheckedMember(_: React.MouseEvent, data: ButtonProps) {
   setCheckedMemberList(filteredMemberList);
 }
 
-// 팔로우 멤버 체크 선택/해제
-export function onCheckFollowing(_: React.MouseEvent, data: CheckboxProps) {
+// 팔로워 멤버 체크 선택/해제
+export function onCheckFollower(_: React.MouseEvent, data: CheckboxProps) {
   const memberId = data.value as string;
   const isChecked = data.checked || false;
-  const following = getFollowingList();
+  const follower = getFollowerList();
 
-  onCheckMember(memberId, following, isChecked);
+  onCheckMember(memberId, follower, isChecked);
 }
 
-// 팔로우 멤버 전체 선택/해제
-export function onAllCheckedFollowing(
-  _: React.MouseEvent,
-  data: CheckboxProps
-) {
-  const memberList = getFollowingList();
+// 팔로워 멤버 전체 선택/해제
+export function onAllCheckedFollower(_: React.MouseEvent, data: CheckboxProps) {
+  const memberList = getFollowerList();
   const isChecked = data.checked || false;
 
   onAllCheckMember(memberList, isChecked);
@@ -123,20 +120,20 @@ export function onClickAllClearCheckedMember() {
   setCheckedMemberList([]);
 }
 
-// 팔로잉 검색
-export function onSearchFollowing(searchText: string) {
-  const followingList = getFollowingList();
+// 팔로워 검색
+export function onSearchFollower(searchText: string) {
+  const followerList = getFollowerList();
 
   if (isEmpty(searchText)) {
     return undefined;
   }
 
-  const filteredFollowingList = followingList.filter(
+  const filteredFollowerList = followerList.filter(
     (member) =>
       member.name.includes(searchText) || member.email.includes(searchText)
   );
 
-  return filteredFollowingList;
+  return filteredFollowerList;
 }
 
 // mySuni사용자 검색

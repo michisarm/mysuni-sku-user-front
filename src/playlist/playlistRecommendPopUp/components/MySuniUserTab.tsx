@@ -146,7 +146,7 @@ export function MySuniUserTab() {
               className="text"
               dangerouslySetInnerHTML={{
                 __html: getPolyglotText(
-                  ` <strong className="s-word">{text}</strong>에 대한 검색결과가 없어요! <br /> Playlist를 추천할 다른 학습자를 검색해주세요.`,
+                  `<strong className="s-word">{text}</strong>에 대한 검색결과가 없어요! <br /> Playlist를 추천할 다른 학습자를 검색해주세요.`,
                   'playlist-popup-학습자검색',
                   { text: searchTextResult }
                 ),
@@ -159,7 +159,10 @@ export function MySuniUserTab() {
               <div className="sh-sl-top">
                 <Checkbox
                   className="base"
-                  label="전체 선택"
+                  label={getPolyglotText(
+                    '전체 선택',
+                    'playlist-popup-전체선택'
+                  )}
                   checked={isAllChecked}
                   onClick={onAllCheckedMySuniMember}
                 />
