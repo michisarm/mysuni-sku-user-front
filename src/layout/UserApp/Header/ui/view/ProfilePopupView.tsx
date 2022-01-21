@@ -267,7 +267,9 @@ function ProfilePopupView(props: Props) {
                         className="page-bttn"
                         onClick={() => {
                           props.setOpen();
-                          history.push(myTrainingRoutePaths.myPage());
+                          history.push(
+                            myTrainingRoutePaths.myPageMyLearningSummary()
+                          );
                         }}
                       >
                         <PolyglotText
