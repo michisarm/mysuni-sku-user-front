@@ -2287,7 +2287,9 @@ i.icon.listmore16-black::after {
   height: 24px;
   vertical-align: top;
 }
-i.icon.close24:before{display: block;}
+i.icon.close24:before {
+  display: block;
+}
 .ui.icon.button.all-dt {
   margin: 0;
   padding: 0 10px;
@@ -2592,11 +2594,15 @@ i.icon.add-black16::after {
   flex-wrap: wrap;
 }
 .pl-share .inner .sh-left {
-  width: 50%;
+  width: 63%;
 }
+
 .pl-share .inner .sh-right {
-  width: 50%;
+  width: 37%;
+  border-left: 1px solid #ddd;
+  padding: 0 30px;
 }
+
 .pl-share .inner .sh-bottom {
   width: 100%;
   padding: 25px 30px 30px;
@@ -2618,10 +2624,45 @@ i.icon.add-black16::after {
   line-height: 27px;
 }
 .sh-right .sh-list-contents {
+  position: relative;
   padding: 0 30px;
+  margin: 0 -30px;
   height: 455px;
   overflow-y: auto;
-  border-left: 1px solid #ddd;
+}
+
+.pl-share .ui.tab.left-inner {
+  display: flex;
+  position: relative;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 455px;
+  overflow-y: hidden;
+  border: 0;
+}
+.pl-share .sh-left-org-wrap {
+  position: relative;
+  width: 42%;
+  height: 100%;
+  padding: 30px;
+  overflow: auto;
+  border-right: 1px solid #ddd;
+}
+.pl-share .sh-left-list {
+  width: 58%;
+  height: 100%;
+}
+.pl-share .sh-left-top {
+  padding: 20px 30px;
+}
+.pl-share .sh-left-slct-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.pl-share .sh-left-top + .sh-left-slct-wrap {
+  height: calc(100% - 78px);
 }
 
 /* share popup - bottom */
@@ -2664,11 +2705,13 @@ i.icon.add-black16::after {
   border-width: 3px;
 }
 .sh-left .ui.tab.left-inner {
+  display: flex;
+  position: relative;
+  padding: 0;
   margin: 0;
-  padding: 0 30px;
   width: 100%;
   height: 455px;
-  overflow-y: auto;
+  overflow-y: hidden;
   border: 0;
 }
 .sh-left .sh-left-top {
@@ -2682,10 +2725,35 @@ i.icon.add-black16::after {
   border-color: #f6f6f6 !important;
   background-color: #f6f6f6 !important;
 }
+
+.sh-left-slct {
+  width: 100%;
+  height: 100%;
+  padding: 0 30px;
+}
+.sh-left-slct .ui.profile .pic {
+  flex: none;
+}
 .sh-left-slct .sh-sl-top {
-  padding: 10px 0 20px;
+  padding: 10px 0px 20px 0px;
   border-bottom: 1px solid #ddd;
 }
+.sh-left-slct .sh-user-list {
+  height: 100%;
+  overflow: auto;
+  margin-left: -30px;
+  margin-right: -30px;
+  padding: 0 20px 0 30px;
+}
+.sh-left-slct .user-prf .ui.checkbox {
+  width: 25px;
+}
+.sh-left-slct .ui.checkbox input.hidden + label {
+  font-size: 14px;
+  padding-left: 34px !important;
+  color: #666;
+}
+
 .sh-sl-top .ui.checkbox label {
   color: #666;
   font-weight: 600;
@@ -4267,4 +4335,103 @@ i.icon.plus.round16:before {
 }
 .pl-nodata-items .item-tit .tit strong {
   font-weight: bold;
+}
+
+/* 조직도 */
+.pl-share .sh-left-org {
+  margin: -0.5rem 0;
+}
+.pl-share .sh-left-org.is-disabled {
+  opacity: 0.4;
+}
+.pl-share .sh-left-org.is-disabled .ui.accordion.tree-chart .title {
+  color: #999;
+  pointer-events: none;
+}
+.pl-share .ui.accordion.tree-chart {
+  margin: 5px 0 0 0;
+  white-space: nowrap;
+}
+.pl-share .ui.accordion.tree-chart .title {
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+.pl-share .ui.accordion.tree-chart .active.title,
+.pl-share .ui.accordion.tree-chart .title {
+  padding: 0 !important;
+  border: none;
+  margin: 0.5rem 0;
+  font-size: 14px;
+}
+.pl-share .ui.accordion.tree-chart .active.title i,
+.pl-share .ui.accordion.tree-chart .title i {
+  flex: none;
+  vertical-align: top;
+  height: 24px;
+  margin-right: 6px;
+}
+.pl-share .ui.accordion.tree-chart .active.title .department-name,
+.pl-share .ui.accordion.tree-chart .title .department-name {
+  display: inline-block;
+  word-break: break-all;
+  padding-top: 1px;
+}
+.pl-share .ui.accordion.tree-chart .title i.icon.folder-exist,
+.pl-share .ui.accordion.tree-chart .title i.icon.folder-exist-01 {
+  width: 24px;
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-folder-exist-on.png')
+    0 0 no-repeat;
+}
+.pl-share .ui.accordion.tree-chart .title i.icon.folder-none {
+  width: 24px;
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-folder-none-on.png')
+    0 0 no-repeat;
+}
+.pl-share .ui.accordion.tree-chart .active.title i.icon.folder-exist {
+  width: 24px;
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-folder-exist-over.png')
+    0 0 no-repeat;
+}
+.pl-share .ui.accordion.tree-chart .active.title i.icon.folder-none {
+  width: 24px;
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-folder-none-over.png')
+    0 0 no-repeat;
+}
+.pl-share
+  .ui.accordion.tree-chart
+  .active.title
+  i.icon.folder-none
+  + .department-name {
+  font-weight: 700;
+}
+.pl-share .ui.accordion.tree-chart .active.content,
+.pl-share .ui.accordion.tree-chart .content {
+  padding: 0 !important;
+  border: none;
+}
+.pl-share .ui.accordion.tree-chart .content .title::before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: -20px;
+  top: 0;
+  width: 16px;
+  height: 16px;
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-folder-reply.svg')
+    0 0 no-repeat;
+}
+.pl-share .ui.accordion.tree-chart .indent {
+  margin-left: 30px;
+}
+.pl-share .ui.accordion.tree-chart .indent.vertical-line {
+  border-left: 1px dashed #6c788f;
+  padding: 0.1rem;
+}
+.pl-share .ui.accordion.tree-chart .indent.vertical-line .accordion {
+  margin-left: -0.3rem;
+}
+.pl-share .ui.accordion.tree-chart .indent .accordion {
+  margin: 0;
 }

@@ -4,6 +4,7 @@ import { ProfileComponent } from './components/ProfileComponent';
 import {
   useCheckedMemberList,
   useIsOpenPlaylistRecommendPopUp,
+  useSelectedDepartmentName,
 } from './playlistRecommendPopUp.store';
 import { DepartmentMemberTab } from './components/DepartmentMemberTab';
 import { MySuniUserTab } from './components/MySuniUserTab';
@@ -17,9 +18,11 @@ import {
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 export function RecommendPopUpLeftComponent() {
+  const departmentName = useSelectedDepartmentName();
+
   const panes = [
     {
-      menuItem: getPolyglotText('소속 부서 구성원', 'playlist-popup-구성원'),
+      menuItem: departmentName,
       render: () => <DepartmentMemberTab />,
     },
     {
@@ -115,7 +118,7 @@ export function PlaylistRecommendPopUpView() {
   }, [recommendation]);
 
   return (
-    <Modal open={isOpen} className="base w1000 pl-share">
+    <Modal open={isOpen} className="base w1200 pl-share">
       <Modal.Header className="res xfl">
         <span>
           <PolyglotText

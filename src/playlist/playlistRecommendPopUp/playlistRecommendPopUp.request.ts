@@ -10,12 +10,24 @@ import { useEffect } from 'react';
 import { onClosePlaylistRecommendPopUp } from './playlistRecommendPopUp.events';
 import {
   followingToMemberList,
-  UserIdentitiesToMemberList,
   setDepartmentMembers,
   setFollowingList,
   useIsOpenPlaylistRecommendPopUp,
   setMySuniUsers,
+  setOrganizationChartTree,
+  departmentChartToOrganiztionChartTree,
+  userIdentitiesToMemberList,
+  MembersByDepartmentCodeToMemberList,
+  setSelcetedDepartmentCode,
+  setSelectedDepartmentName,
 } from './playlistRecommendPopUp.store';
+import { SkProfileService } from 'profile/stores';
+import { patronInfo } from '@nara.platform/dock';
+import { retrieveDepartmentsCache } from 'approval/department/present/apiclient/DepartmentApi';
+import {
+  findDefaultIndexByDepartmentCode,
+  findMembersByDepartmentCode,
+} from 'lecture/detail/api/approvalApi';
 
 // 플레이리스트 추천
 export function requestRecommendPlaylist(
@@ -36,14 +48,28 @@ export function requestRecommendPlaylist(
     });
 }
 
+// department Code로 구성원 호출
+export async function requestMemberByDepartmentCode(departmentCode: string) {
+  const memberByDepartmentCode = await findMembersByDepartmentCode(
+    departmentCode
+  );
+
+  if (memberByDepartmentCode !== undefined) {
+    const departmentMembers = MembersByDepartmentCodeToMemberList(
+      memberByDepartmentCode
+    );
+    setDepartmentMembers(departmentMembers);
+    setSelectedDepartmentName(departmentMembers[0].departmentName);
+  }
+}
+
 // 소속 부서 구성원 tab 데이터 호출
 export async function requestDepartMentUser(searchWord: string) {
   const sameDepartmentUsers = await findSameDepartmentUserIdentities(
     searchWord
   );
-
   if (sameDepartmentUsers !== undefined) {
-    const departmentMembers = UserIdentitiesToMemberList(sameDepartmentUsers);
+    const departmentMembers = userIdentitiesToMemberList(sameDepartmentUsers);
     setDepartmentMembers(departmentMembers);
   }
 }
@@ -53,7 +79,7 @@ export async function requestMysuniUser(searchWord: string) {
   const mySuniUserIdentities = await findUserIdentitiesByKeyword(searchWord);
 
   if (mySuniUserIdentities !== undefined) {
-    const mySuniUsers = UserIdentitiesToMemberList(mySuniUserIdentities);
+    const mySuniUsers = userIdentitiesToMemberList(mySuniUserIdentities);
     setMySuniUsers(mySuniUsers);
   }
 }
@@ -69,13 +95,43 @@ export async function requestFollowing() {
   }
 }
 
+// 조직도 정보 불러오기
+export async function requestDepartmentChart() {
+  const companyCode = `SK_-_${SkProfileService.instance.skProfile.companyCode}`;
+  const departmentCode = SkProfileService.instance.skProfile.departmentCode;
+  const cineroomId = patronInfo.getCineroomId();
+
+  const departments = await retrieveDepartmentsCache(companyCode);
+  const defaultIndexByDepartmentCode =
+    (await findDefaultIndexByDepartmentCode(departmentCode)) || {};
+
+  if (departments !== undefined) {
+    requestMemberByDepartmentCode(departmentCode);
+    setOrganizationChartTree(
+      departmentChartToOrganiztionChartTree(
+        departments,
+        defaultIndexByDepartmentCode
+      )
+    );
+  }
+  // // 모든 부서 정보를 다 불러온다.
+  // if (cineroomId === 'ne1-m2-c2') {
+  // } else {
+  //   // 나의 부서정보를 불러온다.
+  // }
+}
+
 export function useRequestDepartMentUser() {
   const isOpen = useIsOpenPlaylistRecommendPopUp();
 
   useEffect(() => {
     if (isOpen) {
-      requestDepartMentUser('');
+      requestDepartmentChart();
     }
+    return () => {
+      setDepartmentMembers([]);
+      setSelcetedDepartmentCode('');
+    };
   }, [isOpen]);
 }
 
