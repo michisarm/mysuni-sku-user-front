@@ -64,11 +64,13 @@ export function OrganizationChartTree({ isDisabled }: OrganizationChartTree) {
     return 0;
   }, [organizationChart]);
 
+  const activeIndex = useMemo(() => (isDisabled ? undefined : 0), [isDisabled]);
+
   return (
     <div className="sh-left-org-wrap">
       <div className={`sh-left-org ${isDisabled ? 'is-disabled' : ''}`}>
         <Accordion
-          activeIndex={0}
+          activeIndex={activeIndex}
           defaultActiveIndex={defaultIndex}
           panels={panels}
           className="tree-chart"
