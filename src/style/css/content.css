@@ -2824,6 +2824,7 @@ i.icon.add-black16::after {
   left: 10px;
 }
 .user-prf .prf-info .info-top .prf-group {
+  margin-left:3px;
   text-overflow: ellipsis; 
   white-space: nowrap;
 }
