@@ -6,6 +6,8 @@ import Dialog from './shared/components/Dialog';
 import StoreProvider from './StoreProvider';
 import Routes from './Routes';
 import { pdfjs } from 'react-pdf';
+import { isSuperManager } from 'shared/helper/isSuperManager';
+import { getAudienceId } from 'shared/helper/getAudienceId';
 
 initAxios();
 setCustomDialog(onCustomDialog);
@@ -46,7 +48,13 @@ function initPdfjs() {
 }
 
 function initAxios() {
-  //
+  if (isSuperManager()) {
+    axiosApi.interceptors.request.use((config) => {
+      config.headers.audienceId = getAudienceId();
+      return config;
+    });
+  }
+
   if (process.env.NODE_ENV !== 'development') {
     axiosApi.setCatch(401, () => (window.location.href = '/login'));
   }
