@@ -8,6 +8,7 @@ interface Props {
 }
 
 export function AppLayout({ children }: Props) {
+  // TODO :: 상위 컴포넌트에서 처리하도록 수정
   useRequestProfile();
   return (
     <>

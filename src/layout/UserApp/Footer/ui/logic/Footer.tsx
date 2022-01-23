@@ -6,7 +6,7 @@ import { isSuperManager } from 'shared/helper/isSuperManager';
 import { SkProfileService } from '../../../../../profile/stores';
 import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 import PrivacyPolicyModalContainer from './PrivacyPolicyModalContainer';
-import { CompanyDropdown } from '../view/CompanyDopdown';
+import { CompanyDropdown } from '../view/CompanyDropdown';
 import { FamilySiteDropdown } from '../view/FamilySiteDropdown';
 import './Footer.css';
 

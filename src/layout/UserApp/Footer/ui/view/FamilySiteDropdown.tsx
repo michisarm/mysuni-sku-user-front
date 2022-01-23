@@ -5,27 +5,11 @@ import { findContentsProviderSamlCache } from 'shared/api/checkpointApi';
 import { ContentsProviderSaml } from 'shared/model/ContentsProviderSaml';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import '../logic/Footer.css';
+import { useDropdown } from './useDropdown';
 
 export function FamilySiteDropdown() {
-  const [opened, setOpend] = useState(false);
   const familyRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    window.addEventListener('click', handleClickOutside);
-    return () => {
-      window.removeEventListener('click', handleClickOutside);
-    };
-  }, [familyRef, opened]);
-
-  const familyToggle = () => {
-    setOpend(!opened);
-  };
-
-  const handleClickOutside = (event: any) => {
-    if (opened && !familyRef.current?.contains(event.target)) {
-      setOpend(false);
-    }
-  };
+  const [opened, familyToggle] = useDropdown(familyRef);
 
   const [linkedInDirectConnection, setLinkedInDirectConnection] = useState('');
 

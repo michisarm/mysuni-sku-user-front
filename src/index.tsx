@@ -3,7 +3,7 @@ import 'react-app-polyfill/stable';
 // import 'semantic-ui-less/semantic.less';
 // import '@nara.drama/approval/lib/snap.css';
 
-import React, { lazy } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { initializeBody } from './shared/helper/bodyHelper';
 

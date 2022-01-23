@@ -46,7 +46,7 @@ export default function Routes() {
 
   useEffect(() => {
     const isExternal = isExternalInstructor();
-    // TODO :: 현재 하드코딩 => 변경 예정
+    // TODO :: 하드코딩 => 변경 예정
     const agreementFormId = '20210622-1';
 
     if (isExternal === true) {
@@ -66,7 +66,6 @@ export default function Routes() {
         window.location.href = '/suni-main/community/main/my-communities';
       }
     }
-    // requestProfile();
   }, []);
 
   return (
