@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Icon } from 'semantic-ui-react';
-import '../logic/FooterContainer.css';
+import '../logic/Footer.css';
 import { CompanyList } from './CompanyList';
 
 export function CompanyDropdown() {

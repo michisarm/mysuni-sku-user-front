@@ -4,8 +4,10 @@ import { patronInfo } from '@nara.platform/dock';
 import { useUserWorkspaces } from 'shared/service/useRequestWorkspaces';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { CompanyItem } from './CompanyItem';
+import { useHistory } from 'react-router-dom';
 
 export function CompanyList() {
+  const history = useHistory();
   const workspaces = useUserWorkspaces();
 
   if (workspaces === undefined) {
@@ -14,7 +16,7 @@ export function CompanyList() {
 
   const onClickItem = (key: string) => {
     patronInfo.setCineroomId(key);
-    window.location.reload();
+    history.push('/');
   };
 
   return (

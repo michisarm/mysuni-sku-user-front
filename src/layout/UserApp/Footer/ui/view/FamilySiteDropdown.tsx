@@ -4,7 +4,7 @@ import { Icon } from 'semantic-ui-react';
 import { findContentsProviderSamlCache } from 'shared/api/checkpointApi';
 import { ContentsProviderSaml } from 'shared/model/ContentsProviderSaml';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
-import '../logic/FooterContainer.css';
+import '../logic/Footer.css';
 
 export function FamilySiteDropdown() {
   const [opened, setOpend] = useState(false);

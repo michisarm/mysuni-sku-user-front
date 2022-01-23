@@ -7,10 +7,10 @@ import StoreProvider from './StoreProvider';
 import Routes from './Routes';
 import { pdfjs } from 'react-pdf';
 import { isSuperManager } from 'shared/helper/isSuperManager';
-import { getAudienceId } from 'shared/helper/getAudienceId';
+import { currentAudienceId } from 'shared/helper/currentAudienceId';
 
 initAxios();
-setCustomDialog(onCustomDialog);
+initDialog();
 initPdfjs();
 
 function App() {
@@ -50,7 +50,7 @@ function initPdfjs() {
 function initAxios() {
   if (isSuperManager()) {
     axiosApi.interceptors.request.use((config) => {
-      config.headers.audienceId = getAudienceId();
+      config.headers.audienceId = currentAudienceId();
       return config;
     });
   }
@@ -63,34 +63,37 @@ function initAxios() {
   });
 }
 
-function onCustomDialog(options: any) {
-  //
-  const { type, title, message, warning, onClose, onOk, onCancel } = options;
+function initDialog() {
+  function onCustomDialog(options: any) {
+    //
+    const { type, title, message, warning, onClose, onOk, onCancel } = options;
 
-  if (type === 'alert') {
-    return (
-      <Dialog
-        warning={warning}
-        title={title}
-        message={message}
-        onClose={onClose}
-        onCancel={onCancel}
-      />
-    );
-  } else if (type === 'confirm') {
-    const okFunction = typeof onOk === 'function' ? onOk : () => {};
+    if (type === 'alert') {
+      return (
+        <Dialog
+          warning={warning}
+          title={title}
+          message={message}
+          onClose={onClose}
+          onCancel={onCancel}
+        />
+      );
+    } else if (type === 'confirm') {
+      const okFunction = typeof onOk === 'function' ? onOk : () => {};
 
-    return (
-      <Dialog
-        warning={warning}
-        title={title}
-        message={message}
-        onOk={okFunction}
-        onCancel={onCancel}
-      />
-    );
+      return (
+        <Dialog
+          warning={warning}
+          title={title}
+          message={message}
+          onOk={okFunction}
+          onCancel={onCancel}
+        />
+      );
+    }
+    return null;
   }
-  return null;
+  setCustomDialog(onCustomDialog);
 }
 
 export default App;

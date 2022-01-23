@@ -1,4 +1,4 @@
-import React, { PureComponent, Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import AppInitializer from './AppInitializer';
 import { getCookie } from '@nara.platform/accent';
@@ -13,9 +13,8 @@ import {
 } from 'tracker/present/logic/ActionTrackService';
 import NotFoundPage from 'layout/NotFoundPage';
 import { isExternalInstructor } from './shared/helper/findUserRole';
-import { AppLayoutContainer } from './layout/UserApp/ui/logic/AppLayoutContainer';
+import { AppLayout } from './layout/UserApp/ui/logic/AppLayout';
 import LectureNoteContainer from './lecture/detail/ui/logic/LectureNoteContainer';
-import { findMyPisAgreement } from './profile/present/apiclient/instructorApi';
 import { getCurrentHistory } from './shared/store/HistoryStore';
 import profilePaths from './profile/routePaths';
 import { SkProfileService } from './profile/stores';
@@ -37,15 +36,15 @@ const SearchRoutes = lazy(() => import('./search/Routes'));
 
 const ExtraRoutes = lazy(() => import('./extra/ExtraRoutes'));
 
-class Routes extends PureComponent {
-  state = {
-    email:
-      (window.sessionStorage.getItem('email') as string) ||
-      (window.localStorage.getItem('nara.email') as string) ||
-      getCookie('tryingLoginId'),
-  };
+const EMAIL =
+  (window.sessionStorage.getItem('email') as string) ||
+  (window.localStorage.getItem('nara.email') as string) ||
+  getCookie('tryingLoginId');
 
-  componentDidMount() {
+export default function Routes() {
+  const [email, setEMail] = useState<string>(EMAIL);
+
+  useEffect(() => {
     const isExternal = isExternalInstructor();
     // TODO :: 현재 하드코딩 => 변경 예정
     const agreementFormId = '20210622-1';
@@ -67,72 +66,63 @@ class Routes extends PureComponent {
         window.location.href = '/suni-main/community/main/my-communities';
       }
     }
-  }
+    // requestProfile();
+  }, []);
 
-  render() {
-    const { email } = this.state;
+  return (
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <ScrollToTop />
+      <UserApp>
+        <Suspense fallback="">
+          <Switch>
+            <Route path="/profile" component={ProfileRoutes} />
+            <Route path="/preview" component={PreviewRoutes} />
+            <Route
+              path="/lecture/card/:cardId/cube/:cubeId/cubeType/:cubeType/learningTime/:learningTime/:viewType/new"
+              exact
+              component={LectureNoteContainer}
+            />
+            <Route
+              path="/"
+              render={() => (
+                <AppLayout>
+                  <Switch>
+                    <Route
+                      path="/certification"
+                      component={CertificationRoutes}
+                    />
+                    <Route
+                      path="/personalcube"
+                      component={PersonalCubeRoutes}
+                    />
+                    <Route path="/lecture" component={LectureRoutes} />
+                    <Route path="/my-training" component={MyTrainingRoutes} />
+                    <Route path="/hot-topic" component={HotTopicRoutes} />
+                    <Route path="/approval" component={ApprovalRoutes} />
+                    <Route path="/board" component={BoardRoutes} />
+                    <Route path="/expert" component={ExpertRoutes} />
+                    <Route path="/community" component={CommunityRoutes} />
+                    <Route path="/search" component={SearchRoutes} />
+                    <Route path="/extra" component={ExtraRoutes} />
 
-    return (
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
-        <ScrollToTop />
-        <UserApp>
-          <Suspense fallback="">
-            <Switch>
-              <Route path="/profile" component={ProfileRoutes} />
-              <Route path="/preview" component={PreviewRoutes} />
-              <Route
-                path="/lecture/card/:cardId/cube/:cubeId/cubeType/:cubeType/learningTime/:learningTime/:viewType/new"
-                exact
-                component={LectureNoteContainer}
-              />
-              <Route
-                path="/"
-                render={() => (
-                  <AppLayoutContainer>
-                    <Switch>
-                      <Route
-                        path="/certification"
-                        component={CertificationRoutes}
-                      />
-                      <Route
-                        path="/personalcube"
-                        component={PersonalCubeRoutes}
-                      />
-                      <Route path="/lecture" component={LectureRoutes} />
-                      <Route path="/my-training" component={MyTrainingRoutes} />
-                      {/* <Route
-                          path="/my-training2"
-                        // component={MyTrainingRoutes2}
-                        /> */}
-                      <Route path="/hot-topic" component={HotTopicRoutes} />
-                      <Route path="/approval" component={ApprovalRoutes} />
-                      <Route path="/board" component={BoardRoutes} />
-                      <Route path="/expert" component={ExpertRoutes} />
-                      <Route path="/community" component={CommunityRoutes} />
-                      <Route path="/search" component={SearchRoutes} />
-                      <Route path="/extra" component={ExtraRoutes} />
-
-                      <Route path="/" component={MainRoutes} />
-                      <Route path="/404" component={NotFoundPage} />
-                    </Switch>
-                  </AppLayoutContainer>
-                )}
-              />
-            </Switch>
-          </Suspense>
-        </UserApp>
-        <TrackerRoute
-          value={{
-            userId: email,
-            trackAction: actionTrack,
-            trackView: actionTrackView,
-          }}
-        />
-        <HistoryContainer />
-        <AppInitializer />
-      </BrowserRouter>
-    );
-  }
+                    <Route path="/" component={MainRoutes} />
+                    <Route path="/404" component={NotFoundPage} />
+                  </Switch>
+                </AppLayout>
+              )}
+            />
+          </Switch>
+        </Suspense>
+      </UserApp>
+      <TrackerRoute
+        value={{
+          userId: email,
+          trackAction: actionTrack,
+          trackView: actionTrackView,
+        }}
+      />
+      <HistoryContainer />
+      <AppInitializer />
+    </BrowserRouter>
+  );
 }
-
-export default Routes;

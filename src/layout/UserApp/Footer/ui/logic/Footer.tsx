@@ -5,12 +5,12 @@ import Image from 'shared/components/Image';
 import { isSuperManager } from 'shared/helper/isSuperManager';
 import { SkProfileService } from '../../../../../profile/stores';
 import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
-import PrivacyPolicyModalContainer from '../logic/PrivacyPolicyModalContainer';
+import PrivacyPolicyModalContainer from './PrivacyPolicyModalContainer';
 import { CompanyDropdown } from '../view/CompanyDopdown';
 import { FamilySiteDropdown } from '../view/FamilySiteDropdown';
-import './FooterContainer.css';
+import './Footer.css';
 
-function FooterContainer() {
+function Footer() {
   return (
     <section className="footer footer2">
       <div className="cont-inner">
@@ -181,4 +181,4 @@ function FooterContainer() {
   );
 }
 
-export default FooterContainer;
+export default Footer;

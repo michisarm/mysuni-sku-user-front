@@ -1,6 +1,6 @@
 import { patronInfo } from '@nara.platform/dock';
 
-export function getAudienceId() {
+export function currentAudienceId() {
   const currentCineroomId = patronInfo.getCineroomId();
   const cineroom = patronInfo.getCinerooms()[0];
   if (currentCineroomId === undefined || cineroom === undefined) {
