@@ -1,50 +1,47 @@
 import React from 'react';
 import { timeToHourMinute } from '../../../shared/helper/dateTimeHelper';
 
-
 interface LearningTimeViewProps {
   learningTime: number;
 }
 
 export default function LearningTimeView({
-  learningTime
+  learningTime,
 }: LearningTimeViewProps) {
   const { hour, minute } = timeToHourMinute(learningTime);
-
   const renderLearningTime = () => {
-    if(hour < 1 && minute < 1) {
+    if (hour < 1 && minute < 1) {
       return (
         <>
-          00
-          <em>h</em> <em>00</em>
+          <strong>00</strong>
+          <em>h</em> <strong className="personal_pop_sub">00</strong>
           <em>m</em>
         </>
       );
-    } else if(hour < 1) {
+    } else if (hour < 1) {
       return (
         <>
-          {minute}
+          <strong>{minute}</strong>
           <em>m</em>
         </>
-      )
-    } else if(minute < 1) {
+      );
+    } else if (minute < 1) {
       return (
         <>
           {hour}
           <em>h</em>
         </>
-      )
+      );
     } else {
       return (
         <>
-          {hour}
-          <em>h</em>{' '}
-          {minute}
+          <strong>{hour}</strong>
+          <em>h</em>&nbsp;<strong className="personal_pop_sub">{minute}</strong>
           <em>m</em>
         </>
-      )
+      );
     }
-  }
+  };
 
   return renderLearningTime();
 }

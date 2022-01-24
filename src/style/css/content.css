@@ -3743,6 +3743,8 @@ i.icon.plus.round16:before {
 /* gauge bubble popup */
 .b-popup.ui.popup {margin-top:-3px; padding:10px 20px; border-radius:  0.375rem; text-align: center; background-color: #fff; color:#4c4c4c; font-size: 0.875rem; border: 1px solid #aaa; letter-spacing: -0.4px;}
 
+.personal_pop_tit {margin-right:10px;}
+.personal_pop_time {color:#000; font-weight:700;}
 
 /* Playlist */
 .plylistSwiper {
