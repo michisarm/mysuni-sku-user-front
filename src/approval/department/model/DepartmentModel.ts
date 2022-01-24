@@ -17,12 +17,10 @@ export interface DepartmentChartModel {
 export interface DepartmentApiModel {
   id: string;
   name: PolyglotString;
-  chartId: string;
-  code: string;
-  parentCode: string;
-  level: number;
-  sortOrder: string;
-  chartDisplayed: boolean;
+  companyName: PolyglotString;
+  departmentName: PolyglotString;
+  email: string;
+  photoImagePath: string;
 }
 
 export class DepartmentModel {

@@ -2,6 +2,7 @@ import { axiosApi as axios } from '@nara.platform/accent';
 import { createCacheApi } from 'lecture/detail/api/cacheableApi';
 import { AxiosReturn } from 'shared/api/AxiosReturn';
 import {
+  DepartmentApiModel,
   DepartmentChartModel,
   DepartmentModel,
 } from '../../model/DepartmentModel';
@@ -16,7 +17,8 @@ export default class DepartmentApi {
     //
     return axios
       .get<DepartmentModel>(
-        this.rootURL + `/byDepartmentCode?code=${departmentCode}`
+        this.rootURL +
+          `/byDepartmentCodeAndKeyword?departmentCode=${departmentCode}`
       )
       .then(
         (response) =>
@@ -25,6 +27,24 @@ export default class DepartmentApi {
       );
   }
 }
+
+export function findMembersByDepartmentCode(
+  departmentCode: string,
+  keyword?: string
+): Promise<DepartmentApiModel[] | undefined> {
+  return axios
+    .get<DepartmentApiModel[]>(
+      `/api/approval/members/byDepartmentCodeAndKeyword?departmentCode=${departmentCode}&keyword=${
+        keyword || ''
+      }`
+    )
+    .then(AxiosReturn);
+}
+
+export const [
+  findMembersByDepartmentCodeCache,
+  clearFindMembersByDepartmentCodeCache,
+] = createCacheApi(findMembersByDepartmentCode);
 
 export function retrieveDepartments(chartId: string) {
   return axios

@@ -2,7 +2,10 @@ import { createStore } from 'restoa';
 import Profile from 'community/ui/data/community/models/Profile';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { UserIdentities } from 'community/ui/data/community/models/UserIdentities';
-import { DepartmentChartModel } from 'approval/department/model/DepartmentModel';
+import {
+  DepartmentApiModel,
+  DepartmentChartModel,
+} from 'approval/department/model/DepartmentModel';
 import { MemberByDepartmentCode } from 'lecture/detail/model/MemberByDepartmentCode';
 
 export interface MemberList {
@@ -40,7 +43,7 @@ export interface Panel {
 
 // 조직도 구성원 데이터를 memberList로 변환
 export function MembersByDepartmentCodeToMemberList(
-  memberByDepartmentCode: MemberByDepartmentCode[]
+  memberByDepartmentCode: DepartmentApiModel[]
 ): MemberList[] {
   const departmentMembers = memberByDepartmentCode.map((user) => {
     return {
@@ -49,7 +52,7 @@ export function MembersByDepartmentCodeToMemberList(
       email: user.email,
       departmentName: parsePolyglotString(user.departmentName),
       companyName: parsePolyglotString(user.companyName),
-      thumbnailImagePath: `/profile/photo/${user.photoFileUrl}`,
+      thumbnailImagePath: `/profile/photo/${user.photoImagePath}`,
     };
   });
 

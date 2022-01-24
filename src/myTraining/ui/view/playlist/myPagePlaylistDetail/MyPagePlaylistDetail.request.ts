@@ -2,7 +2,7 @@ import { SkProfileService } from 'profile/stores';
 import { findPlaylistDetail } from 'playlist/data/apis';
 import { setMyPagePlaylistDetail } from './MyPagePlaylistDetail.services';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
-import requestMyPagePlaylistDetailCardList from './myPagePlaylistDetailCardList/MyPagePlaylistDetailCardList.request';
+import { requestMyPagePlaylistDetailCardList } from './myPagePlaylistDetailCardList/MyPagePlaylistDetailCardList.request';
 import { setPlaylistResistrantProfileInfo } from './myPagePlaylistDetailHeader/MyPagePlaylistDetailHeader.service';
 
 async function requestMyPagePlaylistDetail(playlistId: string) {

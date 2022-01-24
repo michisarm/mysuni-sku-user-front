@@ -1,3 +1,5 @@
+import { includes } from 'lodash';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import requestMyPagePlaylistDetail from '../MyPagePlaylistDetail.request';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { reactAlert, reactConfirm } from '@nara.platform/accent';
@@ -7,6 +9,8 @@ import {
   getCheckedCardList,
   setCheckedCardList,
 } from './MyPagePlaylistDetailCardList.service';
+import { onClosePlaylistAddCardPopUp } from 'playlist/playlistAddCardPopUp/playlistAddCardPopUp.events';
+import { findPlaylistCardInfo } from './MyPagePlaylistDetailCardList.request';
 
 export function downCardContent(contentIndex: number) {
   const checkedCardList = getCheckedCardList();
@@ -114,4 +118,21 @@ export function sumbitEditCardList() {
       },
     });
   }
+}
+
+export async function onAddCard(cardIds: string[]) {
+  const prevValue = getCheckedCardList() || [];
+  const prevValueIds = prevValue.map((card) => card.cardId);
+  const filteredCardIds = cardIds.filter((id) => !prevValueIds.includes(id));
+  const nextCardsInfo = await findPlaylistCardInfo(filteredCardIds);
+  const nextValue = nextCardsInfo.map((card) => {
+    return {
+      cardId: card.cardId,
+      cardTitle: parsePolyglotString(card.cardName),
+      cardThumNail: card.thumbnailImagePath,
+      checked: false,
+    };
+  });
+  setCheckedCardList([...prevValue, ...nextValue]);
+  onClosePlaylistAddCardPopUp();
 }
