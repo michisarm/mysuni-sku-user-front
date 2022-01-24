@@ -78,6 +78,20 @@ export function findMyPlaylists(
     .then(AxiosReturn);
 }
 
+// 내가 볼 수 있는 Playlist 중 학습카드 0개인 리스트는 제외해서 조회
+export function findMyPlaylistsWithCards(
+  limit: number,
+  offset: number,
+  playlistType: PlaylistType
+): Promise<OffsetElementList<PlaylistDetailSummary> | undefined> {
+  const axios = getAxios();
+  const url = `${BASE_URL}/available/cards?limit=${limit}&offset=${offset}&type=${playlistType}`;
+
+  return axios
+    .get<OffsetElementList<PlaylistDetailSummary>>(url)
+    .then(AxiosReturn);
+}
+
 // denizenId로 다른 사용자의 Playlist 조회.
 export function findMyPlaylistsByDenizenId(
   denizenId: string

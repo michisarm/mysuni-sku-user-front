@@ -1,5 +1,4 @@
-import { findMyPlaylists } from 'playlist/data/apis';
-import { PlaylistDetailSummary } from 'playlist/data/models/PlaylistDetailSummary';
+import { findMyPlaylistsWithCards } from 'playlist/data/apis';
 import { PlaylistType } from 'playlist/data/models/PlaylistType';
 import { useEffect } from 'react';
 import {
@@ -8,7 +7,7 @@ import {
 } from './playlistContainer.store';
 
 export async function requestPlaylistSwiper() {
-  const playlists = await findMyPlaylists(10, 0, '');
+  const playlists = await findMyPlaylistsWithCards(10, 0, '');
 
   if (playlists !== undefined) {
     const playlistSwiper = playlistsToPlaylistSwiper(playlists.results);
