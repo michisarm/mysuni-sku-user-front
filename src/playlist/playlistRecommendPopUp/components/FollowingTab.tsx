@@ -126,7 +126,10 @@ export function FollowingTab() {
               <div className="sh-sl-top">
                 <Checkbox
                   className="base"
-                  label="전체 선택"
+                  label={getPolyglotText(
+                    '전체 선택 ',
+                    'playlist-popup-전체선택'
+                  )}
                   onClick={onAllCheckedFollower}
                   checked={isAllChecked}
                 />
