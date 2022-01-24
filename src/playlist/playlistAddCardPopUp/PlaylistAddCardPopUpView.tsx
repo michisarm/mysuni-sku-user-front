@@ -9,7 +9,17 @@ import {
 } from './playlistAddCardPopUp.events';
 import { useIsOpenPlaylistAddCardPopUp } from './playlistAddCardPopUp.stores';
 
-export function PlaylistAddCardPopUpView() {
+interface PlaylistAddCardPopUpProps {
+  onAddCardCallback?: (cardIds: string[]) => void;
+}
+
+/**
+ * @param onAddCardCallback cardIds 를 받아서 처리할 수 있는 callback 함수
+ */
+
+export function PlaylistAddCardPopUpView({
+  onAddCardCallback,
+}: PlaylistAddCardPopUpProps) {
   const isOpen = useIsOpenPlaylistAddCardPopUp();
   return (
     <Modal open={isOpen} className="base popup_slt_card">
