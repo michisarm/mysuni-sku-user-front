@@ -11,18 +11,18 @@ export function findMembersByDenizenKeys(denizenKeys: string[]) {
   return axios.post<string[]>(url, denizenKeys).then(AxiosReturn);
 }
 
-export function findMembersByDepartmentCode(
-  departmentCode: string
-): Promise<MemberByDepartmentCode[] | undefined> {
-  const axios = getAxios();
-  const url = `${BASE_URL}/members/byDepartmentCode?departmentCode=${departmentCode}`;
-  return axios.get<MemberByDepartmentCode[]>(url).then(AxiosReturn);
-}
+// export function findMembersByDepartmentCode(
+//   departmentCode: string
+// ): Promise<MemberByDepartmentCode[] | undefined> {
+//   const axios = getAxios();
+//   const url = `${BASE_URL}/members/byDepartmentCode?departmentCode=${departmentCode}`;
+//   return axios.get<MemberByDepartmentCode[]>(url).then(AxiosReturn);
+// }
 
-export const [
-  findMembersByDepartmentCodeCache,
-  clearFindMembersByDepartmentCodeCache,
-] = createCacheApi(findMembersByDepartmentCode);
+// export const [
+//   findMembersByDepartmentCodeCache,
+//   clearFindMembersByDepartmentCodeCache,
+// ] = createCacheApi(findMembersByDepartmentCode);
 
 export function findDefaultIndexByDepartmentCode(departmentCode: string) {
   const axios = getAxios();
@@ -31,9 +31,9 @@ export function findDefaultIndexByDepartmentCode(departmentCode: string) {
 }
 
 export const [
-  findfindDefaultIndexByDepartmentCodeCache,
+  findDefaultIndexByDepartmentCodeCache,
   clearFindDefaultIndexByDepartmentCodeCache,
-] = createCacheApi(findMembersByDepartmentCode);
+] = createCacheApi(findDefaultIndexByDepartmentCode);
 
 export function findCompany(companyCode: string): Promise<Company | undefined> {
   const axios = getAxios();
