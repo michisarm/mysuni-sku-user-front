@@ -3860,6 +3860,7 @@ i.icon.plus.round16:before {
 
 .personal_pop_tit {margin-right:10px;}
 .personal_pop_time {color:#000; font-weight:700;}
+.personal_pop_time em {color:#000; font-weight:700; font-style: normal;}
 
 /* Playlist */
 .plylistSwiper {
