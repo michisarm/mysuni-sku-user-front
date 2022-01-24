@@ -109,6 +109,7 @@ export function sumbitEditCardList() {
         });
       },
       onCancel: () => {
+        requestMyPagePlaylistDetail(playlist.playlistId);
         return false;
       },
     });
