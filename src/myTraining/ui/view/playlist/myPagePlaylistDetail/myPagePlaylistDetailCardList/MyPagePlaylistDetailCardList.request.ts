@@ -5,8 +5,13 @@ import { setMyPagePlaylistDetailCards } from '../MyPagePlaylistDetail.services';
 import { setCheckedCardList } from './MyPagePlaylistDetailCardList.service';
 import { findPlaylistCardWithProgressRdos } from 'lecture/detail/api/cardApi';
 
-async function requestMyPagePlaylistDetailCardList(cardIds: string[]) {
-  const cards = await findPlaylistCardWithProgressRdos(cardIds);
+export async function findPlaylistCardInfo(cardIds: string[]) {
+  const cardsInfo = await findPlaylistCardWithProgressRdos(cardIds);
+  return cardsInfo;
+}
+
+export async function requestMyPagePlaylistDetailCardList(cardIds: string[]) {
+  const cards = await findPlaylistCardInfo(cardIds);
   if (cards === undefined) {
     return;
   }
@@ -45,5 +50,3 @@ async function requestMyPagePlaylistDetailCardList(cardIds: string[]) {
   });
   setCheckedCardList(checkedValue);
 }
-
-export default requestMyPagePlaylistDetailCardList;

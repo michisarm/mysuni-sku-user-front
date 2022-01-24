@@ -9,6 +9,7 @@ import classNames from 'classnames';
 import MyPageMadeMyselfPlaylistEditCardList from './MyPageMadeMyselfPlaylistEditCardList';
 import {
   deleteCardContent,
+  onAddCard,
   sumbitEditCardList,
 } from './MyPagePlaylistDetailCardList.event';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
@@ -57,7 +58,7 @@ function MyPagePlaylistDetailCardList(props: propsType) {
                     />
                   </span>
                 </Label>
-                <PlaylistAddCardPopUpView />
+                <PlaylistAddCardPopUpView onAddCardCallback={onAddCard} />
               </div>
             ) : (
               <>
