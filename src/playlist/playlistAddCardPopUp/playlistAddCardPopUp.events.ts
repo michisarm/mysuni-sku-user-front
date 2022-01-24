@@ -127,7 +127,9 @@ export function onSearchCard() {
 }
 
 // 학습카드 추가하기
-export function onAddCardToPlaylist() {
+export function onAddCardToPlaylist(
+  onAddCardCallback?: (cardIds: string[]) => void
+) {
   const cardIds = getCheckedCardIds();
   const playlistIds = getMyPagePlaylistDetail()?.playlistId || '';
 
@@ -146,6 +148,11 @@ export function onAddCardToPlaylist() {
         'playlist-popup-학습카드선택'
       ),
     });
+    return;
+  }
+
+  if (onAddCardCallback) {
+    onAddCardCallback(cardIds);
     return;
   }
 
