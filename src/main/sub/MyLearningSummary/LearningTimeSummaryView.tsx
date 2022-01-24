@@ -70,16 +70,12 @@ export default function LearningTimeSummaryView({
         wide
       >
         <span className="personal_pop_tit">
-          {/*<PolyglotText*/}
-          {/*  defaultString="누적 학습시간"*/}
-          {/*  id="home-Summary-누적시간"*/}
-          {/*/>*/}
           <PolyglotText
             defaultString="목표 학습시간"
             id="home-Summary-목표학습시간"
           />
         </span>
-        <span>
+        <span className="personal_pop_time">
           <strong>
             <LearningTimeView learningTime={learningGoalMin} />
           </strong>
