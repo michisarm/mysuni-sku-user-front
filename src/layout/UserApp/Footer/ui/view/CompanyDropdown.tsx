@@ -14,6 +14,10 @@ export function CompanyDropdown() {
   const [opened, onToggle] = useDropdown(dropdownRef);
   const workspaces = useUserWorkspaces();
 
+  const filtered = workspaces
+    ?.filter((worspace) => worspace.id !== 'ne1-m2-c2')
+    .filter((worspace) => worspace.hasChildren === false);
+
   const onClickItem = (id: string) => {
     patronInfo.setCineroomId(id);
     window.location.reload();
@@ -38,7 +42,7 @@ export function CompanyDropdown() {
             onClick={onToggle}
           >
             <ul>
-              {workspaces?.map((workspace) => (
+              {filtered.map((workspace) => (
                 <li key={workspace.id} className="link-options">
                   <a onClick={() => onClickItem(workspace.id)}>
                     {parsePolyglotString(workspace.name)}

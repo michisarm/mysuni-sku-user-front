@@ -1,15 +1,12 @@
 import React, { useEffect } from 'react';
-import { axiosApi, setCustomDialog } from '@nara.platform/accent';
+import { setCustomDialog } from '@nara.platform/accent';
 import ReactGA from 'react-ga';
 
 import Dialog from './shared/components/Dialog';
 import StoreProvider from './StoreProvider';
 import Routes from './Routes';
 import { pdfjs } from 'react-pdf';
-import { isSuperManager } from 'shared/helper/isSuperManager';
-import { currentAudienceId } from 'shared/helper/currentAudienceId';
 
-initAxios();
 initDialog();
 initPdfjs();
 
@@ -36,23 +33,6 @@ function App() {
 
 function initPdfjs() {
   pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-}
-
-function initAxios() {
-  if (isSuperManager()) {
-    axiosApi.interceptors.request.use((config) => {
-      config.headers.audienceId = currentAudienceId();
-      return config;
-    });
-  }
-
-  if (process.env.NODE_ENV !== 'development') {
-    axiosApi.setCatch(401, () => (window.location.href = '/login'));
-  }
-  axiosApi.setCatch(500, (e: any) => {
-    const message = e.response.data['nara-message'];
-    console.error(message);
-  });
 }
 
 function initDialog() {
