@@ -2806,12 +2806,10 @@ i.icon.add-black16::after {
 }
 .user-prf .prf-info .info-top span {
   position: relative;
-  /* display: inline-block; */
   color: #999;
 }
 .user-prf .prf-info .info-top .prf-comp {
   padding-left: 20px;
-  display: inline-block;
   color: #999;
   position: relative;
 }
