@@ -2803,7 +2803,9 @@ i.icon.add-black16::after {
   overflow: hidden; 
   text-overflow: ellipsis; 
   white-space: nowrap;
+  color : #999
 }
+.user-prf .prf-info .info-top .prf-name{color :#222;}
 .user-prf .prf-info .info-top span {
   position: relative;
   color: #999;
