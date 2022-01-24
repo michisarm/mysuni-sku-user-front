@@ -3013,6 +3013,8 @@ i.icon.add-black16::after {
 }
 
 /* 마이페이지 V3*/
+#root section.content.mypagev3{padding-bottom:0}
+
 .mypagev3 {
   display: flex;
   width: 75rem;
