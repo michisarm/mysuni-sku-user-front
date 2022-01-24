@@ -67,6 +67,7 @@ export default function LearningTimeSummaryView({
         }
         style={style}
         position="bottom center"
+        className="b-popup"
         wide
       >
         <span className="personal_pop_tit">
