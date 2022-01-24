@@ -62,7 +62,7 @@ export function userIdentitiesToMemberList(
 ): MemberList[] {
   const departmentMembers = sameDepartmentUsers.map((user) => {
     return {
-      id: user.Id,
+      id: user.id,
       name: user.displayNicknameFirst
         ? user.nickname
         : parsePolyglotString(user.name),
@@ -153,8 +153,5 @@ export const [
   getSelcetedDepartmentCode,
 ] = createStore<string>('');
 
-export const [
-  useSelectedDepartmentName,
-  setSelectedDepartmentName,
-  getSelectedDepartmentName,
-] = createStore<string>('');
+export const [useCompanyName, setCompanyName, getCompanyName] =
+  createStore<string>('');

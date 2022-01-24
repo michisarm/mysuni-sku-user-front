@@ -1,2 +1,2 @@
 
-export { default } from './ui/logic/FooterContainer';
+export { default } from './ui/logic/Footer';

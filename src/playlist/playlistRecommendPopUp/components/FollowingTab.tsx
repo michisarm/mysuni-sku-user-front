@@ -85,21 +85,41 @@ export function FollowingTab() {
             <Icon className="search link" onClick={onSearch} />
           </div>
         </div>
-        <div className="sh-left-bottom">
+        <div className="sh-left-slct-wrap">
           {searchTextResult && searchResult?.length === 0 ? (
             <div className="no-cont-wrap">
-              <Icon className="no-contents80" />
-              <span className="blind">콘텐츠 없음</span>
-              <div
-                className="text"
-                dangerouslySetInnerHTML={{
-                  __html: getPolyglotText(
-                    ` <strong className="s-word">{text}</strong>에 대한 검색결과가 없어요! <br /> Playlist를 추천할 다른 학습자를 검색해주세요.`,
-                    'playlist-popup-학습자검색',
-                    { text: searchTextResult }
-                  ),
-                }}
-              />
+              {followerList.length === 0 ? (
+                <>
+                  <Icon className="no-contents50" />
+                  <strong className="no-tit">
+                    {getPolyglotText(
+                      '나를 팔로우한 사용자가 없어요!',
+                      'playlist-popup-팔로우없음'
+                    )}
+                  </strong>
+                  <div className="text">
+                    {getPolyglotText(
+                      'mySUNI에서 다양한 활동을 해보세요.',
+                      'playlist-popup-팔로우설명'
+                    )}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <Icon className="no-contents50" />
+                  <span className="blind">콘텐츠 없음</span>
+                  <div
+                    className="text"
+                    dangerouslySetInnerHTML={{
+                      __html: getPolyglotText(
+                        ` <strong className="s-word">{text}</strong>에 대한 검색결과가 없어요! <br /> Playlist를 추천할 다른 학습자를 검색해주세요.`,
+                        'playlist-popup-학습자검색',
+                        { text: searchTextResult }
+                      ),
+                    }}
+                  />
+                </>
+              )}
             </div>
           ) : (
             <div className="sh-left-slct">

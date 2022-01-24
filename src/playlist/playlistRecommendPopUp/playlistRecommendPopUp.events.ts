@@ -17,12 +17,14 @@ import {
   setIsOpenPlaylistRecommendPopUp,
   setMySuniUsers,
   setSelcetedDepartmentCode,
-  setSelectedDepartmentName,
 } from './playlistRecommendPopUp.store';
 import { onAllCheckMember, onCheckMember } from './helper/onCheckMember';
 import { getMyPagePlaylistDetail } from 'myTraining/ui/view/playlist/myPagePlaylistDetail/MyPagePlaylistDetail.services';
 import { textValidationCheck } from './helper/textValidationCheck';
 import { clearRetrieveDepartmentsCache } from 'approval/department/present/apiclient/DepartmentApi';
+import { trim } from 'lodash';
+import { reactAlert } from '@nara.platform/accent';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 export function onOpenPlaylistRecommendPopUp() {
   setIsOpenPlaylistRecommendPopUp(true);
@@ -37,14 +39,29 @@ export function onClosePlaylistRecommendPopUp() {
 
 // 플레이리스트 추천하기
 export function onRecommendPlaylist(recommendation: string) {
-  const denizenIds = getCheckedMemberList().map((member) => member.id);
+  const checkedMemberList = getCheckedMemberList();
+  const denizenIds = checkedMemberList.map((member) => member.id);
   const playlistId = getMyPagePlaylistDetail()?.playlistId || '';
 
-  if (
-    recommendation.length === 0 ||
-    recommendation.length > 50 ||
-    playlistId === ''
-  ) {
+  if (checkedMemberList.length === 0) {
+    reactAlert({
+      title: getPolyglotText('Playlist 추천하기', 'playlist-popup-추천하기'),
+      message: getPolyglotText(
+        'Playlist를 추천할 구성원을 선택해주세요.',
+        'playlist-popup-추천구성원'
+      ),
+    });
+    return;
+  }
+
+  if (trim(recommendation).length === 0) {
+    reactAlert({
+      title: getPolyglotText('Playlist 추천하기', 'playlist-popup-추천하기'),
+      message: getPolyglotText(
+        '추천할 메세지 내용을 입력해주세요.',
+        'playlist-popup-추천메세지'
+      ),
+    });
     return;
   }
 
@@ -174,9 +191,7 @@ export function onClickDepartment(
   data: AccordionTitleProps
 ) {
   const departmentCode = data.departmentCode as string;
-  const departmentName = data.departmentName as string;
 
   setSelcetedDepartmentCode(departmentCode);
-  setSelectedDepartmentName(departmentName);
   requestMemberByDepartmentCode(departmentCode);
 }

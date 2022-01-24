@@ -21,15 +21,16 @@ import {
   userIdentitiesToMemberList,
   MembersByDepartmentCodeToMemberList,
   setSelcetedDepartmentCode,
-  setSelectedDepartmentName,
+  setCompanyName,
 } from './playlistRecommendPopUp.store';
 import { SkProfileService } from 'profile/stores';
-import { patronInfo } from '@nara.platform/dock';
 import { retrieveDepartmentsCache } from 'approval/department/present/apiclient/DepartmentApi';
 import {
+  findCompanyCahche,
   findDefaultIndexByDepartmentCode,
-  findMembersByDepartmentCode,
+  findMembersByDepartmentCodeCache,
 } from 'lecture/detail/api/approvalApi';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
 // 플레이리스트 추천
 export function requestRecommendPlaylist(
@@ -59,16 +60,20 @@ export function requestRecommendPlaylist(
 
 // department Code로 구성원 호출
 export async function requestMemberByDepartmentCode(departmentCode: string) {
-  const memberByDepartmentCode = await findMembersByDepartmentCode(
+  const memberByDepartmentCode = await findMembersByDepartmentCodeCache(
     departmentCode
   );
 
   if (memberByDepartmentCode !== undefined) {
+    const myId = SkProfileService.instance.additionalUserInfo.id;
+    const filteredMemberByDepartmentCode = memberByDepartmentCode.filter(
+      (member) => member.id !== myId
+    );
+
     const departmentMembers = MembersByDepartmentCodeToMemberList(
-      memberByDepartmentCode
+      filteredMemberByDepartmentCode
     );
     setDepartmentMembers(departmentMembers);
-    setSelectedDepartmentName(departmentMembers[0].departmentName);
   }
 }
 
@@ -88,7 +93,14 @@ export async function requestMysuniUser(searchWord: string) {
   const mySuniUserIdentities = await findUserIdentitiesByKeyword(searchWord);
 
   if (mySuniUserIdentities !== undefined) {
-    const mySuniUsers = userIdentitiesToMemberList(mySuniUserIdentities);
+    const myId = SkProfileService.instance.additionalUserInfo.id;
+    const filteredMySuniUserIdentities = mySuniUserIdentities.filter(
+      (user) => user.id !== myId
+    );
+
+    const mySuniUsers = userIdentitiesToMemberList(
+      filteredMySuniUserIdentities
+    );
     setMySuniUsers(mySuniUsers);
   }
 }
@@ -108,13 +120,13 @@ export async function requestFollower() {
 export async function requestDepartmentChart() {
   const companyCode = `SK_-_${SkProfileService.instance.skProfile.companyCode}`;
   const departmentCode = SkProfileService.instance.skProfile.departmentCode;
-  const cineroomId = patronInfo.getCineroomId();
 
   const departments = await retrieveDepartmentsCache(companyCode);
   const defaultIndexByDepartmentCode =
     (await findDefaultIndexByDepartmentCode(departmentCode)) || {};
 
   if (departments !== undefined) {
+    requestCompanyName(companyCode);
     requestMemberByDepartmentCode(departmentCode);
     setOrganizationChartTree(
       departmentChartToOrganiztionChartTree(
@@ -123,11 +135,15 @@ export async function requestDepartmentChart() {
       )
     );
   }
-  // // 모든 부서 정보를 다 불러온다.
-  // if (cineroomId === 'ne1-m2-c2') {
-  // } else {
-  //   // 나의 부서정보를 불러온다.
-  // }
+}
+
+// 회사이름 불러오기
+export async function requestCompanyName(companyCode: string) {
+  const companyName = await findCompanyCahche(companyCode);
+
+  if (companyName !== undefined) {
+    setCompanyName(parsePolyglotString(companyName.name));
+  }
 }
 
 export function useRequestDepartMentUser() {

@@ -2,10 +2,9 @@ import React, { useCallback, useState } from 'react';
 import { Button, Icon, Modal, Tab } from 'semantic-ui-react';
 import { ProfileComponent } from './components/ProfileComponent';
 import {
-  getCheckedMemberList,
   useCheckedMemberList,
+  useCompanyName,
   useIsOpenPlaylistRecommendPopUp,
-  useSelectedDepartmentName,
 } from './playlistRecommendPopUp.store';
 import { DepartmentMemberTab } from './components/DepartmentMemberTab';
 import { MySuniUserTab } from './components/MySuniUserTab';
@@ -17,15 +16,13 @@ import {
   onClosePlaylistRecommendPopUp,
 } from './playlistRecommendPopUp.events';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
-import { trim } from 'lodash';
-import { reactAlert } from '@nara.platform/accent';
 
 export function RecommendPopUpLeftComponent() {
-  const departmentName = useSelectedDepartmentName();
+  const companyName = useCompanyName();
 
   const panes = [
     {
-      menuItem: departmentName,
+      menuItem: companyName,
       render: () => <DepartmentMemberTab />,
     },
     {
@@ -71,7 +68,7 @@ export function RecommendPopUpRightComponent() {
       <div className="sh-list-contents">
         {checkedMemberList.length === 0 ? (
           <div className="no-cont-wrap">
-            <Icon className="no-contents80" />
+            <Icon className="no-contents50" />
             <span className="blind">콘텐츠 없음</span>
             <div
               className="text"
@@ -118,27 +115,6 @@ export function PlaylistRecommendPopUpView() {
   );
 
   const onClickRecommend = useCallback(() => {
-    const checkedMemberList = getCheckedMemberList();
-    if (checkedMemberList.length === 0) {
-      reactAlert({
-        title: getPolyglotText('Playlist 추천하기', 'playlist-popup-추천하기'),
-        message: getPolyglotText(
-          'Playlist를 추천할 구성원을 선택해주세요.',
-          'playlist-popup-추천구성원'
-        ),
-      });
-      return;
-    }
-    if (trim(recommendation).length === 0) {
-      reactAlert({
-        title: getPolyglotText('Playlist 추천하기', 'playlist-popup-추천하기'),
-        message: getPolyglotText(
-          '추천할 메세지 내용을 입력해주세요.',
-          'playlist-popup-추천메세지'
-        ),
-      });
-      return;
-    }
     onRecommendPlaylist(recommendation);
   }, [recommendation]);
 
