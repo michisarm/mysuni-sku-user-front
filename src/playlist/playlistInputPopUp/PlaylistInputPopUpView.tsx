@@ -52,7 +52,9 @@ export function PlaylistInputPopUpView(props: PlaylistInputPopUpProps) {
   return (
     <Modal open={isOpen} className="base w600 pl-create">
       <Modal.Header className="res xfl">
-        Playlist {type === 'CREATE' ? '만들기' : '수정하기'}
+        {type === 'CREATE'
+          ? getPolyglotText('Playlist 만들기', 'playlist-popup-만들기')
+          : getPolyglotText('Playlist 수정하기', 'playlist-popup-수정하기')}
         <Button className="close24" onClick={onClosePlaylistInputPopUp}>
           <Icon className="close24" />
         </Button>
@@ -61,7 +63,11 @@ export function PlaylistInputPopUpView(props: PlaylistInputPopUpProps) {
         <div className="inner">
           <Form className="create-form">
             <div className="form-tit">
-              Playlist 명<Icon className="essential" />
+              <PolyglotText
+                defaultString="Playlist 명"
+                id="playlist-popup-이름입력"
+              />
+              <Icon className="essential" />
             </div>
             <div
               className={`ui right-top-count input ${
