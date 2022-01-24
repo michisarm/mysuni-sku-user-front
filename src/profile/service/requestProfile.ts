@@ -1,9 +1,6 @@
 import SkProfileService from '../present/logic/SkProfileService';
-import { SkProfileModel } from '../model';
-import { findMyPisAgreement } from '../present/apiclient/SkProfileApi';
 import { getCurrentHistory } from '../../shared/store/HistoryStore';
 import profilePaths from '../routePaths';
-import { setPisAgreementViewModel } from '../store/PisAgreementStore';
 import { isEmpty } from 'lodash';
 
 export async function requestProfile() {
