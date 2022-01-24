@@ -111,7 +111,7 @@ export function MySuniUserTab() {
           )}
           {isSearchAfter && mySuniUser.length === 0 ? (
             <div className="no-cont-wrap">
-              <Icon className="no-contents80" />
+              <Icon className="no-contents50" />
               <span className="blind">콘텐츠 없음</span>
               <div
                 className="text"
