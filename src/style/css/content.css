@@ -2596,11 +2596,11 @@ i.icon.add-black16::after {
   flex-wrap: wrap;
 }
 .pl-share .inner .sh-left {
-  width: 63%;
+  width: 63.5%;
 }
 
 .pl-share .inner .sh-right {
-  width: 37%;
+  width: 36.5%;
   border-left: 1px solid #ddd;
   padding: 0 30px;
 }
