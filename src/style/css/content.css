@@ -3430,6 +3430,9 @@ i.icon.logout-16px::before {
   top: 50%;
   transform: translate(-50%, -50%);
   cursor: pointer;
+  max-width: 100%;
+  height : 100%;
+  image-rendering : -webkit-optimize-contrast;
 }
 .playlist-sub-infobox .maker-user {
   height: 36px;
