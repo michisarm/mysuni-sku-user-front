@@ -2855,9 +2855,8 @@ i.icon.add-black16::after {
   font-weight: 400; 
   margin-bottom:3px;
 }
-.ui.popup.user-prf-popup .content .prf-comp::after {
-  content:'/'; 
-  margin:0 4px;
+.ui.popup.user-prf-popup .content .prf-comp {
+  margin-right:3px;
 }
 
 /* nodata, 검색전 공통 */
