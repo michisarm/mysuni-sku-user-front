@@ -85,7 +85,7 @@ export function FollowingTab() {
             <Icon className="search link" onClick={onSearch} />
           </div>
         </div>
-        <div className="sh-left-bottom">
+        <div className="sh-left-slct-wrap">
           {searchTextResult && searchResult?.length === 0 ? (
             <div className="no-cont-wrap">
               <Icon className="no-contents80" />

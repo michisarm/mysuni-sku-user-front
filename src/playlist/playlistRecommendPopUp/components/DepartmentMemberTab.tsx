@@ -103,9 +103,9 @@ export function DepartmentMemberTab() {
           </div>
         </div>
         <div className="sh-left-slct-wrap">
-          {departmentMember.length === 0 ? (
+          {searchResult?.length === 0 ? (
             <div className="no-cont-wrap">
-              <Icon className="no-contents80" />
+              <Icon className="no-contents50" />
               <span className="blind">콘텐츠 없음</span>
               <div
                 className="text"
