@@ -4,13 +4,11 @@ import MyLearningSummaryModel from '../../model/MyLearningSummaryModel';
 
 function findMyLearningSummaryByYear(year: string) {
   //
-  const paramYear = year === '-1' ? '0' : year;
-
   return (
     axiosApi
       // .get<MyLearningSummaryModel>(`/api/mytraining/summaries/flow/${year}`)
       .get<MyLearningSummaryModel>(
-        `/api/learning/learningTimes/total?year=${paramYear}`
+        `/api/learning/learningTimes/total?year=${year === '-1' ? '0' : year}`
       )
       .then((response) => response && response.data)
   );

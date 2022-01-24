@@ -90,7 +90,11 @@ export function findMyUserWorkspace() {
   return axios.get<UserWorkspace>(url).then(AxiosReturn);
 }
 
-export const [
-  findMyUserWorkspaceCache,
-  clearFindMyUserWorkspaceCache,
-] = createCacheApi(findMyUserWorkspace);
+export const [findMyUserWorkspaceCache, clearFindMyUserWorkspaceCache] =
+  createCacheApi(findMyUserWorkspace);
+
+export function findMyUserWorkspaces(): Promise<UserWorkspace[] | undefined> {
+  const axios = getAxios();
+  const url = '/api/user/userWorkspaces';
+  return axios.get<UserWorkspace[]>(url).then(AxiosReturn);
+}
