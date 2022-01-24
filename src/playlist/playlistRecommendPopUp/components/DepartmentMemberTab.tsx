@@ -8,7 +8,6 @@ import {
 } from '../playlistRecommendPopUp.events';
 import { useRequestDepartMentUser } from '../playlistRecommendPopUp.request';
 import {
-  MemberList,
   useCheckedMemberList,
   useDepartmentMembers,
   useSelcetedDepartmentCode,
@@ -24,12 +23,8 @@ export function DepartmentMemberTab() {
   const selectedDepartmentCode = useSelcetedDepartmentCode();
   const [searchText, setSearchText] = useState('');
   const [searchTextResult, setSearchTextResult] = useState('');
-  const [searchResult, setSearchResult] = useState<MemberList[] | undefined>(
-    undefined
-  );
 
   useEffect(() => {
-    setSearchResult(undefined);
     setSearchTextResult('');
     setSearchText('');
   }, [selectedDepartmentCode]);
@@ -57,8 +52,7 @@ export function DepartmentMemberTab() {
   );
 
   const onSearch = useCallback(() => {
-    const searchedDepartmentMembrer = onSearchDepartmentMember(searchText);
-    setSearchResult(searchedDepartmentMembrer);
+    onSearchDepartmentMember(searchText);
     setSearchTextResult(searchText);
   }, [searchText]);
 
@@ -103,7 +97,7 @@ export function DepartmentMemberTab() {
           </div>
         </div>
         <div className="sh-left-slct-wrap">
-          {searchResult?.length === 0 ? (
+          {departmentMember.length === 0 ? (
             <div className="no-cont-wrap">
               <Icon className="no-contents50" />
               <span className="blind">콘텐츠 없음</span>
@@ -128,7 +122,7 @@ export function DepartmentMemberTab() {
                 />
               </div>
               <div className="sh-user-list">
-                {(searchResult || departmentMember).map((member) => (
+                {departmentMember.map((member) => (
                   <div className="user-prf" id={member.id}>
                     <div className="user-check">
                       <Checkbox

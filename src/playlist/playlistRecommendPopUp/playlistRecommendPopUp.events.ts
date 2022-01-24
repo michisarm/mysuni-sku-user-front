@@ -17,6 +17,7 @@ import {
   setIsOpenPlaylistRecommendPopUp,
   setMySuniUsers,
   setSelcetedDepartmentCode,
+  getSelcetedDepartmentCode,
 } from './playlistRecommendPopUp.store';
 import { onAllCheckMember, onCheckMember } from './helper/onCheckMember';
 import { getMyPagePlaylistDetail } from 'myTraining/ui/view/playlist/myPagePlaylistDetail/MyPagePlaylistDetail.services';
@@ -171,17 +172,11 @@ export function onSearchMySuniUser(searchText: string) {
 
 // 부서 구성원 검색
 export function onSearchDepartmentMember(searchText: string) {
-  const departmentMember = getDepartmentMembers();
   const isValidationChecked = textValidationCheck(searchText);
+  const departmentCode = getSelcetedDepartmentCode();
 
-  if (isValidationChecked && departmentMember !== undefined) {
-    const filteredDepartmentMember = departmentMember.filter(
-      (department) =>
-        department.name.includes(searchText) ||
-        department.email.includes(searchText)
-    );
-
-    return filteredDepartmentMember;
+  if (isValidationChecked) {
+    requestMemberByDepartmentCode(departmentCode, searchText);
   }
 }
 

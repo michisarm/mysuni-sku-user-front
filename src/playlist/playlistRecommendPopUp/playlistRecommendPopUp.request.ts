@@ -3,10 +3,7 @@ import { reactAlert } from '@nara.platform/accent';
 import requestMyPagePlaylistDetail from 'myTraining/ui/view/playlist/myPagePlaylistDetail/MyPagePlaylistDetail.request';
 import { getDenizedId } from 'community/ui/app.formatters';
 import { findFollowerUsers } from 'community/ui/data/community/apis/followApi';
-import {
-  findSameDepartmentUserIdentities,
-  findUserIdentitiesByKeyword,
-} from 'community/ui/data/community/apis/profilesApi';
+import { findUserIdentitiesByKeyword } from 'community/ui/data/community/apis/profilesApi';
 import { recommendPlaylist } from 'playlist/data/apis';
 import { useEffect } from 'react';
 import { onClosePlaylistRecommendPopUp } from './playlistRecommendPopUp.events';
@@ -24,11 +21,13 @@ import {
   setCompanyName,
 } from './playlistRecommendPopUp.store';
 import { SkProfileService } from 'profile/stores';
-import { retrieveDepartmentsCache } from 'approval/department/present/apiclient/DepartmentApi';
+import {
+  findMembersByDepartmentCodeCache,
+  retrieveDepartmentsCache,
+} from 'approval/department/present/apiclient/DepartmentApi';
 import {
   findCompanyCahche,
-  findDefaultIndexByDepartmentCode,
-  findMembersByDepartmentCodeCache,
+  findDefaultIndexByDepartmentCodeCache,
 } from 'lecture/detail/api/approvalApi';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 
@@ -59,9 +58,13 @@ export function requestRecommendPlaylist(
 }
 
 // department Code로 구성원 호출
-export async function requestMemberByDepartmentCode(departmentCode: string) {
+export async function requestMemberByDepartmentCode(
+  departmentCode: string,
+  keyword?: string
+) {
   const memberByDepartmentCode = await findMembersByDepartmentCodeCache(
-    departmentCode
+    departmentCode,
+    keyword
   );
 
   if (memberByDepartmentCode !== undefined) {
@@ -73,17 +76,6 @@ export async function requestMemberByDepartmentCode(departmentCode: string) {
     const departmentMembers = MembersByDepartmentCodeToMemberList(
       filteredMemberByDepartmentCode
     );
-    setDepartmentMembers(departmentMembers);
-  }
-}
-
-// 소속 부서 구성원 tab 데이터 호출
-export async function requestDepartMentUser(searchWord: string) {
-  const sameDepartmentUsers = await findSameDepartmentUserIdentities(
-    searchWord
-  );
-  if (sameDepartmentUsers !== undefined) {
-    const departmentMembers = userIdentitiesToMemberList(sameDepartmentUsers);
     setDepartmentMembers(departmentMembers);
   }
 }
@@ -123,7 +115,7 @@ export async function requestDepartmentChart() {
 
   const departments = await retrieveDepartmentsCache(companyCode);
   const defaultIndexByDepartmentCode =
-    (await findDefaultIndexByDepartmentCode(departmentCode)) || {};
+    (await findDefaultIndexByDepartmentCodeCache(departmentCode)) || {};
 
   if (departments !== undefined) {
     requestCompanyName(companyCode);

@@ -21,9 +21,11 @@ export default class DepartmentService {
   @action
   async findDepartmentByCode(departmentCode: string) {
     //
-    const department = await this.departmentApi.findDepartmentByCode(departmentCode);
+    const department = await this.departmentApi.findDepartmentByCode(
+      departmentCode
+    );
 
-    runInAction(() => this.department = department);
+    runInAction(() => (this.department = department));
     return department;
   }
 }

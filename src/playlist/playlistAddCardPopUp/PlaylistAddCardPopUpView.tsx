@@ -10,7 +10,7 @@ import {
 import { useIsOpenPlaylistAddCardPopUp } from './playlistAddCardPopUp.stores';
 
 interface PlaylistAddCardPopUpProps {
-  onAddCardCallback: (cardIds: string[]) => void;
+  onAddCardCallback?: (cardIds: string[]) => void;
 }
 
 /**

@@ -30,11 +30,9 @@ const eventURL = '/api/event';
 // }
 
 //목표설정
-export function getBadgeLearningCompanyAvg(companyCode: string) {
+export function getBadgeLearningCompanyAvg(companyCode: string, year: number) {
   return axiosApi
-    .get<any>(
-      `/api/statistics/companyAverage/${companyCode}/${moment().year()}`
-    )
+    .get<any>(`/api/statistics/companyAverage/${companyCode}/${year}`)
     .then((response) => response && response.data);
 }
 

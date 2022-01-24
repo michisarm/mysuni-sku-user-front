@@ -48,15 +48,26 @@ function UserProfileInfoTabPlaylist(props: Props) {
 
     if (added) {
       reactAlert({
-        title: 'Playlist 추가하기',
-        message: 'MyPage > Playlist 메뉴에서 확인하세요.',
+        title: getPolyglotText(
+          'Playlist 담기',
+          'profilecard-playlist-alert-title'
+        ),
+        message: getPolyglotText(
+          'Playlist를 담았습니다. My Page > Playlist 메뉴에서 확인하세요.',
+          'profilecard-playlist-alert-text'
+        ),
         onClose: () => {},
       });
     } else {
       reactAlert({
-        title: 'Playlist 추가하기',
-        message:
-          '이미 담은 Playlist 입니다. MyPage > Playlist 메뉴에서 확인하세요.',
+        title: getPolyglotText(
+          '이미 담은 Playlist 입니다.',
+          getPolyglotText(
+            'My Page > Playlist 메뉴에서 확인해주세요.',
+            'profilecard-playlist-alert-text2'
+          )
+        ),
+        message: 'MyPage > Playlist 메뉴에서 확인하세요.',
         onClose: () => {},
       });
     }

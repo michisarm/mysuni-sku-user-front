@@ -118,7 +118,7 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
 
     const { skProfile } = skProfileService;
 
-    await requestBadgeLearningTime(skProfile.companyCode);
+    await requestBadgeLearningTime(skProfile.companyCode, year);
     await findInstructTimeSummary();
     findMyLearningSummaryByYear(year).then(
       (myLearningSummary: MyLearningSummaryModel) => {
@@ -142,9 +142,8 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
 
   async onChangeSelectYear(value: number) {
     //
-    this.setState({ selectYear: value });
     await this.findMySummaries(value);
-    this.setState({ isLoading: false });
+    this.setState({ selectYear: value, isLoading: false });
   }
 
   render() {
@@ -174,7 +173,7 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
       displayTotalLearningTime,
     } = myLearningSummaryService;
 
-    const year = selectYear === -1 ? '전체' : selectYear.toString();
+    const year = selectYear === -1 ? '전체 ' : selectYear.toString();
 
     return (
       <>
