@@ -4014,6 +4014,7 @@ i.icon.plus.round16:before {
   height: 100%;
   background: #fff;
   opacity: 0.4;
+  border-radius: 50%;
 }
 /* Active Case */
 .plylistSwiper .swiper-slide-active {
