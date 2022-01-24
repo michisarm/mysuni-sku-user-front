@@ -67,8 +67,7 @@ function UserProfileInfoTabPlaylist(props: Props) {
             'profilecard-playlist-alert-text2'
           )
         ),
-        message:
-          '이미 담은 Playlist 입니다. MyPage > Playlist 메뉴에서 확인하세요.',
+        message: 'MyPage > Playlist 메뉴에서 확인하세요.',
         onClose: () => {},
       });
     }
