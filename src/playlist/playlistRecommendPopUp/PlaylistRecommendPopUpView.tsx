@@ -2,7 +2,6 @@ import React, { useCallback, useState } from 'react';
 import { Button, Icon, Modal, Tab } from 'semantic-ui-react';
 import { ProfileComponent } from './components/ProfileComponent';
 import {
-  getCheckedMemberList,
   useCheckedMemberList,
   useCompanyName,
   useIsOpenPlaylistRecommendPopUp,
@@ -17,8 +16,6 @@ import {
   onClosePlaylistRecommendPopUp,
 } from './playlistRecommendPopUp.events';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
-import { trim } from 'lodash';
-import { reactAlert } from '@nara.platform/accent';
 
 export function RecommendPopUpLeftComponent() {
   const companyName = useCompanyName();
@@ -71,7 +68,7 @@ export function RecommendPopUpRightComponent() {
       <div className="sh-list-contents">
         {checkedMemberList.length === 0 ? (
           <div className="no-cont-wrap">
-            <Icon className="no-contents80" />
+            <Icon className="no-contents50" />
             <span className="blind">콘텐츠 없음</span>
             <div
               className="text"
