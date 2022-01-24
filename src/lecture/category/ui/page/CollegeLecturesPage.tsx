@@ -86,7 +86,7 @@ class CollegeLecturesPage extends Component<Props> {
             text: `${parsePolyglotString(
               college.name,
               getDefaultLang(college.langSupports)
-            )} Category`,
+            )}`,
           },
         ]}
       >
