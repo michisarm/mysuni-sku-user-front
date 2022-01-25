@@ -6,6 +6,7 @@ import {
   DepartmentApiModel,
   DepartmentChartModel,
 } from 'approval/department/model/DepartmentModel';
+import { getCommunityProfileImage } from 'community/ui/app.formatters';
 
 export interface MemberList {
   id: string;
@@ -72,7 +73,7 @@ export function userIdentitiesToMemberList(
       email: user.email,
       departmentName: parsePolyglotString(user.departmentName),
       companyName: parsePolyglotString(user.companyName),
-      thumbnailImagePath: user.photoImagePath,
+      thumbnailImagePath: getCommunityProfileImage(user.photoImagePath),
     };
   });
 
