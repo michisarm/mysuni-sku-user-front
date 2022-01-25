@@ -1,3 +1,4 @@
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { isEmpty } from 'lodash';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { Colleges } from '../playlistAddCardPopUp.stores';
@@ -7,7 +8,7 @@ export function getCollegeOption(colleges: Colleges[]) {
     {
       key: '',
       value: '',
-      text: '전체',
+      text: getPolyglotText('전체', 'mypage-playlist-전체리스트'),
     },
   ];
 
