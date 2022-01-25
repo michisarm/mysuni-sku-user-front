@@ -32,6 +32,7 @@ import {
   requestMyPagePlaylist,
   useRequestMyPagePlaylist,
 } from '../view/playlist/myPagePlaylist/MyPagePlaylist.request';
+import { Area } from 'tracker/model';
 
 interface PropsType {
   playlist: MyPlaylistsTable;
@@ -185,7 +186,10 @@ function MyPagePlaylistPage() {
 
   return (
     <>
-      <div className="mypage_contents profile-playlist-contents">
+      <div
+        className="mypage_contents profile-playlist-contents"
+        data-area={Area.PLAYLIST_LIST}
+      >
         <strong className="mypage_title">Playlist</strong>
         <div className="top-line">
           <span
