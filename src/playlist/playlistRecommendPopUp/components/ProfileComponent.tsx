@@ -2,10 +2,20 @@ import React from 'react';
 import { MemberList } from '../playlistRecommendPopUp.store';
 import Image from '../../../shared/components/Image/Image';
 import { Popup } from 'semantic-ui-react';
+import {
+  getEmailMaskingString,
+  getNameMaskingString,
+} from '../helper/getMaskingString';
 
 export function ProfileComponent(props: MemberList) {
-  const { name, email, thumbnailImagePath, departmentName, companyName } =
-    props;
+  const {
+    name,
+    email,
+    thumbnailImagePath,
+    departmentName,
+    companyName,
+    isNickName,
+  } = props;
 
   return (
     <div className="ui profile">
@@ -17,7 +27,9 @@ export function ProfileComponent(props: MemberList) {
           className="user-prf-popup"
           trigger={
             <div className="info-top">
-              <strong className="prf-name">{name}</strong>
+              <strong className="prf-name">
+                {getNameMaskingString(name, isNickName)}
+              </strong>
               <span className="prf-comp">{departmentName}</span>
               <span className="prf-group">{`/ ${companyName}`}</span>
             </div>
@@ -26,13 +38,15 @@ export function ProfileComponent(props: MemberList) {
         >
           <Popup.Content>
             <div className="info-top">
-              <strong className="prf-name">{name}</strong>
+              <strong className="prf-name">
+                {getNameMaskingString(name, isNickName)}
+              </strong>
               <span className="prf-comp">{departmentName}</span>
               <span className="prf-group">{`/ ${companyName}`}</span>
             </div>
           </Popup.Content>
         </Popup>
-        <span className="prf-email">{email}</span>
+        <span className="prf-email">{getEmailMaskingString(email)}</span>
       </div>
     </div>
   );
