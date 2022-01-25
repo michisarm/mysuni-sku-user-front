@@ -7,4 +7,5 @@ export interface UserWorkspace {
   parentId: string;
   hasChildren: boolean;
   blacklistAccessRuleForPaidLecture?: AccessRule;
+  usid: string;
 }

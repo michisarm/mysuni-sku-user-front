@@ -17,12 +17,15 @@ export function useRequestUserWorkspaces() {
   }, []);
 }
 
-export async function requestUserWorkspaces() {
+export async function requestUserWorkspaces(): Promise<
+  UserWorkspace[] | undefined
+> {
   const workspaces = await findMyUserWorkspaces();
   if (workspaces === undefined) {
     return;
   }
   setUserWorkspaces(workspaces);
+  return workspaces;
 }
 
 export function getUserWorkspace(id: string): UserWorkspace | undefined {
