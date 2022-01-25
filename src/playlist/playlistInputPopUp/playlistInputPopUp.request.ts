@@ -9,6 +9,7 @@ import { onClosePlaylistInputPopUp } from './playlistInputPopUp.events';
 import {
   setPlaylistInputPopUp,
   useIsOpenPlaylistInputPopUp,
+  setIsOpenPlaylistInputPopUp,
 } from './playlistInputPopUp.store';
 
 export function requestSavePlaylistInput(
@@ -61,6 +62,16 @@ export async function requsetPlaylistDetail() {
 
 export function useRequestPlaylistDetail(type: 'CREATE' | 'EDIT') {
   const isOpen = useIsOpenPlaylistInputPopUp();
+
+  useEffect(() => {
+    setIsOpenPlaylistInputPopUp(false);
+    setPlaylistInputPopUp({
+      title: '',
+      description: '',
+      expose: true,
+    });
+  }, []);
+
   useEffect(() => {
     if (type === 'EDIT' && isOpen) {
       requsetPlaylistDetail();

@@ -12,6 +12,7 @@ import {
   setDepartmentMembers,
   setFollowerList,
   useIsOpenPlaylistRecommendPopUp,
+  setIsOpenPlaylistRecommendPopUp,
   setMySuniUsers,
   setOrganizationChartTree,
   departmentChartToOrganiztionChartTree,

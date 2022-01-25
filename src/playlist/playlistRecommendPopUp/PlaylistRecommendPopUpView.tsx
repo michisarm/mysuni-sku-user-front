@@ -1,7 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Icon, Modal, Tab } from 'semantic-ui-react';
 import { ProfileComponent } from './components/ProfileComponent';
 import {
+  setIsOpenPlaylistRecommendPopUp,
   useCheckedMemberList,
   useCompanyName,
   useIsOpenPlaylistRecommendPopUp,
@@ -106,6 +107,10 @@ export function PlaylistRecommendPopUpView() {
   // const checkedMemberList = getCheckedMemberList();
   const isOpen = useIsOpenPlaylistRecommendPopUp();
   const [recommendation, setRecommendation] = useState('');
+
+  useEffect(() => {
+    setIsOpenPlaylistRecommendPopUp(false);
+  }, []);
 
   const onChangeRecommendation = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
