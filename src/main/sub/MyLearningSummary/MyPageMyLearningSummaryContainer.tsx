@@ -100,6 +100,7 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
 
     for (let i = 1; i < 4; i++) {
       const year = currentYear - i;
+      if (year === 2019) break;
       years.push({ key: year, text: `${year}`, value: year });
     }
 
