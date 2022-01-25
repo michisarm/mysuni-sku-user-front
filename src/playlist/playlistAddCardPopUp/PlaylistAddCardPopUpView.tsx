@@ -29,7 +29,10 @@ export function PlaylistAddCardPopUpView({
   return (
     <Modal open={isOpen} className="base popup_slt_card">
       <Modal.Header className="res xfl">
-        <PolyglotText defaultString="Card 선택" id="playlist-popup-카드선택" />
+        <PolyglotText
+          defaultString="학습카드 검색"
+          id="playlist-popup-카드선택"
+        />
         <Button className="close24" onClick={onClosePlaylistAddCardPopUp}>
           <Icon className="close24" />
         </Button>

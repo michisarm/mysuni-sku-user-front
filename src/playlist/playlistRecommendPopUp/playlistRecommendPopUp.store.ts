@@ -6,7 +6,6 @@ import {
   DepartmentApiModel,
   DepartmentChartModel,
 } from 'approval/department/model/DepartmentModel';
-import { MemberByDepartmentCode } from 'lecture/detail/model/MemberByDepartmentCode';
 
 export interface MemberList {
   id: string;
@@ -15,6 +14,7 @@ export interface MemberList {
   departmentName: string;
   companyName: string;
   thumbnailImagePath: string;
+  isNickName?: boolean;
 }
 
 /**
@@ -91,6 +91,7 @@ export function followingToMemberList(following: Profile[]): MemberList[] {
       departmentName: parsePolyglotString(member.departmentName),
       companyName: parsePolyglotString(member.companyName),
       thumbnailImagePath: member.photoImagePath,
+      isNickName: member.displayNicknameFirst,
     };
   });
 
