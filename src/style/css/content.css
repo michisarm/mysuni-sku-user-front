@@ -2860,7 +2860,9 @@ i.icon.add-black16::after {
 }
 
 /* nodata, 검색전 공통 */
-.pl-pc-wrap .no-cont-wrap, .pl-share .no-cont-wrap {position:absolute; left:0; top:calc(50% - 10px);width:100%; text-align: center; transform: translateY(-50%);}
+.pl-add .no-cont-wrap,
+.pl-share .no-cont-wrap,
+.pl-pc-wrap .no-cont-wrap {position:absolute; left:0; top:calc(50% - 10px); width:100%; text-align: center; transform: translateY(-50%);}
 .pl-share .sh-left-list .no-cont-wrap {
   top:calc(50% - 10px - 39px);
 }
@@ -3424,6 +3426,7 @@ i.icon.logout-16px::before {
   font-size: 14px;
   line-height: 22px;
   margin-top: 8px;
+  word-break: break-all;
 }
 .playlist-detail-infobox .playlist-sub-infobox {
   margin-top: 26px;
@@ -3912,6 +3915,7 @@ i.icon.plus.round16:before {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 .plylistSwiper .item {
   flex: none;
@@ -4295,3 +4299,4 @@ i.icon.plus.round16:before {
 }
 
 .ui.label.onlytext .icon.like2{background : url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-heart-gray.svg') 0 .0625rem no-repeat}
+.lms-alarm-item .lms-alarm-copy{word-break: break-all;}
