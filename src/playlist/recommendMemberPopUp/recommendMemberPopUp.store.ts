@@ -1,3 +1,4 @@
+import { getProfileImage } from 'community/ui/app.formatters';
 import { UserIdentities } from 'playlist/data/models/UserIdentities';
 import { createStore } from 'restoa';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
@@ -21,7 +22,11 @@ export function userIdentitiesToMemberList(userIdentities: UserIdentities[]) {
       email: user.email,
       departmentName: parsePolyglotString(user.departmentName),
       companyName: parsePolyglotString(user.companyName),
-      photoImagePath: user.photoImagePath,
+      photoImagePath: getProfileImage(
+        user.photoImagePath,
+        user.gdiPhotoImagePath,
+        user.useGdiPhoto
+      ),
     };
   });
 

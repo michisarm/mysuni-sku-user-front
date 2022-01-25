@@ -3581,7 +3581,7 @@ i.icon.plus.round16 span {
   color: #777;
 }
 i.icon.plus.round16:before {
-  font-size: 4px;
+  font-size: 10px;
   line-height: 14px;
   display: block;
   height: 14px;
