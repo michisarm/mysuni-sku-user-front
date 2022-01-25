@@ -148,7 +148,7 @@ function MyPagePage({
         ]}
       >
         {/* <MyPageHeaderContainer /> */}
-        <div className="mypage_lnb">
+        <div className="mypage_lnb" data-area={Area.MYPAGE_INFO}>
           <div className="inner">
             <MyPageProfileCardContainer
               clickTabHandler={clickTabHandler}

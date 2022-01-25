@@ -26,6 +26,7 @@ import {
   initMyLearningRdo,
   MyLearningRdo,
 } from '../../../lecture/detail/model/MyLearningRdo';
+import { Area } from 'tracker/model';
 
 interface Props extends RouteComponentProps {}
 
@@ -153,11 +154,8 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
       myLearningRdo,
       currentYearLearningTime,
     } = this.state;
-    const {
-      learningGoalHour,
-      obtainedStampCount,
-      totalStampCount,
-    } = myLearningRdo;
+    const { learningGoalHour, obtainedStampCount, totalStampCount } =
+      myLearningRdo;
     const { myLearningSummaryService, badgeService } = this.injected;
     const { menuControlAuth } = MenuControlAuthService.instance;
 
@@ -177,7 +175,10 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
 
     return (
       <>
-        <div className="mypage_contents profile-dashboard-contents">
+        <div
+          className="mypage_contents profile-dashboard-contents"
+          data-area={Area.MYPAGE_LEARNING}
+        >
           <strong className="mypage_title">나의 학습 현황</strong>
 
           <Segment className="full">
