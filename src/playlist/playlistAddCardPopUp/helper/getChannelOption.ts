@@ -1,3 +1,4 @@
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { isEmpty, find } from 'lodash';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { getPlaylistColleges } from '../playlistAddCardPopUp.stores';
@@ -8,7 +9,7 @@ export function getChannelOption(collegeId: string) {
     {
       key: '',
       value: '',
-      text: '전체',
+      text: getPolyglotText('전체', 'mypage-playlist-전체리스트'),
     },
   ];
 

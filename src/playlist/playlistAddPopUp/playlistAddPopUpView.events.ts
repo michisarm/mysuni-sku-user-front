@@ -89,7 +89,7 @@ export function onAddLearningCard() {
     reactAlert({
       title: getPolyglotText('Playlist 추가하기', 'playlist-popup-추가하기'),
       message: getPolyglotText(
-        '생성된 Playlist가 없습니다.\n구성원들과 함께 학습할 Playlist를 만들어보세요!',
+        '생성된 Playlist가 없습니다. <br/> 구성원들과 함께 학습할 Playlist를 만들어보세요!',
         'playlist-popup-NoPlaylist'
       ),
     });
