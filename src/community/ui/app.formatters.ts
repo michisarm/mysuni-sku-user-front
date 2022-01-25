@@ -214,7 +214,8 @@ export function parseCommunityMenuTypeName(type: CommunityMenuType) {
   }
 }
 
-const defaultProfileImage = '/suni-community/images/all/img-profile-80-px.png';
+const defaultProfileImage =
+  'https://image.mysuni.sk.com/suni-asset/public/images/all/img-profile-80-px.png';
 
 export function getProfileImage(
   profileImage: string | undefined,
