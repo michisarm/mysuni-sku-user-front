@@ -62,12 +62,12 @@ function UserProfileInfoTabPlaylist(props: Props) {
       reactAlert({
         title: getPolyglotText(
           '이미 담은 Playlist 입니다.',
-          getPolyglotText(
-            'My Page > Playlist 메뉴에서 확인해주세요.',
-            'profilecard-playlist-alert-text2'
-          )
+          'profilecard-playlist-alert-title2'
         ),
-        message: 'MyPage > Playlist 메뉴에서 확인하세요.',
+        message: getPolyglotText(
+          'My Page > Playlist 메뉴에서 확인해주세요.',
+          'profilecard-playlist-alert-text2'
+        ),
         onClose: () => {},
       });
     }
