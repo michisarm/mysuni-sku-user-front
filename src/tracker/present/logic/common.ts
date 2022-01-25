@@ -16,6 +16,7 @@ import { requestChapter } from 'lecture/detail/service/useLectureChapter/request
 import { find } from 'lodash';
 import { findAvailableCardBundlesCache } from '../../../lecture/shared/api/arrangeApi';
 import { getUserTargets } from 'abtest/api/AbtestApi';
+import { findPlaylistDetail } from 'playlist/data/apis';
 
 const FIELD_STORAGE_KEY = '_mysuni_field';
 const AUTH_STORAGE_KEY = '_mysuni_auth';
@@ -38,9 +39,9 @@ export const initPvInit = () => {
     area: 'INIT',
     referer: '',
     refererSearch: '',
-    createDate: moment().toISOString(true)
+    createDate: moment().toISOString(true),
   };
-}
+};
 
 export const setPvInit = (pvParam: PvInit) => {
   const pvInit = initPvInit();
@@ -54,7 +55,7 @@ export const setPvInit = (pvParam: PvInit) => {
   } catch {
     //
   }
-}
+};
 
 export const getPvInit = () => {
   let pvInit = null;
@@ -63,7 +64,10 @@ export const getPvInit = () => {
       const cachedPvInit = localStorage.getItem(PV_INIT_STORAGE_KEY);
       if (cachedPvInit) {
         const parsePvInit = JSON.parse(cachedPvInit);
-        if(parsePvInit.createDate && moment(parsePvInit.createDate).diff(moment(), 'seconds') > -20){
+        if (
+          parsePvInit.createDate &&
+          moment(parsePvInit.createDate).diff(moment(), 'seconds') > -20
+        ) {
           pvInit = parsePvInit;
         }
         localStorage.removeItem(PV_INIT_STORAGE_KEY);
@@ -73,7 +77,7 @@ export const getPvInit = () => {
     //
   }
   return pvInit;
-}
+};
 
 export const initAuth = () => {
   const auth = {
@@ -413,6 +417,9 @@ const getFieldName = async (id: string, type: string) => {
           name = result?.name;
         });
       }
+    } else if (type === FieldType.Playlist) {
+      const result = await findPlaylistDetail(id);
+      name = result?.playlist.title;
     }
     if (name) {
       name = getKoreaName(name);
@@ -513,9 +520,9 @@ export const getPathName = async (path: string, search: string) => {
                   break;
                 case 'Recommend':
                   pathName += '::추천과정';
-                  if(RegExp.$4 === 'LearningPatternBased'){
+                  if (RegExp.$4 === 'LearningPatternBased') {
                     pathName += '::학습패턴';
-                  }else if(RegExp.$4 === 'ContentBase'){
+                  } else if (RegExp.$4 === 'ContentBase') {
                     pathName += '::유사한학습자';
                   }
                   break;
@@ -541,8 +548,30 @@ export const getPathName = async (path: string, search: string) => {
                 case 'EarnedStampList':
                   pathName += '::stamp';
                   break;
-                  case 'EarnedNoteList':
+                case 'EarnedNoteList':
                   pathName += '::note';
+                  break;
+                case 'MyLearningSummary':
+                  pathName += '::learning';
+                  break;
+                case 'MyProfile':
+                  pathName += '::profile';
+                  break;
+                case 'Playlist':
+                  switch (true) {
+                    case /(^\/suni-main)?\/my-training\/my-page\/Playlist\/detail\/(.*)/.test(
+                      path
+                    ):
+                      await setResultName({
+                        type: FieldType.Playlist,
+                        id: RegExp.$2,
+                      }).then((result) => {
+                        pathName = 'mypage::playlist::' + result.name;
+                      });
+                      break;
+                    default:
+                      pathName += '::playlist';
+                  }
                   break;
               }
               break;

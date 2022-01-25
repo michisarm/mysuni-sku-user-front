@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { NoContentsPlaylistSwiperComponent } from './components/NoContentsPlaylistSwiperComponent';
 import { PlaylistSwiperComponent } from './components/PlaylistSwiperComponent';
 import { useRequestPlaylistSwiper } from './playlistContainer.request';
@@ -8,9 +8,13 @@ export function PlaylistContainerView() {
   useRequestPlaylistSwiper();
   const playlistSwiper = usePlaylistSwiper();
 
-  if (playlistSwiper.length === 0) {
-    // <NoContentsPlaylistSwiperComponent />
+  const isAllEmpty = useMemo(() => {
+    return playlistSwiper.every((playlist) => playlist.id === '');
+  }, [playlistSwiper]);
+
+  if (isAllEmpty) {
     return null;
+    // NoContentsPlaylistSwiperComponent;
   }
 
   return <PlaylistSwiperComponent playlistSwiper={playlistSwiper} />;

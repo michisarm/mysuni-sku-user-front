@@ -14,6 +14,7 @@ import CommunityProfileModalPreview from '../../../../src/community/ui/view/Comm
 import { isExternalInstructor } from '../../../shared/helper/findUserRole';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import { Area } from 'tracker/model';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService;
@@ -447,7 +448,10 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
 
     return (
       <>
-        <div className="mypage_contents profile-edit-contents">
+        <div
+          className="mypage_contents profile-edit-contents"
+          data-area={Area.MYPAGE_PROFILE}
+        >
           <strong className="mypage_title">
             <PolyglotText
               defaultString="프로필 설정"

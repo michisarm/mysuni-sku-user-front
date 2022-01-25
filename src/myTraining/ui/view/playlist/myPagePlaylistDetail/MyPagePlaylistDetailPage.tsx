@@ -9,6 +9,7 @@ import MyPagePlaylistDetailContentContainer from './myPagePlaylistDetailContent/
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import myPageRoutePaths from 'myTraining/routePaths';
 import { Link } from 'react-router-dom';
+import { Area } from 'tracker/model';
 
 function MyPagePlaylistDetailPage() {
   useRequestMyPagePlaylistDetail();
@@ -18,7 +19,10 @@ function MyPagePlaylistDetailPage() {
   }
 
   return (
-    <div className="mypage_contents profile-playlist-contents">
+    <div
+      className="mypage_contents profile-playlist-contents"
+      data-area={Area.PLAYLIST_DETAIL}
+    >
       <div className="mypage-title-wrap">
         <strong className="mypage_title">Playlist</strong>
         <Link

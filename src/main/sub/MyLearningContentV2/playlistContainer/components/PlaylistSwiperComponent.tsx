@@ -12,6 +12,7 @@ import { PlaylistType } from 'playlist/data/models/PlaylistType';
 import { requestPlaylistSwiper } from '../playlistContainer.request';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import myPageRoutePaths from 'myTraining/routePaths';
+import { Area } from 'tracker/model';
 
 /**
  * 슬라이드 loop 기능 사용시 복사된 요소들이 생성 되는데
@@ -203,7 +204,10 @@ export function PlaylistSwiperComponent({
   }, [history]);
 
   return (
-    <Segment className="full learning-section type1">
+    <Segment
+      className="full learning-section type1"
+      data-area={Area.MAIN_PLAYLIST}
+    >
       <div className="section-head">
         <div
           className="sec-tit-txt"
