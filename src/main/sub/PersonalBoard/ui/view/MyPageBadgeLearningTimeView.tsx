@@ -33,6 +33,30 @@ export function MyPageBadgeLearningTimeView({
     totalLearningTime,
   ]);
 
+  const getMyGaugeWidth = (a: number, b: number) => {
+    //
+    let result;
+
+    if (a > b) {
+      result = (a / (a * 1.1)) * 100;
+    } else {
+      result = (a / (b * 1.1)) * 100;
+    }
+    return isNaN(result) ? 0 : result;
+  };
+
+  const getCompanyGaugeWidth = (a: number, b: number) => {
+    //
+    let result;
+
+    if (a > b) {
+      result = (b / (a * 1.1)) * 100;
+    } else {
+      result = (b / (b * 1.1)) * 100;
+    }
+    return isNaN(result) ? 0 : result;
+  };
+
   return (
     <>
       {badgeLearningTimeItem && (
@@ -190,17 +214,10 @@ export function MyPageBadgeLearningTimeView({
                       <div className="range">
                         <div
                           style={{
-                            width: `${
-                              totalLearningTime >
+                            width: `${getMyGaugeWidth(
+                              totalLearningTime,
                               badgeLearningTimeItem.companyAvglearningTime
-                                ? (totalLearningTime /
-                                    (totalLearningTime * 1.1)) *
-                                  100
-                                : (totalLearningTime /
-                                    (badgeLearningTimeItem.companyAvglearningTime *
-                                      1.1)) *
-                                  100
-                            }%`,
+                            )}%`,
                           }}
                           className="percent"
                         />
@@ -235,17 +252,10 @@ export function MyPageBadgeLearningTimeView({
                       <div className="range">
                         <div
                           style={{
-                            width: `${
-                              totalLearningTime >
+                            width: `${getCompanyGaugeWidth(
+                              totalLearningTime,
                               badgeLearningTimeItem.companyAvglearningTime
-                                ? (badgeLearningTimeItem.companyAvglearningTime /
-                                    (totalLearningTime * 1.1)) *
-                                  100
-                                : (badgeLearningTimeItem.companyAvglearningTime /
-                                    (badgeLearningTimeItem.companyAvglearningTime *
-                                      1.1)) *
-                                  100
-                            }%`,
+                            )}%`,
                           }}
                           className="percent"
                         />
