@@ -74,7 +74,10 @@ export function DepartmentMemberTab() {
       );
     }
 
-    return '검색결과가 없어요! <br /> Playlist를 추천할 다른 학습자를 검색해주세요.';
+    return getPolyglotText(
+      '검색결과가 없어요! <br /> Playlist를 추천할 다른 학습자를 검색해주세요.',
+      'playlist-popup-검색결과없음'
+    );
   }, [searchTextResult]);
 
   return (
