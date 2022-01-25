@@ -146,7 +146,9 @@ export function PlaylistInputPopUpView(props: PlaylistInputPopUpProps) {
       </Modal.Content>
       <ModalActions>
         <Button className="w190 pop p" onClick={onSubmitPlaylist}>
-          {type === 'CREATE' ? '저장' : '수정'}
+          {type === 'CREATE'
+            ? getPolyglotText('저장', 'mypage-playlist-저장하기')
+            : getPolyglotText('수정', 'mypage-playlist-수정하기')}
         </Button>
       </ModalActions>
     </Modal>
