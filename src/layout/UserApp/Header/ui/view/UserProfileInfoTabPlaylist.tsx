@@ -97,7 +97,8 @@ function UserProfileInfoTabPlaylist(props: Props) {
       <div className="pl-pc-wrap">
         <div className="inner">
           {(profileCardPlaylistSummaries &&
-            profileCardPlaylistSummaries.playListSummaries && (
+            profileCardPlaylistSummaries.playListSummaries &&
+            profileCardPlaylistSummaries.playListSummaries.length > 0 && (
               <>
                 <div
                   className="list-top"
