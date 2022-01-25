@@ -4300,3 +4300,4 @@ i.icon.plus.round16:before {
 
 .ui.label.onlytext .icon.like2{background : url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-heart-gray.svg') 0 .0625rem no-repeat}
 .lms-alarm-item .lms-alarm-copy{word-break: break-all;}
+.ui.segment.full .playlist-detail-content .contents.comment { width: 100%;}
