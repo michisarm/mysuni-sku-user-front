@@ -178,6 +178,9 @@ class MyLearningSummaryService {
   @action
   getDisplayTotalLearningTime() {
     //
+    console.log('getDisplayTotalLearningTime');
+    console.log(this.myLearningSummary);
+
     let totalLearningTime = 0;
     if (this.myLearningSummary) {
       // college별
