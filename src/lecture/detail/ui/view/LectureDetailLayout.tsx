@@ -141,15 +141,18 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
       //   sectionRef.current.offsetHeight
       // );
       if (
-        nowScroll >=
-        sectionRef.current.scrollHeight - (scrollValue + 287 + 113 + 70)
+        nowScroll >= sectionRef.current.scrollHeight - (scrollValue + 287 + 113 + 70)
       ) {
         return 'v-wide v-wide2';
       }
     }
-
+    
     if (nowScroll > scrollValue) {
-      return 'v-wide lms-lnb-fixed';
+      if (document.documentElement.scrollHeight < window.scrollY + window.innerHeight + 50) {
+        return 'v-wide v-wide2';
+      } else {
+        return 'v-wide lms-lnb-fixed';
+      }
     }
 
     return 'v-wide';
