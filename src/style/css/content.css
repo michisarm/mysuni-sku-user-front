@@ -2860,24 +2860,7 @@ i.icon.add-black16::after {
 }
 
 /* nodata, 검색전 공통 */
-/* .ui.modal.pl-add .no-cont-wrap {
-  text-align: center;
-  margin-top: calc(50% - 141px);
-  transform: translateY(-50%);
-}
-.pl-pc-wrap .no-cont-wrap {
-  margin-top: calc(50% - 100px);
-  transform: translateY(-50%);
-  text-align: center;
-} */
-.pl-share .no-cont-wrap {
-  position:absolute; 
-  left:0; 
-  top:calc(50% - 10px);
-  width:100%; 
-  text-align: center; 
-  transform: translateY(-50%);
-}
+.pl-pc-wrap .no-cont-wrap, .pl-share .no-cont-wrap {position:absolute; left:0; top:calc(50% - 10px);width:100%; text-align: center; transform: translateY(-50%);}
 .pl-share .sh-left-list .no-cont-wrap {
   top:calc(50% - 10px - 39px);
 }
