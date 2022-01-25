@@ -52,7 +52,7 @@ export function CardSearch() {
       <Table>
         <Table.Body>
           <Table.Row>
-            <Table.HeaderCell>College</Table.HeaderCell>
+            <Table.HeaderCell>Category</Table.HeaderCell>
             <Table.Cell>
               <div className="option_box">
                 <Select
