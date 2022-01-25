@@ -17,8 +17,7 @@ export default class DepartmentApi {
     //
     return axios
       .get<DepartmentModel>(
-        this.rootURL +
-          `/byDepartmentCodeAndKeyword?departmentCode=${departmentCode}`
+        this.rootURL + `/byDepartmentCode?code=${departmentCode}`
       )
       .then(
         (response) =>
