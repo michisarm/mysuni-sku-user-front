@@ -2479,11 +2479,6 @@ i.icon.add-black16::after {
 }
 
 /* addPopup02 플레이리스트 추가하기 */
-.ui.modal.pl-add .no-cont-wrap { 
-  text-align: center; 
-  margin-top: calc(50% - 141px); 
-  transform: translateY(-50%);
-}
 .ui.modal.pl-add .scroll {
   height: 485px;
   overflow-y: auto;
