@@ -156,7 +156,6 @@ function UserProfileInfoTabPlaylist(props: Props) {
                   id="profilecard-playlist-nodata"
                   defaultString="생성된 Playlist가 없습니다."
                 />
-                생성된 PlayList가 없습니다.
               </div>
             </div>
           )}
