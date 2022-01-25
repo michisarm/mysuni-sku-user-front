@@ -4310,3 +4310,5 @@ i.icon.plus.round16:before {
 .pl-share .ui.accordion.tree-chart .indent .accordion {
   margin: 0;
 }
+
+.ui.label.onlytext .icon.like2{background : url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-heart-gray.svg') 0 .0625rem no-repeat}
