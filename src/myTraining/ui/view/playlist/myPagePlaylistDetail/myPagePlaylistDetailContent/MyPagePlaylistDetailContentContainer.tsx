@@ -106,7 +106,9 @@ function MyPagePlaylistDetailContentContainer() {
         ? activatedTab === 'overview' && (
             <MyPagePlaylistDetailCardList type={type} />
           )
-        : activatedTab === 'overview' && <MyPagePlaylistDetailNoCardList />}
+        : activatedTab === 'overview' && (
+            <MyPagePlaylistDetailNoCardList type={type} />
+          )}
       {activatedTab === 'comment' && <MyPagePlaylistDetailCommentView />}
     </div>
   );
