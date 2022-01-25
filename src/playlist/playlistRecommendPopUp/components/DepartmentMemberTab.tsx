@@ -67,7 +67,7 @@ export function DepartmentMemberTab() {
 
   const noContentText = useMemo(() => {
     if (searchTextResult.length > 0) {
-      getPolyglotText(
+      return getPolyglotText(
         `<strong className="s-word">{text}</strong>에 대한 검색결과가 없어요! <br /> Playlist를 추천할 다른 학습자를 검색해주세요.`,
         'playlist-popup-학습자검색',
         { text: searchTextResult }
