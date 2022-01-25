@@ -108,6 +108,9 @@ const NoSuchContentPanelMessages = {
     '로그인 정보를 확인해주세요',
     'learning-my-로그인정보'
   ),
+  Playlist: '플레이리스트가 없습니다.',
+  PlaylistDetail: '플레이리스트가 없습니다',
+  MyLearningSummary: '나의 학습 현황이 없습니다',
   getMessageByConentType: (contentType: MyContentType): string => {
     return NoSuchContentPanelMessages[contentType];
   },

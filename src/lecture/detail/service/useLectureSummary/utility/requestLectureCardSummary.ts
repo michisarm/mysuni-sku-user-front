@@ -18,6 +18,7 @@ import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotStr
 import { UserIdentity } from 'shared/model/UserIdentity';
 import { getDefaultLang } from 'lecture/model/LangSupport';
 import moment from 'moment';
+import { setAddLearningCardIds } from 'playlist/playlistAddPopUp/playlistAddPopUpView.store';
 
 function getVaildLeaningDate(
   validLearningDate: number,
@@ -169,6 +170,7 @@ export async function requestLectureCardSummary(cardId: string) {
   }
 
   setLectureCardSummary(lectureCardSummary);
+  setAddLearningCardIds([lectureCardSummary.cardId]);
   const inMyLectureCdo = makeInMyLectureCdo(card);
   setInMyLectureCdo(inMyLectureCdo);
 }

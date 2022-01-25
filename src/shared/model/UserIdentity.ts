@@ -19,6 +19,7 @@ export interface UserIdentity {
   phone: string;
   photoImagePath: string;
   selfIntroduction: string;
+  registeredTime: number;
 }
 
 export function initUserIdentity(): UserIdentity {
@@ -53,5 +54,6 @@ export function initUserIdentity(): UserIdentity {
     phone: '',
     photoImagePath: '',
     selfIntroduction: '',
+    registeredTime: 0,
   };
 }

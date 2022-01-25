@@ -1,4 +1,6 @@
 import { axiosApi } from '@nara.platform/accent';
+import LikeRdo from '../../lecture/detail/model/LikeRdo';
+import LikeModel from '../../lecture/detail/model/LikeModel';
 
 const BASE_URL = '/api/feedback';
 
@@ -35,4 +37,24 @@ export function likeByFeedbackId(feedbackId: string): Promise<string> {
 export function unlikeByFeedbackId(feedbackId: string): Promise<void> {
   const url = `${BASE_URL}/likes/${feedbackId}`;
   return axiosApi.delete(url).then((response) => response && response.data);
+}
+
+export function countAllLikeByFeedbackId(
+  feedbackIds: string[]
+): Promise<LikeRdo[]> {
+  //
+  const url = `${BASE_URL}/likes/count/list`;
+  return axiosApi
+    .post(url, feedbackIds)
+    .then((response) => response && response.data);
+}
+
+export function findAllLikeByFeedbackIds(
+  feedbackIds: string[]
+): Promise<LikeModel[]> {
+  //
+  const url = `${BASE_URL}/likes/my/list`;
+  return axiosApi
+    .post(url, feedbackIds)
+    .then((response) => response && response.data);
 }

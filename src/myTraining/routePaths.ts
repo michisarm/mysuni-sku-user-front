@@ -17,9 +17,15 @@ const routePaths = {
     `/my-training/my-page/${tab}/pages/1`,
   //  myPageEarnedBadgeList -> 추가 20200911
   myPageCompletedList: () => routePaths.myPageTab('CompletedList'),
+  myPageMyLearningSummary: () => routePaths.myPageTab('MyLearningSummary'),
   myPageEarnedBadgeList: () => routePaths.myPageTab('EarnedBadgeList'),
   myPageEarnedStampList: () => routePaths.myPageTab('EarnedStampList'),
   myPageProfile: () => routePaths.myProfile('MyProfile'),
+
+  //playlist
+  myPagePlaylist: (tab: string = 'Playlist') => `/my-training/my-page/${tab}`,
+  myPagePlaylistDetail: (playlistId: string) =>
+    `/my-training/my-page/Playlist/detail/${playlistId}`,
 
   //myPageApprovalList: () => routePaths.myPageTab('ApprovalList'),
 

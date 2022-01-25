@@ -2,8 +2,6 @@ import React from 'react';
 import { Popup } from 'semantic-ui-react';
 import moment from 'moment';
 import LearningTimeView from './LearningTimeView';
-import AccruedLearningTimeView from './AccruedLearningTimeView';
-import LearningObjectives from '../PersonalBoard/viewModel/LearningObjectives';
 import { convertProgressValue } from './convertProgressValue';
 import {
   PolyglotText,
@@ -12,24 +10,22 @@ import {
 
 interface LearningTimeSummaryViewProps {
   totalLearningTime: number;
-  totalAccrueLearningTime: number;
-  learningObjectives: LearningObjectives;
+  learningGoalHour: number;
 }
 
 export default function LearningTimeSummaryView({
   totalLearningTime,
-  totalAccrueLearningTime,
-  learningObjectives,
+  learningGoalHour,
 }: LearningTimeSummaryViewProps) {
+  //
+  const learningGoalMin =
+    (learningGoalHour > 200 ? 200 : learningGoalHour) * 60;
+
   let LearningObjectivesPer = Math.floor(
-    (totalLearningTime / (learningObjectives!.AnnualLearningObjectives * 60)) *
-      100
+    (totalLearningTime / learningGoalMin) * 100
   );
 
-  if (
-    learningObjectives.AnnualLearningObjectives !== 0 &&
-    LearningObjectivesPer > 100
-  ) {
+  if (LearningObjectivesPer > 100) {
     LearningObjectivesPer = 100;
   } else if (LearningObjectivesPer === Infinity) {
     LearningObjectivesPer = 0;
@@ -44,7 +40,7 @@ export default function LearningTimeSummaryView({
             `{year}년 학습시간`,
             'home-Summary-학습시간',
             {
-              year: CURRENT_YEAR.toString(),
+              year: moment().year().toString(),
             }
           ),
         }}
@@ -65,36 +61,30 @@ export default function LearningTimeSummaryView({
               <p>
                 <LearningTimeView learningTime={totalLearningTime} />
               </p>
-              <span>
-                <PolyglotText defaultString="목표" id="home-Summary-목표" />{' '}
-                {learningObjectives!.AnnualLearningObjectives}h
-              </span>
+              {/*<span>{learningGoalHour}h</span>*/}
             </div>
           </div>
         }
         style={style}
         position="bottom center"
+        className="b-popup"
         wide
       >
         <span className="personal_pop_tit">
           <PolyglotText
-            defaultString="누적 학습시간"
-            id="home-Summary-누적시간"
+            defaultString="목표 학습시간"
+            id="home-Summary-목표학습시간"
           />
         </span>
-        <span>
+        <span className="personal_pop_time">
           <strong>
-            <AccruedLearningTimeView
-              accruedLearningTime={totalAccrueLearningTime}
-            />
+            <LearningTimeView learningTime={learningGoalMin} />
           </strong>
         </span>
       </Popup>
     </div>
   );
 }
-
-const CURRENT_YEAR = moment().year();
 
 const style = {
   borderRadius: '0.375rem',

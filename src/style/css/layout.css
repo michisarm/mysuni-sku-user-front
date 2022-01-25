@@ -1368,7 +1368,7 @@ i.icon.info20:before{ background: url("https://image.mysuni.sk.com/suni-asset/pu
   position: fixed;
   width: 21.88rem;
   top: 50px;
-  bottom: 253px;
+  bottom: 266px;
   overflow-y: auto;
 }
 .content.lms.v-wide2 .course-info-list .course-header-list {
@@ -1403,4 +1403,14 @@ i.icon.info20:before{ background: url("https://image.mysuni.sk.com/suni-asset/pu
 /* Footer 수정(2021.12.10) */
 .footer .foot-nav .foot-nav-item .foot-nav-li {
   padding: 2px 0;
+}
+
+body ::-webkit-scrollbar-track {
+  border-radius: 5px !important;
+}
+
+.ui.modal.w1200 {
+  max-width: 75rem;
+  width: 100%;
+  min-width: 62.5rem;
 }

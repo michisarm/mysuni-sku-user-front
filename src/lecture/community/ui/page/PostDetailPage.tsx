@@ -58,7 +58,7 @@ class PostDetailPage extends React.Component<Props> {
             text: `${parsePolyglotString(
               college.name,
               getDefaultLang(college.langSupports)
-            )} College`,
+            )}`,
             path: routePaths.collegeLectures(college.collegeId),
           },
           {

@@ -3,11 +3,12 @@ import { createCacheApi } from '../../../lecture/detail/api/cacheableApi';
 import MyLearningSummaryModel from '../../model/MyLearningSummaryModel';
 
 function findMyLearningSummaryByYear(year: string) {
+  //
   return (
     axiosApi
       // .get<MyLearningSummaryModel>(`/api/mytraining/summaries/flow/${year}`)
       .get<MyLearningSummaryModel>(
-        `/api/learning/learningTimes/total?year=${year}`
+        `/api/learning/learningTimes/total?year=${year === '-1' ? '0' : year}`
       )
       .then((response) => response && response.data)
   );

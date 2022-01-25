@@ -141,7 +141,7 @@ export const SearchBarView: React.FC<SearchBarViewProps> = observer(
       <>
         <div className="g-search-header" data-area={Area.SEARCH}>
           <div className={isSearch ? 'search_wrap show_re' : 'search_wrap'}>
-            {searchInfo.inAgain ? (
+            {searchInfo.inAgain && searchInfo.recentSearchValue ? (
               <div className="re_text">
                 <span className="ellipsis">{searchInfo.recentSearchValue}</span>
               </div>

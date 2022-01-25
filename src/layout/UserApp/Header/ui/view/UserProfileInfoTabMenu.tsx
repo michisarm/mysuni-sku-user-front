@@ -18,6 +18,16 @@ function UserProfileInfoTabMenu(props: Props) {
       <Menu className="sku">
         {/* <Menu.Item name="Badge" active={props.selectedMenu === "Badge"} onClick={() => onMenuItemClick('Badge')}>Badge</Menu.Item> */}
         <Menu.Item
+          name="Playlist"
+          active={props.selectedMenu === 'Playlist'}
+          onClick={() => onMenuItemClick('Playlist')}
+        >
+          <PolyglotText
+            defaultString="Playlist"
+            id="mypage-유저모달-Playlist"
+          />
+        </Menu.Item>
+        <Menu.Item
           name="Community"
           active={props.selectedMenu === 'Community'}
           onClick={() => onMenuItemClick('Community')}

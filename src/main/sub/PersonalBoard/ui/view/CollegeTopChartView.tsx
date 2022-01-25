@@ -1,7 +1,11 @@
 import MyLearningSummaryModel from 'myTraining/model/MyLearningSummaryModel';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useCollegeTopChartItem } from '../../store/PersonalBoardStore';
-import { PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
+import {
+  getPolyglotText,
+  PolyglotText,
+} from '../../../../../shared/ui/logic/PolyglotText';
+import moment from 'moment';
 import { MyLearningSummaryModal } from 'myTraining';
 
 interface Props {
@@ -10,6 +14,7 @@ interface Props {
 
 const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({}) {
   const collegeTopChartItem = useCollegeTopChartItem();
+  const year = moment().year().toString();
 
   return (
     <>
@@ -31,10 +36,13 @@ const CollegeTopChartView: React.FC<Props> = function CollegeTopChartView({}) {
               />
 
               <span>
-                <PolyglotText
-                  defaultString="전체 Category 중 Top5"
-                  id="home-PersonalBoard-collegeTop5"
-                />
+                {getPolyglotText(
+                  `{year}년 Top5`,
+                  'home-PersonalBoard-collegeTop5',
+                  {
+                    year,
+                  }
+                )}
               </span>
             </div>
             <div className="card-item-con sty2">

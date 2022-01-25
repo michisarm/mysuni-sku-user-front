@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { inject, observer } from 'mobx-react';
-import { mobxHelper, deleteCookie } from '@nara.platform/accent';
-import { MyTrainingService } from 'myTraining/stores';
+import { deleteCookie, mobxHelper, StorageModel } from '@nara.platform/accent';
 import { BadgeService } from 'lecture/stores';
-import myTrainingRoutePaths from 'myTraining/routePaths';
+import { inject, observer } from 'mobx-react';
+import { MyTrainingService } from 'myTraining/stores';
+
 import { ContentLayout, TabItemModel } from 'shared';
 import Tab from 'shared/components/Tab';
 import MyPageBadgeListContainer from '../../../certification/ui/logic/MyPageBadgeListContainer';
@@ -27,6 +27,10 @@ import myPageRoutePaths from 'myTraining/routePaths';
 import MyPageProfileUpdateContainer from '../logic/MyPageProfileUpdateContainer';
 import { isExternalInstructor } from '../../../shared/helper/findUserRole';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { Area } from 'tracker/model';
+import MyPagePlaylistPage from './MyPagePlaylistPage';
+import MyPagePlaylistDetailPage from '../view/playlist/myPagePlaylistDetail/MyPagePlaylistDetailPage';
+import MyPageMyLearningSummaryContainer from '../../../main/sub/MyLearningSummary/MyPageMyLearningSummaryContainer';
 
 interface MyPagePageProps {
   myTrainingService?: MyTrainingService;
@@ -137,40 +141,45 @@ function MyPagePage({
   return (
     <>
       <ContentLayout
-        className="mypagev2"
+        className="mypagev3"
         breadcrumb={[
           { text: getPolyglotText('My Page', 'mapg-mifa-dth2') },
           { text: MyPageContentTypeName[params.tab] },
         ]}
       >
         {/* <MyPageHeaderContainer /> */}
-        <div className="mypage_lnb">
+        <div className="mypage_lnb" data-area={Area.MYPAGE_INFO}>
           <div className="inner">
             <MyPageProfileCardContainer
               clickTabHandler={clickTabHandler}
               photoImageBase64={photoImageBase64}
-              bgImageBase64={bgImageBase64}
             />
-            {/* <MyPageContentsContainer
-              tabs={getTabs()}
-              defaultActiveName={params.tab}
-              onChangeTab={onChangeTab}
-            /> */}
             <div className="mypage_menu_list">
               {(!isExternalInstructor() && (
                 <>
-                  <ul>
+                  <ul className="menu_list">
                     <li>
-                      <Image
-                        src={`${process.env.PUBLIC_URL}/images/all/icon-mypage-menu-badge.svg`}
-                        alt="뱃지"
-                      />
+                      <Link
+                        to={myPageRoutePaths.myPageMyLearningSummary()}
+                        className={
+                          params.tab === 'MyLearningSummary' ? 'active' : ''
+                        }
+                      >
+                        <Icon className="IconStatus" />
+                        <PolyglotText
+                          id="mapg-mifa-summary"
+                          defaultString="나의 학습 현황"
+                        />
+                      </Link>
+                    </li>
+                    <li>
                       <Link
                         to={myPageRoutePaths.myPageEarnedBadgeList()}
                         className={
                           params.tab === 'EarnedBadgeList' ? 'active' : ''
                         }
                       >
+                        <Icon className="IconBadge" />
                         <PolyglotText
                           id="mapg-mifa-mybadge"
                           defaultString="My Badge"
@@ -178,36 +187,59 @@ function MyPagePage({
                       </Link>
                     </li>
                     <li>
-                      <Image
-                        src={`${process.env.PUBLIC_URL}/images/all/icon-mypage-menu-stamp.svg`}
-                        alt="스탬프"
-                      />
                       <Link
                         to={myPageRoutePaths.myPageEarnedStampList()}
                         className={
                           params.tab === 'EarnedStampList' ? 'active' : ''
                         }
                       >
+                        <Icon className="IconStamp" />
                         <PolyglotText
                           id="mapg-mifa-mystamp"
                           defaultString="My Stamp"
                         />
                       </Link>
                     </li>
+                  </ul>
+                  <ul className="menu_list">
                     <li>
-                      <Image
-                        src={`${process.env.PUBLIC_URL}/images/all/icon-mypage-menu-note.svg`}
-                        alt="노트"
-                      />
                       <Link
                         to={myPageRoutePaths.myPageEarnedNoteList()}
                         className={
                           params.tab === 'EarnedNoteList' ? 'active' : ''
                         }
                       >
+                        <Icon className="IconNote" />
                         <PolyglotText
                           id="mapg-mifa-note"
                           defaultString="Note"
+                        />
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to={myPageRoutePaths.myPagePlaylist()}
+                        className={`page-bttn ${
+                          params.tab === 'Playlist' ? 'active' : ''
+                        }`}
+                      >
+                        <Icon className="IconPlay" />
+                        Playlist
+                      </Link>
+                    </li>
+                  </ul>
+                  <ul className="menu_list">
+                    <li>
+                      <Link
+                        to={myPageRoutePaths.myPageProfile()}
+                        className={`page-bttn ${
+                          params.tab === 'MyProfile' ? 'active' : ''
+                        }`}
+                      >
+                        <Icon className="IconProfile" />
+                        <PolyglotText
+                          defaultString="프로필 설정"
+                          id="mypage-프로필카드-프로필설정"
                         />
                       </Link>
                     </li>
@@ -218,6 +250,7 @@ function MyPagePage({
                         id="mapg-mifa-logout"
                         defaultString="Logout"
                       />
+                      <Icon className="logout-16px" />
                     </Button>
                   </div>
                 </>
@@ -228,6 +261,7 @@ function MyPagePage({
                       id="mapg-mifa-logout2"
                       defaultString="Logout"
                     />
+                    <Icon className="logout-16px" />
                   </Button>
                 </div>
               )}
@@ -235,6 +269,9 @@ function MyPagePage({
           </div>
         </div>
 
+        {params.tab === 'MyLearningSummary' && (
+          <MyPageMyLearningSummaryContainer />
+        )}
         {params.tab === 'EarnedBadgeList' && <MyPageBadgeListContainer />}
         {params.tab === 'EarnedStampList' && <MyStampListContainer />}
         {params.tab === 'EarnedNoteList' && params.pageNo === '1' && (
@@ -252,6 +289,10 @@ function MyPagePage({
             onChangeImageFile={onChangeImageFile}
           />
         )}
+        {params.tab === 'Playlist' && params.playlistId === undefined && (
+          <MyPagePlaylistPage />
+        )}
+        {params.playlistId && <MyPagePlaylistDetailPage />}
       </ContentLayout>
     </>
   );

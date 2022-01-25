@@ -29,16 +29,11 @@ const Calendar: React.FC<CalendarProps> = function Calendar({
   const [startDate, setStartDate] = useState<moment.Moment>();
   const [endDate, setEndDate] = useState<moment.Moment>();
   const [activeBtn, setActiveBtn] = useState<ActiveBtnState>(
-    ActiveBtnState.NONE
+    ActiveBtnState.YEAR
   );
 
   useEffect(() => {
-    if (defaultSearchType && defaultSearchType === 'years') {
-      onSetSearchYear(1);
-    } else {
-      // onSetSearchWeek(1);
-      onSetSearchMon(1);
-    }
+    onSetSearchYear(1); //서치박스 디폴트 1년
     createTime && createTime > 0 && setStartDate(moment(createTime));
   }, [createTime]);
 
