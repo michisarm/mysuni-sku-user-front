@@ -33,7 +33,7 @@ export function cardRdoToPlaylistAddCard(
       cardId: card.card?.id || '',
       cardName: parsePolyglotString(card.card?.name),
       creator: parsePolyglotString(card.cardContents.registrantName),
-      registerTime: dayjs(card.cardOperatorIdentity?.registeredTime).format(
+      registerTime: dayjs(card.cardContents.registeredTime).format(
         'YYYY.MM.DD hh:mm:ss'
       ),
     };

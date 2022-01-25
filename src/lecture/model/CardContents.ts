@@ -37,6 +37,7 @@ export interface CardContents {
   restrictLearningPeriod: boolean;
 
   time: number;
+  registeredTime: number;
 
   pisAgreementRequired: boolean;
   pisAgreementTitle: PolyglotString;
