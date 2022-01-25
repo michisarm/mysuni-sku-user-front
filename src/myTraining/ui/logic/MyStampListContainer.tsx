@@ -55,6 +55,7 @@ function MyStampListContainer({
   const [orders, setOrders] = useState<Order[]>(initialOrders);
 
   const {
+    countMyStamp,
     myStampCount,
     myLearningCards,
     totalMyLearningCardCount,
@@ -65,8 +66,13 @@ function MyStampListContainer({
     sortMyLearningTableViews,
   } = lectureService!;
 
-  const { conditions, showResult, filterCount, openFilter, setOpenFilter } =
-    filterBoxService!;
+  const {
+    conditions,
+    showResult,
+    filterCount,
+    openFilter,
+    setOpenFilter,
+  } = filterBoxService!;
 
   const clearQdo = () => {
     const newCardQdo = new CardQdo();
@@ -111,6 +117,7 @@ function MyStampListContainer({
     qdo: CardQdo,
     firstCheck?: boolean
   ) => {
+    await countMyStamp();
     await setIsLoading(true);
     await setCardQdo(qdo);
     await findMyLearningCardByQdo(firstCheck);
@@ -130,8 +137,9 @@ function MyStampListContainer({
   };
 
   const downloadExcel = async () => {
-    const tableViews: CardForUserViewModel[] =
-      await lectureService!.findMyLearningCardForExcel(excelQdo());
+    const tableViews: CardForUserViewModel[] = await lectureService!.findMyLearningCardForExcel(
+      excelQdo()
+    );
     const lastIndex = tableViews.length;
     let xlsxList: MyXlsxList = [];
     const filename = 'MyPage_MyStamp';
