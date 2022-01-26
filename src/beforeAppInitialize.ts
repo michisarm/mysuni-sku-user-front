@@ -17,13 +17,15 @@ export async function beforeAppInitialize() {
   await requestAllColleges();
   if (isSuperManager()) {
     requestUserWorkspaces().then((workspaces) => {
-      const companyCode = patronInfo.getPatronCompanyCode();
-      if (workspaces && companyCode) {
-        const target = workspaces.find(
-          (workspace) => workspace.usid === companyCode
-        );
-        if (target) {
-          patronInfo.setCineroomId(target.id);
+      if (patronInfo.getCineroomId() === 'ne1-m2-c2') {
+        const companyCode = patronInfo.getPatronCompanyCode();
+        if (workspaces && companyCode) {
+          const target = workspaces.find(
+            (workspace) => workspace.usid === companyCode
+          );
+          if (target) {
+            patronInfo.setCineroomId(target.id);
+          }
         }
       }
     });
