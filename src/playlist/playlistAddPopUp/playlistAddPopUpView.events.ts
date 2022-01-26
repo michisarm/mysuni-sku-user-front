@@ -1,5 +1,5 @@
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
-import { reactAlert } from '@nara.platform/accent';
+import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import { isEmpty } from 'lodash';
 import { CheckboxProps } from 'semantic-ui-react';
 import {
@@ -99,16 +99,12 @@ export function onAddLearningCard() {
     return;
   }
 
-  if (cardIds.length === 0) {
-    reactAlert({
-      title: getPolyglotText('Playlist 추가하기', 'playlist-popup-추가하기'),
-      message: getPolyglotText(
-        'Playlist에 추가할 학습카드를 선택해주세요.',
-        'playlist-popup-학습카드선택'
-      ),
-    });
-    return;
-  }
-
-  requestAddCardsToPlaylist(cardIds, checkedPlaylistIds);
+  reactConfirm({
+    title: getPolyglotText('Playlist 편집하기', 'playlist-popup-편집하기'),
+    message: getPolyglotText(
+      'Playlist를 편집하시겠습니까? <br/> 추천받은 구성원들에게도 편집한 내용이 반영됩니다.',
+      'playlist-popup-편집컨펌'
+    ),
+    onOk: () => requestAddCardsToPlaylist(cardIds, checkedPlaylistIds),
+  });
 }
