@@ -1,8 +1,11 @@
 import CardForUserViewModel from 'lecture/model/learning/CardForUserViewModel';
 import { LearningTypeName } from 'myTraining/model/LearningType';
 import { inProgressPolyglot } from 'myTraining/ui/model/TableHeaderColumn';
-import { useAddLearningCardIds } from 'playlist/playlistAddPopUp/playlistAddPopUpView.store';
-import React from 'react';
+import {
+  setAddLearningCardIds,
+  useAddLearningCardIds,
+} from 'playlist/playlistAddPopUp/playlistAddPopUpView.store';
+import React, { useEffect } from 'react';
 import { Checkbox, Icon, Table } from 'semantic-ui-react';
 import {
   convertTimeToDate,
@@ -46,6 +49,12 @@ export function InMyListPageTableView({
 }: props) {
   const checkedCardIds = useAddLearningCardIds();
   const lectureService = LectureService.instance;
+
+  useEffect(() => {
+    return () => {
+      setAddLearningCardIds([]);
+    };
+  }, []);
 
   return (
     <>

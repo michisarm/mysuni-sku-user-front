@@ -1,4 +1,3 @@
-import { useAddLearningCardIds } from 'playlist/playlistAddPopUp/playlistAddPopUpView.store';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { reactAlert } from '@nara.platform/accent';
 import { isEmpty } from 'lodash';
@@ -14,17 +13,10 @@ import {
   setIsOpenPlayListAddPopUp,
   getAddLearningCardIds,
 } from './playlistAddPopUpView.store';
-import { useCallback } from 'react';
 
 export function onOpenPlaylistAddPopUpView() {
-  const checkedCardIds = getAddLearningCardIds();
-  console.log(checkedCardIds);
-  if (checkedCardIds.length !== 0) {
-    setIsOpenPlayListAddPopUp(true);
-    requestPlaylistAddPopUpView();
-  } else {
-    onClickNoCheckCard();
-  }
+  setIsOpenPlayListAddPopUp(true);
+  requestPlaylistAddPopUpView();
 }
 
 export function onClosePlaylistAddPopUpView() {
@@ -36,10 +28,6 @@ export async function onClickAddPlaylist(playlistName: string) {
   if (isEmpty(playlistName)) {
     reactAlert({
       title: getPolyglotText('Playlist 추가하기', 'playlist-popup-추가하기'),
-      // message: getPolyglotText(
-      //   `{badgeName} Badge 도전이 시작되었습니다.<p>‘도전 중 Badge’ 탭을 통해 Learning Path에 따라 학습해주세요.<p>뱃지 도전관련 문의는 담당자에게 연락 부탁드립니다.`,
-      //   'Certification-도전모달-도전시작',
-      // ),
       message: getPolyglotText(
         'Playlist 명을 입력해주세요.',
         'playlist-popup-타이틀입력'
@@ -124,13 +112,3 @@ export function onAddLearningCard() {
 
   requestAddCardsToPlaylist(cardIds, checkedPlaylistIds);
 }
-
-export const onClickNoCheckCard = () => {
-  reactAlert({
-    title: getPolyglotText('Playlist 추가하기', 'playlist-popup-추가하기'),
-    message: getPolyglotText(
-      'Playlist에 추가할 과정을 선택해주세요.',
-      'playlist-popup-추가과정선택'
-    ),
-  });
-};

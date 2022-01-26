@@ -116,20 +116,25 @@ export function PlaylistAddPopUpView() {
   }, [isShowAddPlaylistInput]);
 
   const handleAddPlaylistButton = useCallback(() => {
-    onClickAddPlaylist(playlistName).then((result) => {
-      if (result) {
+    onClickAddPlaylist(playlistName).then((isSuccess) => {
+      if (isSuccess) {
         setIsShowAddPlaylistInput(false);
         setPlaylistName('');
       }
     });
   }, [playlistName]);
 
+  const onClickClose = useCallback(() => {
+    onClosePlaylistAddPopUpView();
+    setIsShowAddPlaylistInput(false);
+    setPlaylistName('');
+  }, []);
+
   useEffect(() => {
-    if (!isOpen) {
-      setIsShowAddPlaylistInput(false);
-      setPlaylistName('');
-    }
-  }, [isOpen]);
+    return () => {
+      onClosePlaylistAddPopUpView();
+    };
+  }, []);
 
   return (
     <Modal className="base w600 pl-add" open={isOpen}>
@@ -138,7 +143,7 @@ export function PlaylistAddPopUpView() {
           defaultString="Playlist 추가하기"
           id="playlist-popup-추가하기"
         />
-        <Button className="close24" onClick={onClosePlaylistAddPopUpView}>
+        <Button className="close24" onClick={onClickClose}>
           <Icon className="close24" />
         </Button>
       </Modal.Header>
