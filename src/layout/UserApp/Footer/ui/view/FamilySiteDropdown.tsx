@@ -105,6 +105,14 @@ export function FamilySiteDropdown() {
                 </a>
               </li>
               <li className="link-options">
+                <a href="https://mysuniailearnx.com" target="_blank">
+                  <PolyglotText
+                    defaultString="AI LeanX"
+                    id="home-family-AiLeanX"
+                  />
+                </a>
+              </li>
+              <li className="link-options">
                 <a
                   href={`https://www.linkedin.com/checkpoint/enterprise/login/81530810?application=learning&redirect=https://www.linkedin.com/learning${linkedInDirectConnection}`}
                   target="_blank"
