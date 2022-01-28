@@ -15,6 +15,7 @@ import {
   compareCollgeCineroom,
   getChannelName,
 } from '../../service/useCollege/useRequestCollege';
+import { registerPromotionEvent } from 'main/sub/PersonalBoard/api/personalBoardApi';
 
 interface Props {
   skProfileService?: SkProfileService;
@@ -102,6 +103,7 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
     };
 
     skProfileService!.modifyStudySummary(params).then(() => {
+      registerPromotionEvent('favoriteChannel202202');  // insert event
       if (typeof onConfirmCallback === 'function') {
         onConfirmCallback();
       }

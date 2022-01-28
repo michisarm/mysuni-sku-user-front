@@ -20,6 +20,7 @@ import {
   compareCollgeCineroom,
   getChannelName,
 } from '../../../shared/service/useCollege/useRequestCollege';
+import { registerPromotionEvent } from 'main/sub/PersonalBoard/api/personalBoardApi';
 
 export const history = createBrowserHistory();
 
@@ -152,6 +153,7 @@ class FavoriteChannelChangeContainer extends Component<Props, State> {
         StudySummaryModel.asNameValues(skProfileService!.studySummary)
       )
       .then(() => {
+        registerPromotionEvent('favoriteChannel202202');  // insert event
         if (typeof onConfirmCallback === 'function') {
           onConfirmCallback();
         }
