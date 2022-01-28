@@ -12,6 +12,7 @@ import {
 } from '../../store/PersonalBoardStore';
 import LearningObjectives from '../../viewModel/LearningObjectives';
 import LearningObjectivesModal from '../view/LearningObjectivesModal';
+import { registerPromotionEvent } from 'main/sub/PersonalBoard/api/personalBoardApi';
 
 interface Props extends RouteComponentProps {
   open: boolean;
@@ -51,6 +52,7 @@ const LearningObjectivesModalContainer: React.FC<Props> = function LearningObjec
       return false;
     } else {
       saveLearningObjectives();
+      registerPromotionEvent('learningGoal202202'); // insert event
       setOpen(false, 'save');
     }
   }, []);
