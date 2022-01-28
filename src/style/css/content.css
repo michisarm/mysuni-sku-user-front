@@ -2789,7 +2789,7 @@ i.icon.add-black16::after {
   flex:none;
 }
 .user-prf .prf-info {
-  position:relative; 
+  position:relative;
   top:1px;
   margin-left: 10px;
   display: block;
@@ -2799,9 +2799,9 @@ i.icon.add-black16::after {
   width:calc(100% - 98px)
 }
 .user-prf .prf-info .info-top {
-  display:block; 
-  overflow: hidden; 
-  text-overflow: ellipsis; 
+  display:block;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
   color : #999
 }
@@ -2827,7 +2827,7 @@ i.icon.add-black16::after {
 }
 .user-prf .prf-info .info-top .prf-group {
   margin-left:3px;
-  text-overflow: ellipsis; 
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 .user-prf .prf-info .prf-email {
@@ -2842,17 +2842,17 @@ i.icon.add-black16::after {
   bottom:-5px;
 }
 .ui.popup.user-prf-popup {
-  padding:9px 15px 11px; 
+  padding:9px 15px 11px;
   max-width:276px;
 }
 .ui.popup.user-prf-popup .content .info-top {
-  font-size:11px; 
-  line-height:15px; 
+  font-size:11px;
+  line-height:15px;
   color:#444;
 }
 .ui.popup.user-prf-popup .content .prf-name {
-  display:block; 
-  font-weight: 400; 
+  display:block;
+  font-weight: 400;
   margin-bottom:3px;
 }
 .ui.popup.user-prf-popup .content .prf-comp {
@@ -4301,3 +4301,12 @@ i.icon.plus.round16:before {
 .ui.label.onlytext .icon.like2{background : url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-heart-gray.svg') 0 .0625rem no-repeat}
 .lms-alarm-item .lms-alarm-copy{word-break: break-all;}
 .ui.segment.full .playlist-detail-content .contents.comment { width: 100%;}
+
+/* 복습시간 추가 2022-01-28 */
+.ui.modal.cpl-modal .res.header{position: relative;}
+.ui.modal.cpl-modal .ui.dropdown.sl-year { position: absolute; top: 24px; right: 30px;}
+.ui.modal.cpl-modal .content{padding: 0 !important}
+.ui.modal.cpl-modal .scrolling-80vh {max-height:70vh; height: 60vh; overflow-y: auto;}
+.ui.dropdown.sl-year > .text {display: block; font-weight: normal;}
+.completion-time .table-css .bullet-list2 .name{width : auto !important; max-width: 235px;}
+.ui.modal.cpl-modal .completion-time .table-css .head .cell i.icon{top: 1px; margin-bottom:0}

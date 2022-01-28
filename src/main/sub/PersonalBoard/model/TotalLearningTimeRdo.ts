@@ -9,6 +9,7 @@ export interface TotalLearningTimeRdo {
   accumulatedLearningTime: number;
   myCompanyLearningTime: number;
   collegeLearningTimes: CollegeLearningTime[];
+  replayLearningTimes: CollegeLearningTime[];
 }
 
 function getInitialTotalLearningTimeRdo(): TotalLearningTimeRdo {
@@ -16,6 +17,7 @@ function getInitialTotalLearningTimeRdo(): TotalLearningTimeRdo {
     accumulatedLearningTime: 0,
     myCompanyLearningTime: 0,
     collegeLearningTimes: [],
+    replayLearningTimes: [],
   };
 }
 
