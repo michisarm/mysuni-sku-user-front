@@ -74,14 +74,13 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
           .map((c) => (
             <LeraningContainer key={c.id} cardBundle={c} />
           ))}
-
-        {/** 플레이리스트 */}
-        <PlaylistContainerView />
         {pageElements.some(
           (pagemElement) =>
             pagemElement.position === 'HomeElement' &&
             pagemElement.type === 'HotTopic'
         ) && <MainHotTopicContainer />}
+        {/** 플레이리스트 */}
+        <PlaylistContainerView />
       </div>
       <div className="learning-section-wrap bg-gray">
         {pageElements.some(
