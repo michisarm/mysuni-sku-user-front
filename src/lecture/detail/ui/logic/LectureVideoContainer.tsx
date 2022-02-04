@@ -19,6 +19,7 @@ import { useLectureState } from '../../store/LectureStateStore';
 import {
   callConfirmProgress,
   callDebounceActionTrack,
+  callRegisterReplayWatchLog,
   callRegisterWatchLog,
   checkStudent,
 } from '../../service/useVideoContainer/utility/VideoContainerEvents';
@@ -47,6 +48,11 @@ function LectureVideoContainer() {
   }, []);
 
   useEffect(() => {
+    //
+    if (lectureState === undefined) {
+      return;
+    }
+
     const removeCallRegisterWatchLog = addOnProgressEventHandler(
       createOnProgressEventHandler(
         callRegisterWatchLog,
@@ -89,14 +95,28 @@ function LectureVideoContainer() {
         }
       )
     );
+    const removeCallRegisterReplayWatchLog = addOnProgressEventHandler(
+      createOnProgressEventHandler(
+        callRegisterReplayWatchLog,
+        (lastActionTime, state) => {
+          console.log(lectureState);
+
+          return (
+            state.playerState === PlayerState.Playing &&
+            lastActionTime + 10000 < Date.now()
+          );
+        }
+      )
+    );
     return () => {
       setNextContentsView(false);
       removeCallRegisterWatchLog();
       removeCallVideoNearEnded();
       removeCheckStudent();
       removeDebounceActionTrack();
+      removeCallRegisterReplayWatchLog();
     };
-  }, [params?.cubeId]);
+  }, [params?.cubeId, lectureState]);
 
   useEffect(() => {
     // fixed: playerState 변화시 api호출 > 최초 cube화면 진입시로 api호출 시점 변경
@@ -291,8 +311,9 @@ function LectureVideoContainer() {
     [getLectureMedia(), pathname]
   );
 
-  const [isExpiredContentAlerted, setIsExpiredContentAlerted] =
-    useState<boolean>(false);
+  const [isExpiredContentAlerted, setIsExpiredContentAlerted] = useState<
+    boolean
+  >(false);
 
   const isExpiredContent = useMemo(() => {
     if (
@@ -323,7 +344,7 @@ function LectureVideoContainer() {
 
   return (
     <>
-      {isExpiredContent !== true &&
+      {!isExpiredContent &&
         lectureMedia !== undefined &&
         lectureState !== undefined &&
         (lectureMedia.mediaType == 'InternalMedia' ||
