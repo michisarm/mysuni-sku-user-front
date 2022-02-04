@@ -1,0 +1,450 @@
+.ui.modal.base.tutorials4 {
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none;
+}
+.ui.modal.base.tutorials4 .header4 {
+  background: transparent !important;
+  text-align: right;
+  padding-bottom: 1rem;
+  border-bottom-color: transparent !important;
+}
+.ui.modal.base.tutorials4 .header4 .right-btn {
+  top: -0.5rem;
+  right: 0 !important;
+}
+.ui.modal.base.tutorials4 .header4 .ui.checkbox {
+  vertical-align: text-top;
+}
+.ui.modal.base.tutorials4 .header4 .right-btn .ui.checkbox label {
+  color: #fff;
+  font-size: 0.875rem;
+}
+.ui.modal.base.tutorials4 .header4 .right-btn .ui.checkbox label:hover,
+.ui.modal.base.tutorials4 .header .right-btn .ui.checkbox + label:hover {
+  color: #fff;
+}
+.ui.modal.base.tutorials4
+  .header4
+  .right-btn
+  .ui.base.checkbox
+  + .ui.button.close {
+  margin-left: 1rem;
+  color: #fff;
+  font-size: 0.875rem;
+}
+.ui.modal.base.tutorials4 .content {
+  padding: 0 !important;
+  border-radius: 4px;
+}
+.ui.modal.base.tutorials4 .content .cont-wrap {
+  height: 40rem;
+  display: flex;
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+.ui.modal.tutorials4 .scrolling-80vh {
+  max-height: 80vh;
+}
+
+.tutorials4 .left {
+  width: 240px;
+  height: 100%;
+  background: #fff;
+  box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+.tutorials4 .left .top-logo {
+  margin: 20px 0 23px 30px;
+}
+.icon.logo-new.sk-login::before {
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/logo-gnb-login-new.svg')
+    no-repeat 0 0 !important;
+}
+.tutorials4 .left .top-logo .icon.logo-new.sk-login::before {
+  width: 54px;
+  height: 23px;
+  background-size: cover !important;
+}
+
+.tutorials4 .left .item {
+  position: relative;
+  display: block;
+  padding: 14px 0 14px 34px;
+  color: #444;
+  letter-spacing: -0.35px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: normal;
+}
+.tutorials4 .left .item.current:hover {
+  background-color: #00bfae;
+}
+.tutorials4 .left .item:hover {
+  background-color: #f8f8f8;
+}
+.tutorials4 .left .current {
+  font-weight: 700;
+  color: #fff;
+  background-color: #00bfae;
+}
+
+.tutorials4 .right {
+  width: 760px;
+  height: 100%;
+  background: #fff;
+  overflow: hidden;
+  text-align: left;
+}
+.tutorials4 .tu-cont {
+  position: relative;
+  padding: 22px 35px 38px;
+  width: 100%;
+  height: 100%;
+  background-size: 200px;
+  background-position-x: calc(100% - 35px);
+  background-position-y: 22px;
+  background-repeat: no-repeat;
+}
+.tutorials4 .tu-cont .inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.tutorials4 .tu-cont .top-text {
+  padding: 16px 0 0 4px;
+  color: #333;
+  font-size: 20px;
+  line-height: 30px;
+  letter-spacing: -0.5px;
+}
+
+/* intro */
+.tu-cont.tu1 {
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-key-image-kor.png')
+    105px 0 / contain no-repeat;
+}
+
+.intro-button ul {
+  display: flex;
+  justify-content: space-between;
+  width: 470px;
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  transform: translateX(-50%);
+  margin: 0 auto 10px;
+}
+.intro-button li {
+  position: relative;
+  display: block;
+  width: 130px;
+  height: 130px;
+  background-color: #f2f2f2;
+  border-radius: 50%;
+}
+
+.intro-button li:hover {
+  background-color: #ff664d;
+}
+.intro-button li::after {
+  position: absolute;
+  content: '';
+  display: inline-block;
+  border-width: 9px;
+  width: 1px;
+  height: 1px;
+  border-color: transparent;
+  border-top-color: #f2f2f2;
+  border-style: solid;
+  left: calc(50% - 9px);
+  top: calc(100% - 1px);
+}
+.intro-button li:hover::after {
+  border-top-color: #ff664d;
+}
+.intro-button li:hover .intro {
+  color: #fff;
+}
+
+.intro-button li .intro {
+  display: inline-block;
+  padding-top: 26px;
+  width: 100%;
+  height: 100%;
+  color: #444;
+  font-size: 1rem;
+  line-height: 18px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  text-align: center;
+}
+.intro-button li .intro .icon {
+  display: block;
+  margin: 0 auto 10px;
+  width: 26px;
+  height: 26px;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.intro-button .intro .icon.tuto-01 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-icon-01-off.svg');
+}
+.intro-button .intro .icon.tuto-02 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-icon-02-off.svg');
+}
+.intro-button .intro .icon.tuto-03 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-icon-03-off.svg');
+}
+.intro-button .intro .icon.tuto-04 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-icon-04-off.svg');
+}
+.intro-button li:hover .intro .icon.tuto-01 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-icon-01-on.svg');
+}
+.intro-button li:hover .intro .icon.tuto-02 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-icon-02-on.svg');
+}
+.intro-button li:hover .intro .icon.tuto-03 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-icon-03-on.svg');
+}
+.intro-button li:hover .intro .icon.tuto-04 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-icon-04-on.svg');
+}
+.tutorials4.kor .intro-button li:first-child .intro {
+  padding-top: 36px;
+}
+
+/* subtab공통 */
+.tab-tu .ui.menu.secondary {
+  margin: 30px 0 0 0;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  min-height: 28px;
+}
+.tab-tu .ui.menu.secondary .item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 0 0 36px;
+  margin: 0 24px 0 0;
+  color: #888;
+  font-size: 0.875rem;
+  line-height: 16px;
+  letter-spacing: -0.2px;
+  font-weight: 700;
+  white-space: break-spaces;
+}
+.tab-tu .ui.menu.secondary .item::after {
+  content: '';
+  position: absolute;
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #888;
+  color: #fff;
+  font-size: 0.875rem;
+  line-height: 28px;
+  font-weight: 400;
+  text-align: center;
+  top: calc(50% - 14px);
+  left: 0;
+}
+.tab-tu .ui.menu.secondary .item:nth-child(1)::after {
+  content: '1';
+}
+.tab-tu .ui.menu.secondary .item:nth-child(2)::after {
+  content: '2';
+}
+.tab-tu .ui.menu.secondary .item:nth-child(3)::after {
+  content: '3';
+}
+.tab-tu .ui.secondary.menu .item:hover {
+  color: #888;
+  background-color: #fff;
+}
+.tab-tu .ui.menu.secondary .item.active {
+  background: transparent;
+  color: #ff664d;
+}
+.tab-tu .ui.menu.secondary .item.active::after {
+  background-color: #ff664d;
+}
+.tab-tu .ui.secondary.menu .item.active:hover {
+  color: #ff664d;
+  background-color: #fff;
+}
+.tab-tu .ui.segment.tab.tab-img-wrap {
+  margin: 0;
+  padding: 0;
+  display: block;
+  border: 0;
+  border-radius: 0;
+  overflow: hidden;
+  width: 690px;
+  height: 420px;
+  background-color: transparent;
+  position: absolute;
+  top: calc(100% - 420px);
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.tab-tu .ui.segment.tab.tab-img-wrap .tab-img {
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  box-shadow: 0 0 0 1px #ccc inset;
+}
+
+/* tab2 */
+.tu2.tu-cont {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/02-pointing-woman.png');
+}
+.tu2 .ui.segment.tab.tab-img-wrap .t-img1 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab2-01-kor.png');
+}
+.tu2 .ui.segment.tab.tab-img-wrap .t-img2 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab2-02-kor.png');
+}
+/* tab3 */
+.tu3.tu-cont {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/03-card-woman.png');
+}
+.tu3 .ui.segment.tab.tab-img-wrap .t-img1 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab3-01-kor.png');
+}
+.tu3 .ui.segment.tab.tab-img-wrap .t-img2 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab3-02-kor.png');
+}
+.tu3 .ui.segment.tab.tab-img-wrap .t-img3 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab3-03-kor.png');
+}
+/* tab4 */
+.tu4.tu-cont {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/04-recommending-woman-2.png');
+}
+.tu4 .ui.segment.tab.tab-img-wrap .t-img1 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab4-01-kor.png');
+}
+.tu4 .ui.segment.tab.tab-img-wrap .t-img2 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab4-02-kor.png');
+}
+.tu4 .ui.segment.tab.tab-img-wrap .t-img3 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab4-03-kor.png');
+}
+/* tab5 */
+.tu5.tu-cont {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/05-learnig-people.png');
+}
+.tu5 .ui.segment.tab.tab-img-wrap .t-img1 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab5-01-kor.png');
+}
+.tu5 .ui.segment.tab.tab-img-wrap .t-img2 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab5-02-kor.png');
+}
+
+/* kor, eng, chn */
+.tutorials4 .intro-button ul {
+  width: 610px;
+}
+
+.tutorials4.eng .intro-button li {
+  width: 130px;
+  height: 130px;
+}
+.tutorials4.eng .intro-button li .intro {
+  padding-top: 26px;
+}
+.tutorials4.eng .intro-button li:first-child .intro,
+.tutorials4.chn .intro-button li .intro {
+  padding-top: 36px;
+}
+/* .tutorials4.chn .intro-button li .intro .icon {margin-bottom:12px;} */
+/* .tutorials4.eng .intro-button li:last-child .intro {font-size: 14px;} */
+.tutorials4.eng .tu-cont .top-text {
+  min-height: 90px;
+  padding-top: 8px;
+  line-height: 1.37;
+}
+.tutorials4.eng .tab-tu .ui.menu.secondary {
+  margin-top: 20px;
+}
+.tutorials4.eng .tu-cont.tu3 .tab-tu .ui.menu.secondary .item,
+.tutorials4.eng .tu-cont.tu4 .tab-tu .ui.menu.secondary .item {
+  font-size: 12px;
+}
+
+.tutorials4.eng .tu-cont.tu1 {
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-key-image-eng.png')
+    95px 0 / contain no-repeat;
+}
+.tutorials4.chn .tu-cont.tu1 {
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-key-image-chn.png')
+    105px 0 / contain no-repeat;
+}
+.tutorials4.eng .tu2 .ui.segment.tab.tab-img-wrap .t-img1 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab2-01-eng.png');
+}
+.tutorials4.eng .tu2 .ui.segment.tab.tab-img-wrap .t-img2 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab2-02-eng.png');
+}
+.tutorials4.chn .tu2 .ui.segment.tab.tab-img-wrap .t-img1 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab2-01-chn.png');
+}
+.tutorials4.chn .tu2 .ui.segment.tab.tab-img-wrap .t-img2 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab2-02-chn.png');
+}
+.tutorials4.eng .tu3 .ui.segment.tab.tab-img-wrap .t-img1 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab3-01-eng.png');
+}
+.tutorials4.eng .tu3 .ui.segment.tab.tab-img-wrap .t-img2 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab3-02-eng.png');
+}
+.tutorials4.eng .tu3 .ui.segment.tab.tab-img-wrap .t-img3 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab3-03-eng.png');
+}
+.tutorials4.chn .tu3 .ui.segment.tab.tab-img-wrap .t-img1 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab3-01-chn.png');
+}
+.tutorials4.chn .tu3 .ui.segment.tab.tab-img-wrap .t-img2 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab3-02-chn.png');
+}
+.tutorials4.chn .tu3 .ui.segment.tab.tab-img-wrap .t-img3 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab3-03-chn.png');
+}
+.tutorials4.eng .tu4 .ui.segment.tab.tab-img-wrap .t-img1 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab4-01-eng.png');
+}
+.tutorials4.eng .tu4 .ui.segment.tab.tab-img-wrap .t-img2 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab4-02-eng.png');
+}
+.tutorials4.eng .tu4 .ui.segment.tab.tab-img-wrap .t-img3 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab4-03-eng.png');
+}
+.tutorials4.chn .tu4 .ui.segment.tab.tab-img-wrap .t-img1 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab4-01-chn.png');
+}
+.tutorials4.chn .tu4 .ui.segment.tab.tab-img-wrap .t-img2 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab4-02-chn.png');
+}
+.tutorials4.chn .tu4 .ui.segment.tab.tab-img-wrap .t-img3 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab4-03-chn.png');
+}
+.tutorials4.eng .tu5 .ui.segment.tab.tab-img-wrap .t-img1 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab5-01-eng.png');
+}
+.tutorials4.eng .tu5 .ui.segment.tab.tab-img-wrap .t-img2 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab5-02-eng.png');
+}
+.tutorials4.chn .tu5 .ui.segment.tab.tab-img-wrap .t-img1 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab5-01-chn.png');
+}
+.tutorials4.chn .tu5 .ui.segment.tab.tab-img-wrap .t-img2 {
+  background-image: url('https://image.mysuni.sk.com/suni-asset/public/images/all/tuto-pl-tab5-02-chn.png');
+}
