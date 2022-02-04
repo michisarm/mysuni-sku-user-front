@@ -3935,10 +3935,34 @@ i.icon.plus.round16:before{ content:''; background: url('https://image.mysuni.sk
   color: #fff;
   opacity: 0;
 }
+.plylistSwiper .item::after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  opacity: 0.4;
+  border-radius: 50%;
+}
 
 /* 추가하기 */
 .plylistSwiper .item.plus {
-  background-color: #e9e9e9;
+  background-color: #f4f4f4;
+}
+.plylistSwiper .item.plus .item-img {
+  left:50%; 
+  top:50%; 
+  width:50px; 
+  height:50px; 
+  transform:translate(-50%, -50%); 
+  opacity:0.5;
+}
+.plylistSwiper .item.plus::after {
+  display:none;
 }
 .plylistSwiper .item .item-cont .plus-wrap {
   display: block;
@@ -3948,6 +3972,15 @@ i.icon.plus.round16:before{ content:''; background: url('https://image.mysuni.sk
   font-size: 22px;
   line-height: 30px;
 }
+.plylistSwiper .swiper-slide-prev .item.plus,
+.plylistSwiper .swiper-slide-next .item.plus {
+  background-color:#ededed;
+}
+.plylistSwiper .swiper-slide-prev .item.plus .item-img,
+.plylistSwiper .swiper-slide-next .item.plus .item-img {
+  opacity:0.8;
+}
+
 /* 추가된컨텐츠 */
 .plylistSwiper .item .item-cont .tit-wrap em {
   display: block;
@@ -3986,19 +4019,6 @@ i.icon.plus.round16:before{ content:''; background: url('https://image.mysuni.sk
   font-weight: 700;
   text-align: center;
 }
-.plylistSwiper .item::after {
-  content: '';
-  display: block;
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  background: #fff;
-  opacity: 0.4;
-  border-radius: 50%;
-}
 /* Active Case */
 .plylistSwiper .swiper-slide-active {
   cursor: pointer;
@@ -4009,6 +4029,9 @@ i.icon.plus.round16:before{ content:''; background: url('https://image.mysuni.sk
 }
 .plylistSwiper .swiper-slide-active .item.plus {
   background-color: #666666;
+}
+.plylistSwiper .swiper-slide-active .item.plus .item-img {
+  opacity: 0;
 }
 .plylistSwiper .swiper-slide-active .item.plus::after {
   background-color: transparent;
@@ -4028,12 +4051,6 @@ i.icon.plus.round16:before{ content:''; background: url('https://image.mysuni.sk
 }
 .plylistSwiper .swiper-slide-active .item-cont {
   opacity: 1;
-}
-
-/* ETC */
-/* 등록안된 경우만 active에서 숨김처리 */
-.plylistSwiper .swiper-slide-active .item.plus .item-img {
-  opacity: 0;
 }
 
 /* Transition */
