@@ -121,7 +121,7 @@ function MyPagePlaylistDetailHeaderView(props: PlaylistHeaderViewType) {
                   className="onlytext"
                   onClick={onOpenPlaylistRecommendPopUp}
                 >
-                  <Icon className="share-comm line" />
+                  <Icon className="thumb-up" />
                   <span>
                     <PolyglotText
                       id="mypage-playlist-추천하기"
