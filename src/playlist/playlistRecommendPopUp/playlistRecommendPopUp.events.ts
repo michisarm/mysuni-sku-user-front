@@ -7,6 +7,7 @@ import {
   requestMemberByDepartmentCode,
   requestMysuniUser,
   requestRecommendPlaylist,
+  requestScrollMysuniUser,
 } from './playlistRecommendPopUp.request';
 import {
   getCheckedMemberList,
@@ -18,6 +19,7 @@ import {
   setMySuniUsers,
   setSelcetedDepartmentCode,
   getSelcetedDepartmentCode,
+  getMySuniUserTotalCount,
 } from './playlistRecommendPopUp.store';
 import { onAllCheckMember, onCheckMember } from './helper/onCheckMember';
 import { getMyPagePlaylistDetail } from 'myTraining/ui/view/playlist/myPagePlaylistDetail/MyPagePlaylistDetail.services';
@@ -167,6 +169,15 @@ export function onSearchMySuniUser(searchText: string) {
 
   if (isValidationChecked) {
     return requestMysuniUser(searchText);
+  }
+}
+
+// mySuni 사용자 스크롤 이벤트
+export function onScrollMySuniUser(searchText: string, offset: number) {
+  const mySuniUserTotalCount = getMySuniUserTotalCount();
+
+  if (mySuniUserTotalCount >= 100 && offset > 0) {
+    requestScrollMysuniUser(searchText, offset);
   }
 }
 

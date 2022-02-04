@@ -131,6 +131,12 @@ export const [useMySuniUsers, setMySuniUsers, getMySuniUsers] = createStore<
 >([]);
 
 export const [
+  useMySuniUserTotalCount,
+  setMySuniUserTotalCount,
+  getMySuniUserTotalCount,
+] = createStore<number>(0);
+
+export const [
   useDepartmentMembers,
   setDepartmentMembers,
   getDepartmentMembers,

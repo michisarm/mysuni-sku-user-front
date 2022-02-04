@@ -1,9 +1,17 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { Checkbox, Icon, Tab } from 'semantic-ui-react';
+import { useIntersectionObserver } from 'shared/helper/useIntersectionObserver';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import {
   onAllCheckedMySuniMember,
   onCheckMySuniUser,
+  onScrollMySuniUser,
   onSearchMySuniUser,
 } from '../playlistRecommendPopUp.events';
 import {
@@ -20,6 +28,19 @@ export function MySuniUserTab() {
   const [isSearchAfter, setIsSearchAfter] = useState(false); // 검색 전인지 후인지 확인하는 상태 값
   const [searchText, setSearchText] = useState('');
   const [searchTextResult, setSearchTextResult] = useState('');
+  const [offset, setOffset] = useState(0);
+
+  const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
+    if (isIntersecting) {
+      onScrollMySuniUser(searchText, offset);
+      setOffset(offset + 1);
+    }
+  };
+
+  const { setTarget } = useIntersectionObserver({
+    threshold: 0.1,
+    onIntersect,
+  });
 
   useEffect(() => {
     return () => {
@@ -140,7 +161,7 @@ export function MySuniUserTab() {
                 </div>
                 <div className="sh-user-list">
                   {mySuniUser.map((member) => (
-                    <div className="user-prf" id={member.id}>
+                    <div className="user-prf" id={member.id} ref={setTarget}>
                       <div className="user-check">
                         <Checkbox
                           className="base"
@@ -153,6 +174,7 @@ export function MySuniUserTab() {
                     </div>
                   ))}
                 </div>
+                <div />
               </div>
             )
           )}
