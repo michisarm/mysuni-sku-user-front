@@ -192,7 +192,7 @@ const koPanes = [
     ),
   },
   {
-    menuItem: 'SV',
+    menuItem: 'SV·ESG',
     render: () => (
       <Tab.Pane>
         <div
@@ -3568,7 +3568,7 @@ const EnPanes = [
     ),
   },
   {
-    menuItem: 'SV',
+    menuItem: 'SV·ESG',
     render: () => (
       <Tab.Pane>
         <div
@@ -6143,8 +6143,8 @@ const EnPanes = [
             <div className="belt sub">
               <div className="label">Green</div>
               <div className="strong">
-                The “Green Category”, the evolved version of Energy
-                Solution Category
+                The “Green Category”, the evolved version of Energy Solution
+                Category
               </div>
               <div className="normal">
                 The aim is to raise awareness of the importance of the
@@ -6758,7 +6758,7 @@ const ZhPanes = [
     ),
   },
   {
-    menuItem: 'SV',
+    menuItem: 'SV·ESG',
     render: () => (
       <Tab.Pane>
         <div
