@@ -14,6 +14,8 @@ import { requestLectureState } from '../../useLectureState/utility/requestLectur
 import { updateCardLectureStructure } from '../../useLectureStructure/utility/updateCardLectureStructure';
 import { savePlayTime } from '../../../api/panoptoApi';
 import PlayTimeSdo from 'lecture/detail/model/PlayTimeSdo';
+import { findCubesByIdsCache } from 'lecture/detail/api/cubeApi';
+import { getMainCategory } from 'shared/model/CardCategory';
 
 export async function callRegisterWatchLog(
   panoptoEmbedPlayerState: PanoptoEmbedPlayerState
@@ -92,4 +94,42 @@ export function callDebounceActionTrack() {
     action: Action.CLICK,
     actionName: '학습버튼 클릭',
   } as ActionTrackParam);
+}
+
+export async function callRegisterReplayWatchLog(
+  panoptoEmbedPlayerState: PanoptoEmbedPlayerState
+) {
+  const params = getLectureParams();
+  if (params?.cubeId === undefined) {
+    return;
+  }
+  const {
+    watchLogStart,
+    currentTime = 0,
+    playbackRate = 0,
+  } = panoptoEmbedPlayerState;
+  const { cubeId } = params;
+  console.log('안녕하세요');
+
+  findCubesByIdsCache([cubeId]).then((cubes) => {
+    //
+    if (cubes === undefined) return;
+
+    const cube = cubes[0];
+
+    const collegeId = getMainCategory(cube.categories)?.collegeId || '';
+    const end = currentTime;
+    const start =
+      watchLogStart > end || end - watchLogStart > 25
+        ? end - 10 * playbackRate
+        : watchLogStart;
+    // const replayTimeSdo: ReplayTimeSdo = {
+    //   collegeId,
+    //   cubeId,
+    //   // duration: panoptoEmbedPlayerState.duration || 0,
+    //   replayLearningSeconds: 0,
+    //   start,
+    //   end,
+    // };
+  });
 }

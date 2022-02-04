@@ -20,6 +20,7 @@ import {
   callConfirmProgress,
   callDebounceActionTrack,
   callRegisterWatchLog,
+  callRegisterReplayWatchLog,
   checkStudent,
 } from '../../service/useVideoContainer/utility/VideoContainerEvents';
 import { getActiveCourseStructureItem } from '../../utility/lectureStructureHelper';
@@ -47,6 +48,9 @@ function LectureVideoContainer() {
   }, []);
 
   useEffect(() => {
+    if (lectureState === undefined) {
+      return;
+    }
     const removeCallRegisterWatchLog = addOnProgressEventHandler(
       createOnProgressEventHandler(
         callRegisterWatchLog,
@@ -89,14 +93,29 @@ function LectureVideoContainer() {
         }
       )
     );
+
+    const removeCallRegisterReplayWatchLog = addOnProgressEventHandler(
+      createOnProgressEventHandler(
+        callRegisterReplayWatchLog,
+        (lastActionTime, state) => {
+          console.log(lectureState);
+          return (
+            state.playerState === PlayerState.Playing &&
+            lastActionTime + 10000 < Date.now()
+          );
+        }
+      )
+    );
+
     return () => {
       setNextContentsView(false);
       removeCallRegisterWatchLog();
       removeCallVideoNearEnded();
       removeCheckStudent();
       removeDebounceActionTrack();
+      removeCallRegisterReplayWatchLog();
     };
-  }, [params?.cubeId]);
+  }, [params?.cubeId, lectureState]);
 
   useEffect(() => {
     // fixed: playerState 변화시 api호출 > 최초 cube화면 진입시로 api호출 시점 변경
