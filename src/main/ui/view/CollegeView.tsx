@@ -192,7 +192,7 @@ const koPanes = [
     ),
   },
   {
-    menuItem: 'SV',
+    menuItem: 'SV·ESG',
     render: () => (
       <Tab.Pane>
         <div
@@ -201,9 +201,9 @@ const koPanes = [
         >
           <div className="college-cont-title sv">
             <div className="belt sub">
-              <div className="label">SV</div>
+              <div className="label">SV·ESG</div>
               <div className="strong">
-                내일[Tomorrow+My Work]을 위한 SV, <br />
+                내일[Tomorrow+My Work]을 위한 SV·ESG, <br />
                 기업과 사회의 지속가능성을 위한 필수 역량을 키우는 곳!
               </div>
               <div className="normal">
@@ -3568,7 +3568,7 @@ const EnPanes = [
     ),
   },
   {
-    menuItem: 'SV',
+    menuItem: 'SV·ESG',
     render: () => (
       <Tab.Pane>
         <div
@@ -3577,9 +3577,9 @@ const EnPanes = [
         >
           <div className="college-cont-title sv">
             <div className="belt sub">
-              <div className="label">SV</div>
+              <div className="label">SV·ESG</div>
               <div className="strong">
-                SV for Tomorrow[Tomorrow+My Work],
+                SV·ESG for Tomorrow[Tomorrow+My Work],
                 <br /> this is the Place where You become Competent in Achieving
                 Sustainability in the Corporation and Society!
               </div>
@@ -6143,8 +6143,8 @@ const EnPanes = [
             <div className="belt sub">
               <div className="label">Green</div>
               <div className="strong">
-                The “Green Category”, the evolved version of Energy
-                Solution Category
+                The “Green Category”, the evolved version of Energy Solution
+                Category
               </div>
               <div className="normal">
                 The aim is to raise awareness of the importance of the
@@ -6758,7 +6758,7 @@ const ZhPanes = [
     ),
   },
   {
-    menuItem: 'SV',
+    menuItem: 'SV·ESG',
     render: () => (
       <Tab.Pane>
         <div
@@ -6767,10 +6767,10 @@ const ZhPanes = [
         >
           <div className="college-cont-title sv">
             <div className="belt sub">
-              <div className="label">SV</div>
+              <div className="label">SV·ESG</div>
               <div className="strong">
                 为了明天的[Tomorrow+My
-                Work]SV，为实现企业与社会的可持续发展，培养必备能力的地方！
+                Work]SV·ESG，为实现企业与社会的可持续发展，培养必备能力的地方！
               </div>
               <div className="normal">
                 为Deep

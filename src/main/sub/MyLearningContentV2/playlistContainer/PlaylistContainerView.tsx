@@ -13,8 +13,7 @@ export function PlaylistContainerView() {
   }, [playlistSwiper]);
 
   if (isAllEmpty) {
-    return null;
-    // NoContentsPlaylistSwiperComponent;
+    return <NoContentsPlaylistSwiperComponent />;
   }
 
   return <PlaylistSwiperComponent playlistSwiper={playlistSwiper} />;

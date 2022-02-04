@@ -8,13 +8,15 @@ import { usePageElements } from 'shared/store/PageElementsStore';
 
 function UserMainPage() {
   const pageElements = usePageElements();
+  const visibleTutorial = true;
+
   return (
     <ContentLayout className="main main-sty2">
       <div className="main-wrap personal-wrap">
         <MyLearningSummaryContainer pageElements={pageElements} />
         <MyLearningContentContainer />
         {/*<MainPagePopupContainer />*/}
-        {/*{TutorialModal()}*/}
+        {visibleTutorial && <TutorialModal />}
       </div>
     </ContentLayout>
   );

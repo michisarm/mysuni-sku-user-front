@@ -3572,22 +3572,12 @@ i.icon.cog16 {
 i.icon.plus.round16 {
   width: 16px;
   height: 16px;
-  border-radius: 50%;
-  border: #777 1px solid;
-  color: #777;
   margin-right: 6px;
 }
 i.icon.plus.round16 span {
   color: #777;
 }
-i.icon.plus.round16:before {
-  font-size: 10px;
-  line-height: 14px;
-  display: block;
-  height: 14px;
-  text-align: center;
-  width: 100%;
-}
+i.icon.plus.round16:before{ content:''; background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-main-add-14-px.svg') 0 0/14px no-repeat !important; display: block; width: 14px; height: 14px; text-align: center; }
 .playlist-view-content .list-top {
   overflow: hidden;
   margin-bottom: 20px;
@@ -3671,10 +3661,7 @@ i.icon.plus.round16:before {
   display: inline-block;
   height: 16px;
 }
-.ui.label.onlytext.btn-add-list .icon {
-  width: 16px;
-  height: 16px;
-}
+.ui.label.onlytext.btn-add-list .icon { width: 16px; height: 16px; margin-top : 2px}
 .playlist-view-content .list-top.active .ui.label.onlytext {
   margin-top: 8px;
 }
@@ -3948,10 +3935,34 @@ i.icon.plus.round16:before {
   color: #fff;
   opacity: 0;
 }
+.plylistSwiper .item::after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  opacity: 0.4;
+  border-radius: 50%;
+}
 
 /* 추가하기 */
 .plylistSwiper .item.plus {
-  background-color: #e9e9e9;
+  background-color: #f4f4f4;
+}
+.plylistSwiper .item.plus .item-img {
+  left:50%; 
+  top:50%; 
+  width:50px; 
+  height:50px; 
+  transform:translate(-50%, -50%); 
+  opacity:0.5;
+}
+.plylistSwiper .item.plus::after {
+  display:none;
 }
 .plylistSwiper .item .item-cont .plus-wrap {
   display: block;
@@ -3961,6 +3972,15 @@ i.icon.plus.round16:before {
   font-size: 22px;
   line-height: 30px;
 }
+.plylistSwiper .swiper-slide-prev .item.plus,
+.plylistSwiper .swiper-slide-next .item.plus {
+  background-color:#ededed;
+}
+.plylistSwiper .swiper-slide-prev .item.plus .item-img,
+.plylistSwiper .swiper-slide-next .item.plus .item-img {
+  opacity:0.8;
+}
+
 /* 추가된컨텐츠 */
 .plylistSwiper .item .item-cont .tit-wrap em {
   display: block;
@@ -3999,19 +4019,6 @@ i.icon.plus.round16:before {
   font-weight: 700;
   text-align: center;
 }
-.plylistSwiper .item::after {
-  content: '';
-  display: block;
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  background: #fff;
-  opacity: 0.4;
-  border-radius: 50%;
-}
 /* Active Case */
 .plylistSwiper .swiper-slide-active {
   cursor: pointer;
@@ -4022,6 +4029,9 @@ i.icon.plus.round16:before {
 }
 .plylistSwiper .swiper-slide-active .item.plus {
   background-color: #666666;
+}
+.plylistSwiper .swiper-slide-active .item.plus .item-img {
+  opacity: 0;
 }
 .plylistSwiper .swiper-slide-active .item.plus::after {
   background-color: transparent;
@@ -4041,12 +4051,6 @@ i.icon.plus.round16:before {
 }
 .plylistSwiper .swiper-slide-active .item-cont {
   opacity: 1;
-}
-
-/* ETC */
-/* 등록안된 경우만 active에서 숨김처리 */
-.plylistSwiper .swiper-slide-active .item.plus .item-img {
-  opacity: 0;
 }
 
 /* Transition */
@@ -4301,3 +4305,7 @@ i.icon.plus.round16:before {
 .ui.label.onlytext .icon.like2{background : url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-heart-gray.svg') 0 .0625rem no-repeat}
 .lms-alarm-item .lms-alarm-copy{word-break: break-all;}
 .ui.segment.full .playlist-detail-content .contents.comment { width: 100%;}
+
+i.icon.thumb-up { width: 16px; height: 16px; padding: 0; margin: 0; display: inline-block; position: relative;}
+i.icon.thumb-up::before { content: ''; display: inline-block; width: 16px; height: 16px; vertical-align: top; background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-16-px-recommend-2.svg') 0 0/ 16px no-repeat !important;}
+.ui.label.onlytext .icon.thumb-up {transform: translateY(2px);}

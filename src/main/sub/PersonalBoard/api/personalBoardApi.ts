@@ -153,3 +153,12 @@ export function encryptEmail(eventId: string) {
       return response && response.data;
     });
 }
+
+// 프로모션 이벤트 저장
+export function registerPromotionEvent(eventId: string) {
+  return axiosApi
+    .post<any>(eventURL + `/promotion/${eventId}`)
+    .then((response) => {
+      return response && response.data;
+    });
+}

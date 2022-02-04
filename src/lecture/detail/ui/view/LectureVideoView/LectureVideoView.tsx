@@ -39,6 +39,7 @@ import {
   PolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
 import { SkProfileService } from 'profile/stores';
+import { Action, Area } from 'tracker/model';
 
 const playerBtn = `${getPublicUrl()}/images/all/btn-player-next.png`;
 
@@ -457,7 +458,12 @@ const LectureVideoView: React.FC<LectureVideoViewProps> =
                     : getPolyglotText('찜한 과정', 'Collage-Video-관심제거')}
                 </span>
               </a>
-              <a onClick={copyUrl}>
+              <a
+                onClick={copyUrl}
+                data-area={Area.CUBE_PLAY}
+                data-action={Action.CLICK}
+                data-action-name="공유하기 버튼 클릭"
+              >
                 <span>
                   <Icon className="linkCopy" />
                   <PolyglotText

@@ -6,7 +6,7 @@ module.exports = {
     changeOrigin: true
   },
   '/api/**': {
-    target: 'http://university.sk.com/',
+    target: 'https://stg.mysuni.sk.com',
     secure: false,
     changeOrigin: true
   }

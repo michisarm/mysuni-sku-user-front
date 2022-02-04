@@ -386,7 +386,7 @@ function LectureTaskContainer() {
                   <span
                     dangerouslySetInnerHTML={{
                       __html: getPolyglotText(
-                        `다음의 <strong>아래 공지된 수행하여 게시판에 {cubePostCount}건 등록</strong>해주시면 자동으로 이수 처리가 됩니다.`,
+                        `공지된 내용에 따라 <strong>아래 게시판에 {cubePostCount}건 등록</strong>해주시면 자동으로 이수 처리가 됩니다.`,
                         'Collage-Task-이수조건SubTitle2',
                         {
                           cubePostCount: cubePostCount.toString(),
