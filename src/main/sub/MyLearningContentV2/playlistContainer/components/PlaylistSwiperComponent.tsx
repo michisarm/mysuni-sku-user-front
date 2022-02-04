@@ -123,7 +123,7 @@ function PlaylistCircleComponent({
       <div className="item plus" onClick={onClickMovePlaylist}>
         <div className="item-img">
           <Image
-            src="https://image.mysuni.sk.com/suni-asset/public/images/all/btn-playlist-plus.png"
+            src="https://image.mysuni.sk.com/suni-asset/public/images/all/btn-playlist-plus2.png"
             alt="프로필 추가"
             className="ui image"
           />
