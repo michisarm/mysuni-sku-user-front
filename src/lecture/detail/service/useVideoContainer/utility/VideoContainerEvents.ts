@@ -100,7 +100,6 @@ export function callDebounceActionTrack() {
 export async function callRegisterReplayWatchLog(
   panoptoEmbedPlayerState: PanoptoEmbedPlayerState
 ) {
-  console.log('안녕하세요');
   const params = getLectureParams();
   if (params?.cubeId === undefined) {
     return;
@@ -111,6 +110,7 @@ export async function callRegisterReplayWatchLog(
     playbackRate = 0,
   } = panoptoEmbedPlayerState;
   const { cubeId } = params;
+  console.log('안녕하세요');
 
   findCubesByIdsCache([cubeId]).then((cubes) => {
     //
@@ -124,14 +124,13 @@ export async function callRegisterReplayWatchLog(
       watchLogStart > end || end - watchLogStart > 25
         ? end - 10 * playbackRate
         : watchLogStart;
-    const replayTimeSdo: ReplayTimeSdo = {
-      collegeId,
-      cubeId,
-      // duration: panoptoEmbedPlayerState.duration || 0,
-      replayLearningSeconds: 0,
-      start,
-      end,
-    };
-    console.log(replayTimeSdo);
+    // const replayTimeSdo: ReplayTimeSdo = {
+    //   collegeId,
+    //   cubeId,
+    //   // duration: panoptoEmbedPlayerState.duration || 0,
+    //   replayLearningSeconds: 0,
+    //   start,
+    //   end,
+    // };
   });
 }

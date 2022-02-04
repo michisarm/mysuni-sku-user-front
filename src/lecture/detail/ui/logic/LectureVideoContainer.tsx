@@ -48,11 +48,9 @@ function LectureVideoContainer() {
   }, []);
 
   useEffect(() => {
-    //
     if (lectureState === undefined) {
       return;
     }
-
     const removeCallRegisterWatchLog = addOnProgressEventHandler(
       createOnProgressEventHandler(
         callRegisterWatchLog,
@@ -95,12 +93,12 @@ function LectureVideoContainer() {
         }
       )
     );
+
     const removeCallRegisterReplayWatchLog = addOnProgressEventHandler(
       createOnProgressEventHandler(
         callRegisterReplayWatchLog,
         (lastActionTime, state) => {
           console.log(lectureState);
-
           return (
             state.playerState === PlayerState.Playing &&
             lastActionTime + 10000 < Date.now()
@@ -108,6 +106,7 @@ function LectureVideoContainer() {
         }
       )
     );
+
     return () => {
       setNextContentsView(false);
       removeCallRegisterWatchLog();
@@ -311,9 +310,8 @@ function LectureVideoContainer() {
     [getLectureMedia(), pathname]
   );
 
-  const [isExpiredContentAlerted, setIsExpiredContentAlerted] = useState<
-    boolean
-  >(false);
+  const [isExpiredContentAlerted, setIsExpiredContentAlerted] =
+    useState<boolean>(false);
 
   const isExpiredContent = useMemo(() => {
     if (
@@ -344,7 +342,7 @@ function LectureVideoContainer() {
 
   return (
     <>
-      {!isExpiredContent &&
+      {isExpiredContent !== true &&
         lectureMedia !== undefined &&
         lectureState !== undefined &&
         (lectureMedia.mediaType == 'InternalMedia' ||
