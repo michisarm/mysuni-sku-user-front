@@ -93,6 +93,10 @@ export function onChangeNextOffset() {
   const playlistAddCardPopUpOffset = getPlaylistAddCardPopUpOffset();
   const { offset, totalCount } = playlistAddCardPopUpOffset;
 
+  if (offset >= Math.ceil(totalCount / 4)) {
+    return;
+  }
+
   setPlaylistAddCardPopUpOffset({
     offset: offset + 1,
     totalCount,
@@ -104,6 +108,10 @@ export function onChangeNextOffset() {
 export function onChangePrevOffset() {
   const playlistAddCardPopUpOffset = getPlaylistAddCardPopUpOffset();
   const { offset, totalCount } = playlistAddCardPopUpOffset;
+
+  if (offset === 1) {
+    return;
+  }
 
   setPlaylistAddCardPopUpOffset({
     offset: offset - 1,

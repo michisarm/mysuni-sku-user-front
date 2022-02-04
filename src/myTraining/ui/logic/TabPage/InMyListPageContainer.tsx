@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, reactAlert } from '@nara.platform/accent';
 import { LectureService } from 'lecture';
 import LectureParams, { toPath } from 'lecture/detail/viewModel/LectureParams';
 import CardOrderBy from 'lecture/model/learning/CardOrderBy';
@@ -23,6 +23,7 @@ import StudentLearningType from '../../../../lecture/model/learning/StudentLearn
 import { Button } from 'semantic-ui-react';
 import { onOpenPlaylistAddPopUpView } from 'playlist/playlistAddPopUp/playlistAddPopUpView.events';
 import { PlaylistAddPopUpView } from 'playlist/playlistAddPopUp/PlaylistAddPopUpView';
+import { getAddLearningCardIds } from 'playlist/playlistAddPopUp/playlistAddPopUpView.store';
 
 interface InMyListPageContainerProps {
   lectureService?: LectureService;
@@ -272,6 +273,22 @@ function InMyListPageContainer({
     history.push(toPath(params));
   };
 
+  const onCkickOpenPlaylistAddPopUp = useCallback(() => {
+    const checkedCardIds = getAddLearningCardIds();
+
+    if (checkedCardIds.length !== 0) {
+      onOpenPlaylistAddPopUpView();
+    } else {
+      reactAlert({
+        title: getPolyglotText('Playlist 추가하기', 'playlist-popup-추가하기'),
+        message: getPolyglotText(
+          'Playlist에 추가할 과정을 선택해주세요.',
+          'playlist-popup-추가과정선택'
+        ),
+      });
+    }
+  }, []);
+
   return (
     <>
       {
@@ -283,7 +300,7 @@ function InMyListPageContainer({
         >
           <PlaylistAddPopUpView />
           <div className="left-wrap">
-            <Button className="post add" onClick={onOpenPlaylistAddPopUpView}>
+            <Button className="post add" onClick={onCkickOpenPlaylistAddPopUp}>
               +{' '}
               <PolyglotText
                 defaultString="Playlist 추가"

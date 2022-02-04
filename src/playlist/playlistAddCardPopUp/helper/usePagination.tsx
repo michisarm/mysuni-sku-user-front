@@ -24,10 +24,14 @@ function getPageList(
     return generatorNumberArray(startNumber, selectedNumber);
   }
 
-  const startNumber = Math.floor(selectedNumber / pageLimit) * pageLimit || 1;
+  const startNumber = Math.floor(selectedNumber / pageLimit) * pageLimit;
   const endNumber = Math.ceil(selectedNumber / pageLimit) * pageLimit;
 
-  return generatorNumberArray(startNumber, endNumber);
+  if (endNumber > totalPageCount) {
+    return generatorNumberArray(startNumber + 1, totalPageCount);
+  }
+
+  return generatorNumberArray(startNumber + 1, endNumber);
 }
 
 /**

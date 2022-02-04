@@ -64,15 +64,6 @@ export function useRequestPlaylistDetail(type: 'CREATE' | 'EDIT') {
   const isOpen = useIsOpenPlaylistInputPopUp();
 
   useEffect(() => {
-    setIsOpenPlaylistInputPopUp(false);
-    setPlaylistInputPopUp({
-      title: '',
-      description: '',
-      expose: true,
-    });
-  }, []);
-
-  useEffect(() => {
     if (type === 'EDIT' && isOpen) {
       requsetPlaylistDetail();
     }
