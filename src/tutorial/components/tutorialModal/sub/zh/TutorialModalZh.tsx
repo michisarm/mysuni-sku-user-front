@@ -18,7 +18,7 @@ class TutorialModalZh extends Component<TutorialProps> {
 
     const panes2 = [
       {
-        menuItem: '菜单简化',
+        menuItem: 'Main Page Playlist',
         render: () => (
           <Tab.Pane className="tab-img-wrap">
             <div className="tab-img t-img1" />
@@ -26,10 +26,36 @@ class TutorialModalZh extends Component<TutorialProps> {
         ),
       },
       {
-        menuItem: '个人资料卡',
+        menuItem: '3种类型的Playlist ',
         render: () => (
           <Tab.Pane className="tab-img-wrap">
             <div className="tab-img t-img2" />
+          </Tab.Pane>
+        ),
+      },
+    ];
+    const panes3 = [
+      {
+        menuItem: '在学习卡片中创建',
+        render: () => (
+          <Tab.Pane className="tab-img-wrap">
+            <div className="tab-img t-img1" />
+          </Tab.Pane>
+        ),
+      },
+      {
+        menuItem: '在收藏课程中创建',
+        render: () => (
+          <Tab.Pane className="tab-img-wrap">
+            <div className="tab-img t-img2" />
+          </Tab.Pane>
+        ),
+      },
+      {
+        menuItem: '在My Page中创建',
+        render: () => (
+          <Tab.Pane className="tab-img-wrap">
+            <div className="tab-img t-img3" />
           </Tab.Pane>
         ),
       },
@@ -37,7 +63,7 @@ class TutorialModalZh extends Component<TutorialProps> {
 
     const panes4 = [
       {
-        menuItem: '我的学习现状',
+        menuItem: 'Playlist详情',
         render: () => (
           <Tab.Pane className="tab-img-wrap">
             <div className="tab-img t-img1" />
@@ -45,18 +71,26 @@ class TutorialModalZh extends Component<TutorialProps> {
         ),
       },
       {
-        menuItem: '继续下一个学习课程',
+        menuItem: '推荐Playlist',
         render: () => (
           <Tab.Pane className="tab-img-wrap">
             <div className="tab-img t-img2" />
+          </Tab.Pane>
+        ),
+      },
+      {
+        menuItem: '他人推荐的Playlist',
+        render: () => (
+          <Tab.Pane className="tab-img-wrap">
+            <div className="tab-img t-img3" />
           </Tab.Pane>
         ),
       },
     ];
 
-    const panes6 = [
+    const panes5 = [
       {
-        menuItem: '按照学习模式推荐',
+        menuItem: '通过个人资料弹窗添加',
         render: () => (
           <Tab.Pane className="tab-img-wrap">
             <div className="tab-img t-img1" />
@@ -64,18 +98,10 @@ class TutorialModalZh extends Component<TutorialProps> {
         ),
       },
       {
-        menuItem: `基于类似学习者的\n推荐`,
+        menuItem: '查看已收藏的Playlist',
         render: () => (
           <Tab.Pane className="tab-img-wrap">
             <div className="tab-img t-img2" />
-          </Tab.Pane>
-        ),
-      },
-      {
-        menuItem: '收藏至关注频道的课程',
-        render: () => (
-          <Tab.Pane className="tab-img-wrap">
-            <div className="tab-img t-img3" />
           </Tab.Pane>
         ),
       },
@@ -85,10 +111,10 @@ class TutorialModalZh extends Component<TutorialProps> {
       <>
         <Modal
           open={open}
-          className="base w1000 tutorials3 front scrolling chn"
+          className="base w1000 tutorials4 front scrolling chn"
           data-area={Area.MAIN_POPBANNER}
         >
-          <Modal.Header className="header3">
+          <Modal.Header className="header4">
             <div className="right-btn">
               <Checkbox
                 label="不再显示"
@@ -98,7 +124,7 @@ class TutorialModalZh extends Component<TutorialProps> {
                   onChangeIsShowTutorial(data.checked ? 'HIDE' : 'SHOW')
                 }
               />
-              <Button className="close" onClick={() => onClose()}>
+              <Button className="close" onClick={onClose}>
                 Close
               </Button>
             </div>
@@ -118,7 +144,9 @@ class TutorialModalZh extends Component<TutorialProps> {
                       )}
                       onClick={() => onChangeActiveMenu('tu01')}
                     >
-                      mySUNI全新改版啦！
+                      与成员携手的
+                      <br />
+                      mySUNI Playlist !
                     </a>
                     <a
                       className={classNames(
@@ -127,7 +155,7 @@ class TutorialModalZh extends Component<TutorialProps> {
                       )}
                       onClick={() => onChangeActiveMenu('tu02')}
                     >
-                      简化后的菜单选项
+                      Main Page
                     </a>
                     <a
                       className={classNames(
@@ -136,7 +164,7 @@ class TutorialModalZh extends Component<TutorialProps> {
                       )}
                       onClick={() => onChangeActiveMenu('tu03')}
                     >
-                      智能化搜索
+                      创建Playlist
                     </a>
                     <a
                       className={classNames(
@@ -145,7 +173,7 @@ class TutorialModalZh extends Component<TutorialProps> {
                       )}
                       onClick={() => onChangeActiveMenu('tu04')}
                     >
-                      更便捷地查看我的学习现状
+                      推荐Playlist
                     </a>
                     <a
                       className={classNames(
@@ -154,16 +182,7 @@ class TutorialModalZh extends Component<TutorialProps> {
                       )}
                       onClick={() => onChangeActiveMenu('tu05')}
                     >
-                      可预览学习内容的缩略图
-                    </a>
-                    <a
-                      className={classNames(
-                        'item tu6',
-                        activeMenu === 'tu06' ? 'current' : ''
-                      )}
-                      onClick={() => onChangeActiveMenu('tu06')}
-                    >
-                      个性化推荐
+                      收藏Playlist
                     </a>
                   </div>
                 </div>
@@ -180,7 +199,25 @@ class TutorialModalZh extends Component<TutorialProps> {
                                 onClick={() => onChangeActiveMenu('tu02')}
                               >
                                 <i className="icon tuto-01" />
-                                顶部菜单
+                                Main Page
+                              </a>
+                            </li>
+                            <li>
+                              <a
+                                className="intro"
+                                onClick={() => onChangeActiveMenu('tu03')}
+                              >
+                                <i className="icon tuto-02" />
+                                创建Playlist
+                              </a>
+                            </li>
+                            <li>
+                              <a
+                                className="intro"
+                                onClick={() => onChangeActiveMenu('tu04')}
+                              >
+                                <i className="icon tuto-03" />
+                                推荐Playlist
                               </a>
                             </li>
                             <li>
@@ -188,17 +225,8 @@ class TutorialModalZh extends Component<TutorialProps> {
                                 className="intro"
                                 onClick={() => onChangeActiveMenu('tu05')}
                               >
-                                <i className="icon tuto-02" />
-                                学习卡
-                              </a>
-                            </li>
-                            <li>
-                              <a
-                                className="intro"
-                                onClick={() => onChangeActiveMenu('tu06')}
-                              >
-                                <i className="icon tuto-03" />
-                                个性化推荐
+                                <i className="icon tuto-04" />
+                                收藏Playlist
                               </a>
                             </li>
                           </ul>
@@ -209,13 +237,14 @@ class TutorialModalZh extends Component<TutorialProps> {
 
                   {activeMenu === 'tu02' && (
                     <div className="tu-cont tu2">
-                      {/* 간소화된 메뉴 구성 */}
+                      {/* Main Page */}
                       <div className="inner">
                         <div className="top-text">
-                          菜单简化后，
-                          <strong>搜索/查询区域和我的区域得以分离，</strong>
-                          <br />
-                          搜索与学习变得更加容易。
+                          <strong>
+                            可查看并学习3种类型的Playlist
+                            <br />
+                            我创建的、他人推荐的、我收藏的）。
+                          </strong>
                         </div>
                         <Tab
                           menu={{ secondary: true }}
@@ -227,35 +256,33 @@ class TutorialModalZh extends Component<TutorialProps> {
                   )}
                   {activeMenu === 'tu03' && (
                     <div className="tu-cont tu3">
-                      {/* 똑똑한 검색 */}
+                      {/* Playlist 만들기 */}
                       <div className="inner">
                         <div className="top-text">
                           <strong>
-                            搜索栏升级后具有自动补全、智能纠错等功能，
+                            可在课程详情页面和收藏课程目录、
+                            <br />
+                            My Page中添加课程，创建Playlist。
                           </strong>
-                          <br />
-                          可更加便捷地查询我想学的课程。
                         </div>
-                        <div className="tab-tu">
-                          <div className="ui segment tab tab-img-wrap">
-                            <div className="tab-img t-img1" />
-                          </div>
-                        </div>
+                        <Tab
+                          menu={{ secondary: true }}
+                          panes={panes3}
+                          className="tab-tu"
+                        />
                       </div>
                     </div>
                   )}
                   {activeMenu === 'tu04' && (
                     <div className="tu-cont tu4">
-                      {/* 편리해진 나의 학습 확인 */}
+                      {/* Playlist 추천하기 */}
                       <div className="inner">
                         <div className="top-text">
-                          点击<strong>“查看我的学习现状”</strong>即可
                           <strong>
-                            快速查看学习相关的
+                            创建的Playlist可推荐给其他人，也可收到他人的推荐，
                             <br />
-                            简略信息，
+                            体验一同学习的乐趣吧！
                           </strong>
-                          并可快捷进入<strong>我最近学习的课程。</strong>
                         </div>
                         <Tab
                           menu={{ secondary: true }}
@@ -268,37 +295,18 @@ class TutorialModalZh extends Component<TutorialProps> {
 
                   {activeMenu === 'tu05' && (
                     <div className="tu-cont tu5">
-                      {/* 썸네일로 미리보는 콘텐츠 */}
-                      <div className="inner">
-                        <div className="top-text">
-                          <strong>通过图片型学习卡</strong>可快速了解学习内容。
-                          <br />
-                          关注目录中的课程可以通过<strong>My Learning</strong>
-                          菜单批量查看。
-                        </div>
-                        <div className="tab-tu">
-                          <div className="ui segment tab tab-img-wrap">
-                            <div className="tab-img t-img1" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {activeMenu === 'tu06' && (
-                    <div className="tu-cont tu6">
-                      {/* 나만을 위한 추천 */}
+                      {/* Playlist 담아오기 */}
                       <div className="inner">
                         <div className="top-text">
                           <strong>
-                            利用机器学习分析相关数据，为您推荐课程。
+                            在个人资料卡公开的Playlist中，点击“添加Playlist”，
+                            <br />
+                            与成员们一起学习心仪课程吧。
                           </strong>
-                          <br />
-                          敬请期待今后更多的升级内容！
                         </div>
                         <Tab
                           menu={{ secondary: true }}
-                          panes={panes6}
+                          panes={panes5}
                           className="tab-tu"
                         />
                       </div>

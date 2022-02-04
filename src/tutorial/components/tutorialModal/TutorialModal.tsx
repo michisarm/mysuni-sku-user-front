@@ -4,7 +4,7 @@ import { SkProfileService } from '../../../profile/stores';
 import TutorialModalZh from './sub/zh';
 import TutorialModalEn from './sub/en';
 import TutorialModalKo from './sub/ko';
-import '../../style.css';
+import './TutorialModal.css';
 
 export interface TutorialProps {
   open: boolean;

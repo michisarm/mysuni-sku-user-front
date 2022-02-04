@@ -18,7 +18,7 @@ class TutorialModalEn extends Component<TutorialProps> {
 
     const panes2 = [
       {
-        menuItem: 'Simplified menu',
+        menuItem: 'Main Page Playlist',
         render: () => (
           <Tab.Pane className="tab-img-wrap">
             <div className="tab-img t-img1" />
@@ -26,7 +26,7 @@ class TutorialModalEn extends Component<TutorialProps> {
         ),
       },
       {
-        menuItem: 'Profile card',
+        menuItem: 'Three Types of Playlists',
         render: () => (
           <Tab.Pane className="tab-img-wrap">
             <div className="tab-img t-img2" />
@@ -36,7 +36,7 @@ class TutorialModalEn extends Component<TutorialProps> {
     ];
     const panes3 = [
       {
-        menuItem: 'Auto-complete function',
+        menuItem: 'Create a playlist\nfrom the learning card',
         render: () => (
           <Tab.Pane className="tab-img-wrap">
             <div className="tab-img t-img1" />
@@ -44,10 +44,18 @@ class TutorialModalEn extends Component<TutorialProps> {
         ),
       },
       {
-        menuItem: 'Typo correction function',
+        menuItem: 'Create a playlist\nfrom the wish list ',
         render: () => (
           <Tab.Pane className="tab-img-wrap">
             <div className="tab-img t-img2" />
+          </Tab.Pane>
+        ),
+      },
+      {
+        menuItem: 'Create a playlist\nfrom My Page ',
+        render: () => (
+          <Tab.Pane className="tab-img-wrap">
+            <div className="tab-img t-img3" />
           </Tab.Pane>
         ),
       },
@@ -55,7 +63,7 @@ class TutorialModalEn extends Component<TutorialProps> {
 
     const panes4 = [
       {
-        menuItem: 'My Learning Status',
+        menuItem: 'Playlist Detailed\nPage',
         render: () => (
           <Tab.Pane className="tab-img-wrap">
             <div className="tab-img t-img1" />
@@ -63,18 +71,26 @@ class TutorialModalEn extends Component<TutorialProps> {
         ),
       },
       {
-        menuItem: 'Continue learning',
+        menuItem: 'Recommend a\nPlaylist',
         render: () => (
           <Tab.Pane className="tab-img-wrap">
             <div className="tab-img t-img2" />
+          </Tab.Pane>
+        ),
+      },
+      {
+        menuItem: 'Recommended\nPlaylist',
+        render: () => (
+          <Tab.Pane className="tab-img-wrap">
+            <div className="tab-img t-img3" />
           </Tab.Pane>
         ),
       },
     ];
 
-    const panes6 = [
+    const panes5 = [
       {
-        menuItem: `Learning-pattern-based \nrecommendations`,
+        menuItem: 'Save via the profile pop-up window',
         render: () => (
           <Tab.Pane className="tab-img-wrap">
             <div className="tab-img t-img1" />
@@ -82,18 +98,10 @@ class TutorialModalEn extends Component<TutorialProps> {
         ),
       },
       {
-        menuItem: `Recommendation\nbased on similar\nlearners`,
+        menuItem: 'See your saved playlist',
         render: () => (
           <Tab.Pane className="tab-img-wrap">
             <div className="tab-img t-img2" />
-          </Tab.Pane>
-        ),
-      },
-      {
-        menuItem: `Courses you added \nas a channel of interest`,
-        render: () => (
-          <Tab.Pane className="tab-img-wrap">
-            <div className="tab-img t-img3" />
           </Tab.Pane>
         ),
       },
@@ -103,10 +111,10 @@ class TutorialModalEn extends Component<TutorialProps> {
       <>
         <Modal
           open={open}
-          className="base w1000 tutorials3 front scrolling eng"
+          className="base w1000 tutorials4 front scrolling eng"
           data-area={Area.MAIN_POPBANNER}
         >
-          <Modal.Header className="header3">
+          <Modal.Header className="header4">
             <div className="right-btn">
               <Checkbox
                 label="I don’t want to see this anymore."
@@ -116,7 +124,7 @@ class TutorialModalEn extends Component<TutorialProps> {
                   onChangeIsShowTutorial(data.checked ? 'HIDE' : 'SHOW')
                 }
               />
-              <Button className="close" onClick={() => onClose()}>
+              <Button className="close" onClick={onClose}>
                 Close
               </Button>
             </div>
@@ -136,9 +144,8 @@ class TutorialModalEn extends Component<TutorialProps> {
                       )}
                       onClick={() => onChangeActiveMenu('tu01')}
                     >
-                      mySUNI has been
-                      <br />
-                      redesigned!
+                      mySUNI Playlist is <br />
+                      ready for use!
                     </a>
                     <a
                       className={classNames(
@@ -147,7 +154,7 @@ class TutorialModalEn extends Component<TutorialProps> {
                       )}
                       onClick={() => onChangeActiveMenu('tu02')}
                     >
-                      Simplified menu
+                      Main Page
                     </a>
                     <a
                       className={classNames(
@@ -156,7 +163,7 @@ class TutorialModalEn extends Component<TutorialProps> {
                       )}
                       onClick={() => onChangeActiveMenu('tu03')}
                     >
-                      Smarter searches
+                      Create a Playlist
                     </a>
                     <a
                       className={classNames(
@@ -165,9 +172,7 @@ class TutorialModalEn extends Component<TutorialProps> {
                       )}
                       onClick={() => onChangeActiveMenu('tu04')}
                     >
-                      A more convenient
-                      <br />
-                      My Learning Section
+                      Recommend a Playlist
                     </a>
                     <a
                       className={classNames(
@@ -176,19 +181,7 @@ class TutorialModalEn extends Component<TutorialProps> {
                       )}
                       onClick={() => onChangeActiveMenu('tu05')}
                     >
-                      Learning Card previews <br />
-                      with thumbnails
-                    </a>
-                    <a
-                      className={classNames(
-                        'item tu6',
-                        activeMenu === 'tu06' ? 'current' : ''
-                      )}
-                      onClick={() => onChangeActiveMenu('tu06')}
-                    >
-                      Recommendations
-                      <br />
-                      just for me
+                      Save a Playlist
                     </a>
                   </div>
                 </div>
@@ -205,7 +198,27 @@ class TutorialModalEn extends Component<TutorialProps> {
                                 onClick={() => onChangeActiveMenu('tu02')}
                               >
                                 <i className="icon tuto-01" />
-                                Top menu
+                                Main Page
+                              </a>
+                            </li>
+                            <li>
+                              <a
+                                className="intro"
+                                onClick={() => onChangeActiveMenu('tu03')}
+                              >
+                                <i className="icon tuto-02" />
+                                Create a <br />
+                                Playlist
+                              </a>
+                            </li>
+                            <li>
+                              <a
+                                className="intro"
+                                onClick={() => onChangeActiveMenu('tu04')}
+                              >
+                                <i className="icon tuto-03" />
+                                Recommend a<br />
+                                Playlist
                               </a>
                             </li>
                             <li>
@@ -213,23 +226,9 @@ class TutorialModalEn extends Component<TutorialProps> {
                                 className="intro"
                                 onClick={() => onChangeActiveMenu('tu05')}
                               >
-                                <i className="icon tuto-02" />
-                                Learning
-                                <br />
-                                Card
-                              </a>
-                            </li>
-                            <li>
-                              <a
-                                className="intro"
-                                onClick={() => onChangeActiveMenu('tu06')}
-                              >
-                                <i className="icon tuto-03" />
-                                Personalized
-                                <br />
-                                recommen
-                                <br />
-                                -dations
+                                <i className="icon tuto-04" />
+                                Save a<br />
+                                Playlist
                               </a>
                             </li>
                           </ul>
@@ -240,19 +239,16 @@ class TutorialModalEn extends Component<TutorialProps> {
 
                   {activeMenu === 'tu02' && (
                     <div className="tu-cont tu2">
-                      {/* 간소화된 메뉴 구성 */}
+                      {/* Main Page */}
                       <div className="inner">
                         <div className="top-text">
-                          The simplified menu
                           <strong>
-                            {' '}
-                            separates your exploring
+                            You can check three types of playlists (Created,
                             <br />
-                            /searching area from “my area”
-                          </strong>{' '}
-                          for convenient
-                          <br />
-                          searching and learning.
+                            Recommended, and Saved) and get started
+                            <br />
+                            with your learning.
+                          </strong>
                         </div>
                         <Tab
                           menu={{ secondary: true }}
@@ -264,18 +260,16 @@ class TutorialModalEn extends Component<TutorialProps> {
                   )}
                   {activeMenu === 'tu03' && (
                     <div className="tu-cont tu3">
-                      {/* 똑똑한 검색 */}
+                      {/* Playlist 만들기 */}
                       <div className="inner">
                         <div className="top-text">
                           <strong>
-                            {' '}
-                            Improved search features like auto-complete
+                            You can create your playlist and add courses of
                             <br />
-                            and typo correction
-                          </strong>{' '}
-                          make it easier to find
-                          <br />
-                          what you want to learn.
+                            your choice in the Course Detailed Page,
+                            <br />
+                            Wish List, and My Page.
+                          </strong>
                         </div>
                         <Tab
                           menu={{ secondary: true }}
@@ -287,19 +281,14 @@ class TutorialModalEn extends Component<TutorialProps> {
                   )}
                   {activeMenu === 'tu04' && (
                     <div className="tu-cont tu4">
-                      {/* 편리해진 나의 학습 확인 */}
+                      {/* Playlist 추천하기 */}
                       <div className="inner">
                         <div className="top-text">
-                          Click
                           <strong>
-                            {' '}
-                            “View My Learning Status” to see a summary
+                            Start learning by recommending your playlist to
                             <br />
-                            of your learning
-                          </strong>{' '}
-                          and quickly get back to the course
-                          <br />
-                          <strong>you just learned.</strong>
+                            others, and have others recommend you as well.
+                          </strong>
                         </div>
                         <Tab
                           menu={{ secondary: true }}
@@ -312,43 +301,22 @@ class TutorialModalEn extends Component<TutorialProps> {
 
                   {activeMenu === 'tu05' && (
                     <div className="tu-cont tu5">
-                      {/* 썸네일로 미리보는 콘텐츠 */}
-                      <div className="inner">
-                        <div className="top-text">
-                          Get a quick understanding of what you’re learning
-                          <br />
-                          with <strong>learning cards as images.</strong>
-                          <br />
-                          Courses from your wish list can be found
-                          <br />
-                          under the <strong>My Learning menu.</strong>
-                        </div>
-                        <div className="tab-tu">
-                          <div className="ui segment tab tab-img-wrap">
-                            <div className="tab-img t-img1" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {activeMenu === 'tu06' && (
-                    <div className="tu-cont tu6">
-                      {/* 나만을 위한 추천 */}
+                      {/* Playlist 담아오기 */}
                       <div className="inner">
                         <div className="top-text">
                           <strong>
-                            {`We'll recommend courses by data analysis using`}
+                            Join the others in their learning by saving
+                            playlists
                             <br />
-                            machine learning.
-                          </strong>{' '}
-                          We will continue to upgrade mySUNI,
-                          <br />
-                          so look forward to it!
+                            among the ones that are made public in profile
+                            cards.
+                            <br />
+                            Just click on the Save the Playlist button.
+                          </strong>
                         </div>
                         <Tab
                           menu={{ secondary: true }}
-                          panes={panes6}
+                          panes={panes5}
                           className="tab-tu"
                         />
                       </div>
