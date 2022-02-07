@@ -173,7 +173,7 @@ class MyLearningSummaryModal extends ReactComponent<Props, State, Injected> {
       instructTimeSummary,
     } = myLearningSummaryService;
 
-    await findInstructTimeSummary();
+    await findInstructTimeSummary(year);
     findMyLearningSummaryModalByYear(year).then(
       (myLearningSummary: MyLearningSummaryModel) => {
         // getCollegePercent(myLearningSummary.collegeLearningTimes);

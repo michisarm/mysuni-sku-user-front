@@ -55,8 +55,8 @@ class MyLearningSummaryService {
   //   });
   // }
 
-  @action async findInstructTimeSummary() {
-    const foundLectureTimeSummary = await findMyInstructTimeSummary();
+  @action async findInstructTimeSummary(year: number = moment().year()) {
+    const foundLectureTimeSummary = await findMyInstructTimeSummary(year);
 
     runInAction(() => {
       this._instructTimeSummary = foundLectureTimeSummary;

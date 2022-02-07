@@ -17,6 +17,8 @@ import PlayTimeSdo from 'lecture/detail/model/PlayTimeSdo';
 import ReplayTimeSdo from '../../../model/ReplayTimeSdo';
 import { findCubesByIdsCache } from '../../../api/cubeApi';
 import { getMainCategory } from '../../../../../shared/model/CardCategory';
+import moment from 'moment';
+import { saveReplayTime } from '../../../api/learningTimeApi';
 
 export async function callRegisterWatchLog(
   panoptoEmbedPlayerState: PanoptoEmbedPlayerState
@@ -110,9 +112,8 @@ export async function callRegisterReplayWatchLog(
     playbackRate = 0,
   } = panoptoEmbedPlayerState;
   const { cubeId } = params;
-  console.log('안녕하세요');
 
-  findCubesByIdsCache([cubeId]).then((cubes) => {
+  findCubesByIdsCache([cubeId]).then(async (cubes) => {
     //
     if (cubes === undefined) return;
 
@@ -124,13 +125,15 @@ export async function callRegisterReplayWatchLog(
       watchLogStart > end || end - watchLogStart > 25
         ? end - 10 * playbackRate
         : watchLogStart;
-    // const replayTimeSdo: ReplayTimeSdo = {
-    //   collegeId,
-    //   cubeId,
-    //   // duration: panoptoEmbedPlayerState.duration || 0,
-    //   replayLearningSeconds: 0,
-    //   start,
-    //   end,
-    // };
+    const replayTimeSdo: ReplayTimeSdo = {
+      collegeId,
+      cubeId,
+      replayLearningSeconds: panoptoEmbedPlayerState.duration || 0,
+      start,
+      end,
+    };
+
+    // console.log(moment().format('YYYY-MM-DD hh:mm:ss'), replayTimeSdo);
+    await saveReplayTime(replayTimeSdo);
   });
 }
