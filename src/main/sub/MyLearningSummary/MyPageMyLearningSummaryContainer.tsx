@@ -175,8 +175,6 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
 
     const year = selectYear === -1 ? '전체' : selectYear.toString();
 
-    console.log(displayMySuniLearningTime);
-
     return (
       <>
         <div
