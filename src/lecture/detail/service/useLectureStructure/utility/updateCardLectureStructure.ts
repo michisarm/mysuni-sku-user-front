@@ -415,7 +415,7 @@ function updateItems(
 
 export async function updateCardLectureStructure(cardId: string) {
   const lectureStructure = getLectureStructure();
-  if (lectureStructure === undefined) {
+  if (lectureStructure === undefined || !lectureStructure.card.cardId) {
     return;
   }
   const myCardRelatedStudentsRom = await findMyCardRelatedStudentsCache(cardId);
