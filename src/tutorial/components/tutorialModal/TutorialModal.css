@@ -227,7 +227,7 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  min-height: 28px;
+  height: 28px;
   padding: 0 0 0 36px;
   margin: 0 24px 0 0;
   color: #888;
@@ -235,7 +235,7 @@
   line-height: 16px;
   letter-spacing: -0.2px;
   font-weight: 700;
-  white-space: break-spaces;
+  white-space: pre-wrap;
 }
 .tab-tu .ui.menu.secondary .item::after {
   content: '';
