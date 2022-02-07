@@ -94,7 +94,14 @@ export async function requestMysuniUser(searchWord: string) {
   if (mySuniUserIdentities !== undefined) {
     const myId = SkProfileService.instance.additionalUserInfo.id;
     const filteredMySuniUserIdentities = mySuniUserIdentities.results.filter(
-      (user) => user.id !== myId
+      (user) => {
+        if (user.id === myId) {
+          setMySuniUserTotalCount(mySuniUserIdentities.totalCount - 1);
+          return {};
+        }
+
+        return user;
+      }
     );
 
     const mySuniUsers = userIdentitiesToMemberList(
@@ -119,10 +126,22 @@ export async function requestScrollMysuniUser(
   );
 
   if (nextMySuniUsers) {
+    const myId = SkProfileService.instance.additionalUserInfo.id;
+
     const parseNextMySuniUsers = userIdentitiesToMemberList(
       nextMySuniUsers.results
     );
-    setMySuniUsers([...mySuniUsers, ...parseNextMySuniUsers]);
+
+    const filteredNextMySuniUsers = parseNextMySuniUsers.filter((user) => {
+      if (user.id === myId) {
+        setMySuniUserTotalCount(nextMySuniUsers.totalCount - 1);
+        return {};
+      }
+
+      return user;
+    });
+
+    setMySuniUsers([...mySuniUsers, ...filteredNextMySuniUsers]);
   }
 }
 

@@ -18,12 +18,14 @@ import {
   setMySuniUsers,
   useCheckedMemberList,
   useMySuniUsers,
+  useMySuniUserTotalCount,
 } from '../playlistRecommendPopUp.store';
 import { OrganizationChartTree } from './OrganizationChartTree';
 import { ProfileComponent } from './ProfileComponent';
 
 export function MySuniUserTab() {
   const mySuniUser = useMySuniUsers();
+  const mySuniUserTotalCount = useMySuniUserTotalCount();
   const checkedMemberList = useCheckedMemberList();
   const [isSearchAfter, setIsSearchAfter] = useState(false); // 검색 전인지 후인지 확인하는 상태 값
   const [searchText, setSearchText] = useState('');
@@ -31,7 +33,7 @@ export function MySuniUserTab() {
   const [offset, setOffset] = useState(0);
 
   const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
-    if (isIntersecting) {
+    if (isIntersecting && mySuniUserTotalCount > mySuniUser.length) {
       onScrollMySuniUser(searchText, offset);
       setOffset(offset + 1);
     }
