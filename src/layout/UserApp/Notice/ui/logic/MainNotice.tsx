@@ -81,11 +81,6 @@ const MainNoticeContainer: React.FC<Props> = (Props) => {
 
   const isIE = useMemo<boolean>(testIsIE, []);
 
-  // 임시 코드 ~ 2021-11-30 이후에 제거
-  if (!isIE) {
-    return null;
-  }
-
   return showNotice && notices !== null && notices.length > 0 ? (
     <NoticeView notices={notices} showNoti={showNotice} />
   ) : null;
