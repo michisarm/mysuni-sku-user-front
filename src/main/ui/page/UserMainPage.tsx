@@ -24,11 +24,12 @@ function UserMainPage() {
 
 export default UserMainPage;
 
-const start = new Date('2022-02-08:00:00:00');
-const end = new Date('2022-02-22:23:59:59');
+const start = new Date(2022, 1, 8, 0, 0, 0);
+const end = new Date(2022, 1, 22, 23, 59, 59);
 
 function between(start: Date, end: Date): boolean {
   // TODO :: 배포 전 현재 시간으로 수정
-  const now = new Date('2022-02-08:00:00:00');
+  const now = new Date(2022, 1, 8, 0, 0, 0);
+
   return now >= start && now <= end;
 }
