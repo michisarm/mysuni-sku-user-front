@@ -29,5 +29,17 @@ export function textValidationCheck(searchText: string) {
     return false;
   }
 
+  if (trimSearchText.includes('%')) {
+    reactAlert({
+      title: getPolyglotText('구성원 검색하기', 'playlist-popup-구성원검색'),
+      message: getPolyglotText(
+        '특수문자는 사용할 수 없습니다.',
+        'playlist-popup-특수문자'
+      ),
+    });
+
+    return false;
+  }
+
   return true;
 }
