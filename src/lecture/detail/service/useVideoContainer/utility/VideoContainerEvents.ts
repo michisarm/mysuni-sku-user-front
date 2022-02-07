@@ -19,6 +19,7 @@ import { findCubesByIdsCache } from '../../../api/cubeApi';
 import { getMainCategory } from '../../../../../shared/model/CardCategory';
 import moment from 'moment';
 import { saveReplayTime } from '../../../api/learningTimeApi';
+import ReplayTimeCdo from '../../../model/ReplayTimeCdo';
 
 export async function callRegisterWatchLog(
   panoptoEmbedPlayerState: PanoptoEmbedPlayerState
@@ -122,18 +123,18 @@ export async function callRegisterReplayWatchLog(
     const collegeId = getMainCategory(cube.categories)?.collegeId || '';
     const end = currentTime;
     const start =
-      watchLogStart > end || end - watchLogStart > 25
-        ? end - 10 * playbackRate
+      watchLogStart > end || end - watchLogStart > 120
+        ? end - 60 * playbackRate
         : watchLogStart;
-    const replayTimeSdo: ReplayTimeSdo = {
+    const replayTimeCdo: ReplayTimeCdo = {
       collegeId,
       cubeId,
-      replayLearningSeconds: panoptoEmbedPlayerState.duration || 0,
+      // replayLearningSeconds: panoptoEmbedPlayerState.duration || 0,
       start,
       end,
     };
 
     // console.log(moment().format('YYYY-MM-DD hh:mm:ss'), replayTimeSdo);
-    await saveReplayTime(replayTimeSdo);
+    await saveReplayTime(replayTimeCdo);
   });
 }
