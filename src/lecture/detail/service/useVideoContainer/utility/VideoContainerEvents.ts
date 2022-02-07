@@ -12,8 +12,13 @@ import { PanoptoEmbedPlayerState } from '@sku/skuniv-ui-video-player';
 import { confirmProgress } from '../../useLectureMedia/utility/confirmProgress';
 import { requestLectureState } from '../../useLectureState/utility/requestLectureState';
 import { updateCardLectureStructure } from '../../useLectureStructure/utility/updateCardLectureStructure';
-import { savePlayTime } from '../../../api/panoptoApi';
+import { findByCubeIds, savePlayTime } from '../../../api/panoptoApi';
 import PlayTimeSdo from 'lecture/detail/model/PlayTimeSdo';
+import ReplayTimeSdo from '../../../model/ReplayTimeSdo';
+import { findCubesByIdsCache } from '../../../api/cubeApi';
+import { getMainCategory } from '../../../../../shared/model/CardCategory';
+import moment from 'moment';
+import { saveReplayTime } from '../../../api/learningTimeApi';
 
 export async function callRegisterWatchLog(
   panoptoEmbedPlayerState: PanoptoEmbedPlayerState
@@ -92,4 +97,43 @@ export function callDebounceActionTrack() {
     action: Action.CLICK,
     actionName: '학습버튼 클릭',
   } as ActionTrackParam);
+}
+
+export async function callRegisterReplayWatchLog(
+  panoptoEmbedPlayerState: PanoptoEmbedPlayerState
+) {
+  const params = getLectureParams();
+  if (params?.cubeId === undefined) {
+    return;
+  }
+  const {
+    watchLogStart,
+    currentTime = 0,
+    playbackRate = 0,
+  } = panoptoEmbedPlayerState;
+  const { cubeId } = params;
+
+  findCubesByIdsCache([cubeId]).then(async (cubes) => {
+    //
+    if (cubes === undefined) return;
+
+    const cube = cubes[0];
+
+    const collegeId = getMainCategory(cube.categories)?.collegeId || '';
+    const end = currentTime;
+    const start =
+      watchLogStart > end || end - watchLogStart > 25
+        ? end - 10 * playbackRate
+        : watchLogStart;
+    const replayTimeSdo: ReplayTimeSdo = {
+      collegeId,
+      cubeId,
+      replayLearningSeconds: panoptoEmbedPlayerState.duration || 0,
+      start,
+      end,
+    };
+
+    // console.log(moment().format('YYYY-MM-DD hh:mm:ss'), replayTimeSdo);
+    await saveReplayTime(replayTimeSdo);
+  });
 }

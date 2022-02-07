@@ -60,3 +60,31 @@ export async function setCollegePercent(
 
   setCollegeTopChartItem([...collegeArr]);
 }
+
+export async function getCollegePercent(
+  collegeLearningTimes: CollegeLearningTimeModel[]
+) {
+  //
+  const totalLearningTimeRdo = getTotalLearningTimeRdo();
+
+  if (totalLearningTimeRdo !== undefined) {
+    totalLearningTimeRdo.collegeLearningTimes = collegeLearningTimes;
+    setTotalLearningTimeRdo(totalLearningTimeRdo);
+  }
+
+  const totalTime = collegeLearningTimes.reduce<number>((p, c) => {
+    return p + c.learningTime;
+  }, 0);
+
+  const collegeArr = collegeLearningTimes
+    .sort((a, b) => b.learningTime - a.learningTime)
+    .filter((_, i) => i < 5)
+    .map((c) => {
+      return {
+        college: getCollgeName(c.collegeId),
+        percent: Math.floor((c.learningTime / totalTime) * 100),
+      };
+    });
+
+  return collegeArr;
+}

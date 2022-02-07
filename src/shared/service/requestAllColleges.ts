@@ -31,6 +31,19 @@ export function isMySuniCollege(college: College) {
   return college.cineroomId === 'ne1-m2-c2';
 }
 
+export function isMySuniCollegeById(id: string) {
+  //
+  const allColleges = getAllColleges();
+
+  if (allColleges === undefined) return false;
+
+  const college = allColleges.find((c) => c.id === id);
+
+  if (college === undefined) return false;
+
+  return college.cineroomId === 'ne1-m2-c2';
+}
+
 export function findAllCollege() {
   const axios = getAxios();
   return axios.get<College[]>('/api/college/colleges').then(AxiosReturn);

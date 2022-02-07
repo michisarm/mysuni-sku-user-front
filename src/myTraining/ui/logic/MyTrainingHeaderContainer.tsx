@@ -15,7 +15,10 @@ import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import badgePaths from '../../../certification/routePaths';
 import myTrainingPaths from '../../routePaths';
 import lecturePaths from '../../../lecture/routePaths';
-import { useRequestLearningSummary } from '../../service/useRequestLearningSummary';
+import {
+  requestMyLearningSummary,
+  useRequestLearningSummary,
+} from '../../service/useRequestLearningSummary';
 import { Area } from 'tracker/model';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { patronInfo } from '@nara.platform/dock';
@@ -76,8 +79,7 @@ function MyTrainingHeaderContainer({
     await getDisplayMySuniLeaningTime();
     await getDisplayCompanyLearningTime();
   };
-
-  useRequestLearningSummary();
+  // useRequestLearningSummary();
 
   const onClickMyBadge = useCallback(() => {
     history.push(myTrainingPaths.myPageEarnedBadgeList());

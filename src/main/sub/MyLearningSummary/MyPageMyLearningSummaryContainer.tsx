@@ -77,10 +77,10 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
   }
 
   async init() {
-    const { badgeService, myLearningSummaryService } = this.injected;
+    const { badgeService } = this.injected;
 
     await this.findMySummaries(undefined, true);
-    this.makeSelectOptions();
+    // this.makeSelectOptions();
     badgeService.findAllBadgeCount();
 
     this.setState({
@@ -121,7 +121,7 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
     const { skProfile } = skProfileService;
 
     await requestBadgeLearningTime(skProfile.companyCode, year);
-    await findInstructTimeSummary();
+    await findInstructTimeSummary(year);
     findMyLearningSummaryByYear(year).then(
       (myLearningSummary: MyLearningSummaryModel) => {
         getDisplayTotalLearningTime();
@@ -155,8 +155,11 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
       myLearningRdo,
       currentYearLearningTime,
     } = this.state;
-    const { learningGoalHour, obtainedStampCount, totalStampCount } =
-      myLearningRdo;
+    const {
+      learningGoalHour,
+      obtainedStampCount,
+      totalStampCount,
+    } = myLearningRdo;
     const { myLearningSummaryService, badgeService } = this.injected;
     const { menuControlAuth } = MenuControlAuthService.instance;
 
