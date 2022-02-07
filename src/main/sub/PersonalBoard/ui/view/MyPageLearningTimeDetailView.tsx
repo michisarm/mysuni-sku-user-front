@@ -30,14 +30,14 @@ function MyPageLearningTimeDetailView(props: Props) {
     aplTime,
   } = props;
 
-  const datas: ChartDataItem[] = useMemo<ChartDataItem[]>(() => {
-    const instructorTime =
-      (instructorTimeSummary &&
-        (year === '전체'
-          ? instructorTimeSummary.totalInstructorLearningTime
-          : instructorTimeSummary.sumOfCurrentYearInstructorLearningTime)) ||
-      0;
+  const instructorTime =
+    (instructorTimeSummary &&
+      (year === '전체'
+        ? instructorTimeSummary.totalInstructorLearningTime
+        : instructorTimeSummary.sumOfCurrentYearInstructorLearningTime)) ||
+    0;
 
+  const datas: ChartDataItem[] = useMemo<ChartDataItem[]>(() => {
     if (showApl) {
       return [
         {
@@ -204,13 +204,7 @@ function MyPageLearningTimeDetailView(props: Props) {
                       </em>
                       <div>
                         <strong>
-                          {Math.floor(
-                            ((instructorTimeSummary &&
-                              (year === '전체'
-                                ? instructorTimeSummary.totalInstructorLearningTime
-                                : instructorTimeSummary.sumOfCurrentYearInstructorLearningTime)) ||
-                              0) / 60 || 0
-                          )}
+                          {Math.floor(instructorTime / 60 || 0)}
                           <em>
                             <PolyglotText
                               defaultString="h"
@@ -219,13 +213,7 @@ function MyPageLearningTimeDetailView(props: Props) {
                           </em>
                         </strong>
                         <strong>
-                          {Math.floor(
-                            ((instructorTimeSummary &&
-                              (year === '전체'
-                                ? instructorTimeSummary.totalInstructorLearningTime
-                                : instructorTimeSummary.sumOfCurrentYearInstructorLearningTime)) ||
-                              0) / 60 || 0
-                          )}
+                          {Math.floor(instructorTime % 60 || 0)}
                           <em>
                             <PolyglotText
                               defaultString="m"

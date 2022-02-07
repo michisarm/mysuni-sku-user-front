@@ -101,7 +101,7 @@ class MyLearningSummaryModal extends ReactComponent<Props, State, Injected> {
     });
 
     if (year) {
-      const selectYear = year === '전체' ? -1 : parseInt(year, 10);
+      const selectYear = year === '전체' ? 0 : parseInt(year, 10);
       this.setState({ selectYear });
     } else {
       this.setState({ selectYear: moment().year() });
@@ -136,7 +136,7 @@ class MyLearningSummaryModal extends ReactComponent<Props, State, Injected> {
   }
 
   makeSelectOptions() {
-    const years = [{ key: -1, text: '전체', value: -1 }];
+    const years = [{ key: 0, text: '전체', value: 0 }];
 
     const currentYear = moment().year();
 

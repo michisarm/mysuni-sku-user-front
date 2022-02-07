@@ -89,7 +89,7 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
   }
 
   makeSelectOptions() {
-    const years = [{ key: -1, text: '전체', value: -1 }];
+    const years = [{ key: 0, text: '전체', value: 0 }];
 
     const currentYear = moment().year();
 
@@ -173,7 +173,7 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
       displayTotalLearningTime,
     } = myLearningSummaryService;
 
-    const year = selectYear === -1 ? '전체' : selectYear.toString();
+    const year = selectYear === 0 ? '전체' : selectYear.toString();
 
     return (
       <>
