@@ -31,6 +31,13 @@ function MyPageLearningTimeDetailView(props: Props) {
   } = props;
 
   const datas: ChartDataItem[] = useMemo<ChartDataItem[]>(() => {
+    const instructorTime =
+      (instructorTimeSummary &&
+        (year === '전체'
+          ? instructorTimeSummary.totalInstructorLearningTime
+          : instructorTimeSummary.sumOfCurrentYearInstructorLearningTime)) ||
+      0;
+
     if (showApl) {
       return [
         {
@@ -43,10 +50,7 @@ function MyPageLearningTimeDetailView(props: Props) {
         },
         {
           label: '강의시간',
-          value:
-            (instructorTimeSummary &&
-              instructorTimeSummary.sumOfCurrentYearInstructorLearningTime) ||
-            0,
+          value: instructorTime,
         },
         {
           label: '개인학습',
@@ -65,10 +69,7 @@ function MyPageLearningTimeDetailView(props: Props) {
         },
         {
           label: '강의시간',
-          value:
-            (instructorTimeSummary &&
-              instructorTimeSummary.sumOfCurrentYearInstructorLearningTime) ||
-            0,
+          value: instructorTime,
         },
       ];
     }
@@ -204,10 +205,11 @@ function MyPageLearningTimeDetailView(props: Props) {
                       <div>
                         <strong>
                           {Math.floor(
-                            (instructorTimeSummary &&
-                              instructorTimeSummary.sumOfCurrentYearInstructorLearningTime /
-                                60) ||
-                              0
+                            ((instructorTimeSummary &&
+                              (year === '전체'
+                                ? instructorTimeSummary.totalInstructorLearningTime
+                                : instructorTimeSummary.sumOfCurrentYearInstructorLearningTime)) ||
+                              0) / 60 || 0
                           )}
                           <em>
                             <PolyglotText
@@ -218,10 +220,11 @@ function MyPageLearningTimeDetailView(props: Props) {
                         </strong>
                         <strong>
                           {Math.floor(
-                            (instructorTimeSummary &&
-                              instructorTimeSummary.sumOfCurrentYearInstructorLearningTime %
-                                60) ||
-                              0
+                            ((instructorTimeSummary &&
+                              (year === '전체'
+                                ? instructorTimeSummary.totalInstructorLearningTime
+                                : instructorTimeSummary.sumOfCurrentYearInstructorLearningTime)) ||
+                              0) / 60 || 0
                           )}
                           <em>
                             <PolyglotText

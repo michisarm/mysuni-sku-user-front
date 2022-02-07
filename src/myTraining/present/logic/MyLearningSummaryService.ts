@@ -55,11 +55,16 @@ class MyLearningSummaryService {
   //   });
   // }
 
-  @action async findInstructTimeSummary(year: number = moment().year()) {
+  @action async findInstructTimeSummary(
+    year: number = moment().year(),
+    isModal?: boolean
+  ) {
     const foundLectureTimeSummary = await findMyInstructTimeSummary(year);
 
-    runInAction(() => {
-      this._instructTimeSummary = foundLectureTimeSummary;
+    return runInAction(() => {
+      return isModal
+        ? foundLectureTimeSummary
+        : (this._instructTimeSummary = foundLectureTimeSummary);
     });
   }
 
