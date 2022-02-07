@@ -136,7 +136,9 @@ class MyLearningSummaryService {
   }
 
   @action
-  getDisplayMySuniLeaningTime(myLearningSummaryModel?: MyLearningSummaryModel) {
+  getDisplayMySuniLeaningTime(
+    myLearningSummaryModel?: MyLearningSummaryModel
+  ): number {
     //
     const myLearningSummary = myLearningSummaryModel
       ? myLearningSummaryModel
@@ -161,13 +163,11 @@ class MyLearningSummaryService {
         }
       });
 
-    runInAction(
-      () =>
-        !myLearningSummary &&
-        (this.displayMySuniLearningTime = totalLearningTime)
-    );
-
-    return totalLearningTime;
+    return runInAction(() => {
+      return myLearningSummaryModel
+        ? totalLearningTime
+        : (this.displayMySuniLearningTime = totalLearningTime);
+    });
   }
 
   @action
@@ -200,13 +200,11 @@ class MyLearningSummaryService {
 
     totalLearningTime += myLearningSummary.myCompanyLearningTime;
 
-    runInAction(
-      () =>
-        !myLearningSummaryModel &&
-        (this.displayMyCompanyLearningTime = totalLearningTime)
-    );
-
-    return totalLearningTime;
+    return runInAction(() => {
+      return myLearningSummaryModel
+        ? totalLearningTime
+        : (this.displayMyCompanyLearningTime = totalLearningTime);
+    });
   }
 
   @action
@@ -223,13 +221,11 @@ class MyLearningSummaryService {
         totalLearningTime += college.replayLearningTime;
       });
 
-    runInAction(
-      () =>
-        !myLearningSummary &&
-        (this.displayReplayLearningTime = totalLearningTime)
-    );
-
-    return totalLearningTime;
+    return runInAction(() => {
+      return myLearningSummaryModel
+        ? totalLearningTime
+        : (this.displayReplayLearningTime = totalLearningTime);
+    });
   }
 
   @action

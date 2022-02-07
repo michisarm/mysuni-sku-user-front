@@ -122,19 +122,17 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
 
     await requestBadgeLearningTime(skProfile.companyCode, year);
     await findInstructTimeSummary(year);
-    findMyLearningSummaryByYear(year).then(
-      (myLearningSummary: MyLearningSummaryModel) => {
-        getDisplayTotalLearningTime();
-        getDisplayMySuniLeaningTime();
-        getDisplayCompanyLearningTime();
-        setCollegePercent(myLearningSummary.collegeLearningTimes);
-        init &&
-          this.setState({
-            currentYearLearningTime:
-              myLearningSummaryService.displayTotalLearningTime,
-          });
-      }
-    );
+    const myLearningSummary = await findMyLearningSummaryByYear(year);
+
+    getDisplayTotalLearningTime();
+    getDisplayMySuniLeaningTime();
+    getDisplayCompanyLearningTime();
+    await setCollegePercent(myLearningSummary.collegeLearningTimes);
+    init &&
+      this.setState({
+        currentYearLearningTime:
+          myLearningSummaryService.displayTotalLearningTime,
+      });
     findSummeryTimeByYear().then((rdo) => {
       if (rdo !== undefined) {
         this.setState({ myLearningRdo: rdo });
@@ -176,6 +174,8 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
     } = myLearningSummaryService;
 
     const year = selectYear === -1 ? '전체' : selectYear.toString();
+
+    console.log(displayMySuniLearningTime);
 
     return (
       <>
