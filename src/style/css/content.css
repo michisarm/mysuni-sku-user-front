@@ -4321,3 +4321,38 @@ i.icon.thumb-up::before { content: ''; display: inline-block; width: 16px; heigh
 .ui.label.onlytext .icon.thumb-up {transform: translateY(2px);}
 .profile-modal-new .tag-area .belt span{display: inline;}
 .content.support .ui.segment.full .contents.comment { width: auto; }
+
+/* 카테고리 소개 */
+.channel .main-info-area .progress-info-wrap .cell.btn-wrap {
+  width: auto;
+  padding-right: 0;
+}
+.channel .main-info-area .progress-info-wrap .cell.btn-wrap .button {
+  width: auto;
+  height:40px;
+  padding:0 30px;
+  margin:0;
+}
+/* 카테고리 소개 - 전체보기 */
+.white-title .inner.curri-box {
+  position:relative; overflow:hidden;
+}
+.white-title .inner.curri-box .inner_txt {
+  display:inline-block;
+} 
+.white-title .inner.curri-box .inner_txt p {
+  margin-top:6px; 
+  font-size:14px; 
+  line-height:22px;
+}
+.white-title .inner.curri-box .inner_btn {
+  position:absolute; 
+  right:0; 
+  top:calc(50% - 20px);
+}
+.white-title .inner.curri-box .inner_btn button {
+  width: auto; 
+  height:40px;
+  padding:0 30px;
+  margin:0;
+}
