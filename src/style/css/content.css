@@ -4320,3 +4320,4 @@ i.icon.thumb-up { width: 16px; height: 16px; padding: 0; margin: 0; display: inl
 i.icon.thumb-up::before { content: ''; display: inline-block; width: 16px; height: 16px; vertical-align: top; background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-16-px-recommend-2.svg') 0 0/ 16px no-repeat !important;}
 .ui.label.onlytext .icon.thumb-up {transform: translateY(2px);}
 .profile-modal-new .tag-area .belt span{display: inline;}
+.content.support .ui.segment.full .contents.comment { width: auto; }
