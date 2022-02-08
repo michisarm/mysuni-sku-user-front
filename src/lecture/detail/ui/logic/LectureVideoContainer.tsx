@@ -19,6 +19,7 @@ import { useLectureState } from '../../store/LectureStateStore';
 import {
   callConfirmProgress,
   callDebounceActionTrack,
+  callRegisterReplayWatchLog,
   callRegisterWatchLog,
   checkStudent,
 } from '../../service/useVideoContainer/utility/VideoContainerEvents';
@@ -89,6 +90,7 @@ function LectureVideoContainer() {
         }
       )
     );
+
     return () => {
       setNextContentsView(false);
       removeCallRegisterWatchLog();
@@ -97,6 +99,36 @@ function LectureVideoContainer() {
       removeDebounceActionTrack();
     };
   }, [params?.cubeId]);
+
+  useEffect(() => {
+    //
+    if (lectureState === undefined) {
+      return;
+    }
+
+    const removeCallRegisterReplayWatchLog = addOnProgressEventHandler(
+      createOnProgressEventHandler(
+        callRegisterReplayWatchLog,
+        (lastActionTime, state) => {
+          return (
+            ((lectureState &&
+              (lectureState.student?.learningState === 'Passed' ||
+                lectureState.student?.durationViewSeconds === '100')) ||
+              false) &&
+            state.playerState === PlayerState.Playing &&
+            lastActionTime + 60000 < Date.now()
+          );
+        }
+      )
+    );
+
+    return () => {
+      removeCallRegisterReplayWatchLog();
+    };
+  }, [
+    lectureState?.student?.learningState,
+    lectureState?.student?.durationViewSeconds,
+  ]);
 
   useEffect(() => {
     // fixed: playerState 변화시 api호출 > 최초 cube화면 진입시로 api호출 시점 변경
@@ -291,8 +323,9 @@ function LectureVideoContainer() {
     [getLectureMedia(), pathname]
   );
 
-  const [isExpiredContentAlerted, setIsExpiredContentAlerted] =
-    useState<boolean>(false);
+  const [isExpiredContentAlerted, setIsExpiredContentAlerted] = useState<
+    boolean
+  >(false);
 
   const isExpiredContent = useMemo(() => {
     if (

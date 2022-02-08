@@ -82,10 +82,9 @@ async function AppendSamlQueryToCubeMaterial(
   if (loginUserSourceType === undefined) {
     return cubeMaterial;
   }
-  const directConnection =
-    contentsProviderSaml.contentsProviderDirectConnections.find(
-      (c) => c.loginUserSourceType === loginUserSourceType
-    )?.directConnection;
+  const directConnection = contentsProviderSaml.contentsProviderDirectConnections.find(
+    (c) => c.loginUserSourceType === loginUserSourceType
+  )?.directConnection;
   if (directConnection === undefined) {
     return cubeMaterial;
   }
@@ -95,11 +94,10 @@ async function AppendSamlQueryToCubeMaterial(
       undefined &&
     cubeMaterial.media?.mediaContents.contentsProvider.url !== undefined
   ) {
-    cubeMaterial.media.mediaContents.contentsProvider.url =
-      concatDirectConnection(
-        cubeMaterial.media?.mediaContents.contentsProvider.url,
-        directConnection
-      );
+    cubeMaterial.media.mediaContents.contentsProvider.url = concatDirectConnection(
+      cubeMaterial.media?.mediaContents.contentsProvider.url,
+      directConnection
+    );
     contentsProviderSaml = contentsProviderSamls.find(
       (c) =>
         c.contentsProviderId ===
@@ -165,10 +163,9 @@ async function AppendPanoptoSamlQueryToCubeMaterial(
       if (loginUserSourceType === undefined) {
         return cubeMaterial;
       }
-      const contentsProviderDirectConnection =
-        panoptoContentsProviderSaml.contentsProviderDirectConnections.find(
-          (c) => c.loginUserSourceType === loginUserSourceType
-        );
+      const contentsProviderDirectConnection = panoptoContentsProviderSaml.contentsProviderDirectConnections.find(
+        (c) => c.loginUserSourceType === loginUserSourceType
+      );
       if (contentsProviderDirectConnection === undefined) {
         return cubeMaterial;
       }
@@ -205,8 +202,9 @@ function findCubesByIds(ids: string[]) {
   return axios.post<Cube[]>(url, ids).then(AxiosReturn);
 }
 
-const [findCubesByIdsCache, clearFindCubesByIdsCache] =
-  createCacheApi(findCubesByIds);
+const [findCubesByIdsCache, clearFindCubesByIdsCache] = createCacheApi(
+  findCubesByIds
+);
 export { findCubesByIdsCache, clearFindCubesByIdsCache };
 
 function findCubeDetail(cubeId: string) {
@@ -238,8 +236,9 @@ function findCubeDetail(cubeId: string) {
     });
 }
 
-const [findCubeDetailCache, clearFindCubeDetailCache] =
-  createCacheApi(findCubeDetail);
+const [findCubeDetailCache, clearFindCubeDetailCache] = createCacheApi(
+  findCubeDetail
+);
 export { findCubeDetailCache, clearFindCubeDetailCache };
 
 export function registerPost(postCdo: PostCdo) {
@@ -290,9 +289,9 @@ export function findMyLectureTimeSummary() {
   return axios.get<LectureTimeSummary>(url).then(AxiosReturn);
 }
 
-export function findMyInstructTimeSummary() {
+export function findMyInstructTimeSummary(year: number) {
   const axios = getAxios();
-  const url = `${BASE_URL}/cubes/myInstructorLearningTimeSummary`;
+  const url = `${BASE_URL}/cubes/myInstructorLearningTimeSummary?year=${year}`;
   return axios.get<InstructorLearningTimeSummary>(url).then(AxiosReturn);
 }
 
@@ -331,11 +330,15 @@ export function modifyReply(
 function countClassroomStudents(cubeId: string) {
   const axios = getAxios();
   const url = `${BASE_URL}/cubes/countClassroomStudents`;
-  return axios.get<IntPair[]>(url, { params: { cubeId } }).then(AxiosReturn);
+  return axios
+    .get<IntPair[]>(url, { params: { cubeId } })
+    .then(AxiosReturn);
 }
 
-export const [countClassroomStudentsCache, cleaCountClassroomStudentsCache] =
-  createCacheApi(countClassroomStudents);
+export const [
+  countClassroomStudentsCache,
+  cleaCountClassroomStudentsCache,
+] = createCacheApi(countClassroomStudents);
 
 export function findMyDiscussionCounts(studentId: string) {
   const axios = getAxios();

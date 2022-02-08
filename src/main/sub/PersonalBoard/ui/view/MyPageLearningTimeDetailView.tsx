@@ -30,6 +30,13 @@ function MyPageLearningTimeDetailView(props: Props) {
     aplTime,
   } = props;
 
+  const instructorTime =
+    (instructorTimeSummary &&
+      (year === '전체'
+        ? instructorTimeSummary.totalInstructorLearningTime
+        : instructorTimeSummary.sumOfCurrentYearInstructorLearningTime)) ||
+    0;
+
   const datas: ChartDataItem[] = useMemo<ChartDataItem[]>(() => {
     if (showApl) {
       return [
@@ -43,10 +50,7 @@ function MyPageLearningTimeDetailView(props: Props) {
         },
         {
           label: '강의시간',
-          value:
-            (instructorTimeSummary &&
-              instructorTimeSummary.sumOfCurrentYearInstructorLearningTime) ||
-            0,
+          value: instructorTime,
         },
         {
           label: '개인학습',
@@ -65,10 +69,7 @@ function MyPageLearningTimeDetailView(props: Props) {
         },
         {
           label: '강의시간',
-          value:
-            (instructorTimeSummary &&
-              instructorTimeSummary.sumOfCurrentYearInstructorLearningTime) ||
-            0,
+          value: instructorTime,
         },
       ];
     }
@@ -203,12 +204,7 @@ function MyPageLearningTimeDetailView(props: Props) {
                       </em>
                       <div>
                         <strong>
-                          {Math.floor(
-                            (instructorTimeSummary &&
-                              instructorTimeSummary.sumOfCurrentYearInstructorLearningTime /
-                                60) ||
-                              0
-                          )}
+                          {Math.floor(instructorTime / 60 || 0)}
                           <em>
                             <PolyglotText
                               defaultString="h"
@@ -217,12 +213,7 @@ function MyPageLearningTimeDetailView(props: Props) {
                           </em>
                         </strong>
                         <strong>
-                          {Math.floor(
-                            (instructorTimeSummary &&
-                              instructorTimeSummary.sumOfCurrentYearInstructorLearningTime %
-                                60) ||
-                              0
-                          )}
+                          {Math.floor(instructorTime % 60 || 0)}
                           <em>
                             <PolyglotText
                               defaultString="m"

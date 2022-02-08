@@ -44,6 +44,9 @@ class MyLearningSummaryService {
   @observable
   displayMyCompanyLearningTime: number = 0;
 
+  @observable
+  displayReplayLearningTime: number = 0;
+
   // @action async findLectureTimeSummary() {
   //   const foundLectureTimeSummary = await findMyLectureTimeSummary();
 
@@ -52,11 +55,16 @@ class MyLearningSummaryService {
   //   });
   // }
 
-  @action async findInstructTimeSummary() {
-    const foundLectureTimeSummary = await findMyInstructTimeSummary();
+  @action async findInstructTimeSummary(
+    year: number = moment().year(),
+    isModal?: boolean
+  ) {
+    const foundLectureTimeSummary = await findMyInstructTimeSummary(year);
 
-    runInAction(() => {
-      this._instructTimeSummary = foundLectureTimeSummary;
+    return runInAction(() => {
+      return isModal
+        ? foundLectureTimeSummary
+        : (this._instructTimeSummary = foundLectureTimeSummary);
     });
   }
 
@@ -115,14 +123,31 @@ class MyLearningSummaryService {
   }
 
   @action
+  async findMyLearningSummaryModalByYear(
+    year?: number
+  ): Promise<MyLearningSummaryModel> {
+    //
+    const learningSummary = await this.myLearningSummaryApi.findMyLearningSummaryByYear(
+      year || moment().year()
+    );
+
+    return learningSummary;
+  }
+
+  @action
   getAllCollegeList() {
     //
     return CollegeService.instance.detailAllColleges;
   }
 
   @action
-  getDisplayMySuniLeaningTime() {
+  getDisplayMySuniLeaningTime(
+    myLearningSummaryModel?: MyLearningSummaryModel
+  ): number {
     //
+    const myLearningSummary = myLearningSummaryModel
+      ? myLearningSummaryModel
+      : this.myLearningSummary;
     let totalLearningTime = 0;
     const allCollegeList = this.getAllCollegeList();
     const mySuniIds =
@@ -135,21 +160,29 @@ class MyLearningSummaryService {
         .map((college) => college.id);
 
     mySuniIds &&
-      this.myLearningSummary.collegeLearningTimes &&
-      this.myLearningSummary.collegeLearningTimes.length &&
-      this.myLearningSummary.collegeLearningTimes.filter((college) => {
+      myLearningSummary.collegeLearningTimes &&
+      myLearningSummary.collegeLearningTimes.length &&
+      myLearningSummary.collegeLearningTimes.filter((college) => {
         if (mySuniIds.includes(college.collegeId)) {
           totalLearningTime += college.learningTime;
         }
       });
 
-    runInAction(() => (this.displayMySuniLearningTime = totalLearningTime));
+    return runInAction(() => {
+      return myLearningSummaryModel
+        ? totalLearningTime
+        : (this.displayMySuniLearningTime = totalLearningTime);
+    });
   }
 
   @action
-  getDisplayCompanyLearningTime() {
+  getDisplayCompanyLearningTime(
+    myLearningSummaryModel?: MyLearningSummaryModel
+  ) {
     //
-
+    const myLearningSummary = myLearningSummaryModel
+      ? myLearningSummaryModel
+      : this.myLearningSummary;
     const allCollegeList = this.getAllCollegeList();
     const mySuniIds =
       allCollegeList &&
@@ -162,25 +195,47 @@ class MyLearningSummaryService {
 
     let totalLearningTime = 0;
     mySuniIds &&
-      this.myLearningSummary.collegeLearningTimes &&
-      this.myLearningSummary.collegeLearningTimes.length &&
-      this.myLearningSummary.collegeLearningTimes.filter((college) => {
+      myLearningSummary.collegeLearningTimes &&
+      myLearningSummary.collegeLearningTimes.length &&
+      myLearningSummary.collegeLearningTimes.filter((college) => {
         if (!mySuniIds.includes(college.collegeId)) {
           totalLearningTime += college.learningTime;
         }
       });
 
-    totalLearningTime += this.myLearningSummary.myCompanyLearningTime;
+    totalLearningTime += myLearningSummary.myCompanyLearningTime;
 
-    runInAction(() => (this.displayMyCompanyLearningTime = totalLearningTime));
+    return runInAction(() => {
+      return myLearningSummaryModel
+        ? totalLearningTime
+        : (this.displayMyCompanyLearningTime = totalLearningTime);
+    });
+  }
+
+  @action
+  getDisplayReplayLeaningTime(myLearningSummaryModel?: MyLearningSummaryModel) {
+    //
+    const myLearningSummary = myLearningSummaryModel
+      ? myLearningSummaryModel
+      : this.myLearningSummary;
+    let totalLearningTime = 0;
+
+    myLearningSummary.replayLearningTimes &&
+      myLearningSummary.replayLearningTimes.length &&
+      myLearningSummary.replayLearningTimes.map((college) => {
+        totalLearningTime += college.replayLearningTime;
+      });
+
+    return runInAction(() => {
+      return myLearningSummaryModel
+        ? totalLearningTime
+        : (this.displayReplayLearningTime = totalLearningTime);
+    });
   }
 
   @action
   getDisplayTotalLearningTime() {
     //
-    console.log('getDisplayTotalLearningTime');
-    console.log(this.myLearningSummary);
-
     let totalLearningTime = 0;
     if (this.myLearningSummary) {
       // college별
@@ -204,7 +259,16 @@ class MyLearningSummaryService {
         this.instructTimeSummary.sumOfCurrentYearInstructorLearningTime) ||
       0;
 
-    runInAction(() => (this.displayTotalLearningTime = totalLearningTime));
+    // 복습 시간
+    this.myLearningSummary.replayLearningTimes &&
+      this.myLearningSummary.replayLearningTimes.length > 0 &&
+      this.myLearningSummary.replayLearningTimes.forEach((college) => {
+        totalLearningTime += college.replayLearningTime;
+      });
+
+    return runInAction(
+      () => (this.displayTotalLearningTime = totalLearningTime)
+    );
   }
   ////////////////////////////////////////////// 개편 //////////////////////////////////////////////
 

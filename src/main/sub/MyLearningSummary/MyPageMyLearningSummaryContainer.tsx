@@ -77,10 +77,10 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
   }
 
   async init() {
-    const { badgeService, myLearningSummaryService } = this.injected;
+    const { badgeService } = this.injected;
 
     await this.findMySummaries(undefined, true);
-    this.makeSelectOptions();
+    // this.makeSelectOptions();
     badgeService.findAllBadgeCount();
 
     this.setState({
@@ -89,7 +89,7 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
   }
 
   makeSelectOptions() {
-    const years = [{ key: -1, text: '전체', value: -1 }];
+    const years = [{ key: 0, text: '전체', value: 0 }];
 
     const currentYear = moment().year();
 
@@ -121,20 +121,18 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
     const { skProfile } = skProfileService;
 
     await requestBadgeLearningTime(skProfile.companyCode, year);
-    await findInstructTimeSummary();
-    findMyLearningSummaryByYear(year).then(
-      (myLearningSummary: MyLearningSummaryModel) => {
-        getDisplayTotalLearningTime();
-        getDisplayMySuniLeaningTime();
-        getDisplayCompanyLearningTime();
-        setCollegePercent(myLearningSummary.collegeLearningTimes);
-        init &&
-          this.setState({
-            currentYearLearningTime:
-              myLearningSummaryService.displayTotalLearningTime,
-          });
-      }
-    );
+    await findInstructTimeSummary(year);
+    const myLearningSummary = await findMyLearningSummaryByYear(year);
+
+    getDisplayTotalLearningTime();
+    getDisplayMySuniLeaningTime();
+    getDisplayCompanyLearningTime();
+    await setCollegePercent(myLearningSummary.collegeLearningTimes);
+    init &&
+      this.setState({
+        currentYearLearningTime:
+          myLearningSummaryService.displayTotalLearningTime,
+      });
     findSummeryTimeByYear().then((rdo) => {
       if (rdo !== undefined) {
         this.setState({ myLearningRdo: rdo });
@@ -155,8 +153,11 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
       myLearningRdo,
       currentYearLearningTime,
     } = this.state;
-    const { learningGoalHour, obtainedStampCount, totalStampCount } =
-      myLearningRdo;
+    const {
+      learningGoalHour,
+      obtainedStampCount,
+      totalStampCount,
+    } = myLearningRdo;
     const { myLearningSummaryService, badgeService } = this.injected;
     const { menuControlAuth } = MenuControlAuthService.instance;
 
@@ -172,7 +173,7 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
       displayTotalLearningTime,
     } = myLearningSummaryService;
 
-    const year = selectYear === -1 ? '전체' : selectYear.toString();
+    const year = selectYear === 0 ? '전체' : selectYear.toString();
 
     return (
       <>
