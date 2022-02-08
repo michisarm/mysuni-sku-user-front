@@ -24,9 +24,10 @@ export default function MySuniCollegeTimeView({
     <ul className="bullet-list2">
       {allColleges &&
         allColleges.filter(isMySuniCollege).map((c, idx) => {
-          const time =
-            collegeLearningTimes.find((d) => d.collegeId == c.id)
-              ?.learningTime || 0;
+          const time = collegeLearningTimes
+            .filter((d) => d.collegeId == c.id)
+            .map((c) => c.learningTime || 0)
+            .reduce((a, b) => a + b, 0);
           return (
             <li key={c.id}>
               <span className={`name b${idx + 1}`} style={{ width: 230 }}>
