@@ -180,8 +180,8 @@ class NoticeDetailContainer extends React.Component<Props, State> {
                   }}
                 />
               </div>
-              <div className="file">
-                {filesMap && filesMap.get('reference') && (
+              {filesMap && filesMap.get('reference') && (
+                <div className="file">
                   <span>
                     <PolyglotText
                       id="support-noti-첨부파일"
@@ -189,11 +189,8 @@ class NoticeDetailContainer extends React.Component<Props, State> {
                     />
                     :
                   </span>
-                )}
-                <br />
-                {(filesMap &&
-                  filesMap.get('reference') &&
-                  filesMap
+                  <br />
+                  {filesMap
                     .get('reference')
                     .map((foundedFile: DepotFileViewModel, index: number) => (
                       <>
@@ -212,9 +209,9 @@ class NoticeDetailContainer extends React.Component<Props, State> {
                         </div>
                         <br />
                       </>
-                    ))) ||
-                  null}
-              </div>
+                    )) || null}
+                </div>
+              )}
             </div>
           )}
         </div>

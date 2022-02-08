@@ -15,7 +15,7 @@ import { PostService } from '../../../../../board/stores';
 import { getCollgeName } from '../../../../../shared/service/useCollege/useRequestCollege';
 import { Thumbnail } from '../../../../shared/ui/view/LectureElementsView';
 import { useLectureParams } from '../../../store/LectureParamsStore';
-import { Area } from 'tracker/model';
+import { Action, Area } from 'tracker/model';
 import LectureStateContainer from '../../logic/LectureStateContainer';
 import {
   getPolyglotText,
@@ -460,7 +460,12 @@ const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> =
                   />
                 </span>
               </a>
-              <a onClick={copyUrl}>
+              <a
+                onClick={copyUrl}
+                data-area={Area.CARD_HEADER}
+                data-action={Action.CLICK}
+                data-action-name="공유하기 버튼 클릭"
+              >
                 <span>
                   <Icon className="linkCopy" />
                   <PolyglotText

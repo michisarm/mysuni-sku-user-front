@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useState, useEffect } from 'react';
+import { reactAlert } from '@nara.platform/accent';
 import { Image } from 'semantic-ui-react';
 import LectureSurvey from '../../../viewModel/LectureSurvey';
 import LectureSurveyBooleanView from './LectureSurveyBooleanView';
@@ -61,11 +62,25 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> =
       }
     }, [params]);
 
-    const requestSubmitLectureSurveyState = useCallback(() => {
-      if (params !== undefined) {
-        submitLectureSurveyState(params);
-      } else {
-        submitCommunitySurveyState();
+    const requestSubmitLectureSurveyState = useCallback(async(event: React.MouseEvent<HTMLButtonElement>) => {
+      const { currentTarget } = event;
+      try{
+        currentTarget.disabled = true;
+        if (params !== undefined) {
+          await submitLectureSurveyState(params);
+        } else {
+          await submitCommunitySurveyState();
+        }
+      } catch (e) {
+        reactAlert({
+          title: getPolyglotText('저장 실패', 'Create-DetailContentsButton-Fail'),
+          message: getPolyglotText(
+            '저장을 실패했습니다. 잠시 후 다시 시도해주세요.',
+            'Create-DetailContentsButton-FailInfo'
+          ),
+        });
+      }finally {
+        currentTarget.disabled = false;
       }
     }, [params]);
 

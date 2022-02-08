@@ -1,6 +1,6 @@
 import { srcParser } from 'community/ui/components/Image';
 import { PlaylistType } from 'playlist/data/models/PlaylistType';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Button, Icon, Modal, Image } from 'semantic-ui-react';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
@@ -19,6 +19,12 @@ export function RecommendMemberPopUpView({
   playlistType,
 }: RecommendMemberPopUpViewProps) {
   useRequestRecommendMemberPopUp(playlistType);
+
+  useEffect(() => {
+    return () => {
+      onCloseRecommendMemberPopUp();
+    };
+  }, []);
 
   const isOpen = useIsOpenRecommendMemberPopUp();
   const recommendMemberPopUp = useRecommendMemberPopUp();

@@ -1,13 +1,16 @@
-import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import {
+  mobxHelper,
+  reactAutobind,
+  ReactComponent,
+} from '@nara.platform/accent';
 import { MenuControlAuthService } from 'approval/stores';
-import { requestCollegePercent } from 'main/sub/PersonalBoard/service/getCollegePercent';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
 import { AplService } from 'myTraining/stores';
 import { PersonalCubeService } from 'personalcube/personalcube/stores';
 import { SkProfileService } from 'profile/stores';
-import React, { Component } from 'react';
-import { Button, Icon, Modal } from 'semantic-ui-react';
+import React from 'react';
+import { Button, Icon, Modal, Select } from 'semantic-ui-react';
 import { timeToHourMinutePaddingFormat } from 'shared/helper/dateTimeHelper';
 import {
   getPolyglotText,
@@ -17,26 +20,40 @@ import MyLearningSummaryService from '../../present/logic/MyLearningSummaryServi
 import InstructorLearningTimeView from '../view/InstructorLearningTimeView';
 import MyCompanyCollegeTimeView from '../view/MyCompanyCollegeTimeView';
 import MySuniCollegeTimeView from '../view/MySuniCollegeTimeView';
+import MyLearningSummaryModel from '../../model/MyLearningSummaryModel';
+import {
+  initMyLearningSummaryModalModel,
+  MyLearningSummaryModalModel,
+} from '../model/MyLearningSummaryModalModel';
+import ReplayMyLearningTimeView from '../view/table/ReplayMyLearningTimeView';
 
 interface Props {
   trigger: React.ReactNode;
   year?: string;
-  myLearningSummaryService?: MyLearningSummaryService;
-  aplService?: AplService;
-  personalCubeService?: PersonalCubeService;
-  skProfileService?: SkProfileService;
-  menuControlAuthService?: MenuControlAuthService;
 }
 
 interface State {
+  selectYearOptions: { key: number; value: number; text: string }[];
+  selectYear: number;
   openModal: boolean;
   checkedTab: TabType;
+  myLearningSummaryModalModel: MyLearningSummaryModalModel;
+}
+
+interface Injected {
+  myLearningSummaryService: MyLearningSummaryService;
+  aplService: AplService;
+  personalCubeService: PersonalCubeService;
+  skProfileService: SkProfileService;
+  menuControlAuthService: MenuControlAuthService;
 }
 
 enum TabType {
+  None = 'none',
   mySUNI = 'mySUNI',
   MyCompany = 'MyCompany',
   LectureTime = 'LectureTime',
+  Replay = 'Replay',
 }
 
 @inject(
@@ -50,16 +67,45 @@ enum TabType {
 )
 @observer
 @reactAutobind
-class MyLearningSummaryModal extends Component<Props> {
+class MyLearningSummaryModal extends ReactComponent<Props, State, Injected> {
   state: State = {
     openModal: false,
     checkedTab: TabType.mySUNI,
+    selectYearOptions: this.makeSelectOptions(),
+    selectYear: moment().year(),
+    myLearningSummaryModalModel: initMyLearningSummaryModalModel(),
   };
 
   onOpenModal() {
+    const { myLearningSummaryService } = this.injected;
+    const { year } = this.props;
+
+    const {
+      getDisplayMySuniLeaningTime,
+      getDisplayCompanyLearningTime,
+      getDisplayReplayLeaningTime,
+      myLearningSummary,
+      instructTimeSummary,
+    } = myLearningSummaryService;
+
+    const emptyMyLearningSummaryModalModel: MyLearningSummaryModalModel = initMyLearningSummaryModalModel();
+    emptyMyLearningSummaryModalModel.displayMySuniLearningTime = getDisplayMySuniLeaningTime();
+    emptyMyLearningSummaryModalModel.displayMyCompanyLearningTime = getDisplayCompanyLearningTime();
+    emptyMyLearningSummaryModalModel.displayMyReplayLearningTime = getDisplayReplayLeaningTime();
+    emptyMyLearningSummaryModalModel.myLearningSummary = myLearningSummary;
+    emptyMyLearningSummaryModalModel.instructTimeSummary = instructTimeSummary;
+
     this.setState({
       openModal: true,
+      myLearningSummaryModalModel: emptyMyLearningSummaryModalModel,
     });
+
+    if (year) {
+      const selectYear = year === '전체' ? 0 : parseInt(year, 10);
+      this.setState({ selectYear });
+    } else {
+      this.setState({ selectYear: moment().year() });
+    }
   }
 
   onCloseModal() {
@@ -68,62 +114,131 @@ class MyLearningSummaryModal extends Component<Props> {
     });
   }
 
-  changeTomySUNI() {
-    this.setState({
-      checkedTab: TabType.mySUNI,
-    });
-  }
-
-  changeToMyCompany() {
-    this.setState({
-      checkedTab: TabType.MyCompany,
-    });
-  }
-
-  changeToLectureTime() {
-    this.setState({
-      checkedTab: TabType.LectureTime,
-    });
+  changeToTab(tabType: TabType) {
+    //
+    this.setState({ checkedTab: tabType });
   }
 
   getDateText() {
     //
-    const { year } = this.props;
+    const { selectYear } = this.state;
     const currentYear = moment().year();
     const today = moment(new Date()).format('YYYY.MM.DD');
 
-    if (year === undefined || year === currentYear.toString())
+    if (selectYear === undefined || selectYear === currentYear)
       return `${currentYear}.01.01 ~ ${today}`;
 
-    if (year === '전체') {
+    if (selectYear === 0) {
       return `2019.12.01 ~ ${today}`;
     } else {
-      return `${year}.01.01 ~ ${year}.12.31`;
+      return `${selectYear}.01.01 ~ ${selectYear}.12.31`;
+    }
+  }
+
+  makeSelectOptions() {
+    const years = [{ key: 0, text: '전체', value: 0 }];
+
+    const currentYear = moment().year();
+
+    years.push({
+      key: currentYear,
+      text: `${currentYear}`,
+      value: currentYear,
+    });
+
+    for (let i = 1; i < 4; i++) {
+      const year = currentYear - i;
+      if (year === 2019) break;
+      years.push({ key: year, text: `${year}`, value: year });
+    }
+
+    return years;
+  }
+
+  async onChangeSelectYear(value: number) {
+    //
+    await this.findMySummaries(value);
+    this.setState({ selectYear: value });
+  }
+
+  async findMySummaries(year?: number, init?: boolean) {
+    const { checkedTab } = this.state;
+    const { myLearningSummaryService } = this.injected;
+    const {
+      getDisplayMySuniLeaningTime,
+      getDisplayCompanyLearningTime,
+      getDisplayReplayLeaningTime,
+      findInstructTimeSummary,
+      findMyLearningSummaryModalByYear,
+    } = myLearningSummaryService;
+
+    const instructTimeSummary = await findInstructTimeSummary(year, true);
+    findMyLearningSummaryModalByYear(year).then(
+      (myLearningSummary: MyLearningSummaryModel) => {
+        // getCollegePercent(myLearningSummary.collegeLearningTimes);
+
+        const emptyMyLearningSummaryModalModel: MyLearningSummaryModalModel = initMyLearningSummaryModalModel();
+        emptyMyLearningSummaryModalModel.displayMySuniLearningTime = getDisplayMySuniLeaningTime(
+          myLearningSummary
+        );
+        emptyMyLearningSummaryModalModel.displayMyCompanyLearningTime = getDisplayCompanyLearningTime(
+          myLearningSummary
+        );
+        emptyMyLearningSummaryModalModel.displayMyReplayLearningTime = getDisplayReplayLeaningTime(
+          myLearningSummary
+        );
+        emptyMyLearningSummaryModalModel.myLearningSummary = myLearningSummary;
+        emptyMyLearningSummaryModalModel.instructTimeSummary = instructTimeSummary;
+
+        const prevCheckTab = checkedTab;
+        this.setState({
+          checkedTab: TabType.None,
+          myLearningSummaryModalModel: emptyMyLearningSummaryModalModel,
+        });
+
+        this.changeToTab(prevCheckTab);
+      }
+    );
+  }
+
+  getTabHeaderText() {
+    //
+    const { checkedTab } = this.state;
+
+    if (checkedTab === TabType.MyCompany) {
+      return getPolyglotText('My Company 학습 시간', 'home-학이시-mct');
+    } else if (checkedTab === TabType.Replay) {
+      return getPolyglotText('Category 별 복습 시간', 'home-학이시-rp시간');
+    } else {
+      return getPolyglotText('Category 별 학습 시간', 'home-학이시-cl시간');
     }
   }
 
   render() {
-    const { openModal, checkedTab } = this.state;
     const {
-      year,
-      trigger,
-      myLearningSummaryService,
-      menuControlAuthService,
-    } = this.props;
-    const { menuControlAuth } = menuControlAuthService!;
+      openModal,
+      checkedTab,
+      selectYearOptions,
+      selectYear,
+      myLearningSummaryModalModel,
+    } = this.state;
+    const { trigger } = this.props;
+    const { menuControlAuthService } = this.injected;
+    const { menuControlAuth } = menuControlAuthService;
     const {
       displayMyCompanyLearningTime,
       displayMySuniLearningTime,
+      displayMyReplayLearningTime,
       myLearningSummary,
       instructTimeSummary,
-    } = myLearningSummaryService!;
+    } = myLearningSummaryModalModel;
 
     return (
       <Modal
         open={openModal}
         onClose={this.onCloseModal}
         onOpen={this.onOpenModal}
-        className="base w700"
+        className="base w700 cpl-modal"
         trigger={trigger}
       >
         <Modal.Header className="res">
@@ -137,6 +252,14 @@ class MyLearningSummaryModal extends Component<Props> {
               id="home-학이시-부가설명"
             />
           </span>
+          <Select
+            className="small-border sl-year"
+            options={selectYearOptions}
+            value={selectYear}
+            onChange={(event, data) =>
+              this.onChangeSelectYear(Number(data.value))
+            }
+          />
         </Modal.Header>
         <Modal.Content>
           <div className="scrolling-80vh">
@@ -149,17 +272,7 @@ class MyLearningSummaryModal extends Component<Props> {
                     <span className="text01">{this.getDateText()}</span>
                   </div>
                   <div className="cell v-middle">
-                    <span className="text01">
-                      {checkedTab === TabType.MyCompany
-                        ? getPolyglotText(
-                            'My Company 학습 시간',
-                            'home-학이시-mct'
-                          )
-                        : getPolyglotText(
-                            'Category 별 학습 시간',
-                            'home-학이시-cl시간'
-                          )}
-                    </span>
+                    <span className="text01">{this.getTabHeaderText()}</span>
                     <span className="text02">
                       <PolyglotText
                         defaultString="(단위 : 시간)"
@@ -175,7 +288,7 @@ class MyLearningSummaryModal extends Component<Props> {
                         <li>
                           <div
                             className="ui rect-icon radio checkbox"
-                            onClick={this.changeTomySUNI}
+                            onClick={() => this.changeToTab(TabType.mySUNI)}
                           >
                             <input
                               className="hidden"
@@ -183,7 +296,6 @@ class MyLearningSummaryModal extends Component<Props> {
                               name="rect"
                               value="mySUNI"
                               checked={checkedTab === TabType.mySUNI}
-                              onChange={this.changeToMyCompany}
                             />
                             <label>
                               <strong>
@@ -210,7 +322,7 @@ class MyLearningSummaryModal extends Component<Props> {
                         <li>
                           <div
                             className="ui rect-icon radio checkbox"
-                            onClick={this.changeToMyCompany}
+                            onClick={() => this.changeToTab(TabType.MyCompany)}
                           >
                             <input
                               className="hidden"
@@ -218,7 +330,6 @@ class MyLearningSummaryModal extends Component<Props> {
                               name="rect"
                               value="MyCompany"
                               checked={checkedTab === TabType.MyCompany}
-                              onChange={this.changeToMyCompany}
                             />
                             <label>
                               <strong>
@@ -260,7 +371,9 @@ class MyLearningSummaryModal extends Component<Props> {
                         <li>
                           <div
                             className="ui rect-icon radio checkbox"
-                            onClick={this.changeToLectureTime}
+                            onClick={() =>
+                              this.changeToTab(TabType.LectureTime)
+                            }
                           >
                             <input
                               className="hidden"
@@ -268,7 +381,6 @@ class MyLearningSummaryModal extends Component<Props> {
                               name="rect"
                               value="LectureTime"
                               checked={checkedTab === TabType.LectureTime}
-                              onChange={this.changeToLectureTime}
                             />
                             <label>
                               <strong>
@@ -296,11 +408,53 @@ class MyLearningSummaryModal extends Component<Props> {
                             <span className="buri" />
                           </div>
                         </li>
+                        <li>
+                          <div
+                            className="ui rect-icon radio checkbox"
+                            onClick={() => this.changeToTab(TabType.Replay)}
+                          >
+                            <input
+                              className="hidden"
+                              type="radio"
+                              name="rect"
+                              value="LectureTime"
+                              checked={checkedTab === TabType.Replay}
+                            />
+                            <label>
+                              <strong>
+                                <PolyglotText
+                                  defaultString="복습 시간"
+                                  id="home-학이시-복습시간"
+                                />
+                                (
+                                {timeToHourMinutePaddingFormat(
+                                  displayMyReplayLearningTime
+                                )}
+                                )
+                              </strong>
+                              <span
+                                dangerouslySetInnerHTML={{
+                                  __html: getPolyglotText(
+                                    `mySUNI Category에서 복습한 시간`,
+                                    'home-학이시-복습시간decs'
+                                  ),
+                                }}
+                              />
+                            </label>
+                            <span className="buri" />
+                          </div>
+                        </li>
                       </ul>
                     </div>
                   </div>
                   <div className="cell vtop">
-                    {checkedTab === TabType.mySUNI && <MySuniCollegeTimeView />}
+                    {checkedTab === TabType.mySUNI && (
+                      <MySuniCollegeTimeView
+                        collegeLearningTimes={
+                          myLearningSummary.collegeLearningTimes
+                        }
+                      />
+                    )}
                     {checkedTab === TabType.MyCompany && (
                       <MyCompanyCollegeTimeView
                         myCompanyLearningTime={displayMyCompanyLearningTime}
@@ -314,7 +468,14 @@ class MyLearningSummaryModal extends Component<Props> {
                       <InstructorLearningTimeView
                         instructorLearningTimeSummary={instructTimeSummary}
                       />
-                    )}{' '}
+                    )}
+                    {checkedTab === TabType.Replay && (
+                      <ReplayMyLearningTimeView
+                        replayLearningTimes={
+                          myLearningSummary.replayLearningTimes
+                        }
+                      />
+                    )}
                   </div>
                 </div>
               </div>

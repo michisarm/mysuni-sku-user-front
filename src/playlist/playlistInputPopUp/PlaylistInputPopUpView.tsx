@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
   Button,
   Checkbox,
@@ -19,6 +19,8 @@ import {
 } from './playlistInputPopUp.events';
 import { useRequestPlaylistDetail } from './playlistInputPopUp.request';
 import {
+  setIsOpenPlaylistInputPopUp,
+  setPlaylistInputPopUp,
   useIsOpenPlaylistInputPopUp,
   usePlaylistInputPopUp,
 } from './playlistInputPopUp.store';
@@ -37,6 +39,15 @@ export function PlaylistInputPopUpView(props: PlaylistInputPopUpProps) {
   const { title, description, expose } = playlistInput;
 
   useRequestPlaylistDetail(type);
+
+  useEffect(() => {
+    setIsOpenPlaylistInputPopUp(false);
+    setPlaylistInputPopUp({
+      title: '',
+      description: '',
+      expose: true,
+    });
+  }, []);
 
   const onSubmitPlaylist = useCallback(() => {
     if (type === 'CREATE') {

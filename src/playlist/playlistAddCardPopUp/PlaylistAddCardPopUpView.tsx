@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Button, Icon, Modal } from 'semantic-ui-react';
 import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { CardSearch } from './components/CardSearch';
@@ -21,6 +21,12 @@ export function PlaylistAddCardPopUpView({
   onAddCardCallback,
 }: PlaylistAddCardPopUpProps) {
   const isOpen = useIsOpenPlaylistAddCardPopUp();
+
+  useEffect(() => {
+    return () => {
+      onClosePlaylistAddCardPopUp();
+    };
+  }, []);
 
   const onClickAddCardToPlaylist = useCallback(() => {
     onAddCardToPlaylist(onAddCardCallback);

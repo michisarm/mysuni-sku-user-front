@@ -2,11 +2,14 @@ import { decorate, observable, computed } from 'mobx';
 import { getCollegeTime } from 'personalcube/personalcube/model/LectureTimeSummary';
 import { DramaEntityObservableModel } from 'shared/model';
 import CollegeLearningTimeModel from './CollegeLearningTimeModel';
+import ReplayCollegeLearningTimeModel from './ReplayCollegeLearningTimeModel';
 
 class MyLearningSummaryModel {
   //
   // college별 학습시간
   collegeLearningTimes: CollegeLearningTimeModel[] = [];
+  // college별 재학습시간
+  replayLearningTimes: ReplayCollegeLearningTimeModel[] = [];
   // 외부 관계사 학습시간
   myCompanyLearningTime: number = 0;
   // apl : 개인학습
@@ -67,12 +70,20 @@ class MyLearningSummaryModel {
             ...summary.collegeLearningTimes,
           ]) ||
         [];
+
+      this.replayLearningTimes =
+        (summary.replayLearningTimes &&
+          summary.replayLearningTimes.length > 0 && [
+            ...summary.replayLearningTimes,
+          ]) ||
+        [];
     }
   }
 }
 
 decorate(MyLearningSummaryModel, {
   collegeLearningTimes: observable,
+  replayLearningTimes: observable,
   myCompanyLearningTime: observable,
   aplTime: observable,
   // year: observable,

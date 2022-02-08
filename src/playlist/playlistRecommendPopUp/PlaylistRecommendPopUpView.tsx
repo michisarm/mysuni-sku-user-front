@@ -104,12 +104,13 @@ export function RecommendPopUpRightComponent() {
 }
 
 export function PlaylistRecommendPopUpView() {
-  // const checkedMemberList = getCheckedMemberList();
   const isOpen = useIsOpenPlaylistRecommendPopUp();
   const [recommendation, setRecommendation] = useState('');
 
   useEffect(() => {
-    setIsOpenPlaylistRecommendPopUp(false);
+    return () => {
+      setIsOpenPlaylistRecommendPopUp(false);
+    };
   }, []);
 
   const onChangeRecommendation = useCallback(

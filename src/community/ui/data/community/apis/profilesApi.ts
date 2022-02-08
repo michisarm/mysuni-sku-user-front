@@ -6,6 +6,7 @@ import { NameValue } from '../../accent/models/NameValue';
 import { AdditionalUserInfo } from '../models/AdditionalUserInfo';
 import { createCacheApi } from '../../../../packages/api/cacheableApi';
 import { UserIdentities } from '../models/UserIdentities';
+import { OffsetElementList } from 'shared/model';
 
 const BASE_URL = '/api/user/users';
 
@@ -63,10 +64,12 @@ export function findSameDepartmentUserIdentities(
 }
 
 export function findUserIdentitiesByKeyword(
-  searchWord: string
-): Promise<UserIdentities[] | undefined> {
+  searchWord: string,
+  limit: number,
+  offset: number
+): Promise<OffsetElementList<UserIdentities> | undefined> {
   const axios = getAxios();
-  const url = `${BASE_URL}/findUserIdentitiesByKeyword?keyword=${searchWord}`;
+  const url = `${BASE_URL}/findUserIdentitiesByKeyword?keyword=${searchWord}&limit=${limit}&offset=${offset}`;
 
-  return axios.get<UserIdentities[]>(url).then(AxiosReturn);
+  return axios.get<OffsetElementList<UserIdentities>>(url).then(AxiosReturn);
 }

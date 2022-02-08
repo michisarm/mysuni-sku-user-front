@@ -12,7 +12,6 @@ import {
   setDepartmentMembers,
   setFollowerList,
   useIsOpenPlaylistRecommendPopUp,
-  setIsOpenPlaylistRecommendPopUp,
   setMySuniUsers,
   setOrganizationChartTree,
   departmentChartToOrganiztionChartTree,
@@ -20,6 +19,9 @@ import {
   MembersByDepartmentCodeToMemberList,
   setSelcetedDepartmentCode,
   setCompanyName,
+  getMySuniUsers,
+  setMySuniUserTotalCount,
+  getMySuniUserTotalCount,
 } from './playlistRecommendPopUp.store';
 import { SkProfileService } from 'profile/stores';
 import {
@@ -83,18 +85,63 @@ export async function requestMemberByDepartmentCode(
 
 // MySuni tab 데이터 호출
 export async function requestMysuniUser(searchWord: string) {
-  const mySuniUserIdentities = await findUserIdentitiesByKeyword(searchWord);
+  const mySuniUserIdentities = await findUserIdentitiesByKeyword(
+    searchWord,
+    100,
+    0
+  );
 
   if (mySuniUserIdentities !== undefined) {
     const myId = SkProfileService.instance.additionalUserInfo.id;
-    const filteredMySuniUserIdentities = mySuniUserIdentities.filter(
-      (user) => user.id !== myId
+    const filteredMySuniUserIdentities = mySuniUserIdentities.results.filter(
+      (user) => {
+        if (user.id === myId) {
+          setMySuniUserTotalCount(mySuniUserIdentities.totalCount - 1);
+          return {};
+        }
+
+        return user;
+      }
     );
 
     const mySuniUsers = userIdentitiesToMemberList(
       filteredMySuniUserIdentities
     );
     setMySuniUsers(mySuniUsers);
+    setMySuniUserTotalCount(mySuniUserIdentities.totalCount);
+  }
+}
+
+// Mysuni 스크롤시 호출 함수
+export async function requestScrollMysuniUser(
+  searchWord: string,
+  offset: number
+) {
+  const mySuniUsers = getMySuniUsers();
+
+  const nextMySuniUsers = await findUserIdentitiesByKeyword(
+    searchWord,
+    100,
+    offset * 100
+  );
+
+  if (nextMySuniUsers) {
+    const myId = SkProfileService.instance.additionalUserInfo.id;
+
+    const parseNextMySuniUsers = userIdentitiesToMemberList(
+      nextMySuniUsers.results
+    );
+
+    const filteredNextMySuniUsers = parseNextMySuniUsers.filter((user) => {
+      if (user.id === myId) {
+        setMySuniUserTotalCount(nextMySuniUsers.totalCount - 1);
+        return {};
+      }
+
+      return user;
+    });
+
+    setMySuniUsers([...mySuniUsers, ...filteredNextMySuniUsers]);
   }
 }
 
