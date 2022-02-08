@@ -32,17 +32,17 @@ export function MySuniUserTab() {
   const [searchTextResult, setSearchTextResult] = useState('');
   const [offset, setOffset] = useState(0);
 
-  const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
-    if (isIntersecting && mySuniUserTotalCount > mySuniUser.length) {
-      onScrollMySuniUser(searchText, offset);
-      setOffset(offset + 1);
-    }
-  };
+  // const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
+  //   if (isIntersecting && mySuniUserTotalCount > mySuniUser.length) {
+  //     onScrollMySuniUser(searchText, offset);
+  //     setOffset(offset + 1);
+  //   }
+  // };
 
-  const { setTarget } = useIntersectionObserver({
-    threshold: 0.1,
-    onIntersect,
-  });
+  // const { setTarget } = useIntersectionObserver({
+  //   threshold: 0.7,
+  //   onIntersect,
+  // });
 
   useEffect(() => {
     return () => {
@@ -163,7 +163,7 @@ export function MySuniUserTab() {
                 </div>
                 <div className="sh-user-list">
                   {mySuniUser.map((member) => (
-                    <div className="user-prf" id={member.id} ref={setTarget}>
+                    <div className="user-prf" id={member.id}>
                       <div className="user-check">
                         <Checkbox
                           className="base"

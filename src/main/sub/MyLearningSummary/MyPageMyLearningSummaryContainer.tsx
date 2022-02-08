@@ -122,7 +122,9 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
 
     await requestBadgeLearningTime(skProfile.companyCode, year);
     await findInstructTimeSummary(year);
-    const myLearningSummary = await findMyLearningSummaryByYear(year);
+    const myLearningSummary = await findMyLearningSummaryByYear(
+      year === 0 ? -1 : year
+    );
 
     getDisplayTotalLearningTime();
     getDisplayMySuniLeaningTime();

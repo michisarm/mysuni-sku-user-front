@@ -8,7 +8,7 @@ function findMyLearningSummaryByYear(year: string) {
     axiosApi
       // .get<MyLearningSummaryModel>(`/api/mytraining/summaries/flow/${year}`)
       .get<MyLearningSummaryModel>(
-        `/api/learning/learningTimes/total?year=${year === '-1' ? '0' : year}`
+        `/api/learning/learningTimes/total?year=${year === '-1' ? '' : year}`
       )
       .then((response) => response && response.data)
   );
