@@ -28,8 +28,6 @@ const start = new Date(2022, 1, 8, 0, 0, 0);
 const end = new Date(2022, 1, 22, 23, 59, 59);
 
 function between(start: Date, end: Date): boolean {
-  // TODO :: 배포 전 현재 시간으로 수정
-  const now = new Date(2022, 1, 8, 0, 0, 0);
-
+  const now = new Date();
   return now >= start && now <= end;
 }
