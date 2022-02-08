@@ -121,17 +121,17 @@ class MyLearningSummaryModal extends ReactComponent<Props, State, Injected> {
 
   getDateText() {
     //
-    const { year } = this.props;
+    const { selectYear } = this.state;
     const currentYear = moment().year();
     const today = moment(new Date()).format('YYYY.MM.DD');
 
-    if (year === undefined || year === currentYear.toString())
+    if (selectYear === undefined || selectYear === currentYear)
       return `${currentYear}.01.01 ~ ${today}`;
 
-    if (year === '전체') {
+    if (selectYear === 0) {
       return `2019.12.01 ~ ${today}`;
     } else {
-      return `${year}.01.01 ~ ${year}.12.31`;
+      return `${selectYear}.01.01 ~ ${selectYear}.12.31`;
     }
   }
 
@@ -222,15 +222,9 @@ class MyLearningSummaryModal extends ReactComponent<Props, State, Injected> {
       selectYear,
       myLearningSummaryModalModel,
     } = this.state;
-    const { year, trigger } = this.props;
-    const { myLearningSummaryService, menuControlAuthService } = this.injected;
+    const { trigger } = this.props;
+    const { menuControlAuthService } = this.injected;
     const { menuControlAuth } = menuControlAuthService;
-    const {
-      // displayMyCompanyLearningTime,
-      // displayMySuniLearningTime,
-      // myLearningSummary,
-      // instructTimeSummary,
-    } = myLearningSummaryService;
     const {
       displayMyCompanyLearningTime,
       displayMySuniLearningTime,
