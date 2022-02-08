@@ -846,14 +846,14 @@ i.icon.icon_emoji_8 {
 
 .emoji_icons .em_b {
   font-weight: normal;
-}
-
-.emoji_icons .button.em_b {
   font-family: 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'apple color emoji',
     'segoe ui emoji', 'noto color emoji', 'android emoji', 'emojisymbols',
     'emojione mozilla', 'twemoji mozilla', 'segoe ui symbol', 'notosanskr',
     '-apple-system', sans-serif !important;
   font-style: normal;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* 댓글창 마지막요소일때(첫댓글일때) 이모지 공간 확보 */
