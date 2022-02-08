@@ -23,11 +23,11 @@ export default function ReplayMyLearningTimeView({
     const result: JSX.Element[] = [];
 
     allColleges.filter(isMySuniCollege).map((c, idx) => {
-      const time =
-        (replayLearningTimes &&
-          replayLearningTimes.find((d) => d.collegeId == c.id)
-            ?.replayLearningTime) ||
-        0;
+      const time = replayLearningTimes
+        .filter((d) => d.collegeId == c.id)
+        .map((c) => c.replayLearningTime || 0)
+        .reduce((a, b) => a + b, 0);
+
       result.push(
         <li key={c.id}>
           <span className={`name b${idx + 1}`} style={{ width: 230 }}>
@@ -40,22 +40,50 @@ export default function ReplayMyLearningTimeView({
 
     const index = result.length;
 
+    const replayLearningTimeMap = new Map<
+      string,
+      ReplayCollegeLearningTimeModel
+    >();
+
     replayLearningTimes &&
       replayLearningTimes
         .filter((c) => !isMySuniCollegeById(c.collegeId))
-        .map((c, idx) => {
-          const time = c.replayLearningTime || 0;
+        .map((a) => {
+          if (replayLearningTimeMap.has(a.collegeId)) {
+            const replayLearningTimes = replayLearningTimeMap.get(a.collegeId);
+
+            if (replayLearningTimes !== undefined) {
+              replayLearningTimes.replayLearningTime += a.replayLearningTime;
+            }
+          } else {
+            replayLearningTimeMap.set(a.collegeId, a);
+          }
+        });
+
+    const iterator = replayLearningTimeMap.keys();
+
+    for (let i = 0; i < replayLearningTimeMap.size; i++) {
+      const key = iterator.next().value;
+
+      if (replayLearningTimeMap.has(key)) {
+        const replayLearningTimes = replayLearningTimeMap.get(key);
+
+        if (replayLearningTimes !== undefined) {
           result.push(
-            <li key={c.collegeId}>
-              <span className={`name b${index + idx}`} style={{ width: 230 }}>
-                {getCollgeName(c.collegeId)}
+            <li key={replayLearningTimes.id}>
+              <span className={`name b${index + i}`} style={{ width: 230 }}>
+                {getCollgeName(replayLearningTimes.id)}
               </span>
               <span className="time">
-                {timeToHourMinutePaddingFormat(time)}
+                {timeToHourMinutePaddingFormat(
+                  replayLearningTimes.replayLearningTime
+                )}
               </span>
             </li>
           );
-        });
+        }
+      }
+    }
 
     return result;
   };
