@@ -87,7 +87,7 @@ export async function requestMemberByDepartmentCode(
 export async function requestMysuniUser(searchWord: string) {
   const mySuniUserIdentities = await findUserIdentitiesByKeyword(
     searchWord,
-    100,
+    99999,
     0
   );
 
