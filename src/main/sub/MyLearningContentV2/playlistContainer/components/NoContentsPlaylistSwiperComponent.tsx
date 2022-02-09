@@ -50,12 +50,15 @@ export function NoContentsPlaylistSwiperComponent() {
                     />
                   </div>
                   <div className="item-tit">
-                    <p className="tit">
-                      <PolyglotText
-                        defaultString="<strong>내가 만든</strong> Playlist"
-                        id="home-playlist-내가만든"
-                      />
-                    </p>
+                    <p
+                      className="tit"
+                      dangerouslySetInnerHTML={{
+                        __html: getPolyglotText(
+                          '<strong>내가 만든</strong> Playlist',
+                          'home-playlist-내가만든'
+                        ),
+                      }}
+                    />
                   </div>
                 </div>
               </div>
@@ -79,12 +82,15 @@ export function NoContentsPlaylistSwiperComponent() {
                     />
                   </div>
                   <div className="item-tit">
-                    <p className="tit">
-                      <PolyglotText
-                        defaultString="<strong>추천 받은</strong> Playlist"
-                        id="home-playlist-추천받은"
-                      />
-                    </p>
+                    <p
+                      className="tit"
+                      dangerouslySetInnerHTML={{
+                        __html: getPolyglotText(
+                          '<strong>추천 받은</strong> Playlist',
+                          'home-playlist-추천받은'
+                        ),
+                      }}
+                    />
                   </div>
                 </div>
               </div>
@@ -108,12 +114,15 @@ export function NoContentsPlaylistSwiperComponent() {
                     />
                   </div>
                   <div className="item-tit">
-                    <p className="tit">
-                      <PolyglotText
-                        defaultString="<strong>내가 담은</strong> Playlist"
-                        id="home-playlist-내가담은"
-                      />
-                    </p>
+                    <p
+                      className="tit"
+                      dangerouslySetInnerHTML={{
+                        __html: getPolyglotText(
+                          '<strong>내가 담은</strong> Playlist',
+                          'home-playlist-내가담은'
+                        ),
+                      }}
+                    />
                   </div>
                 </div>
               </div>
