@@ -4705,6 +4705,9 @@ i.icon.thumb-up::before {
 .ui.modal.cpl-modal .res.header {
   position: relative;
 }
+.ui.modal.cpl-modal .res.header .sub.f12 {
+  max-width: 500px;
+}
 .ui.modal.cpl-modal .ui.dropdown.sl-year {
   position: absolute;
   top: 24px;
