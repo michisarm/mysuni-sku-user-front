@@ -43,7 +43,7 @@ function LectureVideoContainer() {
   const [linkedInOpen, setLinkedInOpen] = useState<boolean>(false);
   const [nextContentsView, setNextContentsView] = useState<boolean>(false);
   const [surveyAlerted, setSurveyAlerted] = useState<boolean>(false);
-  const [진입학습상태, set진입학습상태] = useState<LearningState>();
+  const [최초학습상태, set최초학습상태] = useState<LearningState>();
   const lectureState = useLectureState();
   const panoptoEmbedPlayerState = usePanoptoEmbedPlayerState();
   const history = useHistory();
@@ -54,20 +54,21 @@ function LectureVideoContainer() {
   }, []);
 
   useEffect(() => {
+    return () => {
+      최초진입 = true;
+      set최초학습상태(undefined);
+    };
+  }, [params?.cubeId]);
+
+  useEffect(() => {
     if (lectureState === undefined) {
       return;
     }
     if (최초진입) {
-      set진입학습상태(lectureState.student?.learningState);
+      set최초학습상태(lectureState.student?.learningState);
       최초진입 = false;
     }
-    return () => {
-      최초진입 = true;
-    };
   }, [lectureState]);
-
-  console.log('lectureState : ', lectureState?.student?.learningState);
-  console.log('최초 학습상태 : ', 진입학습상태);
 
   useEffect(() => {
     const removeCallRegisterWatchLog = addOnProgressEventHandler(
@@ -133,13 +134,9 @@ function LectureVideoContainer() {
         callRegisterReplayWatchLog,
         (lastActionTime, state) => {
           return (
-            ((lectureState &&
-              (lectureState.student?.learningState === 'Passed' ||
-                lectureState.student?.durationViewSeconds === '100')) ||
-              false) &&
+            최초학습상태 === 'Passed' &&
             state.playerState === PlayerState.Playing &&
-            lastActionTime + 60000 < Date.now() &&
-            진입학습상태 === 'Passed'
+            lastActionTime + 60000 < Date.now()
           );
         }
       )
