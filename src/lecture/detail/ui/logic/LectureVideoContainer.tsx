@@ -15,7 +15,10 @@ import {
   PlayerState,
 } from '@sku/skuniv-ui-video-player';
 import { usePanoptoEmbedPlayerState } from '@sku/skuniv-ui-video-player';
-import { useLectureState } from '../../store/LectureStateStore';
+import {
+  getLectureState,
+  useLectureState,
+} from '../../store/LectureStateStore';
 import {
   callConfirmProgress,
   callDebounceActionTrack,
@@ -30,14 +33,17 @@ import { useLectureParams } from '../../store/LectureParamsStore';
 import moment from 'moment';
 import _ from 'lodash';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { LearningState } from 'lecture/model/LearningState';
 
 let preliveLectureId = '';
+let 최초진입 = true;
 
 function LectureVideoContainer() {
   const lectureMedia = useLectureMedia();
   const [linkedInOpen, setLinkedInOpen] = useState<boolean>(false);
   const [nextContentsView, setNextContentsView] = useState<boolean>(false);
   const [surveyAlerted, setSurveyAlerted] = useState<boolean>(false);
+  const [진입학습상태, set진입학습상태] = useState<LearningState>();
   const lectureState = useLectureState();
   const panoptoEmbedPlayerState = usePanoptoEmbedPlayerState();
   const history = useHistory();
@@ -46,6 +52,22 @@ function LectureVideoContainer() {
   const callVideoNearEnded = useCallback(() => {
     setNextContentsView(true);
   }, []);
+
+  useEffect(() => {
+    if (lectureState === undefined) {
+      return;
+    }
+    if (최초진입) {
+      set진입학습상태(lectureState.student?.learningState);
+      최초진입 = false;
+    }
+    return () => {
+      최초진입 = true;
+    };
+  }, [lectureState]);
+
+  console.log('lectureState : ', lectureState?.student?.learningState);
+  console.log('최초 학습상태 : ', 진입학습상태);
 
   useEffect(() => {
     const removeCallRegisterWatchLog = addOnProgressEventHandler(
@@ -116,7 +138,8 @@ function LectureVideoContainer() {
                 lectureState.student?.durationViewSeconds === '100')) ||
               false) &&
             state.playerState === PlayerState.Playing &&
-            lastActionTime + 60000 < Date.now()
+            lastActionTime + 60000 < Date.now() &&
+            진입학습상태 === 'Passed'
           );
         }
       )
@@ -323,9 +346,8 @@ function LectureVideoContainer() {
     [getLectureMedia(), pathname]
   );
 
-  const [isExpiredContentAlerted, setIsExpiredContentAlerted] = useState<
-    boolean
-  >(false);
+  const [isExpiredContentAlerted, setIsExpiredContentAlerted] =
+    useState<boolean>(false);
 
   const isExpiredContent = useMemo(() => {
     if (
