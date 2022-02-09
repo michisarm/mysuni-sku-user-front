@@ -4502,6 +4502,7 @@ i.icon.plus.round16:before {
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
   background-color: #fff;
   border-radius: 12px;
+  text-align:center;
 }
 .pl-nodata-items .item-tip .tip::after {
   content: '';
