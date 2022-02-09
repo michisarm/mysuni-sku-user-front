@@ -25,7 +25,7 @@ export const TutorialModal = () => {
   const onClose = () => {
     //
     if (isShowTutorial === 'HIDE') {
-      setCookie('isShowTutorial', 'HIDE', 30 * 24 * 60 * 60 * 1000);
+      setCookie('isShowTutorial', 'HIDE', 30);
     }
 
     setOpen(false);
