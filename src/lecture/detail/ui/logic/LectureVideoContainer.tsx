@@ -125,7 +125,7 @@ function LectureVideoContainer() {
 
   useEffect(() => {
     //
-    if (lectureState === undefined) {
+    if (최초학습상태 === undefined) {
       return;
     }
 
@@ -145,10 +145,7 @@ function LectureVideoContainer() {
     return () => {
       removeCallRegisterReplayWatchLog();
     };
-  }, [
-    lectureState?.student?.learningState,
-    lectureState?.student?.durationViewSeconds,
-  ]);
+  }, [최초학습상태]);
 
   useEffect(() => {
     // fixed: playerState 변화시 api호출 > 최초 cube화면 진입시로 api호출 시점 변경
