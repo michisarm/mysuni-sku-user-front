@@ -4502,6 +4502,7 @@ i.icon.plus.round16:before {
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
   background-color: #fff;
   border-radius: 12px;
+  text-align: center;
 }
 .pl-nodata-items .item-tip .tip::after {
   content: '';
@@ -4703,6 +4704,9 @@ i.icon.thumb-up::before {
 /* 복습시간 추가 2022-01-28 */
 .ui.modal.cpl-modal .res.header {
   position: relative;
+}
+.ui.modal.cpl-modal .res.header .sub.f12 {
+  max-width: 500px;
 }
 .ui.modal.cpl-modal .ui.dropdown.sl-year {
   position: absolute;

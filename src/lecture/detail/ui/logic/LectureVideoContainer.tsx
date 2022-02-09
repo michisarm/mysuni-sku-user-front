@@ -15,7 +15,10 @@ import {
   PlayerState,
 } from '@sku/skuniv-ui-video-player';
 import { usePanoptoEmbedPlayerState } from '@sku/skuniv-ui-video-player';
-import { useLectureState } from '../../store/LectureStateStore';
+import {
+  getLectureState,
+  useLectureState,
+} from '../../store/LectureStateStore';
 import {
   callConfirmProgress,
   callDebounceActionTrack,
@@ -30,14 +33,17 @@ import { useLectureParams } from '../../store/LectureParamsStore';
 import moment from 'moment';
 import _ from 'lodash';
 import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
+import { LearningState } from 'lecture/model/LearningState';
 
 let preliveLectureId = '';
+let isFirstEntry = true;
 
 function LectureVideoContainer() {
   const lectureMedia = useLectureMedia();
   const [linkedInOpen, setLinkedInOpen] = useState<boolean>(false);
   const [nextContentsView, setNextContentsView] = useState<boolean>(false);
   const [surveyAlerted, setSurveyAlerted] = useState<boolean>(false);
+  const [entryLearningState, setEntryLearningState] = useState<LearningState>();
   const lectureState = useLectureState();
   const panoptoEmbedPlayerState = usePanoptoEmbedPlayerState();
   const history = useHistory();
@@ -46,6 +52,23 @@ function LectureVideoContainer() {
   const callVideoNearEnded = useCallback(() => {
     setNextContentsView(true);
   }, []);
+
+  useEffect(() => {
+    return () => {
+      isFirstEntry = true;
+      setEntryLearningState(undefined);
+    };
+  }, [params?.cubeId]);
+
+  useEffect(() => {
+    if (lectureState === undefined) {
+      return;
+    }
+    if (isFirstEntry) {
+      setEntryLearningState(lectureState.student?.learningState);
+      isFirstEntry = false;
+    }
+  }, [lectureState]);
 
   useEffect(() => {
     const removeCallRegisterWatchLog = addOnProgressEventHandler(
@@ -102,7 +125,7 @@ function LectureVideoContainer() {
 
   useEffect(() => {
     //
-    if (lectureState === undefined) {
+    if (entryLearningState === undefined) {
       return;
     }
 
@@ -111,10 +134,7 @@ function LectureVideoContainer() {
         callRegisterReplayWatchLog,
         (lastActionTime, state) => {
           return (
-            ((lectureState &&
-              (lectureState.student?.learningState === 'Passed' ||
-                lectureState.student?.durationViewSeconds === '100')) ||
-              false) &&
+            entryLearningState === 'Passed' &&
             state.playerState === PlayerState.Playing &&
             lastActionTime + 60000 < Date.now()
           );
@@ -125,10 +145,7 @@ function LectureVideoContainer() {
     return () => {
       removeCallRegisterReplayWatchLog();
     };
-  }, [
-    lectureState?.student?.learningState,
-    lectureState?.student?.durationViewSeconds,
-  ]);
+  }, [entryLearningState]);
 
   useEffect(() => {
     // fixed: playerState 변화시 api호출 > 최초 cube화면 진입시로 api호출 시점 변경
@@ -323,9 +340,8 @@ function LectureVideoContainer() {
     [getLectureMedia(), pathname]
   );
 
-  const [isExpiredContentAlerted, setIsExpiredContentAlerted] = useState<
-    boolean
-  >(false);
+  const [isExpiredContentAlerted, setIsExpiredContentAlerted] =
+    useState<boolean>(false);
 
   const isExpiredContent = useMemo(() => {
     if (
