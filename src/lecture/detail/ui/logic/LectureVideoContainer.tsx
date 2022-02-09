@@ -36,14 +36,14 @@ import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { LearningState } from 'lecture/model/LearningState';
 
 let preliveLectureId = '';
-let 최초진입 = true;
+let isFirstEntry = true;
 
 function LectureVideoContainer() {
   const lectureMedia = useLectureMedia();
   const [linkedInOpen, setLinkedInOpen] = useState<boolean>(false);
   const [nextContentsView, setNextContentsView] = useState<boolean>(false);
   const [surveyAlerted, setSurveyAlerted] = useState<boolean>(false);
-  const [최초학습상태, set최초학습상태] = useState<LearningState>();
+  const [entryLearningState, setEntryLearningState] = useState<LearningState>();
   const lectureState = useLectureState();
   const panoptoEmbedPlayerState = usePanoptoEmbedPlayerState();
   const history = useHistory();
@@ -55,8 +55,8 @@ function LectureVideoContainer() {
 
   useEffect(() => {
     return () => {
-      최초진입 = true;
-      set최초학습상태(undefined);
+      isFirstEntry = true;
+      setEntryLearningState(undefined);
     };
   }, [params?.cubeId]);
 
@@ -64,9 +64,9 @@ function LectureVideoContainer() {
     if (lectureState === undefined) {
       return;
     }
-    if (최초진입) {
-      set최초학습상태(lectureState.student?.learningState);
-      최초진입 = false;
+    if (isFirstEntry) {
+      setEntryLearningState(lectureState.student?.learningState);
+      isFirstEntry = false;
     }
   }, [lectureState]);
 
@@ -125,7 +125,7 @@ function LectureVideoContainer() {
 
   useEffect(() => {
     //
-    if (최초학습상태 === undefined) {
+    if (entryLearningState === undefined) {
       return;
     }
 
@@ -134,7 +134,7 @@ function LectureVideoContainer() {
         callRegisterReplayWatchLog,
         (lastActionTime, state) => {
           return (
-            최초학습상태 === 'Passed' &&
+            entryLearningState === 'Passed' &&
             state.playerState === PlayerState.Playing &&
             lastActionTime + 60000 < Date.now()
           );
@@ -145,7 +145,7 @@ function LectureVideoContainer() {
     return () => {
       removeCallRegisterReplayWatchLog();
     };
-  }, [최초학습상태]);
+  }, [entryLearningState]);
 
   useEffect(() => {
     // fixed: playerState 변화시 api호출 > 최초 cube화면 진입시로 api호출 시점 변경
