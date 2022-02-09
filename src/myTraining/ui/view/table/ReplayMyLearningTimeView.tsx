@@ -70,9 +70,9 @@ export default function ReplayMyLearningTimeView({
 
         if (replayLearningTimes !== undefined) {
           result.push(
-            <li key={replayLearningTimes.id}>
+            <li key={replayLearningTimes.collegeId}>
               <span className={`name b${index + i}`} style={{ width: 230 }}>
-                {getCollgeName(replayLearningTimes.id)}
+                {getCollgeName(replayLearningTimes.collegeId)}
               </span>
               <span className="time">
                 {timeToHourMinutePaddingFormat(
