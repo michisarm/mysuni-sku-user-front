@@ -1,9 +1,13 @@
-import { Accordion, Button, Icon } from 'semantic-ui-react';
+import { Accordion, Button, Icon, Image } from 'semantic-ui-react';
 import * as React from 'react';
 import { PlaylistDetailSummary } from '../../../../../playlist/data/models/PlaylistDetailSummary';
 import { PlaylistInCard } from '../../present/logic/PlaylistStore';
 import { Simulate } from 'react-dom/test-utils';
 import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
+import DefaultImg from '../../../../../style/media/img-profile-80-px.png';
+import ProfileImagePath from '../../../../../shared/components/Image/ProfileImagePath';
+import ProfileImage from '../../../../../shared/components/Image/Image';
+import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
 
 interface Props {
   active: boolean;
@@ -49,23 +53,44 @@ function UserProfileInfoTabPlaylistView(props: Props) {
             <strong>{playlistSummary.title}</strong>
           </div>
           <div className="acc-meta">
-            <Button
-              className="like"
-              onClick={() =>
-                onClickLike(
-                  playlistSummary.likeFeedbackId,
-                  playlistSummary.myLike
-                )
-              }
-            >
-              <Icon
-                aria-hidden="true"
-                className={
-                  playlistSummary.myLike ? 'heart16' : 'heart16 active'
-                }
-              />
-              {playlistSummary.likeCount}
-            </Button>
+            {/*<Button*/}
+            {/*  className="like"*/}
+            {/*  onClick={() =>*/}
+            {/*    onClickLike(*/}
+            {/*      playlistSummary.likeFeedbackId,*/}
+            {/*      playlistSummary.myLike*/}
+            {/*    )*/}
+            {/*  }*/}
+            {/*>*/}
+            {/*  <Icon*/}
+            {/*    aria-hidden="true"*/}
+            {/*    className={*/}
+            {/*      playlistSummary.myLike ? 'heart16' : 'heart16 active'*/}
+            {/*    }*/}
+            {/*  />*/}
+            {/*  {playlistSummary.likeCount}*/}
+            {/*</Button>*/}
+
+            <div className="ui profile">
+              <div className="pic s36">
+                <ProfileImage
+                  className="ui image"
+                  src={playlistSummary.photoImagePath}
+                  alt=""
+                />
+              </div>
+              <div className="prf-info">
+                <span className="prf-name">
+                  {parsePolyglotString(playlistSummary.name)}
+                </span>
+                <span className="prf-date">
+                  <span>playlistSummary.date</span> {/*TODO: date*/}
+                  <div className="stat">{playlistSummary.type}</div>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="acc-cnt">
             <Button
               className="add-black"
               onClick={() => onClickRegisterPlaylist(playlistSummary.id)}
@@ -73,8 +98,6 @@ function UserProfileInfoTabPlaylistView(props: Props) {
               <Icon aria-hidden="true" className="add-black16" />
               {getPolyglotText(`Playlist 담기`, 'profilecard-playlist-add')}
             </Button>
-          </div>
-          <div className="acc-cnt">
             <Button
               className="acc-updown"
               onClick={() => {
