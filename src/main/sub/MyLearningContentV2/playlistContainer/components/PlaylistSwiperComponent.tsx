@@ -197,6 +197,7 @@ export function PlaylistSwiperComponent({
       nextEl: '.plylistSwiperNav .swiper-button-next',
       prevEl: '.plylistSwiperNav .swiper-button-prev',
     },
+    threshold: 10,
   };
   const history = useHistory();
   const onClickMovePlaylist = useCallback(() => {
