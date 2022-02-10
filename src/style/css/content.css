@@ -4796,3 +4796,4 @@ i.icon.thumb-up::before {
   padding: 0 30px;
   margin: 0;
 }
+.lms-open-graph-link { box-shadow: 0 1px 3px 0 rgba(76,76,76, 0.2);}
