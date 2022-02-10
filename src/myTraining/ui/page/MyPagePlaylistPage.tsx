@@ -227,11 +227,12 @@ function MyPagePlaylistPage() {
         <Segment className="full">
           <div className="group-wrapper">
             <div className="playlist-list list-wrapper">
-              {playlist && playlist.totalCount !== 0 ? (
-                <PlaylistItem playlist={playlist} />
-              ) : (
-                <NoPlaylistItem />
-              )}
+              {/*{playlist && playlist.totalCount !== 0 ? (*/}
+              {/*  <PlaylistItem playlist={playlist} />*/}
+              {/*) : (*/}
+              {/*  <NoPlaylistItem />*/}
+              {/*)}*/}
+              <NoPlaylistItem />
             </div>
           </div>
         </Segment>

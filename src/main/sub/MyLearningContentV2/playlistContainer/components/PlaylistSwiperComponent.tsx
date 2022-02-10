@@ -123,7 +123,7 @@ function PlaylistCircleComponent({
       <div className="item plus" onClick={onClickMovePlaylist}>
         <div className="item-img">
           <Image
-            src="https://image.mysuni.sk.com/suni-asset/public/images/all/btn-playlist-plus2.png"
+            src="https://image.mysuni.sk.com/suni-asset/public/images/all/btn-playlist-plus2-v2.png"
             alt="프로필 추가"
             className="ui image"
           />
@@ -131,7 +131,7 @@ function PlaylistCircleComponent({
         <div className="item-cont">
           <div className="plus-wrap">
             <Image
-              src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-create-playlist.png"
+              src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-create-playlist-v2.png"
               alt="프로필 추가"
               className="ui image"
             />
@@ -160,7 +160,7 @@ function PlaylistCircleComponent({
       <div className="item-cont">
         <div className="tit-wrap">
           <em>{playlistTypeName}</em>
-          <strong>{title}</strong>
+          <strong>{title}</strong> {/* TODO: 제목에 </br>추가? */}
         </div>
         <div className="profile-wrap">
           <div className="ui profile">
@@ -205,7 +205,7 @@ export function PlaylistSwiperComponent({
 
   return (
     <Segment
-      className="full learning-section type1"
+      className="full learning-section type2 pl-sec"
       data-area={Area.MAIN_PLAYLIST}
     >
       <div className="section-head">
