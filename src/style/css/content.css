@@ -2460,15 +2460,8 @@ i.icon.search50::after {
   padding: 0 16px !important;
 }
 
-.ui.button.acc-updown > div {
-  display: inline-block;
-}
-.ui.button.acc-updown i.icon.drop24-down {
-  margin: 0 !important;
-  height: 24px;
-  vertical-align: top;
-  transform: translateY(-3px);
-}
+.ui.button.acc-updown > div{display: inline-block; vertical-align: middle;}
+.ui.button.acc-updown i.icon.drop24-down { margin: 0 !important; height: 24px; vertical-align: top; transform: translateY(-1px); }
 .ui.button.like {
   margin: 0;
   padding: 0;
@@ -3022,25 +3015,9 @@ i.icon.add-black16::after {
   padding: 20px 30px;
   position: relative;
 }
-.mylist-acc-item .acc-cnt {
-  margin: 0;
-  padding: 0;
-  position: absolute;
-  right: 20px;
-  bottom: 13px;
-}
-.mylist-acc-item .acc-cnt .acc-updown {
-  margin: 0 !important;
-  padding: 0;
-  color: #444;
-  font-size: 0.875rem;
-  line-height: 18px;
-  letter-spacing: -0.6px;
-  font-weight: normal;
-}
-.mylist-acc-item .acc-meta .ui.button + .ui.button {
-  margin-left: 20px;
-}
+.mylist-acc-item .acc-cnt { margin: 0; padding: 0; position: absolute; right: 30px; bottom: 25px;}
+.mylist-acc-item .acc-cnt .acc-updown { margin: 0 !important; padding: 0; color: #444; font-size: 0.875rem; line-height: 20px; letter-spacing: -.6px; font-weight: normal;}
+.mylist-acc-item .acc-meta .ui.button + .ui.button { margin-left: 20px;}
 .mylist-acc-item .acc-meta .ui.button + .ui.button::before {
   content: '';
   display: inline-block;
@@ -3090,6 +3067,18 @@ i.icon.add-black16::after {
 .acc-card-list .item-dt span + span {
   width: 90px;
 }
+.ui.profile .pic.s36 { width: 2.25rem; height: 2.255rem; border : 1px solid #ddd}
+.mylist-acc-item .acc-meta .ui.profile { display: flex; align-items: center; margin-top: 8px;}
+.acc-meta .ui.profile .prf-info { margin-left: 10px; color: #222; font-size: 0.875rem;}
+.prf-info .prf-name + .prf-date { margin-left: 14px; display: inline-block; position: relative; vertical-align: middle; color: #999; font-size: 0.875rem;}
+.prf-name + .prf-date::before { content: ''; display: inline-block; width: 1px; height: 6px; background: #d8d8d8; position: absolute; left: -8px; top: 6px;}
+.prf-info .prf-date span + span { display: inline-block; margin-left: 4px;}
+.prf-info .prf-name { display: inline-block; max-width: 100px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; vertical-align: middle;}
+.acc-cnt .ui.button.add-black { display: inline-block; vertical-align: top !important; line-height: 24px;}
+.acc-cnt .ui.button.add-black .icon.add-black16 {margin-top: 5px;}
+.acc-cnt .ui.button + .ui.button { margin-left: 23px !important; position: relative;}
+.acc-cnt .ui.button + .ui.button::before { content: ''; display: block; width: 1px; height: 6px; background: #d8d8d8; position: absolute; left: -13px; top: 8px;}
+.mylist-acc-item .acc-cnt .ui.button.acc-updown .icon.drop24-down{margin-left : 4px !important}
 
 /* 추천, 받아간 구성원들 pl-share-user */
 .ui.modal.pl-share-user .content .inner {
@@ -4826,3 +4815,4 @@ i.icon.thumb-up::before {
   padding: 0 30px;
   margin: 0;
 }
+.lms-open-graph-link { box-shadow: 0 1px 3px 0 rgba(76,76,76, 0.2);}
