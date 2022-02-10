@@ -84,7 +84,8 @@ function UserProfileInfoTabPlaylistView(props: Props) {
                   {parsePolyglotString(playlistSummary.name)}
                 </span>
                 <span className="prf-date">
-                  <span>playlistSummary.date</span> {/*TODO: date*/}
+                  {/*TODO: date*/}
+                  <span className="date">playlistSummary.date</span>
                   <div className="stat">{playlistSummary.type}</div>
                 </span>
               </div>
