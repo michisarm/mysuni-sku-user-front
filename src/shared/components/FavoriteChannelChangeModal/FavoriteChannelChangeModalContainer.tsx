@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { reactAutobind, mobxHelper, IdName } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { Button, Modal } from 'semantic-ui-react';
@@ -17,7 +18,7 @@ import {
 } from '../../service/useCollege/useRequestCollege';
 import { registerPromotionEvent } from 'main/sub/PersonalBoard/api/personalBoardApi';
 
-interface Props {
+interface Props extends RouteComponentProps<any>{
   skProfileService?: SkProfileService;
   collegeService?: CollegeService;
   collegeLectureCountService?: CollegeLectureCountService;
@@ -49,6 +50,30 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
     selectedCollegeIds: [],
     favoriteChannels: [],
   };
+
+  componentDidMount() {
+    this.init();
+  }
+
+  init = () => {
+    //외부 유입시 파라미터[ setting ]로 정보를 얻고 replace 처리
+    const queryParams = new URLSearchParams(window.location.search);
+    let isReplace = false;
+    if (queryParams.has('setting')) {
+      const setting = queryParams.get('setting');
+      if(setting){
+        this.onOpenModal();
+      }
+      queryParams.delete('setting');
+      isReplace = true;
+    }
+    // parameter 제거
+    if (isReplace && this.props.history) {
+      this.props.history.replace({
+        search: queryParams.toString(),
+      });
+    }
+  }
 
   setDefaultFavorites(favoriteChannels: string[]) {
     //
@@ -239,4 +264,4 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
   }
 }
 
-export default FavoriteChannelChangeModalContainer;
+export default withRouter(FavoriteChannelChangeModalContainer);

@@ -11,7 +11,7 @@ import {
   parseUserLectureCards,
   UserLectureCard,
 } from '@sku/skuniv-ui-lecture-card';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory, } from 'react-router-dom';
 import lecturePaths from 'lecture/routePaths';
 import {
   getPolyglotText,
@@ -56,6 +56,7 @@ export function RecommendContainer() {
   const [channelOpened, setChannelOpened] = useState<boolean>(false);
   const favoriteChannelIds = useFavoriteChannelIds();
   const [selectedChannelId, setSelectedChannelId] = useState<string>();
+  const history = useHistory();
 
   const scrollRef = createRef<HTMLDivElement>();
 
@@ -120,24 +121,37 @@ export function RecommendContainer() {
     }
   }
 
+  const recommendSetting = () => {
+    history.push('/lecture/recommend?setting=true');
+    // history.push(`/search?query=${searchInfo.searchValue}`);
+  }
+
   return (
     <Segment
       className="full learning-section type1"
       data-area={Area.MAIN_CHANNEL}
     >
       <div className="section-head">
-        <div
-          className="sec-tit-txt"
-          dangerouslySetInnerHTML={{
-            __html: getPolyglotText(
-              '<strong>{name}</strong>의 관심채널',
-              'main-favorites',
-              {
-                name: SkProfileService.instance.profileMemberName,
-              }
-            ),
-          }}
-        />
+        <div className="sec-tit-txt">
+          <span
+            dangerouslySetInnerHTML={{
+              __html: getPolyglotText(
+                '<strong>{name}</strong>의 관심채널',
+                'main-favorites',
+                {
+                  name: SkProfileService.instance.profileMemberName,
+                }
+              ),
+            }}
+          />
+          <Button
+            icon
+            className="img-icon setting"
+            onClick={recommendSetting}
+          >
+            <Icon className="setting30"/><span className="blind">설정</span>
+          </Button>
+        </div>
         <div className="sec-tit-btn">
           <NavLink className="btn-more" to={lecturePaths.recommend()}>
             <PolyglotText id="main-viewall" defaultString="전체보기" />
