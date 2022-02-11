@@ -65,7 +65,7 @@ class CategoryLecturesHeaderView extends Component<Props> {
               />
             </div>
             {displayCurriculum === true && (
-              <div className="innter_btn">
+              <div className="inner_btn">
                 <Button
                   className="personal line"
                   onClick={() => {
