@@ -4816,3 +4816,14 @@ i.icon.thumb-up::before {
   margin: 0;
 }
 .lms-open-graph-link { box-shadow: 0 1px 3px 0 rgba(76,76,76, 0.2);}
+.main-info-area.content-division { border-color: #ddd;}
+
+/* 검색 > 강사 화면 */
+.main-info-area .progress-info-wrap .cell:nth-child(1) .cell-inner::after{background-color: #fff;}
+.expert-cont .dash { background: #ddd;}
+.main-info-area .progress-info-wrap .cell .text-info .part { color: #4c4c4c;}
+.expert-cont .text01 {color: #666;}
+.expert-cont .text01:before { background: #777;}
+/* recommend > 채널 추천과정 */
+.main-info-area.content-division { border-color: #ddd;}
+.main-filter { border-color: #ddd;}
