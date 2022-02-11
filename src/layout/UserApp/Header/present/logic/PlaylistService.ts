@@ -27,21 +27,20 @@ async function findProfileCardPlaylistByDenizenId(denizenId: string) {
   );
 
   if (feedbackIds) {
-    const likeCounts = await countAllLikeByFeedbackId(feedbackIds);
-    const myLikes = await findAllLikeByFeedbackIds(feedbackIds);
-
-    playlistDetailSummary?.forEach((playlist) => {
-      likeCounts.forEach((likeCount) => {
-        if (likeCount.feedbackId === playlist.likeFeedbackId) {
-          playlist.likeCount = likeCount.count;
-        }
-      });
-      myLikes.forEach((myLike) => {
-        if (myLike && myLike.feedbackId === playlist.likeFeedbackId) {
-          playlist.myLike = true;
-        }
-      });
-    });
+    // const likeCounts = await countAllLikeByFeedbackId(feedbackIds);
+    // const myLikes = await findAllLikeByFeedbackIds(feedbackIds);
+    // playlistDetailSummary?.forEach((playlist) => {
+    //   likeCounts.forEach((likeCount) => {
+    //     if (likeCount.feedbackId === playlist.likeFeedbackId) {
+    //       playlist.likeCount = likeCount.count;
+    //     }
+    //   });
+    //   myLikes.forEach((myLike) => {
+    //     if (myLike && myLike.feedbackId === playlist.likeFeedbackId) {
+    //       playlist.myLike = true;
+    //     }
+    //   });
+    // });
   }
 
   setProfileCardPlaylist({

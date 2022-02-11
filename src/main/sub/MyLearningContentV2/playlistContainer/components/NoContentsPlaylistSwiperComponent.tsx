@@ -8,7 +8,7 @@ import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 export function NoContentsPlaylistSwiperComponent() {
   return (
-    <Segment className="full learning-section type2 pl-nodata">
+    <Segment className="full learning-section pl-sec">
       <div className="section-head">
         <div
           className="sec-tit-txt"
@@ -44,7 +44,7 @@ export function NoContentsPlaylistSwiperComponent() {
                   </div>
                   <div className="item-img">
                     <Image
-                      src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-character-01.png"
+                      src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-character-01-v2.png"
                       alt="내가만든 캐릭터"
                       className="ui image"
                     />
@@ -76,7 +76,7 @@ export function NoContentsPlaylistSwiperComponent() {
                   </div>
                   <div className="item-img">
                     <Image
-                      src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-character-02.png"
+                      src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-character-02-v2.png"
                       alt="추천받은 캐릭터"
                       className="ui image"
                     />
@@ -108,7 +108,7 @@ export function NoContentsPlaylistSwiperComponent() {
                   </div>
                   <div className="item-img">
                     <Image
-                      src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-character-03.png"
+                      src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-character-03-v2.png"
                       alt="내가 담은 캐릭터"
                       className="ui image"
                     />
