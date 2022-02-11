@@ -8,7 +8,7 @@ import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 export function NoContentsPlaylistSwiperComponent() {
   return (
-    <Segment className="full learning-section type2 pl-sec">
+    <Segment className="full learning-section pl-sec">
       <div className="section-head">
         <div
           className="sec-tit-txt"
