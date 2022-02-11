@@ -88,10 +88,14 @@ class MyLearningSummaryModal extends ReactComponent<Props, State, Injected> {
       instructTimeSummary,
     } = myLearningSummaryService;
 
-    const emptyMyLearningSummaryModalModel: MyLearningSummaryModalModel = initMyLearningSummaryModalModel();
-    emptyMyLearningSummaryModalModel.displayMySuniLearningTime = getDisplayMySuniLeaningTime();
-    emptyMyLearningSummaryModalModel.displayMyCompanyLearningTime = getDisplayCompanyLearningTime();
-    emptyMyLearningSummaryModalModel.displayMyReplayLearningTime = getDisplayReplayLeaningTime();
+    const emptyMyLearningSummaryModalModel: MyLearningSummaryModalModel =
+      initMyLearningSummaryModalModel();
+    emptyMyLearningSummaryModalModel.displayMySuniLearningTime =
+      getDisplayMySuniLeaningTime();
+    emptyMyLearningSummaryModalModel.displayMyCompanyLearningTime =
+      getDisplayCompanyLearningTime();
+    emptyMyLearningSummaryModalModel.displayMyReplayLearningTime =
+      getDisplayReplayLeaningTime();
     emptyMyLearningSummaryModalModel.myLearningSummary = myLearningSummary;
     emptyMyLearningSummaryModalModel.instructTimeSummary = instructTimeSummary;
 
@@ -177,18 +181,17 @@ class MyLearningSummaryModal extends ReactComponent<Props, State, Injected> {
       (myLearningSummary: MyLearningSummaryModel) => {
         // getCollegePercent(myLearningSummary.collegeLearningTimes);
 
-        const emptyMyLearningSummaryModalModel: MyLearningSummaryModalModel = initMyLearningSummaryModalModel();
-        emptyMyLearningSummaryModalModel.displayMySuniLearningTime = getDisplayMySuniLeaningTime(
-          myLearningSummary
-        );
-        emptyMyLearningSummaryModalModel.displayMyCompanyLearningTime = getDisplayCompanyLearningTime(
-          myLearningSummary
-        );
-        emptyMyLearningSummaryModalModel.displayMyReplayLearningTime = getDisplayReplayLeaningTime(
-          myLearningSummary
-        );
+        const emptyMyLearningSummaryModalModel: MyLearningSummaryModalModel =
+          initMyLearningSummaryModalModel();
+        emptyMyLearningSummaryModalModel.displayMySuniLearningTime =
+          getDisplayMySuniLeaningTime(myLearningSummary);
+        emptyMyLearningSummaryModalModel.displayMyCompanyLearningTime =
+          getDisplayCompanyLearningTime(myLearningSummary);
+        emptyMyLearningSummaryModalModel.displayMyReplayLearningTime =
+          getDisplayReplayLeaningTime(myLearningSummary);
         emptyMyLearningSummaryModalModel.myLearningSummary = myLearningSummary;
-        emptyMyLearningSummaryModalModel.instructTimeSummary = instructTimeSummary;
+        emptyMyLearningSummaryModalModel.instructTimeSummary =
+          instructTimeSummary;
 
         const prevCheckTab = checkedTab;
         this.setState({
@@ -357,12 +360,14 @@ class MyLearningSummaryModal extends ReactComponent<Props, State, Injected> {
                                   }}
                                 />
                               )) || (
-                                <span>
-                                  <PolyglotText
-                                    defaultString="각 사에서 학습한 시간"
-                                    id="home-학이시-mch2"
-                                  />
-                                </span>
+                                <span
+                                  dangerouslySetInnerHTML={{
+                                    __html: getPolyglotText(
+                                      `사내과정 및 개인학습 등록으로 인정받은 시간`,
+                                      'home-학이시-mch2'
+                                    ),
+                                  }}
+                                />
                               )}
                             </label>
                             <span className="buri" />
