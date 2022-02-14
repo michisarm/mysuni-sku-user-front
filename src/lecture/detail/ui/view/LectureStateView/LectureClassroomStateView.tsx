@@ -25,6 +25,7 @@ import LectureClassroom, {
 } from '../../../viewModel/LectureClassroom';
 import LectureState from '../../../viewModel/LectureState';
 import { LectureAgreementModalView } from './LectureAgreementModalView';
+import moment from 'moment';
 
 const APPROVE = getPolyglotText('학습하기', 'CollageState-Classroom-학습하기');
 const SUBMIT = getPolyglotText('신청하기', 'CollageState-Classroom-신청하기');
@@ -237,6 +238,24 @@ function CanceledView(props: CanceledViewProps) {
 function SubmittedView(props: Pick<CanceledViewProps, 'cubeId' | 'cubeType'>) {
   const { cubeId, cubeType } = props;
 
+  let cancelDisabled = true;
+  const lectureState = getLectureState();
+  const round = lectureState?.student?.round;
+  const classrooms = lectureState?.cubeDetail?.cubeMaterial.classrooms;
+
+  const classroom = classrooms && classrooms.find((c) => c.round === round);
+
+  if (classroom) {
+    const cancelablePeriod = classroom.enrolling.cancellablePeriod;
+    const today = moment(moment().format('YYYY-MM-DD'));
+    const end = moment(cancelablePeriod.endDate).add(1, 'days');
+    const start = moment(cancelablePeriod.startDate).add(-1, 'days');
+
+    if (today.isAfter(start) && today.isBefore(end)) {
+      cancelDisabled = false;
+    }
+  }
+
   const onCancled = useCallback(() => {
     cancleFromCubeId(cubeId, cubeType);
   }, [cubeId, cubeType]);
@@ -257,6 +276,7 @@ function SubmittedView(props: Pick<CanceledViewProps, 'cubeId' | 'cubeType'>) {
           '클릭',
           'CollageState-Classroom-클릭'
         )}`}
+        disabled={cancelDisabled}
       >
         {CANCEL}
       </button>
@@ -372,9 +392,9 @@ function ApprovedELearningView(props: ApprovedViewProps) {
           }
           data-action={Action.CLICK}
           data-action-type={ActionType.STUDY}
-          data-action-external-link={(
-            document.getElementById('webpage-link') as HTMLAnchorElement
-          )?.href?.toString()}
+          data-action-external-link={(document.getElementById(
+            'webpage-link'
+          ) as HTMLAnchorElement)?.href?.toString()}
           data-action-name={`${APPROVE} ${getPolyglotText(
             '클릭',
             'CollageState-Classroom-클릭'
@@ -398,49 +418,51 @@ interface LectureClassroomStateViewProps {
   lectureClassroom: LectureClassroom;
 }
 
-const LectureClassroomStateView: React.FC<LectureClassroomStateViewProps> =
-  function LectureClassroomStateView({ lectureState, lectureClassroom }) {
-    const {
-      student,
-      cubeDetail: {
-        cube: { id, type },
-      },
-    } = lectureState;
+const LectureClassroomStateView: React.FC<LectureClassroomStateViewProps> = function LectureClassroomStateView({
+  lectureState,
+  lectureClassroom,
+}) {
+  const {
+    student,
+    cubeDetail: {
+      cube: { id, type },
+    },
+  } = lectureState;
 
-    if (student === undefined) {
-      return (
-        <CanceledView
-          lectureClassroom={lectureClassroom}
-          cubeId={id}
-          cubeType={type}
-        />
-      );
+  if (student === undefined) {
+    return (
+      <CanceledView
+        lectureClassroom={lectureClassroom}
+        cubeId={id}
+        cubeType={type}
+      />
+    );
+  }
+  if (student.proposalState === 'Canceled') {
+    return (
+      <CanceledView
+        lectureClassroom={lectureClassroom}
+        cubeId={id}
+        cubeType={type}
+      />
+    );
+  }
+  if (student.proposalState === 'Submitted') {
+    return <SubmittedView cubeId={id} cubeType={type} />;
+  }
+  if (student.proposalState === 'Rejected') {
+    return <RejectedView cubeId={id} cubeType={type} />;
+  }
+  if (student.proposalState === 'Approved') {
+    if (
+      lectureState.cubeType === 'ELearning' ||
+      lectureState.cubeType === 'ClassRoomLecture'
+    ) {
+      return <ApprovedELearningView student={student} />;
     }
-    if (student.proposalState === 'Canceled') {
-      return (
-        <CanceledView
-          lectureClassroom={lectureClassroom}
-          cubeId={id}
-          cubeType={type}
-        />
-      );
-    }
-    if (student.proposalState === 'Submitted') {
-      return <SubmittedView cubeId={id} cubeType={type} />;
-    }
-    if (student.proposalState === 'Rejected') {
-      return <RejectedView cubeId={id} cubeType={type} />;
-    }
-    if (student.proposalState === 'Approved') {
-      if (
-        lectureState.cubeType === 'ELearning' ||
-        lectureState.cubeType === 'ClassRoomLecture'
-      ) {
-        return <ApprovedELearningView student={student} />;
-      }
-      return <ApprovedView student={student} />;
-    }
-    return null;
-  };
+    return <ApprovedView student={student} />;
+  }
+  return null;
+};
 
 export default LectureClassroomStateView;
