@@ -67,7 +67,7 @@
     "srt-parser-2": "^1.1.2",
     "swiper": "^5.2.1",
     "typescript": "3.7.3",
-    "xlsx": "latest"
+    "xlsx": "0.17.5"
   },
   "proxy": "https://stg.mysuni.sk.com",
   "homepage": "https://mysuni.sk.com/suni-main/",
