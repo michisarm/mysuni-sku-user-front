@@ -3466,7 +3466,7 @@ i.icon.logout-16px::before {
   width: 290px;
   height: 350px;
   margin: 10px;
-  padding: 34px 30px;
+  padding: 30px 30px 36px;
   text-align: center;
   position: relative;
 }
@@ -3503,7 +3503,7 @@ i.icon.logout-16px::before {
   -webkit-box-orient: vertical;
 }
 .playlist-info-box .list-course {
-  margin-top: 16px;
+  margin-top: 10px;
   font-size: 14px;
 }
 .ui.card.playlist-box.card-item .maker-info-box {
@@ -3530,7 +3530,9 @@ i.icon.logout-16px::before {
 }
 .ui.card.playlist-box.card-item .maker-info-box .maker-user {
   font-weight: 700;
-  margin-top: 8px;
+  margin-top: 6px;
+  word-break: break-all;
+  padding: 0 40px;
 }
 
 /* Playlist Nodata */
@@ -4456,6 +4458,12 @@ i.icon.plus.round16:before {
   font-size: 12px;
   font-weight: 700;
   text-align: center;
+  overflow:hidden; 
+  white-space:normal;
+  word-wrap:break-word;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
 }
 /* Active Case */
 .plylistSwiper .swiper-slide-active {

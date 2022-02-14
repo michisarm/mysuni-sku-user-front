@@ -44,6 +44,11 @@ function UserProfileInfoTabPlaylistView(props: Props) {
     onClickLike,
   } = props;
 
+  const profileName =
+    playlistSummary.displayNicknameFirst === true
+      ? playlistSummary.nickname
+      : parsePolyglotString(playlistSummary.name);
+
   return (
     <div className="mylist-acc-item" key={playlistSummary.id}>
       <Accordion.Title active={active}>
@@ -79,7 +84,7 @@ function UserProfileInfoTabPlaylistView(props: Props) {
                 />
               </div>
               <div className="prf-info">
-                <span className="prf-name">{playlistSummary.nickname}</span>
+                <span className="prf-name">{profileName}</span>
                 <span className="prf-date">
                   {/*TODO: date*/}
                   <span className="date">
