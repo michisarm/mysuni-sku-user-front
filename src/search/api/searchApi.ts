@@ -134,11 +134,14 @@ export async function findPreCard(text_idx: string) {
   // await sleep(5);
   // console.log('findPreCard');
   const permitedCineroomsQuery = makePermitedCineroomsQuery();
+  const valid_text_index = text_idx.replace(/&/g, '%26');
   const url = encodeURI(
-    `${BASE_URL}?select=${FIND_CARD_COLUMNS}&from=card_new.card_new&where=name='${text_idx.replace(
-      /&/g,
-      '%26'
-    )}'+allword+and+${permitedCineroomsQuery}&offset=0&limit=999&t=${Date.now()}&default-hilite=off`
+    `${BASE_URL}?select=${FIND_CARD_COLUMNS}&from=card_new.card_new&where=
+    (name='${valid_text_index}'+allorderadjacent
+    +or+description='${valid_text_index}'+allorderadjacent)
+    +and+${permitedCineroomsQuery}
+    +order+by+$matchfield(name,+description)+desc
+    &offset=0&limit=999&t=${Date.now()}&default-hilite=off`
   ).replace(/%2526/g, '%26');
   return axiosApi
     .get<SearchResult<SearchCard>>(url)
@@ -173,14 +176,16 @@ export function findCard(text_idx: string, pre: string) {
     transactionId,
   });
   const permitedCineroomsQuery = makePermitedCineroomsQuery();
+  const valid_text_index = text_idx.replace(/&/g, '%26');
+
   const url = encodeURI(
-    `${BASE_URL}?select=${FIND_CARD_COLUMNS}&from=card_new.card_new&where=text_idx='${text_idx.replace(
-      /&/g,
-      '%26'
-    )}'+allword+and+${permitedCineroomsQuery}&offset=0&limit=999&t=${Date.now()}&default-hilite=off&custom=SKUNIV@course+all|M|28$text$nomal|1|정확도^${text_idx.replace(
-      /&/g,
-      '%26'
-    )}##${pre}`
+    `${BASE_URL}?select=${FIND_CARD_COLUMNS}&from=card_new.card_new&where=
+    (name='${valid_text_index}'+allorderadjacent
+    +or+description='${valid_text_index}'+allorderadjacent
+    +or+($1+text_idx='${valid_text_index}'+allword))
+    +and+${permitedCineroomsQuery}
+    +order+by+$matchfield(name,+description)+desc,+$1+desc
+    &offset=0&limit=999&t=${Date.now()}&default-hilite=off&custom=SKUNIV@course+all|M|28$text$nomal|1|정확도^${valid_text_index}##${pre}`
   )
     .replace('##', '%23%23') // default-hilite=on하면 simple_description의 PolyglotString이 깨져서 들어온다. 아마 simple_description 뿐만 아니라 PolyglotString의 항목들은 다 그럴 듯
     .replace(/%2526/g, '%26');

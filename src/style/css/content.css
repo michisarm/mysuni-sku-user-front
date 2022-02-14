@@ -19,7 +19,7 @@ i.icon.sk-university::before {
 .channel-of-interest .table-css.type3 .item-wrap {
   width: 100%;
   height: 38px;
-  padding:1px 0;
+  padding: 1px 0;
 }
 .channel-of-interest .table-css.type3 .item-wrap .belt {
   padding-right: 20px;
@@ -37,11 +37,11 @@ i.icon.sk-university::before {
   background: #00bfae !important;
 }
 .channel-of-interest .table-css.type3 .cell:nth-of-type(1) {
-  padding-top:3px;
+  padding-top: 3px;
 }
 .channel-of-interest .table-css.type3 .cell:nth-of-type(3) {
   width: 56px;
-  padding-top:1px;
+  padding-top: 1px;
 }
 .toggle-btn .ui.button.img-icon .icon.arrow-down.s26,
 .toggle-btn .ui.button.img-icon .icon.arrow-up.s26 {
@@ -2465,8 +2465,16 @@ i.icon.search50::after {
   padding: 0 16px !important;
 }
 
-.ui.button.acc-updown > div{display: inline-block; vertical-align: middle;}
-.ui.button.acc-updown i.icon.drop24-down { margin: 0 !important; height: 24px; vertical-align: top; transform: translateY(-1px); }
+.ui.button.acc-updown > div {
+  display: inline-block;
+  vertical-align: middle;
+}
+.ui.button.acc-updown i.icon.drop24-down {
+  margin: 0 !important;
+  height: 24px;
+  vertical-align: top;
+  transform: translateY(-1px);
+}
 .ui.button.like {
   margin: 0;
   padding: 0;
@@ -3020,9 +3028,25 @@ i.icon.add-black16::after {
   padding: 20px 30px;
   position: relative;
 }
-.mylist-acc-item .acc-cnt { margin: 0; padding: 0; position: absolute; right: 30px; bottom: 25px;}
-.mylist-acc-item .acc-cnt .acc-updown { margin: 0 !important; padding: 0; color: #444; font-size: 0.875rem; line-height: 20px; letter-spacing: -.6px; font-weight: normal;}
-.mylist-acc-item .acc-meta .ui.button + .ui.button { margin-left: 20px;}
+.mylist-acc-item .acc-cnt {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  right: 30px;
+  bottom: 25px;
+}
+.mylist-acc-item .acc-cnt .acc-updown {
+  margin: 0 !important;
+  padding: 0;
+  color: #444;
+  font-size: 0.875rem;
+  line-height: 20px;
+  letter-spacing: -0.6px;
+  font-weight: normal;
+}
+.mylist-acc-item .acc-meta .ui.button + .ui.button {
+  margin-left: 20px;
+}
 .mylist-acc-item .acc-meta .ui.button + .ui.button::before {
   content: '';
   display: inline-block;
@@ -3072,18 +3096,76 @@ i.icon.add-black16::after {
 .acc-card-list .item-dt span + span {
   width: 90px;
 }
-.ui.profile .pic.s36 { width: 2.25rem; height: 2.255rem; border : 1px solid #ddd}
-.mylist-acc-item .acc-meta .ui.profile { display: flex; align-items: center; margin-top: 8px;}
-.acc-meta .ui.profile .prf-info { margin-left: 10px; color: #222; font-size: 0.875rem;}
-.prf-info .prf-name + .prf-date { margin-left: 14px; display: inline-block; position: relative; vertical-align: middle; color: #999; font-size: 0.875rem;}
-.prf-name + .prf-date::before { content: ''; display: inline-block; width: 1px; height: 6px; background: #d8d8d8; position: absolute; left: -8px; top: 6px;}
-.prf-info .prf-date span + span { display: inline-block; margin-left: 4px;}
-.prf-info .prf-name { display: inline-block; max-width: 100px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; vertical-align: middle;}
-.acc-cnt .ui.button.add-black { display: inline-block; vertical-align: top !important; line-height: 24px;}
-.acc-cnt .ui.button.add-black .icon.add-black16 {margin-top: 5px;}
-.acc-cnt .ui.button + .ui.button { margin-left: 23px !important; position: relative;}
-.acc-cnt .ui.button + .ui.button::before { content: ''; display: block; width: 1px; height: 6px; background: #d8d8d8; position: absolute; left: -13px; top: 8px;}
-.mylist-acc-item .acc-cnt .ui.button.acc-updown .icon.drop24-down{margin-left : 4px !important}
+.ui.profile .pic.s36 {
+  width: 2.25rem;
+  height: 2.255rem;
+  border: 1px solid #ddd;
+}
+.mylist-acc-item .acc-meta .ui.profile {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+}
+.acc-meta .ui.profile .prf-info {
+  margin-left: 10px;
+  color: #222;
+  font-size: 0.875rem;
+}
+.prf-info .prf-name + .prf-date {
+  margin-left: 14px;
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  color: #999;
+  font-size: 0.875rem;
+}
+.prf-name + .prf-date::before {
+  content: '';
+  display: inline-block;
+  width: 1px;
+  height: 6px;
+  background: #d8d8d8;
+  position: absolute;
+  left: -8px;
+  top: 6px;
+}
+.prf-info .prf-date span + span {
+  display: inline-block;
+  margin-left: 4px;
+}
+.prf-info .prf-name {
+  display: inline-block;
+  max-width: 100px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: middle;
+}
+.acc-cnt .ui.button.add-black {
+  display: inline-block;
+  vertical-align: top !important;
+  line-height: 24px;
+}
+.acc-cnt .ui.button.add-black .icon.add-black16 {
+  margin-top: 5px;
+}
+.acc-cnt .ui.button + .ui.button {
+  margin-left: 23px !important;
+  position: relative;
+}
+.acc-cnt .ui.button + .ui.button::before {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 6px;
+  background: #d8d8d8;
+  position: absolute;
+  left: -13px;
+  top: 8px;
+}
+.mylist-acc-item .acc-cnt .ui.button.acc-updown .icon.drop24-down {
+  margin-left: 4px !important;
+}
 
 /* 추천, 받아간 구성원들 pl-share-user */
 .ui.modal.pl-share-user .content .inner {
@@ -4173,14 +4255,15 @@ i.icon.plus.round16:before {
 
 /* 메인 관심채널 설정버튼 추가 */
 .sec-tit-txt .icon.button.setting {
-  position:relative; 
-  top:-2px; 
-  margin-left:6px;
+  position: relative;
+  top: -2px;
+  margin-left: 6px;
 }
 .sec-tit-txt .icon.button.setting .icon.setting30 {
   width: 30px;
   height: 30px;
-  background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-setting-30.svg") 0 0 no-repeat;
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-setting-30.svg')
+    0 0 no-repeat;
   background-size: 30px 30px;
   position: none;
   left: 0;
@@ -4316,8 +4399,8 @@ i.icon.plus.round16:before {
   display: block;
 }
 .plylistSwiper .item .item-cont .plus-wrap img {
-  width:60px; 
-  height:60px;
+  width: 60px;
+  height: 60px;
 }
 .plylistSwiper .item .item-cont .plus-wrap p {
   margin-top: 12px;
@@ -4362,8 +4445,8 @@ i.icon.plus.round16:before {
 }
 .plylistSwiper .item .item-cont .profile-wrap .ui.profile .pic {
   display: inline-flex;
-  width:36px; 
-  height:36px;
+  width: 36px;
+  height: 36px;
   vertical-align: top;
 }
 .plylistSwiper .item .item-cont .profile-wrap .ui.profile .name {
@@ -4419,7 +4502,7 @@ i.icon.plus.round16:before {
 
 /* 스케일방식 */
 .plylistSwiper .swiper-container {
-  width:calc(100% - 80px);
+  width: calc(100% - 80px);
 }
 .plylistSwiper .item {
   width: 100%;
@@ -4451,26 +4534,26 @@ i.icon.plus.round16:before {
 
 /* Playlist Section */
 .ui.segment.learning-section.pl-sec {
-  padding-top:20px; 
-  padding-bottom:10px; 
+  padding-top: 20px;
+  padding-bottom: 10px;
   align-items: center;
 }
 .ui.segment.learning-section.pl-sec .sec-tit-txt {
-  margin-bottom:20px;
+  margin-bottom: 20px;
 }
 .ui.segment.learning-section.pl-sec .sec-btn .ui.button {
-  height:50px; 
-  padding:0 28px; 
-  background: #4c4c4c; 
-  border-radius: 25px; 
-  color:#fff; 
-  font-weight:700;
+  height: 50px;
+  padding: 0 28px;
+  background: #4c4c4c;
+  border-radius: 25px;
+  color: #fff;
+  font-weight: 700;
 }
 .ui.segment.learning-section.pl-sec .sec-tit-btn .btn-more {
-  padding:0;
+  padding: 0;
 }
 .ui.segment.learning-section.pl-sec .section-body {
-  padding:0 10px;
+  padding: 0 10px;
 }
 
 /* Playlist - Nodata */
@@ -4511,11 +4594,11 @@ i.icon.plus.round16:before {
 .pl-nodata-items .item-tip .tip {
   display: inline-block;
   position: relative;
-  max-width:150px; 
-  margin:0 auto; 
+  max-width: 150px;
+  margin: 0 auto;
   padding: 5px 12px;
   font-size: 12px;
-  line-height:16px;
+  line-height: 16px;
   color: #646464;
   font-weight: 700;
   font-style: normal;
@@ -4523,7 +4606,7 @@ i.icon.plus.round16:before {
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
   background-color: #fff;
   border-radius: 12px;
-  text-align:center;
+  text-align: center;
 }
 .pl-nodata-items .item-tip .tip::after {
   content: '';
@@ -4546,8 +4629,8 @@ i.icon.plus.round16:before {
   height: 100px;
 }
 .pl-nodata-items .item-img .ui.image {
-  display:inline; 
-  height:100%;
+  display: inline;
+  height: 100%;
 }
 .pl-nodata-items .item-tit {
   position: absolute;
@@ -4821,4 +4904,33 @@ i.icon.thumb-up::before {
   padding: 0 30px;
   margin: 0;
 }
-.lms-open-graph-link { box-shadow: 0 1px 3px 0 rgba(76,76,76, 0.2);}
+.lms-open-graph-link {
+  box-shadow: 0 1px 3px 0 rgba(76, 76, 76, 0.2);
+}
+.main-info-area.content-division {
+  border-color: #ddd;
+}
+
+/* 검색 > 강사 화면 */
+.main-info-area .progress-info-wrap .cell:nth-child(1) .cell-inner::after {
+  background-color: #fff;
+}
+.expert-cont .dash {
+  background: #ddd;
+}
+.main-info-area .progress-info-wrap .cell .text-info .part {
+  color: #4c4c4c;
+}
+.expert-cont .text01 {
+  color: #666;
+}
+.expert-cont .text01:before {
+  background: #777;
+}
+/* recommend > 채널 추천과정 */
+.main-info-area.content-division {
+  border-color: #ddd;
+}
+.main-filter {
+  border-color: #ddd;
+}
