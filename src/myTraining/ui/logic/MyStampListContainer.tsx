@@ -15,7 +15,7 @@ import { Button, Icon, Segment } from 'semantic-ui-react';
 import { getCollgeName } from 'shared/service/useCollege/useRequestCollege';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { Area } from 'tracker/model';
-import { XLSX } from 'xlsx';
+import XLSX from 'xlsx';
 import { LectureService } from '../../../lecture';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
 import { MyPageRouteParams } from '../../model/MyPageRouteParams';
