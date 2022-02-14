@@ -2,12 +2,11 @@ import { Accordion, Button, Icon, Image } from 'semantic-ui-react';
 import * as React from 'react';
 import { PlaylistDetailSummary } from '../../../../../playlist/data/models/PlaylistDetailSummary';
 import { PlaylistInCard } from '../../present/logic/PlaylistStore';
-import { Simulate } from 'react-dom/test-utils';
 import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
-import DefaultImg from '../../../../../style/media/img-profile-80-px.png';
-import ProfileImagePath from '../../../../../shared/components/Image/ProfileImagePath';
 import ProfileImage from '../../../../../shared/components/Image/Image';
 import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
+import moment from 'moment';
+import { playListItemTypeForProfileCard } from '../../../../../myTraining/ui/view/playlist/myPagePlaylist/MyPagePlaylist.events';
 
 interface Props {
   active: boolean;
@@ -85,8 +84,14 @@ function UserProfileInfoTabPlaylistView(props: Props) {
                 </span>
                 <span className="prf-date">
                   {/*TODO: date*/}
-                  <span className="date">playlistSummary.date</span>
-                  <div className="stat">{playlistSummary.type}</div>
+                  <span className="date">
+                    {moment(playlistSummary.registeredTime).format(
+                      'YYYY-MM-DD'
+                    )}
+                  </span>
+                  <div className="stat">
+                    {playListItemTypeForProfileCard(playlistSummary.type)}
+                  </div>
                 </span>
               </div>
             </div>
@@ -134,7 +139,7 @@ function UserProfileInfoTabPlaylistView(props: Props) {
                 //
 
                 return (
-                  <li className="item">
+                  <li className="item" key={card.cardId}>
                     <a
                       href=""
                       className="inner"
