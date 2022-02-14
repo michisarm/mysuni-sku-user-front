@@ -878,17 +878,46 @@ export function getTitleHtmlSearchKeyword(title: string) {
 
 function escapeRegex(item: string, target: string): string {
   const ESCAPE_REGEX = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi;
-  if (item.match(ESCAPE_REGEX)) {
-    return target.replace(
-      item,
-      `<strong class="search_keyword">${item}</strong>`
-    );
-  } else {
-    const replacedItem = item.replace(ESCAPE_REGEX, '');
-    return target.replace(new RegExp(replacedItem, 'gi'), (match) => {
-      return `<strong class="search_keyword">${match}</strong>`;
-    });
-  }
+  const regExpItem = item.replace(ESCAPE_REGEX, '');
+  let replacedText = '';
+  const splitTags = target.split('</strong>');
+  const changedValues = splitTags.map((splitValue, index) => {
+    const splitTargetValue =
+      splitTags.length !== index + 1 ? splitValue + '</strong>' : splitValue;
+    if (splitTargetValue.includes('</strong>')) {
+      return splitTargetValue;
+    } else {
+      if (item.match(ESCAPE_REGEX)) {
+        return splitTargetValue.replace(new RegExp(item, 'gi'), (match) => {
+          return `<strong class="search_keyword">${match}</strong>`;
+        });
+      } else {
+        console.log('regExpItem : ', regExpItem);
+        return splitTargetValue.replace(
+          new RegExp(regExpItem, 'gi'),
+          (match) => {
+            return `<strong class="search_keyword">${match}</strong>`;
+          }
+        );
+      }
+    }
+  });
+
+  replacedText = changedValues.join('');
+
+  // if (item.match(ESCAPE_REGEX)) {
+  //   replacedText = target.replace(
+  //     item,
+  //     `<strong class="a_text">${item}</strong>`
+  //   );
+  // } else {
+  //   replacedText = target.replace(
+  //     new RegExp(regExpItem, 'gi'),
+  //     `<strong class="a_text">${regExpItem}</strong>`
+  //   );
+  // }
+
+  return replacedText;
 }
 
 export function getTagsHtml(tags: string) {
