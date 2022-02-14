@@ -81,15 +81,14 @@ function UserProfileInfoTabPlaylistView(props: Props) {
               <div className="prf-info">
                 <span className="prf-name">{playlistSummary.nickname}</span>
                 <span className="prf-date">
-                  {/*TODO: date*/}
                   <span className="date">
                     {moment(playlistSummary.registeredTime).format(
                       'YYYY-MM-DD'
                     )}
                   </span>
-                  <div className="stat">
+                  <span className="stat">
                     {playListItemTypeForProfileCard(playlistSummary.type)}
-                  </div>
+                  </span>
                 </span>
               </div>
             </div>
