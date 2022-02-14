@@ -2991,10 +2991,16 @@ const koPanes = [
                 <li># Stakeholder</li>
               </ul>
               <div className="panopto sub">
-                <Image
-                  src={`${PUBLIC_URL}/images/all/img-co-11-ttl.png`}
-                  alt=""
-                />
+                <iframe
+                  title="audio type"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3Dca99cc78-c6fd-4829-8bea-ae39001f10ff"
+                  width="436"
+                  height="245"
+                  allow="autoplay"
+                  style={{ padding: '0px', border: '0px' }}
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
               </div>
             </div>
           </div>
@@ -6228,10 +6234,16 @@ const EnPanes = [
                 <li># Stakeholder</li>
               </ul>
               <div className="panopto sub">
-                <Image
-                  src={`${PUBLIC_URL}/images/all/img-co-11-ttl.png`}
-                  alt=""
-                />
+                <iframe
+                  title="audio type"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3Dca99cc78-c6fd-4829-8bea-ae39001f10ff"
+                  width="436"
+                  height="245"
+                  allow="autoplay"
+                  style={{ padding: '0px', border: '0px' }}
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
               </div>
             </div>
           </div>
@@ -9204,10 +9216,16 @@ const ZhPanes = [
                 <li># Stakeholder</li>
               </ul>
               <div className="panopto sub">
-                <Image
-                  src={`${PUBLIC_URL}/images/all/img-co-11-ttl.png`}
-                  alt=""
-                />
+                <iframe
+                  title="audio type"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3Dca99cc78-c6fd-4829-8bea-ae39001f10ff"
+                  width="436"
+                  height="245"
+                  allow="autoplay"
+                  style={{ padding: '0px', border: '0px' }}
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
               </div>
             </div>
           </div>
