@@ -7,6 +7,7 @@ import ProfileImage from '../../../../../shared/components/Image/Image';
 import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
 import moment from 'moment';
 import { playListItemTypeForProfileCard } from '../../../../../myTraining/ui/view/playlist/myPagePlaylist/MyPagePlaylist.events';
+import { SkProfileService } from '../../../../../profile/stores';
 
 interface Props {
   active: boolean;
@@ -32,6 +33,35 @@ function getHourMinuteFormat(hour: number, minute: number) {
   }
 
   return <span className="time">{time}</span>;
+}
+
+function getTimeAndStatFormat(playlistSummary: PlaylistDetailSummary) {
+  //
+  const language = SkProfileService.instance.skProfile.language;
+
+  if (language === 'English') {
+    return (
+      <>
+        <span className="stat">
+          {playListItemTypeForProfileCard(playlistSummary.type)}
+        </span>
+        <span className="date">
+          {moment(playlistSummary.registeredTime).format('YYYY-MM-DD')}
+        </span>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <span className="date">
+          {moment(playlistSummary.registeredTime).format('YYYY-MM-DD')}
+        </span>
+        <span className="stat">
+          {playListItemTypeForProfileCard(playlistSummary.type)}
+        </span>
+      </>
+    );
+  }
 }
 
 function UserProfileInfoTabPlaylistView(props: Props) {
@@ -86,14 +116,7 @@ function UserProfileInfoTabPlaylistView(props: Props) {
               <div className="prf-info">
                 <span className="prf-name">{profileName}</span>
                 <span className="prf-date">
-                  <span className="date">
-                    {moment(playlistSummary.registeredTime).format(
-                      'YYYY-MM-DD'
-                    )}
-                  </span>
-                  <span className="stat">
-                    {playListItemTypeForProfileCard(playlistSummary.type)}
-                  </span>
+                  {getTimeAndStatFormat(playlistSummary)}
                 </span>
               </div>
             </div>
