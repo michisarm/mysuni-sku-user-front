@@ -4891,7 +4891,7 @@ i.icon.thumb-up::before {
 /* 카테고리 소개 - 전체보기 */
 .white-title .inner.curri-box {
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 .white-title .inner.curri-box .inner_txt {
   display: inline-block;
