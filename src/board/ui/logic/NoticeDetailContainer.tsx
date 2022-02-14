@@ -22,6 +22,10 @@ import routePaths from '../../routePaths';
 import { PostService } from '../../stores';
 import BoardDetailContentHeaderView from '../view/BoardDetailContentHeaderView';
 import { Comment } from '@sku/skuniv-ui-comment';
+import {
+  NotieSimpleCdo,
+  NotieSpaceType,
+} from '@sku/skuniv-ui-comment/lib/api.models';
 
 interface Props extends RouteComponentProps<{ postId: string }> {
   postService?: PostService;
@@ -152,6 +156,30 @@ class NoticeDetailContainer extends React.Component<Props, State> {
     });
   }
 
+  // 댓글, 좋아요, 핀고정 알림 발송
+  getNotieCdo(): NotieSimpleCdo | undefined {
+    //
+    const { postService } = this.props;
+    const { post } = postService!;
+
+    const receiverId = post.patronKey?.keyString;
+    if (!receiverId) {
+      return;
+    }
+
+    console.log('notie 테스트');
+
+    const result = {
+      backLink: window.location.pathname,
+      title: NotieSpaceType.NOTICE,
+      receiverId,
+    };
+
+    console.dir(result);
+
+    return result;
+  }
+
   render() {
     //
     const { postService, skProfileService } = this.props;
@@ -238,6 +266,7 @@ class NoticeDetailContainer extends React.Component<Props, State> {
                 onOpenProfileModal={this.clickProfileEventHandler}
                 onRemoveCommentConfirm={this.onRemoveCommentConfirm}
                 onNoContentAlert={this.onNoContentAlert}
+                notieSimpleCdo={this.getNotieCdo()}
               />
             </div>
           </div>

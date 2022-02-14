@@ -1,4 +1,4 @@
-import { DomainEntity } from '@nara.platform/accent';
+import { DomainEntity, PatronKey } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
 import { IdName, NameValueList, DatePeriod } from 'shared/model';
 
@@ -42,6 +42,7 @@ class PostModel implements DomainEntity {
   commentFeedbackId: string = '';
   alarmInfo: AlarmInfoModel = new AlarmInfoModel();
   langSupports: LangSupport[] = [];
+  patronKey: PatronKey | undefined;
 
   constructor(post?: PostModel) {
     if (post) {
@@ -70,6 +71,7 @@ class PostModel implements DomainEntity {
         answer,
         period,
         alarmInfo,
+        patronKey: post.patronKey,
       });
 
       this.openState = post.openState || post.openState;
@@ -160,6 +162,7 @@ decorate(PostModel, {
   commentCount: observable,
   commentFeedbackId: observable,
   alarmInfo: observable,
+  patronKey: observable,
 });
 
 export default PostModel;
