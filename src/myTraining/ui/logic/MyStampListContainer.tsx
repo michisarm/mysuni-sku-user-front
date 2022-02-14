@@ -15,7 +15,7 @@ import { Button, Icon, Segment } from 'semantic-ui-react';
 import { getCollgeName } from 'shared/service/useCollege/useRequestCollege';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { Area } from 'tracker/model';
-import XLSX from 'xlsx';
+import { XLSX } from 'xlsx';
 import { LectureService } from '../../../lecture';
 import FilterBoxService from '../../../shared/present/logic/FilterBoxService';
 import { MyPageRouteParams } from '../../model/MyPageRouteParams';
@@ -66,13 +66,8 @@ function MyStampListContainer({
     sortMyLearningTableViews,
   } = lectureService!;
 
-  const {
-    conditions,
-    showResult,
-    filterCount,
-    openFilter,
-    setOpenFilter,
-  } = filterBoxService!;
+  const { conditions, showResult, filterCount, openFilter, setOpenFilter } =
+    filterBoxService!;
 
   const clearQdo = () => {
     const newCardQdo = new CardQdo();
@@ -137,9 +132,8 @@ function MyStampListContainer({
   };
 
   const downloadExcel = async () => {
-    const tableViews: CardForUserViewModel[] = await lectureService!.findMyLearningCardForExcel(
-      excelQdo()
-    );
+    const tableViews: CardForUserViewModel[] =
+      await lectureService!.findMyLearningCardForExcel(excelQdo());
     const lastIndex = tableViews.length;
     let xlsxList: MyXlsxList = [];
     const filename = 'MyPage_MyStamp';
