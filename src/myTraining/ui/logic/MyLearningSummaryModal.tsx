@@ -350,25 +350,14 @@ class MyLearningSummaryModal extends ReactComponent<Props, State, Injected> {
                                 )}
                                 )
                               </strong>
-                              {(menuControlAuth.useApl && (
-                                <span
-                                  dangerouslySetInnerHTML={{
-                                    __html: getPolyglotText(
-                                      `각 사에서 학습한 시간과 개인학습 <br />등록으로 인정받은 시간`,
-                                      'home-학이시-mch1'
-                                    ),
-                                  }}
-                                />
-                              )) || (
-                                <span
-                                  dangerouslySetInnerHTML={{
-                                    __html: getPolyglotText(
-                                      `사내과정 및 개인학습 등록으로 인정받은 시간`,
-                                      'home-학이시-mch2'
-                                    ),
-                                  }}
-                                />
-                              )}
+                              <span
+                                dangerouslySetInnerHTML={{
+                                  __html: getPolyglotText(
+                                    `사내과정 및 개인학습 등록으로 인정받은 시간`,
+                                    'home-학이시-mch3'
+                                  ),
+                                }}
+                              />
                             </label>
                             <span className="buri" />
                           </div>
