@@ -888,13 +888,13 @@ function escapeRegex(item: string, target: string): string {
       return splitTargetValue;
     } else {
       if (item.match(ESCAPE_REGEX)) {
-        return splitTargetValue.replace(new RegExp(item, 'gi'), (match) => {
+        return splitTargetValue.replace(new RegExp(item, 'i'), (match) => {
           return `<strong class="search_keyword">${match}</strong>`;
         });
       } else {
         console.log('regExpItem : ', regExpItem);
         return splitTargetValue.replace(
-          new RegExp(regExpItem, 'gi'),
+          new RegExp(regExpItem, 'i'),
           (match) => {
             return `<strong class="search_keyword">${match}</strong>`;
           }
