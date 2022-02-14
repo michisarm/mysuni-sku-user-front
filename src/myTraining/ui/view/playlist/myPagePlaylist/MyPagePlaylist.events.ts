@@ -20,6 +20,7 @@ export function playListItemClassName(playlistType: PlaylistType) {
       return 'like';
   }
 }
+
 export function playListItemType(playlistType: PlaylistType) {
   switch (playlistType) {
     case 'Recommended':
@@ -28,6 +29,17 @@ export function playListItemType(playlistType: PlaylistType) {
       return getPolyglotText('내가 만든', 'playlist-item-내가만든');
     case 'MadeByOthers':
       return getPolyglotText('내가 담은', 'playlist-item-내가담은');
+  }
+}
+
+export function playListItemTypeForProfileCard(playlistType: PlaylistType) {
+  switch (playlistType) {
+    case 'Recommended':
+      return getPolyglotText('추천', 'playlist-item-추천');
+    case 'MadeByMyself':
+      return getPolyglotText('생성', 'playlist-item-생성');
+    case 'MadeByOthers':
+      return getPolyglotText('담음', 'playlist-item-담음');
   }
 }
 
