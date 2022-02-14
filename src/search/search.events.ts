@@ -892,7 +892,6 @@ function escapeRegex(item: string, target: string): string {
           return `<strong class="search_keyword">${match}</strong>`;
         });
       } else {
-        console.log('regExpItem : ', regExpItem);
         return splitTargetValue.replace(
           new RegExp(regExpItem, 'i'),
           (match) => {
