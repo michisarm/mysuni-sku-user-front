@@ -4954,6 +4954,9 @@ i.icon.thumb-up::before {
 }
 
 /* 22-02-05 카테고리 상세 하단여백 수정 */
+#root section.content.community-cont {
+  padding-bottom:0;
+}
 .lms-paging-holder:last-child {
   margin-bottom:-16px;
   padding-bottom:0;
