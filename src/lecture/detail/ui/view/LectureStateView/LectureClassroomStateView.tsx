@@ -1,4 +1,4 @@
-import { reactAlert } from '@nara.platform/accent';
+import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import { find } from 'lodash';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Action, ActionType, Area } from 'tracker/model';
@@ -261,7 +261,14 @@ function SubmittedView(props: Pick<CanceledViewProps, 'cubeId' | 'cubeType'>) {
   }
 
   const onCancled = useCallback(() => {
-    cancleFromCubeId(cubeId, cubeType);
+    reactConfirm({
+      title: getPolyglotText('취소하기', 'CollageState-Classroom-취소하기'),
+      message: getPolyglotText(
+        '신청한 강의를 취소하시겠습니까?',
+        'CollageState-Classroom-취소Confirm'
+      ),
+      onOk: () => cancleFromCubeId(cubeId, cubeType),
+    });
   }, [cubeId, cubeType]);
 
   return (
@@ -301,7 +308,14 @@ function RejectedView(
   const { lectureClassroom, cubeId, cubeType } = props;
 
   const onCancled = useCallback(() => {
-    cancleFromCubeId(cubeId, cubeType);
+    reactConfirm({
+      title: getPolyglotText('취소하기', 'CollageState-Classroom-취소하기'),
+      message: getPolyglotText(
+        '신청한 강의를 취소하시겠습니까?',
+        'CollageState-Classroom-취소Confirm'
+      ),
+      onOk: () => cancleFromCubeId(cubeId, cubeType),
+    });
   }, [cubeId, cubeType]);
 
   // const ClassroomModalViewRef = useRef<ClassroomModalView>(null);
