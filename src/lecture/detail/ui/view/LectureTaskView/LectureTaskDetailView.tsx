@@ -1,30 +1,38 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { CommentList } from '@nara.drama/feedback';
-import { LectureTaskDetail } from 'lecture/detail/viewModel/LectureTaskDetail';
-import React, { Fragment, useCallback, useEffect, useRef } from 'react';
-import { useState } from 'react';
-import LectureTaskDetailContentHeaderView from './LectureTaskDetailContentHeaderView';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
-import { Button, Icon } from 'semantic-ui-react';
-import { useLectureTaskViewType } from '../../../service/useLectureTask/useLectureTaskViewType';
-import { useHistory } from 'react-router-dom';
-import {
-  getLectureParams,
-  useLectureParams,
-} from '../../../store/LectureParamsStore';
-import { SkProfileService } from '../../../../../profile/stores';
-import { getActiveCubeStructureItem } from '../../../utility/lectureStructureHelper';
-import { setPinByPostId } from '../../../../../lecture/detail/api/cubeApi';
 import { reactAlert, reactConfirm } from '@nara.platform/accent';
-import LectureState from '../../../viewModel/LectureState';
+import { Comment } from '@sku/skuniv-ui-comment';
+import {
+  NotieSimpleCdo,
+  NotieSpaceType,
+} from '@sku/skuniv-ui-comment/lib/api.models';
+import { LectureTaskDetail } from 'lecture/detail/viewModel/LectureTaskDetail';
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import { useHistory } from 'react-router-dom';
+import { Button } from 'semantic-ui-react';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { findCommunityProfile } from '../../../../../community/api/profileApi';
 import CommunityProfileModal from '../../../../../community/ui/view/CommunityProfileModal';
+import { setPinByPostId } from '../../../../../lecture/detail/api/cubeApi';
+import { SkProfileService } from '../../../../../profile/stores';
 import {
   getPolyglotText,
   PolyglotText,
 } from '../../../../../shared/ui/logic/PolyglotText';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
-import { Comment } from '@sku/skuniv-ui-comment';
+import { useLectureTaskViewType } from '../../../service/useLectureTask/useLectureTaskViewType';
+import {
+  getLectureParams,
+  useLectureParams,
+} from '../../../store/LectureParamsStore';
+import { getActiveCubeStructureItem } from '../../../utility/lectureStructureHelper';
+import LectureState from '../../../viewModel/LectureState';
+import LectureTaskDetailContentHeaderView from './LectureTaskDetailContentHeaderView';
 
 interface LectureTaskDetailViewProps {
   boardId: string;
@@ -230,6 +238,30 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> =
       SkProfileService.instance.skProfile.id ===
       taskDetail?.writerPatronKeyString;
 
+    // 댓글, 좋아요, 핀고정 알림 발송
+    const getNotieCdo = (): NotieSimpleCdo | undefined => {
+      //
+      const receiverId = taskDetail?.writerPatronKeyString;
+      console.log('test');
+      console.dir(receiverId);
+
+      if (!receiverId) {
+        return;
+      }
+
+      console.log('notie 테스트');
+
+      const result = {
+        backLink: window.location.pathname,
+        title: NotieSpaceType.NOTICE,
+        receiverId,
+      };
+
+      console.dir(result);
+
+      return result;
+    };
+
     return (
       <Fragment>
         {taskDetail && (
@@ -365,6 +397,7 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> =
                   onOpenProfileModal={clickProfileEventHandler}
                   onRemoveCommentConfirm={onRemoveCommentConfirm}
                   onNoContentAlert={onNoContentAlert}
+                  notieSimpleCdo={getNotieCdo()}
                 />
               </div>
             )}

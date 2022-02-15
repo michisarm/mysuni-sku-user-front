@@ -1,11 +1,15 @@
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
-import { CommentList } from '@nara.drama/feedback';
 import {
   mobxHelper,
   reactAlert,
   reactAutobind,
   reactConfirm,
 } from '@nara.platform/accent';
+import { Comment } from '@sku/skuniv-ui-comment';
+import {
+  NotieSimpleCdo,
+  NotieSpaceType,
+} from '@sku/skuniv-ui-comment/lib/api.models';
 import { findCommunityProfile } from 'community/api/profileApi';
 import CommunityProfileModal from 'community/ui/view/CommunityProfileModal';
 import { inject, observer } from 'mobx-react';
@@ -13,6 +17,7 @@ import { SkProfileService } from 'profile/stores';
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Button, Icon, Segment } from 'semantic-ui-react';
+import { getDenizenIdFromAudienceId } from 'shared/helper/keyStringHelper';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import {
   getPolyglotText,
@@ -21,11 +26,6 @@ import {
 import routePaths from '../../routePaths';
 import { PostService } from '../../stores';
 import BoardDetailContentHeaderView from '../view/BoardDetailContentHeaderView';
-import { Comment } from '@sku/skuniv-ui-comment';
-import {
-  NotieSimpleCdo,
-  NotieSpaceType,
-} from '@sku/skuniv-ui-comment/lib/api.models';
 
 interface Props extends RouteComponentProps<{ postId: string }> {
   postService?: PostService;
@@ -162,7 +162,8 @@ class NoticeDetailContainer extends React.Component<Props, State> {
     const { postService } = this.props;
     const { post } = postService!;
 
-    const receiverId = post.patronKey?.keyString;
+    // audienceId --> denizenId
+    const receiverId = getDenizenIdFromAudienceId(post.patronKey?.keyString);
     if (!receiverId) {
       return;
     }
