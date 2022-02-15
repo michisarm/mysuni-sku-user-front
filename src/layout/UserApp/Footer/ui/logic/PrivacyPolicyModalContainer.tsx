@@ -3,10 +3,7 @@ import { Modal, Button, Select } from 'semantic-ui-react';
 import { reactAutobind } from '@nara.platform/accent';
 import depot from '@nara.drama/depot';
 import PrivacyPolicyView from '../view/PrivacyPolicyView';
-import {
-  getPolyglotText,
-  PolyglotText,
-} from '../../../../../shared/ui/logic/PolyglotText';
+import { getPolyglotText, PolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
 
 interface Props {
   trigger: React.ReactNode;
@@ -27,14 +24,6 @@ export default class PrivacyPolicyModalContainer extends Component<
   state = {
     open: false,
     privacyPolicyOption: [
-      {
-        key: '20220208',
-        value: '20220208',
-        text: getPolyglotText(
-          '공고일자 : 2022 년 2월 8일',
-          'home-개정얼-공고4'
-        ),
-      },
       {
         key: '20210614',
         value: '20210614',
@@ -60,11 +49,11 @@ export default class PrivacyPolicyModalContainer extends Component<
         ),
       },
     ],
-    policyVer: '20220208',
+    policyVer: '20210614',
   };
 
   componentWillUnmount(): void {
-    this.setState({ open: false, policyVer: '20220208' });
+    this.setState({ open: false, policyVer: '20210614' });
   }
 
   show() {
@@ -72,7 +61,7 @@ export default class PrivacyPolicyModalContainer extends Component<
   }
 
   close() {
-    this.setState({ open: false, policyVer: '20220208' });
+    this.setState({ open: false, policyVer: '20210614' });
   }
 
   async onDownloadPrivacyPolicy() {
@@ -104,10 +93,7 @@ export default class PrivacyPolicyModalContainer extends Component<
       >
         <Modal.Header>
           <div className="modal-header">
-            <PolyglotText
-              defaultString="개인정보 처리방침"
-              id="home-개정얼-타이틀"
-            />
+            <PolyglotText defaultString="개인정보 처리방침" id="home-개정얼-타이틀" />
             <Select
               className="small-border select-right"
               placeholder={getPolyglotText('선택하세요', 'home-개정얼-선택')}
@@ -117,10 +103,7 @@ export default class PrivacyPolicyModalContainer extends Component<
             />
           </div>
           <div className="modal-header-li">
-            <PolyglotText
-              defaultString="※ 이전버전의 공고사항은 상단의 공고일자를 변경하여 확인 부탁드립니다."
-              id="home-개정얼-상세설명"
-            />
+            <PolyglotText defaultString="※ 이전버전의 공고사항은 상단의 공고일자를 변경하여 확인 부탁드립니다." id="home-개정얼-상세설명" />
           </div>
         </Modal.Header>
         <Modal.Content>
