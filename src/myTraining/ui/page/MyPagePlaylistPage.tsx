@@ -232,6 +232,7 @@ function MyPagePlaylistPage() {
               ) : (
                 <NoPlaylistItem />
               )}
+              {/*<NoPlaylistItem />*/}
             </div>
           </div>
         </Segment>

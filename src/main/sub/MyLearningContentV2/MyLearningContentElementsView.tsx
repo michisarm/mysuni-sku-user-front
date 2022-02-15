@@ -71,7 +71,7 @@ export const MainBannerWrapper: FunctionComponent<MainBannerProps> = ({
   children,
 }) => (
   <div className="visual-banner-wrap" data-area={Area.MAIN_BANNER}>
-    <Segment className="full wide">
+    <Segment className="full">
       <div className="swiper-section type4">{children}</div>
     </Segment>
   </div>
