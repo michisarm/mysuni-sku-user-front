@@ -4964,3 +4964,6 @@ i.icon.thumb-up::before {
   margin-bottom:-16px;
   padding-bottom:0;
 }
+i.icon.total-time16:before {
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-total-time-16-px.svg') 0 0 no-repeat !important;
+}
