@@ -641,6 +641,15 @@ a.button.ui.btn-badge-go {
 }
 
 /* Learning, Mypage */
+/* 22-02-15 배지리스트 하단여백 제거 */
+.ui.segment.full .top-guide-title + .badge-list-type {
+  padding-bottom:0;
+  margin-bottom:-3.75rem;
+} 
+.ui.segment.full .top-guide-title + .badge-list-type.list-wrapper {
+  padding-bottom:0;
+  margin-bottom:-3.125rem;
+} 
 .ui.segment.full .top-guide-title .ui.button.excel-down {
   margin-left: 0;
 }
@@ -4942,4 +4951,13 @@ i.icon.thumb-up::before {
 }
 .main-filter {
   border-color: #ddd;
+}
+
+/* 22-02-05 카테고리 상세 하단여백 수정 */
+#root section.content {
+  padding-bottom:0;
+}
+.lms-paging-holder:last-child {
+  margin-bottom:-16px;
+  padding-bottom:0;
 }
