@@ -166,8 +166,6 @@ const MainBanner: React.FC<Props> = (Props) => {
     name: string,
     index: number
   ) => {
-    // console.log('hi', index);
-
     // react-ga event
     ReactGA.event({
       category: 'Banner',
