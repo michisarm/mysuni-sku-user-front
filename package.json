@@ -67,11 +67,7 @@
     "srt-parser-2": "^1.1.2",
     "swiper": "^5.2.1",
     "typescript": "3.7.3",
-<<<<<<< HEAD
-    "xlsx": "0.18.0"
-=======
     "xlsx": "0.17.5"
->>>>>>> release
   },
   "proxy": "https://stg.mysuni.sk.com",
   "homepage": "https://mysuni.sk.com/suni-main/",
