@@ -19,7 +19,7 @@ export interface CardContents {
   // admin 에서만 사용
   tests: Test[];
   description: PolyglotString;
-
+  patronKey: { keyString: string };
   relatedCards: RelatedCard[];
   cardOperator: Member;
   reportFileBox: ReportFileBox;

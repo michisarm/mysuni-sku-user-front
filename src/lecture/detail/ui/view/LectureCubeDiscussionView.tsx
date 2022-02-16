@@ -25,9 +25,12 @@ import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { Comment } from '@sku/skuniv-ui-comment';
 import {
+  getLectureCardSummary,
   getLectureComment,
   setLectureComment,
 } from 'lecture/detail/store/LectureOverviewStore';
+import { getDenizenIdFromAudienceId } from '../../utility/getDenizenIdFromAudienceId';
+import { getLectureDiscussionPrivateComment } from 'lecture/detail/store/LectureStateStore';
 import {
   NotieSimpleCdo,
   NotieSpaceType,
@@ -71,18 +74,15 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
     );
     const [profileOpen, setProfileOpen] = useState<boolean>(false);
     const [profileInfo, setProfileInfo] = useState<profileParams>();
-
-    const { companyName, departmentName, name, email } = useMemo(() => {
+    const [isPrivateDiscussionAuth, setIsPrivateDiscussionAuth] =
+      useState<boolean>(false);
+    const cardInfo = getLectureCardSummary();
+    const isPrivateComment = getLectureDiscussionPrivateComment();
+    const { companyName, departmentName, name, email, id } = useMemo(() => {
       const {
-        skProfile: {
-          companyName,
-          departmentName,
-          name,
-          email,
-          // member: { company, department, email, name },
-        },
+        skProfile: { companyName, departmentName, name, email, id },
       } = SkProfileService.instance;
-      return { companyName, departmentName, name, email };
+      return { companyName, departmentName, name, email, id };
     }, []);
 
     useEffect(() => {
@@ -99,6 +99,18 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
             lectureState.cubeDetail.cubeMaterial &&
             lectureState.cubeDetail.cubeMaterial.cubeDiscussion
           ) {
+            const regiserAndOperator = [
+              cardInfo?.operator.id,
+              getDenizenIdFromAudienceId(cardInfo?.patronKey.keyString),
+              getDenizenIdFromAudienceId(
+                lectureState.cubeDetail.cubeContents.patronKey.keyString
+              ),
+              lectureState.cubeDetail.cubeContents.operator.keyString,
+            ];
+            const isHasAuth = regiserAndOperator.some((name) => name === id);
+
+            setIsPrivateDiscussionAuth(isHasAuth);
+
             setCubeCommentCount(
               lectureState.cubeDetail.cubeMaterial.cubeDiscussion
                 .completionCondition.commentCount
@@ -114,9 +126,7 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
             setCubeRelatedUrlList(
               lectureState.cubeDetail.cubeMaterial.cubeDiscussion.relatedUrlList
             );
-            setPrivateComment(
-              lectureState.cubeDetail.cubeMaterial.cubeDiscussion.privateComment
-            );
+            setPrivateComment(isPrivateComment || false);
           }
 
           //  관련자료 Data
@@ -568,6 +578,9 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
                 onNoContentAlert={onNoContentAlert}
                 onBeforeRegisterComment={registerStudent}
                 onAfterRegisterComment={onRefresh}
+                isDiscussion={true}
+                privateComment={privateComment}
+                isPrivateDiscussionAuth={isPrivateDiscussionAuth}
                 notieSimpleCdo={getNotieCdo()}
               />
             </div>
