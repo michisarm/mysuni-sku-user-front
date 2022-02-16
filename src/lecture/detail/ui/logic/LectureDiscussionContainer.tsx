@@ -1,30 +1,33 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { CommentList } from '@nara.drama/feedback';
-import moment from 'moment';
-import React, { useCallback, useEffect, useState } from 'react';
-import { Checkbox, Icon, Image } from 'semantic-ui-react';
-import SkProfileService from '../../../../profile/present/logic/SkProfileService';
-import { useLectureDiscussion } from '../../store/LectureDiscussionStore';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
-import { countByFeedbackId } from 'lecture/detail/api/feedbackApi';
-import {
-  useRequestLectureDiscussion,
-  useRequestLectureFeedbackContent,
-} from '../../service/useLectureDiscussion/useRequestLectureDiscussion';
 import { reactAlert, reactConfirm } from '@nara.platform/accent';
-import CommunityProfileModal from '../../../../community/ui/view/CommunityProfileModal';
-import { findCommunityProfile } from '../../../../layout/UserApp/api/ProfileAPI';
-import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
-import { relatedUrlVisiable } from 'lecture/detail/viewModel/LectureFeedbackContent';
-import { useLectureFeedbackContent } from 'lecture/detail/store/LectureFeedbackStore';
-import { useParams } from 'react-router-dom';
-import LectureParams from 'lecture/detail/viewModel/LectureParams';
-import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import { Comment } from '@sku/skuniv-ui-comment';
+import {
+  NotieSimpleCdo,
+  NotieSpaceType,
+} from '@sku/skuniv-ui-comment/lib/api.models';
+import { countByFeedbackId } from 'lecture/detail/api/feedbackApi';
+import { useLectureFeedbackContent } from 'lecture/detail/store/LectureFeedbackStore';
 import {
   getLectureComment,
   setLectureComment,
 } from 'lecture/detail/store/LectureOverviewStore';
+import { relatedUrlVisiable } from 'lecture/detail/viewModel/LectureFeedbackContent';
+import LectureParams from 'lecture/detail/viewModel/LectureParams';
+import moment from 'moment';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { Checkbox, Icon, Image } from 'semantic-ui-react';
+import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
+import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
+import CommunityProfileModal from '../../../../community/ui/view/CommunityProfileModal';
+import { findCommunityProfile } from '../../../../layout/UserApp/api/ProfileAPI';
+import SkProfileService from '../../../../profile/present/logic/SkProfileService';
+import {
+  useRequestLectureDiscussion,
+  useRequestLectureFeedbackContent,
+} from '../../service/useLectureDiscussion/useRequestLectureDiscussion';
+import { useLectureDiscussion } from '../../store/LectureDiscussionStore';
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
@@ -214,6 +217,21 @@ export default function LectureDiscussionContainer() {
     });
   };
 
+  // 댓글, 좋아요, 핀고정 알림 발송
+  const getNotieCdo = (): NotieSimpleCdo | undefined => {
+    //
+    console.log('notie 테스트');
+
+    const result = {
+      backLink: window.location.pathname,
+      title: NotieSpaceType.NOTICE,
+    };
+
+    console.dir(result);
+
+    return result;
+  };
+
   return (
     <>
       {lectureDiscussion && lectureFeedbackContent !== undefined && (
@@ -396,6 +414,7 @@ export default function LectureDiscussionContainer() {
                   }}
                   onRemoveCommentConfirm={onRemoveCommentConfirm}
                   onNoContentAlert={onNoContentAlert}
+                  notieSimpleCdo={getNotieCdo()}
                 />
               </div>
               <CommunityProfileModal

@@ -1,9 +1,13 @@
-import { Accordion, Button, Icon } from 'semantic-ui-react';
+import { Accordion, Button, Icon, Image } from 'semantic-ui-react';
 import * as React from 'react';
 import { PlaylistDetailSummary } from '../../../../../playlist/data/models/PlaylistDetailSummary';
 import { PlaylistInCard } from '../../present/logic/PlaylistStore';
-import { Simulate } from 'react-dom/test-utils';
 import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
+import ProfileImage from '../../../../../shared/components/Image/Image';
+import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
+import moment from 'moment';
+import { playListItemTypeForProfileCard } from '../../../../../myTraining/ui/view/playlist/myPagePlaylist/MyPagePlaylist.events';
+import { SkProfileService } from '../../../../../profile/stores';
 
 interface Props {
   active: boolean;
@@ -31,6 +35,35 @@ function getHourMinuteFormat(hour: number, minute: number) {
   return <span className="time">{time}</span>;
 }
 
+function getTimeAndStatFormat(playlistSummary: PlaylistDetailSummary) {
+  //
+  const language = SkProfileService.instance.skProfile.language;
+
+  if (language === 'English') {
+    return (
+      <>
+        <span className="stat">
+          {playListItemTypeForProfileCard(playlistSummary.type)}
+        </span>
+        <span className="date">
+          {moment(playlistSummary.registeredTime).format('YYYY-MM-DD')}
+        </span>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <span className="date">
+          {moment(playlistSummary.registeredTime).format('YYYY-MM-DD')}
+        </span>
+        <span className="stat">
+          {playListItemTypeForProfileCard(playlistSummary.type)}
+        </span>
+      </>
+    );
+  }
+}
+
 function UserProfileInfoTabPlaylistView(props: Props) {
   //
   const { active, index, playlistSummary, playlistInCards } = props;
@@ -41,6 +74,11 @@ function UserProfileInfoTabPlaylistView(props: Props) {
     onClickLike,
   } = props;
 
+  const profileName =
+    playlistSummary.displayNicknameFirst === true
+      ? playlistSummary.nickname
+      : parsePolyglotString(playlistSummary.name);
+
   return (
     <div className="mylist-acc-item" key={playlistSummary.id}>
       <Accordion.Title active={active}>
@@ -49,23 +87,41 @@ function UserProfileInfoTabPlaylistView(props: Props) {
             <strong>{playlistSummary.title}</strong>
           </div>
           <div className="acc-meta">
-            <Button
-              className="like"
-              onClick={() =>
-                onClickLike(
-                  playlistSummary.likeFeedbackId,
-                  playlistSummary.myLike
-                )
-              }
-            >
-              <Icon
-                aria-hidden="true"
-                className={
-                  playlistSummary.myLike ? 'heart16' : 'heart16 active'
-                }
-              />
-              {playlistSummary.likeCount}
-            </Button>
+            {/*<Button*/}
+            {/*  className="like"*/}
+            {/*  onClick={() =>*/}
+            {/*    onClickLike(*/}
+            {/*      playlistSummary.likeFeedbackId,*/}
+            {/*      playlistSummary.myLike*/}
+            {/*    )*/}
+            {/*  }*/}
+            {/*>*/}
+            {/*  <Icon*/}
+            {/*    aria-hidden="true"*/}
+            {/*    className={*/}
+            {/*      playlistSummary.myLike ? 'heart16' : 'heart16 active'*/}
+            {/*    }*/}
+            {/*  />*/}
+            {/*  {playlistSummary.likeCount}*/}
+            {/*</Button>*/}
+
+            <div className="ui profile">
+              <div className="pic s36">
+                <ProfileImage
+                  className="ui image"
+                  src={playlistSummary.photoImagePath}
+                  alt=""
+                />
+              </div>
+              <div className="prf-info">
+                <span className="prf-name">{profileName}</span>
+                <span className="prf-date">
+                  {getTimeAndStatFormat(playlistSummary)}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="acc-cnt">
             <Button
               className="add-black"
               onClick={() => onClickRegisterPlaylist(playlistSummary.id)}
@@ -73,8 +129,6 @@ function UserProfileInfoTabPlaylistView(props: Props) {
               <Icon aria-hidden="true" className="add-black16" />
               {getPolyglotText(`Playlist 담기`, 'profilecard-playlist-add')}
             </Button>
-          </div>
-          <div className="acc-cnt">
             <Button
               className="acc-updown"
               onClick={() => {
@@ -110,7 +164,7 @@ function UserProfileInfoTabPlaylistView(props: Props) {
                 //
 
                 return (
-                  <li className="item">
+                  <li className="item" key={card.cardId}>
                     <a
                       href=""
                       className="inner"

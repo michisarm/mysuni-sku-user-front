@@ -54,6 +54,9 @@ body #root {
 .recommend-detail .channel-of-interest {
   border: #ddd 1px solid;
 }
+.recommend-detail .channel-of-interest {
+  padding: 19px 0 19px 0;
+}
 .ma-title,
 .white-title {
   border-bottom: #ddd 1px solid;

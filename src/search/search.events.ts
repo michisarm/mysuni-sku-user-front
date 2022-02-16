@@ -877,8 +877,6 @@ export function getTitleHtmlSearchKeyword(title: string) {
 }
 
 function escapeRegex(item: string, target: string): string {
-  //
-
   const ESCAPE_REGEX = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi;
   const regExpItem = item.replace(ESCAPE_REGEX, '');
   let replacedText = '';
@@ -890,14 +888,15 @@ function escapeRegex(item: string, target: string): string {
       return splitTargetValue;
     } else {
       if (item.match(ESCAPE_REGEX)) {
-        return splitTargetValue.replace(
-          item,
-          `<strong class="search_keyword">${item}</strong>`
-        );
+        return splitTargetValue.replace(new RegExp(item, 'i'), (match) => {
+          return `<strong class="search_keyword">${match}</strong>`;
+        });
       } else {
         return splitTargetValue.replace(
-          new RegExp(regExpItem),
-          `<strong class="search_keyword">${regExpItem}</strong>`
+          new RegExp(regExpItem, 'i'),
+          (match) => {
+            return `<strong class="search_keyword">${match}</strong>`;
+          }
         );
       }
     }

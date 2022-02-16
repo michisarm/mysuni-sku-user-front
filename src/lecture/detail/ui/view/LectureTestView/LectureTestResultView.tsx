@@ -14,6 +14,10 @@ import LectureTestPaperModalView from './LectureTestPaperModalView';
 import { Area } from 'tracker/model';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import _ from 'lodash';
+import {
+  NotieSimpleCdo,
+  NotieSpaceType,
+} from '@sku/skuniv-ui-comment/lib/api.models';
 
 interface LectureTestResultViewProps {
   testItem: LectureTestItem;
@@ -391,9 +395,7 @@ const LectureTestResultView: React.FC<LectureTestResultViewProps> =
                     </div>
                   </div>
                   <div className="course-info-ing">
-                    <img
-                      src={`${process.env.PUBLIC_URL}/images/all/icon-test-wait.png`}
-                    />
+                    <img src="https://image.mysuni.sk.com/suni-asset/public/images/all/icon-test-wait.png" />
                     <h2
                       className="test-delay-h2"
                       dangerouslySetInnerHTML={{

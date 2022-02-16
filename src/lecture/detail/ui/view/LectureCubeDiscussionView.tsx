@@ -31,6 +31,10 @@ import {
 } from 'lecture/detail/store/LectureOverviewStore';
 import { getDenizenIdFromAudienceId } from '../../utility/getDenizenIdFromAudienceId';
 import { getLectureDiscussionPrivateComment } from 'lecture/detail/store/LectureStateStore';
+import {
+  NotieSimpleCdo,
+  NotieSpaceType,
+} from '@sku/skuniv-ui-comment/lib/api.models';
 
 interface LectureCubeDiscussionViewProps {
   lectureState: LectureState;
@@ -270,6 +274,21 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
           onCancel: () => resolve(false),
         });
       });
+    };
+
+    // 댓글, 좋아요, 핀고정 알림 발송
+    const getNotieCdo = (): NotieSimpleCdo | undefined => {
+      //
+      console.log('notie 테스트');
+
+      const result = {
+        backLink: window.location.pathname,
+        title: NotieSpaceType.NOTICE,
+      };
+
+      console.dir(result);
+
+      return result;
     };
 
     return (
@@ -562,6 +581,7 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
                 isDiscussion={true}
                 privateComment={privateComment}
                 isPrivateDiscussionAuth={isPrivateDiscussionAuth}
+                notieSimpleCdo={getNotieCdo()}
               />
             </div>
             <CommunityProfileModal

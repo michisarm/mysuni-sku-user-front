@@ -1,11 +1,15 @@
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
-import { CommentList } from '@nara.drama/feedback';
 import {
   mobxHelper,
   reactAlert,
   reactAutobind,
   reactConfirm,
 } from '@nara.platform/accent';
+import { Comment } from '@sku/skuniv-ui-comment';
+import {
+  NotieSimpleCdo,
+  NotieSpaceType,
+} from '@sku/skuniv-ui-comment/lib/api.models';
 import { findCommunityProfile } from 'community/api/profileApi';
 import CommunityProfileModal from 'community/ui/view/CommunityProfileModal';
 import { inject, observer } from 'mobx-react';
@@ -13,6 +17,7 @@ import { SkProfileService } from 'profile/stores';
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Button, Icon, Segment } from 'semantic-ui-react';
+import { getDenizenIdFromAudienceId } from 'shared/helper/keyStringHelper';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import {
   getPolyglotText,
@@ -21,7 +26,6 @@ import {
 import routePaths from '../../routePaths';
 import { PostService } from '../../stores';
 import BoardDetailContentHeaderView from '../view/BoardDetailContentHeaderView';
-import { Comment } from '@sku/skuniv-ui-comment';
 
 interface Props extends RouteComponentProps<{ postId: string }> {
   postService?: PostService;
@@ -152,6 +156,31 @@ class NoticeDetailContainer extends React.Component<Props, State> {
     });
   }
 
+  // 댓글, 좋아요, 핀고정 알림 발송
+  getNotieCdo(): NotieSimpleCdo | undefined {
+    //
+    const { postService } = this.props;
+    const { post } = postService!;
+
+    // audienceId --> denizenId
+    const receiverId = getDenizenIdFromAudienceId(post.patronKey?.keyString);
+    if (!receiverId) {
+      return;
+    }
+
+    console.log('notie 테스트');
+
+    const result = {
+      backLink: window.location.pathname,
+      title: NotieSpaceType.NOTICE,
+      receiverId,
+    };
+
+    console.dir(result);
+
+    return result;
+  }
+
   render() {
     //
     const { postService, skProfileService } = this.props;
@@ -218,15 +247,6 @@ class NoticeDetailContainer extends React.Component<Props, State> {
 
         <Segment className="full">
           <div className="comment-area">
-            {/* <CommentList
-              feedbackId={(post && post.commentFeedbackId) || ''}
-              getFeedbackId={this.getFeedbackId}
-              hideCamera
-              name={parsePolyglotString(skProfile.name)}
-              email={skProfile.email}
-              companyName={parsePolyglotString(skProfile.companyName)}
-              departmentName={parsePolyglotString(skProfile.departmentName)}
-            /> */}
             <div className="contents comment">
               <Comment
                 feedbackId={(post && post.commentFeedbackId) || ''}
@@ -238,6 +258,7 @@ class NoticeDetailContainer extends React.Component<Props, State> {
                 onOpenProfileModal={this.clickProfileEventHandler}
                 onRemoveCommentConfirm={this.onRemoveCommentConfirm}
                 onNoContentAlert={this.onNoContentAlert}
+                notieSimpleCdo={this.getNotieCdo()}
               />
             </div>
           </div>

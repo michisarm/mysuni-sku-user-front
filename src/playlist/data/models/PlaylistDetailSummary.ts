@@ -12,6 +12,7 @@ export interface PlaylistDetailSummary {
   };
   nickname: string;
   photoImagePath: string;
+  registeredTime: number;
   thumbImagePath: string;
   title: string;
   type: PlaylistType;
