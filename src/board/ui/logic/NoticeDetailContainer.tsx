@@ -247,15 +247,6 @@ class NoticeDetailContainer extends React.Component<Props, State> {
 
         <Segment className="full">
           <div className="comment-area">
-            {/* <CommentList
-              feedbackId={(post && post.commentFeedbackId) || ''}
-              getFeedbackId={this.getFeedbackId}
-              hideCamera
-              name={parsePolyglotString(skProfile.name)}
-              email={skProfile.email}
-              companyName={parsePolyglotString(skProfile.companyName)}
-              departmentName={parsePolyglotString(skProfile.departmentName)}
-            /> */}
             <div className="contents comment">
               <Comment
                 feedbackId={(post && post.commentFeedbackId) || ''}
