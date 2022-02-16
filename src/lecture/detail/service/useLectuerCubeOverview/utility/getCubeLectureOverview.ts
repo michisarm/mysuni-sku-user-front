@@ -1,6 +1,5 @@
 import LectureDescription from 'lecture/detail/viewModel/LectureOverview/LectureDescription';
 import { timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
-import { findInstructorCache } from '../../../../../expert/present/apiclient/InstructorApi';
 import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
 import { CubeDetail } from '../../../../model/CubeDetail';
 import { getDefaultLang } from '../../../../model/LangSupport';
@@ -33,7 +32,6 @@ import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
 import LectureSubcategory from '../../../viewModel/LectureOverview/LectureSubcategory';
 import LectureTags from '../../../viewModel/LectureOverview/LectureTags';
 import { findInstructorWithIdentityCache } from 'expert/apis/instructorApi';
-import { Instructor } from 'expert/model/Instructor';
 import { SkProfileService } from '../../../../../profile/stores';
 
 function getEmpty(text?: string) {
@@ -66,6 +64,7 @@ async function getLectureSummary(
     difficultyLevel,
     learningTime,
     operator: {
+      id: operator?.id || '',
       email: operator?.email || '',
       name: parsePolyglotString(operator?.name, getDefaultLang(langSupports)),
       companyName: parsePolyglotString(

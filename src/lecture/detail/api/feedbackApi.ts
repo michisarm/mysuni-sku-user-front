@@ -1,3 +1,5 @@
+import { AxiosReturn } from 'shared/api/AxiosReturn';
+import { getAxios } from 'shared/api/Axios';
 import { axiosApi } from '@nara.platform/accent';
 
 import CommentCountRdo from '../model/CommentCountRdo';
@@ -33,4 +35,12 @@ export function findFeedbackMenu(
   return axiosApi
     .get<FeedbackContent>(url)
     .then((response) => response && response.data);
+}
+
+export function findComment(feedbackId: string) {
+  const axios = getAxios();
+  const url = `${BASE_URL}/feedback/${feedbackId}/comment`;
+  return axios
+    .get<{ config: { privateComment: boolean } }>(url)
+    .then(AxiosReturn);
 }
