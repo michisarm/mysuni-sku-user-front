@@ -2,12 +2,12 @@ import { Accordion, Button, Icon, Image } from 'semantic-ui-react';
 import * as React from 'react';
 import { PlaylistDetailSummary } from '../../../../../playlist/data/models/PlaylistDetailSummary';
 import { PlaylistInCard } from '../../present/logic/PlaylistStore';
-import { Simulate } from 'react-dom/test-utils';
 import { getPolyglotText } from '../../../../../shared/ui/logic/PolyglotText';
-import DefaultImg from '../../../../../style/media/img-profile-80-px.png';
-import ProfileImagePath from '../../../../../shared/components/Image/ProfileImagePath';
 import ProfileImage from '../../../../../shared/components/Image/Image';
 import { parsePolyglotString } from '../../../../../shared/viewmodel/PolyglotString';
+import moment from 'moment';
+import { playListItemTypeForProfileCard } from '../../../../../myTraining/ui/view/playlist/myPagePlaylist/MyPagePlaylist.events';
+import { SkProfileService } from '../../../../../profile/stores';
 
 interface Props {
   active: boolean;
@@ -35,6 +35,35 @@ function getHourMinuteFormat(hour: number, minute: number) {
   return <span className="time">{time}</span>;
 }
 
+function getTimeAndStatFormat(playlistSummary: PlaylistDetailSummary) {
+  //
+  const language = SkProfileService.instance.skProfile.language;
+
+  if (language === 'English') {
+    return (
+      <>
+        <span className="stat">
+          {playListItemTypeForProfileCard(playlistSummary.type)}
+        </span>
+        <span className="date">
+          {moment(playlistSummary.registeredTime).format('YYYY-MM-DD')}
+        </span>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <span className="date">
+          {moment(playlistSummary.registeredTime).format('YYYY-MM-DD')}
+        </span>
+        <span className="stat">
+          {playListItemTypeForProfileCard(playlistSummary.type)}
+        </span>
+      </>
+    );
+  }
+}
+
 function UserProfileInfoTabPlaylistView(props: Props) {
   //
   const { active, index, playlistSummary, playlistInCards } = props;
@@ -44,6 +73,11 @@ function UserProfileInfoTabPlaylistView(props: Props) {
     onClickRegisterPlaylist,
     onClickLike,
   } = props;
+
+  const profileName =
+    playlistSummary.displayNicknameFirst === true
+      ? playlistSummary.nickname
+      : parsePolyglotString(playlistSummary.name);
 
   return (
     <div className="mylist-acc-item" key={playlistSummary.id}>
@@ -80,13 +114,9 @@ function UserProfileInfoTabPlaylistView(props: Props) {
                 />
               </div>
               <div className="prf-info">
-                <span className="prf-name">
-                  {parsePolyglotString(playlistSummary.name)}
-                </span>
+                <span className="prf-name">{profileName}</span>
                 <span className="prf-date">
-                  {/*TODO: date*/}
-                  <span className="date">playlistSummary.date</span>
-                  <div className="stat">{playlistSummary.type}</div>
+                  {getTimeAndStatFormat(playlistSummary)}
                 </span>
               </div>
             </div>
@@ -134,7 +164,7 @@ function UserProfileInfoTabPlaylistView(props: Props) {
                 //
 
                 return (
-                  <li className="item">
+                  <li className="item" key={card.cardId}>
                     <a
                       href=""
                       className="inner"
