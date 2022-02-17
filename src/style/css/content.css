@@ -483,6 +483,12 @@ a.button.ui.btn-badge-go {
   border-bottom: 1px solid #00bfae;
 }
 
+.profile-modal-new .right-side .ui.menu .item:first-child:last-child {
+  width:33.3%;
+  flex:none;
+  margin-right:auto;
+}
+
 .profile-modal-new .list-wrapper .top-line span {
   color: #444;
   font-size: 1rem;
@@ -645,11 +651,11 @@ a.button.ui.btn-badge-go {
 .ui.segment.full .top-guide-title + .badge-list-type {
   padding-bottom:0;
   margin-bottom:-3.75rem;
-} 
+}
 .ui.segment.full .top-guide-title + .badge-list-type.list-wrapper {
   padding-bottom:0;
   margin-bottom:-3.125rem;
-} 
+}
 .ui.segment.full .top-guide-title .ui.button.excel-down {
   margin-left: 0;
 }
@@ -4467,7 +4473,7 @@ i.icon.plus.round16:before {
   font-size: 12px;
   font-weight: 700;
   text-align: center;
-  overflow:hidden; 
+  overflow:hidden;
   white-space:normal;
   word-wrap:break-word;
   display:-webkit-box;
