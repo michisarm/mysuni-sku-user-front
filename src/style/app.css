@@ -77,9 +77,10 @@ body.msie #root section.content .tab-menu-inner .ui.menu .item {
     top: -1px;
     left: 0;
   }
+  /* 22-02-22 관심채널 개선
   .ui.accordion.channel .title i::before {
     height: 1.7rem;
-  }
+  } */
 }
 
 /* 20200330 */
@@ -824,6 +825,9 @@ body.msie
 }
 .ui.cards.card-item-wrap .card-item {
   margin: 13px;
+}
+.ui.cards.card-item-wrap{
+  margin : -13px 0 0 !important
 }
 .ui.cards.card-item-wrap .card-item:nth-child(4n) {
   margin-right: 0;

@@ -266,6 +266,7 @@ body #root {
   background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/ct-arrow.svg')
     0 0 no-repeat;
 }
+/* 22-02-22 관심채널 개선
 .channel-change div.table-css .head .cell,
 .channel-change div.table-css .cell:nth-of-type(2) {
   border-color: #ddd;
@@ -283,7 +284,7 @@ body #root {
   background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-card-close.svg')
     0 0 no-repeat !important;
   background-size: 26px 26px !important;
-}
+} */
 .mylearning-list-wrap table.ml-02-02 td.title .ellipsis.noteOn,
 .mylearning-list-wrap table.ml-02-03 td.title .ellipsis.noteOn,
 .mylearning-list-wrap table.ml-02-06 td.title .ellipsis.noteOn {
