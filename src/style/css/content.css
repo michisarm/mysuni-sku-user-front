@@ -5090,7 +5090,7 @@ i.icon.total-time16:before {
 	display: block;
 	width:32px;
 	height:32px;	
-	background: url('../../images/all/icon-arrow-16-px.svg') no-repeat center center;
+	background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-arrow-16-px.svg') no-repeat center center;
 	transform: translateY(-50%);
 }
 .g-menu-detail-v2 .category-item-wrap .category-list ul {
@@ -5152,11 +5152,11 @@ i.icon.total-time16:before {
 	display: inline-block;
 	word-break: break-all;
 	padding-left:24px;
-	background: url("../../images/all/btn-channel-bookmark-18-off.svg") 0 3px no-repeat;
+	background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/btn-channel-bookmark-18-off.svg") 0 3px no-repeat;
 	line-height:24px;
 }
 .g-menu-detail-v2 .check-type2 input:checked + .check-type2-marker{
-	background-image: url("../../images/all/btn-channel-bookmark-18-on.svg");
+	background-image: url("https://image.mysuni.sk.com/suni-asset/public/images/all/btn-channel-bookmark-18-on.svg");
 }
 
 /* 아이패드 체크박스 이슈 display:none 추가 */
@@ -5271,10 +5271,10 @@ i.icon.total-time16:before {
   height: 24px; 
 }
 i.icon.prev-on{
-  background: url('../../../images/all/btn-prev-24-px.svg')0 0 no-repeat !important;
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-prev-24-px.svg')0 0 no-repeat !important;
 }
 i.icon.next-on{
-  background: url('../../../images/all/btn-next-24-px.svg')0 0 no-repeat !important;
+  background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-next-24-px.svg')0 0 no-repeat !important;
 }
 
 .category-tab .sub-tab { 
@@ -5462,7 +5462,7 @@ i.icon.next-on{
   width:24px; 
   height:24px;
   right:10px;
-  background-image:url('./images/all/btn-history-delete-v2.svg')
+  background-image:url('https://image.mysuni.sk.com/suni-asset/public/images/all/btn-history-delete-v2.svg')
 }
 .channel-change .ui.accordion.channel .title {
   display: flex;
@@ -5558,12 +5558,12 @@ i.icon.next-on{
   display: block;
   width: 100%;
   height: 100%;
-  background: url("./images/all/icon-arrow-close-16-px.svg") 0 0 no-repeat !important;
+  background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-arrow-close-16-px.svg") 0 0 no-repeat !important;
   background-size: 16px 16px !important;
 }
 
 .channel-change .ui.accordion.channel .title.active i::before {
-  background: url("./images/all/icon-arrow-open-16-px.svg") 0 0 no-repeat !important;
+  background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-arrow-open-16-px.svg") 0 0 no-repeat !important;
   background-size: 16px 16px !important;
 }
 
@@ -5615,7 +5615,7 @@ i.icon.next-on{
 .pl-share .ui.input.search.h38 i.clear::before {
   width: 24px;
   height: 24px;
-  background: url("./images/all/btn-clear-nomal-v2.svg") no-repeat 0 0 !important;
+  background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/btn-clear-nomal-v2.svg") no-repeat 0 0 !important;
   background-size: 100% 100% !important;
 }
 .modal-channel-change .ui.input.search.h38 i.search::before {
@@ -5623,7 +5623,7 @@ i.icon.next-on{
   display: block;
   width: 100%;
   height: 100%;
-  background: url("./images/all/icon-gnb-search-24.svg") no-repeat
+  background: url("https://image.mysuni.sk.com/suni-asset/public/images/all/icon-gnb-search-24.svg") no-repeat
     center center !important;
   background-size: 24px 24px !important;
 }
