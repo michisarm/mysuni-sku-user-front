@@ -99,16 +99,20 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
             lectureState.cubeDetail.cubeMaterial &&
             lectureState.cubeDetail.cubeMaterial.cubeDiscussion
           ) {
-            const regiserAndOperator = [
-              cardInfo?.operator.id,
-              getDenizenIdFromAudienceId(cardInfo?.patronKey.keyString),
-              getDenizenIdFromAudienceId(
-                lectureState.cubeDetail.cubeContents.patronKey.keyString
-              ),
-              lectureState.cubeDetail.cubeContents.operator.keyString,
-            ];
-            const isHasAuth = regiserAndOperator.some((name) => name === id);
+            // 비공개 discussion 권한자 : 큐브생성자,큐브담당자,카드생성자,카드담장자(0221)
+            // const regiserAndOperator = [
+            //   cardInfo?.operator.id,
+            //   getDenizenIdFromAudienceId(cardInfo?.patronKey.keyString),
+            //   getDenizenIdFromAudienceId(
+            //     lectureState.cubeDetail.cubeContents.patronKey.keyString
+            //   ),
+            //   lectureState.cubeDetail.cubeContents.operator.keyString,
+            // ];
+            // const isHasAuth = regiserAndOperator.some((name) => name === id);
 
+            // 비공개 discussion 권한자 : 큐브담당자(0221)
+            const isHasAuth =
+              lectureState.cubeDetail.cubeContents.operator.keyString === id;
             setIsPrivateDiscussionAuth(isHasAuth);
 
             setCubeCommentCount(
