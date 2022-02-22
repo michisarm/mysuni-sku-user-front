@@ -5221,10 +5221,10 @@ i.icon.total-time16:before {
 .channel.new .comments-sort .fields.inline .field:last-child { 
   padding-right: 0;
 }
-.channel .college-detail .section-top .section-tit-btn {
+.channel.new .college-detail .section-top .section-tit-btn {
   float:right;
 }
-.channel .college-detail .section-top .section-tit-btn .btn-more {
+.channel.new .college-detail .section-top .section-tit-btn .btn-more {
   color:#999999;
   font-size:14px;
   line-height:30px;
