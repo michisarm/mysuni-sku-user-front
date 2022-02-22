@@ -168,15 +168,11 @@ class NoticeDetailContainer extends React.Component<Props, State> {
       return;
     }
 
-    console.log('notie 테스트');
-
     const result = {
-      backLink: window.location.pathname,
+      backLink: window.location.pathname.replace('/suni-main', ''),
       title: NotieSpaceType.NOTICE,
       receiverId,
     };
-
-    console.dir(result);
 
     return result;
   }

@@ -78,14 +78,11 @@ function MyPagePlaylistDetailCommentView() {
   // 댓글, 좋아요, 핀고정 알림 발송
   const getNotieCdo = (): NotieSimpleCdo | undefined => {
     //
-    console.log('notie 테스트');
 
     const result = {
-      backLink: window.location.pathname,
-      title: NotieSpaceType.NOTICE,
+      backLink: window.location.pathname.replace('/suni-main', ''),
+      title: NotieSpaceType.LEARNING,
     };
-
-    console.dir(result);
 
     return result;
   };

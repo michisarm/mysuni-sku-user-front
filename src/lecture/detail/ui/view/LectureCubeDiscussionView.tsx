@@ -99,16 +99,20 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
             lectureState.cubeDetail.cubeMaterial &&
             lectureState.cubeDetail.cubeMaterial.cubeDiscussion
           ) {
-            const regiserAndOperator = [
-              cardInfo?.operator.id,
-              getDenizenIdFromAudienceId(cardInfo?.patronKey.keyString),
-              getDenizenIdFromAudienceId(
-                lectureState.cubeDetail.cubeContents.patronKey.keyString
-              ),
-              lectureState.cubeDetail.cubeContents.operator.keyString,
-            ];
-            const isHasAuth = regiserAndOperator.some((name) => name === id);
+            // 비공개 discussion 권한자 : 큐브생성자,큐브담당자,카드생성자,카드담장자(0221)
+            // const regiserAndOperator = [
+            //   cardInfo?.operator.id,
+            //   getDenizenIdFromAudienceId(cardInfo?.patronKey.keyString),
+            //   getDenizenIdFromAudienceId(
+            //     lectureState.cubeDetail.cubeContents.patronKey.keyString
+            //   ),
+            //   lectureState.cubeDetail.cubeContents.operator.keyString,
+            // ];
+            // const isHasAuth = regiserAndOperator.some((name) => name === id);
 
+            // 비공개 discussion 권한자 : 큐브담당자(0221)
+            const isHasAuth =
+              lectureState.cubeDetail.cubeContents.operator.keyString === id;
             setIsPrivateDiscussionAuth(isHasAuth);
 
             setCubeCommentCount(
@@ -279,14 +283,11 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
     // 댓글, 좋아요, 핀고정 알림 발송
     const getNotieCdo = (): NotieSimpleCdo | undefined => {
       //
-      console.log('notie 테스트');
 
       const result = {
-        backLink: window.location.pathname,
-        title: NotieSpaceType.NOTICE,
+        backLink: window.location.pathname.replace('/suni-main', ''),
+        title: NotieSpaceType.LEARNING,
       };
-
-      console.dir(result);
 
       return result;
     };
