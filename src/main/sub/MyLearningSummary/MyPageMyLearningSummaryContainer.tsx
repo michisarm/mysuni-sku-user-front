@@ -27,6 +27,7 @@ import {
   MyLearningRdo,
 } from '../../../lecture/detail/model/MyLearningRdo';
 import { Area } from 'tracker/model';
+import { PolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props extends RouteComponentProps {}
 
@@ -155,11 +156,8 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
       myLearningRdo,
       currentYearLearningTime,
     } = this.state;
-    const {
-      learningGoalHour,
-      obtainedStampCount,
-      totalStampCount,
-    } = myLearningRdo;
+    const { learningGoalHour, obtainedStampCount, totalStampCount } =
+      myLearningRdo;
     const { myLearningSummaryService, badgeService } = this.injected;
     const { menuControlAuth } = MenuControlAuthService.instance;
 
@@ -183,7 +181,12 @@ class MyPageMyLearningSummaryContainer extends ReactComponent<
           className="mypage_contents profile-dashboard-contents"
           data-area={Area.MYPAGE_LEARNING}
         >
-          <strong className="mypage_title">나의 학습 현황</strong>
+          <strong className="mypage_title">
+            <PolyglotText
+              id="mapg-mifa-summary"
+              defaultString="나의 학습 현황"
+            />
+          </strong>
 
           <Segment className="full">
             <div className="group-wrapper">
