@@ -31,6 +31,7 @@ import { isCommunityAuth } from 'layout/UserApp/store/MenuAuthStore';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { observer } from 'mobx-react';
 import { SkProfileService } from 'profile/stores';
+import { findForeignerUser } from '../../../../../shared/helper/findForeignerUser';
 
 interface Props {
   open: boolean;
@@ -202,6 +203,7 @@ function UserProfileinfoProfileCard(props: Props) {
       });
     }
   }
+  const isForeignerUser = findForeignerUser();
 
   return (
     <>
@@ -251,7 +253,7 @@ function UserProfileinfoProfileCard(props: Props) {
                   </div>
                 )}
               </div>
-              {isCommunityAuth() && (
+              {isCommunityAuth() && !isForeignerUser && (
                 <>
                   <div className="count-area">
                     <div className="cnt-box com-cnt">

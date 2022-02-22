@@ -13,6 +13,7 @@ import {
 } from '../userProfileInfo.request.services';
 import { checkExternalInstructor } from '../../app.services';
 import { requestFindFollowerAndFollowing } from '../../main/main.request.services';
+import { findForeignerUser } from '../../../../shared/helper/findForeignerUser';
 
 interface Props {
   open: boolean;
@@ -110,6 +111,9 @@ export function UserProfileInfoProfileCard(props: Props) {
   if (profileInfo === undefined) {
     return null;
   }
+
+  const isForeignerUser = findForeignerUser();
+
   return (
     <>
       <div className="profile-wrapper">
@@ -145,16 +149,19 @@ export function UserProfileInfoProfileCard(props: Props) {
                   <span>{profileInfo?.followingCount}</span> Following
                 </div>
               </div>
-              <div className="count-area">
-                <div className="cnt-box com-cnt">
-                  <span>커뮤니티</span>
-                  <strong>{profileInfo?.communityCount}</strong>
+              {(!isForeignerUser && (
+                <div className="count-area">
+                  <div className="cnt-box com-cnt">
+                    <span>커뮤니티</span>
+                    <strong>{profileInfo?.communityCount}</strong>
+                  </div>
+                  <div className="cnt-box feed-cnt">
+                    <span>Feed</span>
+                    <strong>{profileInfo?.feedCount}</strong>
+                  </div>{' '}
                 </div>
-                <div className="cnt-box feed-cnt">
-                  <span>Feed</span>
-                  <strong>{profileInfo?.feedCount}</strong>
-                </div>
-              </div>
+              )) ||
+                null}
               <div className="follow-bttn-area">
                 {props.memberId !== denizenId && !checkExternalInstructor() && (
                   <Button className={followClassName} onClick={onClickFollow}>

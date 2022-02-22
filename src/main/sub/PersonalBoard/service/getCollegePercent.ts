@@ -33,7 +33,7 @@ export async function requestCollegePercent() {
   });
 }
 
-export async function setCollegePercent(
+export function setCollegePercent(
   collegeLearningTimes: CollegeLearningTimeModel[]
 ) {
   //
