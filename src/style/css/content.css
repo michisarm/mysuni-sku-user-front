@@ -5627,3 +5627,5 @@ i.icon.next-on{
     center center !important;
   background-size: 24px 24px !important;
 }
+/* breadcrumb 화살표 색상변경 */
+.ui.breadcrumb.standard i.icon.divider::before{background :url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-breadcrumb-step-grey.svg') 0 0 no-repeat !important}
