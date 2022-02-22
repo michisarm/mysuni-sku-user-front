@@ -14,6 +14,10 @@ import LectureTestPaperModalView from './LectureTestPaperModalView';
 import { Area } from 'tracker/model';
 import { getPolyglotText, PolyglotText } from 'shared/ui/logic/PolyglotText';
 import _ from 'lodash';
+import {
+  NotieSimpleCdo,
+  NotieSpaceType,
+} from '@sku/skuniv-ui-comment/lib/api.models';
 
 interface LectureTestResultViewProps {
   testItem: LectureTestItem;

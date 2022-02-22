@@ -262,7 +262,10 @@ function SubmittedView(props: Pick<CanceledViewProps, 'cubeId' | 'cubeType'>) {
 
   const onCancled = useCallback(() => {
     reactConfirm({
-      title: getPolyglotText('취소하기', 'CollageState-Classroom-취소하기'),
+      title: getPolyglotText(
+        '수강신청 취소하기',
+        'CollageState-Classroom-수강신청취소하기'
+      ),
       message: getPolyglotText(
         '신청한 강의를 취소하시겠습니까?',
         'CollageState-Classroom-취소Confirm'
@@ -309,7 +312,10 @@ function RejectedView(
 
   const onCancled = useCallback(() => {
     reactConfirm({
-      title: getPolyglotText('취소하기', 'CollageState-Classroom-취소하기'),
+      title: getPolyglotText(
+        '수강신청 취소하기',
+        'CollageState-Classroom-수강신청취소하기'
+      ),
       message: getPolyglotText(
         '신청한 강의를 취소하시겠습니까?',
         'CollageState-Classroom-취소Confirm'
@@ -322,7 +328,6 @@ function RejectedView(
   // const applyReferenceModalRef = useRef<ApplyReferenceModal>(null);
   // const lectureState = getLectureState();
   // const organizedId = lectureState?.cubeDetail.cubeContents.organizerId || '';
-  //
   //
   // const [selectedClassroom, setSelectedClassroom] = useState<Classroom | null>(
   //   null
@@ -479,6 +484,7 @@ interface ApprovedViewProps {
 
 function ApprovedView(props: ApprovedViewProps) {
   const { student } = props;
+
   const stateText = useMemo<string>(() => {
     if (student.learningState === 'Passed') {
       return COMPLETE;
@@ -488,6 +494,7 @@ function ApprovedView(props: ApprovedViewProps) {
     }
     return PROGRESS;
   }, [student]);
+
   const stateClassName = useMemo(() => {
     const { learningState } = student;
     switch (learningState) {
@@ -498,6 +505,7 @@ function ApprovedView(props: ApprovedViewProps) {
     }
     return 'line';
   }, [student]);
+
   return (
     <>
       <button
@@ -510,8 +518,47 @@ function ApprovedView(props: ApprovedViewProps) {
   );
 }
 
-function ApprovedELearningView(props: ApprovedViewProps) {
-  const { student } = props;
+interface ApprovedELearningViewProps {
+  student: Student;
+  cubeId: string;
+  cubeType: CubeType;
+}
+
+function ApprovedELearningView(props: ApprovedELearningViewProps) {
+  const { cubeId, cubeType, student } = props;
+
+  let cancelable = false;
+  const lectureState = getLectureState();
+  const round = lectureState?.student?.round;
+  const classrooms = lectureState?.cubeDetail?.cubeMaterial.classrooms;
+
+  const classroom = classrooms && classrooms.find((c) => c.round === round);
+
+  if (classroom) {
+    const cancelablePeriod = classroom.enrolling.cancellablePeriod;
+    const today = moment(moment().format('YYYY-MM-DD'));
+    const end = moment(cancelablePeriod.endDate).add(1, 'days');
+    const start = moment(cancelablePeriod.startDate).add(-1, 'days');
+
+    if (today.isAfter(start) && today.isBefore(end)) {
+      cancelable = true;
+    }
+  }
+
+  const onCancled = useCallback(() => {
+    reactConfirm({
+      title: getPolyglotText(
+        '수강신청 취소하기',
+        'CollageState-Classroom-수강신청취소하기'
+      ),
+      message: getPolyglotText(
+        '신청한 강의를 취소하시겠습니까?',
+        'CollageState-Classroom-취소Confirm'
+      ),
+      onOk: () => cancleFromCubeId(cubeId, cubeType),
+    });
+  }, [cubeId, cubeType]);
+
   const stateText = useMemo<string>(() => {
     if (student.learningState === 'Passed') {
       return COMPLETE;
@@ -526,9 +573,32 @@ function ApprovedELearningView(props: ApprovedViewProps) {
       document.getElementById('webpage-link')?.click();
     }
   }, []);
+
   return (
     <>
-      {student.learningState !== null && (
+      {student.learningState === null ? (
+        <>
+          {cancelable && (
+            <button
+              className={`ui button free ${actionClassName} p18`}
+              onClick={onCancled}
+              data-area={
+                window.location.pathname.includes('/cube')
+                  ? Area.CUBE_HEADER
+                  : Area.CARD_HEADER
+              }
+              data-action={Action.CLICK}
+              data-action-type={ActionType.STUDY}
+              data-action-name={`${CANCEL} ${getPolyglotText(
+                '클릭',
+                'CollageState-Classroom-클릭'
+              )}`}
+            >
+              {CANCEL}
+            </button>
+          )}{' '}
+        </>
+      ) : (
         <button
           className="ui button free bg p18"
           onClick={action}
@@ -539,9 +609,9 @@ function ApprovedELearningView(props: ApprovedViewProps) {
           }
           data-action={Action.CLICK}
           data-action-type={ActionType.STUDY}
-          data-action-external-link={(document.getElementById(
-            'webpage-link'
-          ) as HTMLAnchorElement)?.href?.toString()}
+          data-action-external-link={(
+            document.getElementById('webpage-link') as HTMLAnchorElement
+          )?.href?.toString()}
           data-action-name={`${APPROVE} ${getPolyglotText(
             '클릭',
             'CollageState-Classroom-클릭'
@@ -565,57 +635,61 @@ interface LectureClassroomStateViewProps {
   lectureClassroom: LectureClassroom;
 }
 
-const LectureClassroomStateView: React.FC<LectureClassroomStateViewProps> = function LectureClassroomStateView({
-  lectureState,
-  lectureClassroom,
-}) {
-  const {
-    student,
-    cubeDetail: {
-      cube: { id, type },
-    },
-  } = lectureState;
+const LectureClassroomStateView: React.FC<LectureClassroomStateViewProps> =
+  function LectureClassroomStateView({ lectureState, lectureClassroom }) {
+    const {
+      student,
+      cubeDetail: {
+        cube: { id, type },
+      },
+    } = lectureState;
 
-  if (student === undefined) {
-    return (
-      <CanceledView
-        lectureClassroom={lectureClassroom}
-        cubeId={id}
-        cubeType={type}
-      />
-    );
-  }
-  if (student.proposalState === 'Canceled') {
-    return (
-      <CanceledView
-        lectureClassroom={lectureClassroom}
-        cubeId={id}
-        cubeType={type}
-      />
-    );
-  }
-  if (student.proposalState === 'Submitted') {
-    return <SubmittedView cubeId={id} cubeType={type} />;
-  }
-  if (student.proposalState === 'Rejected') {
-    return (
-      <RejectedView
-        cubeId={id}
-        cubeType={type}
-        lectureClassroom={lectureClassroom}
-      />
-    );
-  }
-  if (student.proposalState === 'Approved') {
-    if (
-      lectureState.cubeType === 'ELearning' ||
-      lectureState.cubeType === 'ClassRoomLecture'
-    ) {
-      return <ApprovedELearningView student={student} />;
+    if (student === undefined) {
+      return (
+        <CanceledView
+          lectureClassroom={lectureClassroom}
+          cubeId={id}
+          cubeType={type}
+        />
+      );
     }
-    return <ApprovedView student={student} />;
-  }
-  return null;
-};
+    if (student.proposalState === 'Canceled') {
+      return (
+        <CanceledView
+          lectureClassroom={lectureClassroom}
+          cubeId={id}
+          cubeType={type}
+        />
+      );
+    }
+    if (student.proposalState === 'Submitted') {
+      return <SubmittedView cubeId={id} cubeType={type} />;
+    }
+    if (student.proposalState === 'Rejected') {
+      return (
+        <RejectedView
+          cubeId={id}
+          cubeType={type}
+          lectureClassroom={lectureClassroom}
+        />
+      );
+    }
+    if (student.proposalState === 'Approved') {
+      if (
+        lectureState.cubeType === 'ELearning' ||
+        lectureState.cubeType === 'ClassRoomLecture'
+      ) {
+        return (
+          <ApprovedELearningView
+            student={student}
+            cubeId={id}
+            cubeType={type}
+          />
+        );
+      }
+      return <ApprovedView student={student} />;
+    }
+    return null;
+  };
 
 export default LectureClassroomStateView;

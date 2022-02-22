@@ -25,9 +25,16 @@ import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import { PolyglotText, getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { Comment } from '@sku/skuniv-ui-comment';
 import {
+  getLectureCardSummary,
   getLectureComment,
   setLectureComment,
 } from 'lecture/detail/store/LectureOverviewStore';
+import { getDenizenIdFromAudienceId } from '../../utility/getDenizenIdFromAudienceId';
+import { getLectureDiscussionPrivateComment } from 'lecture/detail/store/LectureStateStore';
+import {
+  NotieSimpleCdo,
+  NotieSpaceType,
+} from '@sku/skuniv-ui-comment/lib/api.models';
 
 interface LectureCubeDiscussionViewProps {
   lectureState: LectureState;
@@ -67,18 +74,15 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
     );
     const [profileOpen, setProfileOpen] = useState<boolean>(false);
     const [profileInfo, setProfileInfo] = useState<profileParams>();
-
-    const { companyName, departmentName, name, email } = useMemo(() => {
+    const [isPrivateDiscussionAuth, setIsPrivateDiscussionAuth] =
+      useState<boolean>(false);
+    const cardInfo = getLectureCardSummary();
+    const isPrivateComment = getLectureDiscussionPrivateComment();
+    const { companyName, departmentName, name, email, id } = useMemo(() => {
       const {
-        skProfile: {
-          companyName,
-          departmentName,
-          name,
-          email,
-          // member: { company, department, email, name },
-        },
+        skProfile: { companyName, departmentName, name, email, id },
       } = SkProfileService.instance;
-      return { companyName, departmentName, name, email };
+      return { companyName, departmentName, name, email, id };
     }, []);
 
     useEffect(() => {
@@ -95,6 +99,22 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
             lectureState.cubeDetail.cubeMaterial &&
             lectureState.cubeDetail.cubeMaterial.cubeDiscussion
           ) {
+            // 비공개 discussion 권한자 : 큐브생성자,큐브담당자,카드생성자,카드담장자(0221)
+            // const regiserAndOperator = [
+            //   cardInfo?.operator.id,
+            //   getDenizenIdFromAudienceId(cardInfo?.patronKey.keyString),
+            //   getDenizenIdFromAudienceId(
+            //     lectureState.cubeDetail.cubeContents.patronKey.keyString
+            //   ),
+            //   lectureState.cubeDetail.cubeContents.operator.keyString,
+            // ];
+            // const isHasAuth = regiserAndOperator.some((name) => name === id);
+
+            // 비공개 discussion 권한자 : 큐브담당자(0221)
+            const isHasAuth =
+              lectureState.cubeDetail.cubeContents.operator.keyString === id;
+            setIsPrivateDiscussionAuth(isHasAuth);
+
             setCubeCommentCount(
               lectureState.cubeDetail.cubeMaterial.cubeDiscussion
                 .completionCondition.commentCount
@@ -110,9 +130,7 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
             setCubeRelatedUrlList(
               lectureState.cubeDetail.cubeMaterial.cubeDiscussion.relatedUrlList
             );
-            setPrivateComment(
-              lectureState.cubeDetail.cubeMaterial.cubeDiscussion.privateComment
-            );
+            setPrivateComment(isPrivateComment || false);
           }
 
           //  관련자료 Data
@@ -260,6 +278,18 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
           onCancel: () => resolve(false),
         });
       });
+    };
+
+    // 댓글, 좋아요, 핀고정 알림 발송
+    const getNotieCdo = (): NotieSimpleCdo | undefined => {
+      //
+
+      const result = {
+        backLink: window.location.pathname.replace('/suni-main', ''),
+        title: NotieSpaceType.LEARNING,
+      };
+
+      return result;
     };
 
     return (
@@ -549,6 +579,10 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
                 onNoContentAlert={onNoContentAlert}
                 onBeforeRegisterComment={registerStudent}
                 onAfterRegisterComment={onRefresh}
+                isDiscussion={true}
+                privateComment={privateComment}
+                isPrivateDiscussionAuth={isPrivateDiscussionAuth}
+                notieSimpleCdo={getNotieCdo()}
               />
             </div>
             <CommunityProfileModal

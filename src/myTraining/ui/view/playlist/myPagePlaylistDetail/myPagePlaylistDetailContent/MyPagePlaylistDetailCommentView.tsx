@@ -1,6 +1,13 @@
-import React, { useCallback, useState } from 'react';
+import { reactAlert, reactConfirm } from '@nara.platform/accent';
 import { Comment } from '@sku/skuniv-ui-comment';
+import {
+  NotieSimpleCdo,
+  NotieSpaceType,
+} from '@sku/skuniv-ui-comment/lib/api.models';
 import CommunityProfileModal from 'community/ui/view/CommunityProfileModal';
+import { findCommunityProfile } from 'layout/UserApp/api/ProfileAPI';
+import React, { useCallback, useState } from 'react';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { parsePolyglotString } from 'shared/viewmodel/PolyglotString';
 import SkProfileService from '../../../../../../profile/present/logic/SkProfileService';
 import {
@@ -8,9 +15,6 @@ import {
   setPlaylistComment,
   useMyPagePlaylistDetail,
 } from '../MyPagePlaylistDetail.services';
-import { findCommunityProfile } from 'layout/UserApp/api/ProfileAPI';
-import { reactAlert, reactConfirm } from '@nara.platform/accent';
-import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface profileParams {
   id: string;
@@ -71,6 +75,18 @@ function MyPagePlaylistDetailCommentView() {
     return null;
   }
 
+  // 댓글, 좋아요, 핀고정 알림 발송
+  const getNotieCdo = (): NotieSimpleCdo | undefined => {
+    //
+
+    const result = {
+      backLink: window.location.pathname.replace('/suni-main', ''),
+      title: NotieSpaceType.LEARNING,
+    };
+
+    return result;
+  };
+
   return (
     <>
       <div className="contents comment">
@@ -92,6 +108,7 @@ function MyPagePlaylistDetailCommentView() {
           language={language}
           onRemoveCommentConfirm={onRemoveCommentConfirm}
           onNoContentAlert={onNoContentAlert}
+          notieSimpleCdo={getNotieCdo()}
         />
       </div>
       <CommunityProfileModal

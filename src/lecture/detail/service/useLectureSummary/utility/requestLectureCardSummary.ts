@@ -67,7 +67,7 @@ function parseLectureSummary(
     stampCount,
     langSupports,
   } = card;
-  const { communityId, validLearningDate } = cardContents;
+  const { communityId, validLearningDate, patronKey } = cardContents;
   const { studentCount, passedStudentCount } = cardRelatedCount;
 
   return {
@@ -79,6 +79,7 @@ function parseLectureSummary(
       channelId: mainCategory?.channelId || '',
     },
     operator: {
+      id: cardOperatorIdentity?.id || '',
       email: cardOperatorIdentity?.email || '',
       name: parsePolyglotString(
         cardOperatorIdentity?.name,
@@ -118,6 +119,7 @@ function parseLectureSummary(
     restrictLearningPeriod: cardContents.restrictLearningPeriod,
     complete: cardRelatedStudent!.cardStudent?.complete || false,
     learningState: cardRelatedStudent?.cardStudent?.learningState || '',
+    patronKey,
   };
 }
 

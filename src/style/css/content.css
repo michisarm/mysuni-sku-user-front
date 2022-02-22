@@ -475,14 +475,18 @@ a.button.ui.btn-badge-go {
   background-color: #00bfae;
   border: 1px solid #00bfae;
 }
+.profile-modal-new .right-side .ui.menu {
+  border-bottom: 1px solid #00bfae;
+}
+.profile-modal-new .right-side .ui.menu .item:first-child:last-child {
+  width:33.3%;
+  flex:none;
+  margin-right:auto;
+}
 .profile-modal-new .right-side .ui.menu .item.active {
   background: #00bfae !important;
   border-color: #00bfae;
 }
-.profile-modal-new .right-side .ui.menu {
-  border-bottom: 1px solid #00bfae;
-}
-
 .profile-modal-new .list-wrapper .top-line span {
   color: #444;
   font-size: 1rem;
@@ -645,11 +649,11 @@ a.button.ui.btn-badge-go {
 .ui.segment.full .top-guide-title + .badge-list-type {
   padding-bottom:0;
   margin-bottom:-3.75rem;
-} 
+}
 .ui.segment.full .top-guide-title + .badge-list-type.list-wrapper {
   padding-bottom:0;
   margin-bottom:-3.125rem;
-} 
+}
 .ui.segment.full .top-guide-title .ui.button.excel-down {
   margin-left: 0;
 }
@@ -4467,7 +4471,7 @@ i.icon.plus.round16:before {
   font-size: 12px;
   font-weight: 700;
   text-align: center;
-  overflow:hidden; 
+  overflow:hidden;
   white-space:normal;
   word-wrap:break-word;
   display:-webkit-box;
@@ -4967,3 +4971,12 @@ i.icon.thumb-up::before {
 i.icon.total-time16:before {
   background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-total-time-16-px.svg') 0 0 no-repeat !important;
 }
+
+/* breadcrumb 화살표 색상변경 */
+.ui.breadcrumb.standard i.icon.divider::before{background :url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-breadcrumb-step-grey.svg') 0 0 no-repeat !important}
+/* 커뮤니티메인 bookmark popup*/
+i.icon.popupUrl::before { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-pop-url.svg') 0 0 no-repeat !important; background-size: 100% 100% !important;}
+i.icon.popupBook::before { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-pop-bookmark.svg') 0 0 no-repeat !important; background-size: 100% 100% !important; }
+i.icon.popupBookRemove::before { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-pop-markoff.svg')0 0 no-repeat !important; background-size: 100% 100% !important; }
+.balloon-pop.myCumu_btn > .content > ul li:hover { background: #f8f8f8; }
+.balloon-pop.myCumu_btn { border-color: #777; }

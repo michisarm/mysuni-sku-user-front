@@ -18,6 +18,7 @@ export default interface LectureCardSummary extends LectureSummary {
   restrictLearningPeriod: boolean;
   complete: boolean;
   learningState: string;
+  patronKey: { keyString: string };
 }
 
 export function getEmptyLectureCardSummary(): LectureCardSummary {
@@ -29,6 +30,7 @@ export function getEmptyLectureCardSummary(): LectureCardSummary {
     },
     learningTime: '',
     operator: {
+      id: '',
       name: '',
       companyName: '',
       email: '',
@@ -45,5 +47,6 @@ export function getEmptyLectureCardSummary(): LectureCardSummary {
     restrictLearningPeriod: false,
     complete: false,
     learningState: '',
+    patronKey: { keyString: '' },
   };
 }

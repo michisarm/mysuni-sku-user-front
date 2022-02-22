@@ -1,15 +1,18 @@
-import React, { Component } from 'react';
-import { reactAutobind, reactConfirm } from '@nara.platform/accent';
+import { reactAlert, reactAutobind, reactConfirm } from '@nara.platform/accent';
 import { Comment } from '@sku/skuniv-ui-comment';
+import {
+  NotieSimpleCdo,
+  NotieSpaceType,
+} from '@sku/skuniv-ui-comment/lib/api.models';
 import { observer } from 'mobx-react';
+import React, { Component } from 'react';
+import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 import { findCommunityProfile } from '../../../../community/api/profileApi';
 import CommunityProfileModal from '../../../../community/ui/view/CommunityProfileModal';
 import {
   getLectureComment,
   setLectureComment,
 } from '../../../detail/store/LectureOverviewStore';
-import { reactAlert } from '@nara.platform/accent';
-import { getPolyglotText } from 'shared/ui/logic/PolyglotText';
 
 interface Props {
   commentFeedbackId: string;
@@ -49,6 +52,18 @@ class LectureCommentsContainer extends Component<Props, State> {
   componentDidMount() {
     this.setState({ profileOpen: false });
   }
+
+  // 댓글, 좋아요, 핀고정 알림 발송
+  getNotieCdo = (): NotieSimpleCdo | undefined => {
+    //
+
+    const result = {
+      backLink: window.location.pathname.replace('/suni-main', ''),
+      title: NotieSpaceType.LEARNING,
+    };
+
+    return result;
+  };
 
   clickProfileEventHandler(denizenId: string) {
     findCommunityProfile(denizenId).then((result) => {
@@ -123,6 +138,7 @@ class LectureCommentsContainer extends Component<Props, State> {
             }}
             onNoContentAlert={this.onNoContentAlert}
             onRemoveCommentConfirm={this.onRemoveCommentConfirm}
+            notieSimpleCdo={this.getNotieCdo()}
           />
         </div>
         <CommunityProfileModal
