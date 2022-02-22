@@ -242,22 +242,16 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> =
     const getNotieCdo = (): NotieSimpleCdo | undefined => {
       //
       const receiverId = taskDetail?.writerPatronKeyString;
-      console.log('test');
-      console.dir(receiverId);
 
       if (!receiverId) {
         return;
       }
 
-      console.log('notie 테스트');
-
       const result = {
         backLink: window.location.pathname,
-        title: NotieSpaceType.NOTICE,
+        title: NotieSpaceType.LEARNING,
         receiverId,
       };
-
-      console.dir(result);
 
       return result;
     };
