@@ -5627,3 +5627,11 @@ i.icon.next-on{
     center center !important;
   background-size: 24px 24px !important;
 }
+/* breadcrumb 화살표 색상변경 */
+.ui.breadcrumb.standard i.icon.divider::before{background :url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-breadcrumb-step-grey.svg') 0 0 no-repeat !important}
+/* 커뮤니티메인 bookmark popup*/
+i.icon.popupUrl::before { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-pop-url.svg') 0 0 no-repeat !important; background-size: 100% 100% !important;}
+i.icon.popupBook::before { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-pop-bookmark.svg') 0 0 no-repeat !important; background-size: 100% 100% !important; }
+i.icon.popupBookRemove::before { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-pop-markoff.svg')0 0 no-repeat !important; background-size: 100% 100% !important; }
+.balloon-pop.myCumu_btn > .content > ul li:hover { background: #f8f8f8; }
+.balloon-pop.myCumu_btn { border-color: #777; }
