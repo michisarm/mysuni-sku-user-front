@@ -285,7 +285,7 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
       //
 
       const result = {
-        backLink: window.location.pathname,
+        backLink: window.location.pathname.replace('/suni-main', ''),
         title: NotieSpaceType.LEARNING,
       };
 

@@ -222,7 +222,7 @@ export default function LectureDiscussionContainer() {
     //
 
     const result = {
-      backLink: window.location.pathname,
+      backLink: window.location.pathname.replace('/suni-main', ''),
       title: NotieSpaceType.LEARNING,
     };
 
