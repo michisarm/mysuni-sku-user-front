@@ -5409,6 +5409,7 @@ i.icon.next-on{
 
 .channel-change .table-css .text01.add {
   font-weight: 700;
+  color:#666;
 }
 
 .channel-change .table-css .text02 {
@@ -5419,6 +5420,9 @@ i.icon.next-on{
 
 .channel-change .table-css .count {
   margin-left: 0.4375rem;
+}
+.channel-change .select-area {
+  padding:0;
 }
 .channel-change [class^="scrolling"] {
   width: 100%;
