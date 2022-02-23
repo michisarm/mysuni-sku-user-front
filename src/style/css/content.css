@@ -4980,3 +4980,11 @@ i.icon.popupBook::before { background: url('https://image.mysuni.sk.com/suni-ass
 i.icon.popupBookRemove::before { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-pop-markoff.svg')0 0 no-repeat !important; background-size: 100% 100% !important; }
 .balloon-pop.myCumu_btn > .content > ul li:hover { background: #f8f8f8; }
 .balloon-pop.myCumu_btn { border-color: #777; }
+
+/* 2022-02-23 Certification - 도전Badge */
+.challenge-wrap .challenge-badge .right-area .badge-title .path {bottom: 22px;}
+
+/* 운영 오류/개선 950번 대응 */
+.opacity.edit .title_link, .opacity.edit .title_nolink {
+  min-height: 60px;
+}
