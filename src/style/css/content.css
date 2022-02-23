@@ -4984,7 +4984,3 @@ i.icon.popupBookRemove::before { background: url('https://image.mysuni.sk.com/su
 /* 2022-02-23 Certification - 도전Badge */
 .challenge-wrap .challenge-badge .right-area .badge-title .path {bottom: 22px;}
 
-/* 운영 오류/개선 950번 대응 */
-.opacity.edit .title_link, .opacity.edit .title_nolink {
-  min-height: 60px;
-}
