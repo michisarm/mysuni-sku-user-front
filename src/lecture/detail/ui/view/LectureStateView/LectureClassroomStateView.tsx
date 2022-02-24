@@ -452,23 +452,6 @@ function RejectedView(
         {RESUBMIT}
       </button>
       <button
-        className={`ui button free ${actionClassName} p18`}
-        onClick={onCancled}
-        data-area={
-          window.location.pathname.includes('/cube')
-            ? Area.CUBE_HEADER
-            : Area.CARD_HEADER
-        }
-        data-action={Action.CLICK}
-        data-action-type={ActionType.STUDY}
-        data-action-name={`${CANCEL} ${getPolyglotText(
-          '클릭',
-          'CollageState-Classroom-클릭'
-        )}`}
-      >
-        {CANCEL}
-      </button>
-      <button
         className={`ui button free ${stateClassName} p18`}
         style={{ cursor: 'default' }}
       >
