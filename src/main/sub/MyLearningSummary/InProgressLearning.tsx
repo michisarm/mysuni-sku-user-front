@@ -13,7 +13,7 @@ import { useHistory } from 'react-router-dom';
 import { findAvailableCardBundlesCache } from '../../../lecture/shared/api/arrangeApi';
 
 const swiperProps = {
-  loop: false,
+  loop: true,
   pagination: {
     el: '.std-navi .swiper-pagination',
     clickable: true,
