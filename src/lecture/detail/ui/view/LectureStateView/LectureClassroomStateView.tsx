@@ -324,136 +324,119 @@ function RejectedView(
     });
   }, [cubeId, cubeType]);
 
-  // const ClassroomModalViewRef = useRef<ClassroomModalView>(null);
-  // const applyReferenceModalRef = useRef<ApplyReferenceModal>(null);
-  // const lectureState = getLectureState();
-  // const organizedId = lectureState?.cubeDetail.cubeContents.organizerId || '';
-  //
-  // const [selectedClassroom, setSelectedClassroom] = useState<Classroom | null>(
-  //   null
-  // );
-  // /* eslint-disable */
-  // const action = useCallback(async () => {
-  //   const classroom = await findApplyingClassroom(cubeId);
-  //   const contentProvider = await findContentProviderCache(organizedId);
-  //
-  //   if (classroom === undefined) {
-  //     reactAlert({
-  //       title: getPolyglotText(
-  //         '수강신청 기간 안내',
-  //         'CollageState-Classroom-수강신청기간안내'
-  //       ),
-  //       message: getPolyglotText(
-  //         '수강신청 기간이 아닙니다.',
-  //         'CollageState-Classroom-기간x'
-  //       ),
-  //     });
-  //     return;
-  //   }
-  //
-  //   if (contentProvider?.pisAgree === false) {
-  //     return ClassroomModalViewRef.current?.show();
-  //   }
-  //
-  //   const cubeDetail = await findCubeDetailCache(cubeId);
-  //   if (cubeDetail !== undefined) {
-  //     const isExistAgreement = await findAgreement(
-  //       cubeDetail.cubeContents.organizerId
-  //     );
-  //
-  //     // 제출한 동의서가 없는 경우
-  //     if (isExistAgreement === undefined) {
-  //       onOpenLectureAgreementModal();
-  //     } else {
-  //       // 제출한 동의서가 있지만 동의하지 않은 경우
-  //       if (
-  //         find(isExistAgreement.optionalClauseAgreements, { accepted: false })
-  //       ) {
-  //         onOpenLectureAgreementModal();
-  //         return;
-  //       }
-  //
-  //       return ClassroomModalViewRef.current?.show();
-  //     }
-  //   }
-  // }, [cubeId]);
-  //
-  // /* eslint-enable */
-  // const onClassroomSelected = useCallback(
-  //   async (selected: Classroom) => {
-  //     if (
-  //       selected.enrollingAvailable &&
-  //       selected.freeOfCharge.approvalProcess &&
-  //       applyReferenceModalRef.current !== null
-  //     ) {
-  //       setSelectedClassroom(selected);
-  //       applyReferenceModalRef.current.onOpenModal();
-  //     } else {
-  //       const errCode = await submitFromCubeId(
-  //         cubeId,
-  //         cubeType,
-  //         selected.round
-  //       );
-  //
-  //       await classroomSubmit(selected, errCode);
-  //     }
-  //   },
-  //   [cubeId, cubeType]
-  // );
-  // const onApply = useCallback(
-  //   async (member: ApprovalMemberModel) => {
-  //     if (selectedClassroom !== null) {
-  //       // 22-01-18 학습 신청 실패 모달 추가(추후 다국어 데이터 추가 필요)
-  //       const errCode = await submitFromCubeId(
-  //         cubeId,
-  //         cubeType,
-  //         selectedClassroom.round,
-  //         true,
-  //         member.id
-  //       );
-  //
-  //       await classroomSubmit(selectedClassroom, errCode);
-  //     }
-  //   },
-  //   [selectedClassroom, cubeId, cubeType]
-  // );
+  const ClassroomModalViewRef = useRef<ClassroomModalView>(null);
+  const applyReferenceModalRef = useRef<ApplyReferenceModal>(null);
+  const lectureState = getLectureState();
+  const organizedId = lectureState?.cubeDetail.cubeContents.organizerId || '';
+
+  const [selectedClassroom, setSelectedClassroom] = useState<Classroom | null>(
+    null
+  );
+  /* eslint-disable */
+  const action = useCallback(async () => {
+    const classroom = await findApplyingClassroom(cubeId);
+    const contentProvider = await findContentProviderCache(organizedId);
+
+    if (classroom === undefined) {
+      reactAlert({
+        title: getPolyglotText(
+          '수강신청 기간 안내',
+          'CollageState-Classroom-수강신청기간안내'
+        ),
+        message: getPolyglotText(
+          '수강신청 기간이 아닙니다.',
+          'CollageState-Classroom-기간x'
+        ),
+      });
+      return;
+    }
+
+    if (contentProvider?.pisAgree === false) {
+      return ClassroomModalViewRef.current?.show();
+    }
+
+    const cubeDetail = await findCubeDetailCache(cubeId);
+    if (cubeDetail !== undefined) {
+      const isExistAgreement = await findAgreement(
+        cubeDetail.cubeContents.organizerId
+      );
+
+      // 제출한 동의서가 없는 경우
+      if (isExistAgreement === undefined) {
+        onOpenLectureAgreementModal();
+      } else {
+        // 제출한 동의서가 있지만 동의하지 않은 경우
+        if (
+          find(isExistAgreement.optionalClauseAgreements, { accepted: false })
+        ) {
+          onOpenLectureAgreementModal();
+          return;
+        }
+
+        return ClassroomModalViewRef.current?.show();
+      }
+    }
+  }, [cubeId]);
+
+  /* eslint-enable */
+  const onClassroomSelected = useCallback(
+    async (selected: Classroom) => {
+      if (
+        selected.enrollingAvailable &&
+        selected.freeOfCharge.approvalProcess &&
+        applyReferenceModalRef.current !== null
+      ) {
+        setSelectedClassroom(selected);
+        applyReferenceModalRef.current.onOpenModal();
+      } else {
+        const errCode = await submitFromCubeId(
+          cubeId,
+          cubeType,
+          selected.round
+        );
+
+        await classroomSubmit(selected, errCode);
+      }
+    },
+    [cubeId, cubeType]
+  );
+  const onApply = useCallback(
+    async (member: ApprovalMemberModel) => {
+      if (selectedClassroom !== null) {
+        // 22-01-18 학습 신청 실패 모달 추가(추후 다국어 데이터 추가 필요)
+        const errCode = await submitFromCubeId(
+          cubeId,
+          cubeType,
+          selectedClassroom.round,
+          true,
+          member.id
+        );
+
+        await classroomSubmit(selectedClassroom, errCode);
+      }
+    },
+    [selectedClassroom, cubeId, cubeType]
+  );
 
   return (
     <>
-      {/*<ClassroomModalView*/}
-      {/*  ref={ClassroomModalViewRef}*/}
-      {/*  classrooms={lectureClassroom?.classrooms || []}*/}
-      {/*  onOk={onClassroomSelected}*/}
-      {/*/>*/}
-      {/*<ApplyReferenceModal*/}
-      {/*  ref={applyReferenceModalRef}*/}
-      {/*  classrooms={lectureClassroom?.classrooms || []}*/}
-      {/*  selectedClassRoom={selectedClassroom}*/}
-      {/*  handleOk={onApply}*/}
-      {/*/>*/}
-      {/*<LectureAgreementModalView*/}
-      {/*  onShowClassroomModal={ClassroomModalViewRef.current?.show}*/}
-      {/*/>*/}
-      {/*<button*/}
-      {/*  className={`ui button free ${actionClassName} p18`}*/}
-      {/*  onClick={action}*/}
-      {/*  data-area={*/}
-      {/*    window.location.pathname.includes('/cube')*/}
-      {/*      ? Area.CUBE_HEADER*/}
-      {/*      : Area.CARD_HEADER*/}
-      {/*  }*/}
-      {/*  data-action={Action.CLICK}*/}
-      {/*  data-action-type={ActionType.STUDY}*/}
-      {/*  data-action-name={`${SUBMIT} ${getPolyglotText(*/}
-      {/*    '클릭',*/}
-      {/*    'CollageState-Classroom-클릭'*/}
-      {/*  )}`}*/}
-      {/*>*/}
-      {/*  {RESUBMIT}*/}
-      {/*</button>*/}
+      <ClassroomModalView
+        ref={ClassroomModalViewRef}
+        classrooms={lectureClassroom?.classrooms || []}
+        onOk={onClassroomSelected}
+      />
+      <ApplyReferenceModal
+        ref={applyReferenceModalRef}
+        classrooms={lectureClassroom?.classrooms || []}
+        selectedClassRoom={selectedClassroom}
+        handleOk={onApply}
+      />
+      <LectureAgreementModalView
+        onShowClassroomModal={ClassroomModalViewRef.current?.show}
+      />
       <button
         className={`ui button free ${actionClassName} p18`}
-        onClick={onCancled}
+        onClick={action}
         data-area={
           window.location.pathname.includes('/cube')
             ? Area.CUBE_HEADER
@@ -461,12 +444,12 @@ function RejectedView(
         }
         data-action={Action.CLICK}
         data-action-type={ActionType.STUDY}
-        data-action-name={`${CANCEL} ${getPolyglotText(
+        data-action-name={`${SUBMIT} ${getPolyglotText(
           '클릭',
           'CollageState-Classroom-클릭'
         )}`}
       >
-        {CANCEL}
+        {RESUBMIT}
       </button>
       <button
         className={`ui button free ${stateClassName} p18`}
