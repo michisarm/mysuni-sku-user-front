@@ -4988,3 +4988,6 @@ i.icon.popupBookRemove::before { background: url('https://image.mysuni.sk.com/su
 
 /* 나의학습현황 작성한노트 새창 이후 화면 여백없음 */
 .note_notice {padding:80px 28px;}
+
+/* 커뮤니티 첫번째 간격수정 */
+.community-main-contants .sub-info-box:first-child .ui.comments.base {margin-top:0;}
