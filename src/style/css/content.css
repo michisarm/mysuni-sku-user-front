@@ -4991,7 +4991,3 @@ i.icon.popupBookRemove::before { background: url('https://image.mysuni.sk.com/su
 
 /* 커뮤니티 첫번째 간격수정 */
 .community-main-contants .sub-info-box:first-child .ui.comments.base {margin-top:0;}
-
-/* 커뮤니티 템플릿C타입 레이아웃 */
-.templete_type_c .card_area .opacity .title_nolink {min-height:60px;}
-.templete_type_c .card_area .opacity .section-body:first-child {margin-top:50px;}
