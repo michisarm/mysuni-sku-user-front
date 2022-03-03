@@ -4993,6 +4993,7 @@ i.icon.popupBookRemove::before { background: url('https://image.mysuni.sk.com/su
 .community-main-contants .sub-info-box:first-child .ui.comments.base {margin-top:0;}
 
 /* IOS 스크롤막기 */
+#root {position:relative;}
 .IosScrollLock {
   position:fixed;
   left:0; 
