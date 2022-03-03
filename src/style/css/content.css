@@ -4980,3 +4980,25 @@ i.icon.popupBook::before { background: url('https://image.mysuni.sk.com/suni-ass
 i.icon.popupBookRemove::before { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-pop-markoff.svg')0 0 no-repeat !important; background-size: 100% 100% !important; }
 .balloon-pop.myCumu_btn > .content > ul li:hover { background: #f8f8f8; }
 .balloon-pop.myCumu_btn { border-color: #777; }
+
+/* 2022-02-23 Certification - 도전Badge, MyBadge */
+.challenge-wrap .challenge-badge .right-area .badge-title .path {bottom: 22px;}
+.challenge-wrap .challenge-badge .right-area .challenge-list ul .class-card:after { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-ct-arrow.svg') 0 0 no-repeat; }
+.badge-list-type.list-wrapper ul li {width:25%; text-align: center;}
+
+/* 나의학습현황 작성한노트 새창 이후 화면 여백없음 */
+.note_notice {padding:80px 28px;}
+
+/* 커뮤니티 첫번째 간격수정 */
+.community-main-contants .sub-info-box:first-child .ui.comments.base {margin-top:0;}
+
+/* IOS 스크롤막기 */
+#root {position:relative;}
+.IosScrollLock {
+  position:fixed;
+  left:0; 
+  top:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+}
