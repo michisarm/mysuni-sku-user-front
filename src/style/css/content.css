@@ -4991,3 +4991,13 @@ i.icon.popupBookRemove::before { background: url('https://image.mysuni.sk.com/su
 
 /* 커뮤니티 첫번째 간격수정 */
 .community-main-contants .sub-info-box:first-child .ui.comments.base {margin-top:0;}
+
+/* IOS 스크롤막기 */
+.IosScrollLock {
+  position:fixed;
+  left:0; 
+  top:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+}
