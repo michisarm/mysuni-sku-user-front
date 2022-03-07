@@ -462,9 +462,7 @@ const LectureCubeDiscussionView: React.FC<LectureCubeDiscussionViewProps> =
                               className="ui icon button left post list2"
                               onClick={() => zipFileDownload('all')}
                             >
-                              <img
-                                src={`${PUBLIC_URL}/images/all/icon-down-type-4-24-px.png`}
-                              />
+                              <img src="https://image.mysuni.sk.com/suni-asset/public/images/all//icon-down-type-5-24-px.svg" />
                               <PolyglotText
                                 id="Collage-Discussion-전체다운로드"
                                 defaultString="전체 다운로드"
