@@ -4985,6 +4985,7 @@ i.icon.popupBookRemove::before { background: url('https://image.mysuni.sk.com/su
 .challenge-wrap .challenge-badge .right-area .badge-title .path {bottom: 22px;}
 .challenge-wrap .challenge-badge .right-area .challenge-list ul .class-card:after { background: url('https://image.mysuni.sk.com/suni-asset/public/images/all/icon-ct-arrow.svg') 0 0 no-repeat; }
 .badge-list-type.list-wrapper ul li {width:25%; text-align: center;}
+.mypage_contents .badge-list-type.list-wrapper ul li {width:33.3333%; text-align: center;}
 
 /* 나의학습현황 작성한노트 새창 이후 화면 여백없음 */
 .note_notice {padding:80px 28px;}
