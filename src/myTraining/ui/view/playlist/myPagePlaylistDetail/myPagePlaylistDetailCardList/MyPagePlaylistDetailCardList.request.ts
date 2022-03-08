@@ -17,6 +17,11 @@ export async function requestMyPagePlaylistDetailCardList(cardIds: string[]) {
   }
 
   const value = cards.map((card) => {
+    const stepCount =
+      card.learningState === 'Passed'
+        ? 10
+        : phaseStepCount(card.phaseCount, card.completePhaseCount || 0);
+
     return {
       cardId: card.cardId,
       cardThumbnailImage: card.thumbnailImagePath,
@@ -24,7 +29,7 @@ export async function requestMyPagePlaylistDetailCardList(cardIds: string[]) {
       phaseCount: card.phaseCount,
       completePhaseCount: card.completePhaseCount || 0,
       learningTime: card.learningTime,
-      stepCount: phaseStepCount(card.phaseCount, card.completePhaseCount || 0),
+      stepCount,
     };
   });
 
