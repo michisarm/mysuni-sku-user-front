@@ -8,8 +8,8 @@ import {
   AbtestResultModifyModel,
 } from 'abtest/model/Abtest';
 
-const BASE_URL = '/api/data-foundation/abtest';
-// const BASE_URL = '/local';
+// const BASE_URL = '/api/data-foundation/abtest';
+const BASE_URL = '/local';
 
 function AxiosReturn<T>(response: AxiosResponse<T>) {
   if (

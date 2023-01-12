@@ -18,6 +18,7 @@ import { SkProfileService } from '../../../../profile/stores';
 import { Area } from '@sku/skuniv-ui-lecture-card/lib/views/lectureCard.models';
 import { hoverTrack } from 'tracker/present/logic/ActionTrackService';
 import { scrollSwiperHorizontalTrack } from 'tracker/present/logic/ActionTrackService';
+import { Abtest, ExperimentalGroup } from 'abtest/components';
 
 interface Props extends RouteComponentProps {
   profileMemberName?: string;
@@ -104,7 +105,14 @@ const RQDLearning: React.FC<Props> = function RQDLearning({ history }) {
         />
         <div className="sec-tit-btn">
           <button className="btn-more" onClick={onViewAll}>
-            <PolyglotText id="main-viewall" defaultString="전체보기" />
+            <Abtest name="AB-3" nonExperimentalGroup="A">
+              <ExperimentalGroup name="A" style={undefined}>
+                <PolyglotText id="main-viewall" defaultString="전체보기" />
+              </ExperimentalGroup>
+              <ExperimentalGroup name="B" style={undefined}>
+                <p>전체 B 보기</p>
+              </ExperimentalGroup>
+            </Abtest>
           </button>
         </div>
       </div>
